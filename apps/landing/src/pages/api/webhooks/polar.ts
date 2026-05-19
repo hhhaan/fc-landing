@@ -18,7 +18,6 @@ async function verifySignature(
   const ts = parseInt(msgTimestamp, 10);
   if (isNaN(ts) || Math.abs(now - ts) > TIMESTAMP_TOLERANCE_SECONDS) return false;
 
-  // polar_whs_ prefix 제거 후 base64url → base64 변환
   const b64 = secret.replace(/^polar_whs_/, '').replace(/-/g, '+').replace(/_/g, '/');
   const secretBytes = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
 
@@ -34,7 +33,6 @@ async function verifySignature(
   const sigBytes = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(toSign));
   const computed = btoa(String.fromCharCode(...new Uint8Array(sigBytes)));
 
-  // "v1,<sig1> v1,<sig2>" 형식 처리
   return msgSignature.split(' ').some((s) => s.split(',')[1] === computed);
 }
 
@@ -45,37 +43,14 @@ function getSupabase() {
   );
 }
 
-async function findUserId(
-  supabase: ReturnType<typeof getSupabase>,
-  metadata: Record<string, string> | undefined,
-  customerEmail: string | undefined
-): Promise<string | null> {
-  // 1) checkout link 에 붙인 metadata[user_id] 우선
-  if (metadata?.user_id) return metadata.user_id;
-
-  // 2) 이메일로 auth.users 조회 (metadata 미전달 시 폴백)
-  if (customerEmail) {
-    const { data } = await supabase
-      .from('profiles')
-      .select('id')
-      .eq('id',
-        (await supabase.auth.admin.getUserByEmail(customerEmail)).data.user?.id ?? ''
-      )
-      .single();
-    if (data?.id) return data.id;
-  }
-
-  return null;
-}
-
 export const POST: APIRoute = async ({ request }) => {
   const rawBody = await request.text();
   const secret = import.meta.env.POLAR_WEBHOOK_SECRET;
 
   if (!secret) return new Response('Webhook secret not configured', { status: 500 });
-
-  const valid = await verifySignature(rawBody, request.headers, secret);
-  if (!valid) return new Response('Unauthorized', { status: 401 });
+  if (!await verifySignature(rawBody, request.headers, secret)) {
+    return new Response('Unauthorized', { status: 401 });
+  }
 
   let event: { type: string; data: Record<string, unknown> };
   try {
@@ -85,19 +60,19 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const { type, data } = event;
-  const supabase = getSupabase();
+  const meta = data.metadata as Record<string, string> | undefined;
+  const userId = meta?.user_id;
 
-  console.log(`[Polar webhook] ${type}`);
+  console.log(`[Polar webhook] ${type} | user_id: ${userId ?? 'unknown'}`);
+
+  const supabase = getSupabase();
 
   try {
     switch (type) {
       case 'subscription.created':
       case 'subscription.active': {
-        const meta = data.metadata as Record<string, string> | undefined;
-        const email = (data.customer as { email?: string } | undefined)?.email;
-        const userId = await findUserId(supabase, meta, email);
         if (!userId) {
-          console.error(`[Polar webhook] ${type}: user_id not found`, { meta, email });
+          console.error(`[Polar webhook] ${type}: user_id missing in metadata`);
           break;
         }
 
@@ -149,7 +124,7 @@ export const POST: APIRoute = async ({ request }) => {
       }
 
       case 'subscription.canceled': {
-        // 취소됨 — 구독은 기간 끝까지 유지, plan은 아직 'pro'
+        // 기간 끝까지 유지, plan은 아직 pro
         await supabase
           .from('subscriptions')
           .update({
@@ -164,7 +139,7 @@ export const POST: APIRoute = async ({ request }) => {
       }
 
       case 'subscription.revoked': {
-        // 즉시 종료 — plan을 free로 다운그레이드
+        // 즉시 종료 → plan을 free로
         await supabase
           .from('subscriptions')
           .update({
@@ -175,24 +150,30 @@ export const POST: APIRoute = async ({ request }) => {
           })
           .eq('polar_subscription_id', data.id as string);
 
-        // user_id는 DB에서 역조회
-        const { data: sub } = await supabase
-          .from('subscriptions')
-          .select('user_id')
-          .eq('polar_subscription_id', data.id as string)
-          .single();
-
-        if (sub?.user_id) {
+        if (userId) {
           await supabase
             .from('profiles')
             .update({ plan: 'free', updated_at: new Date().toISOString() })
-            .eq('id', sub.user_id);
+            .eq('id', userId);
+        } else {
+          // metadata 없으면 subscription DB에서 역조회
+          const { data: sub } = await supabase
+            .from('subscriptions')
+            .select('user_id')
+            .eq('polar_subscription_id', data.id as string)
+            .single();
+          if (sub?.user_id) {
+            await supabase
+              .from('profiles')
+              .update({ plan: 'free', updated_at: new Date().toISOString() })
+              .eq('id', sub.user_id);
+          }
         }
         break;
       }
     }
   } catch (err) {
-    console.error(`[Polar webhook] handler error for ${type}:`, err);
+    console.error(`[Polar webhook] error handling ${type}:`, err);
     return new Response('Internal error', { status: 500 });
   }
 

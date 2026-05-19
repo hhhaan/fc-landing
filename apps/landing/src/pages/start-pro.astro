@@ -16,35 +16,54 @@ if (!user) {
 
 const plan = Astro.url.searchParams.get("plan") || "monthly";
 
-const polarLinks = {
-  monthly: "https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_K4Acq87capkMXya8mkdIC6BfJ0LFYiPBFoG1U3w85yu/redirect",
-  yearly:  "https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_zNOTdCl6QxypJ94gFSD2YAFSk5bx9B7geWzVR1ztEHZ/redirect",
+const isSandbox = import.meta.env.POLAR_SERVER === "sandbox";
+const apiBase = isSandbox
+  ? "https://sandbox-api.polar.sh"
+  : "https://api.polar.sh";
+
+const priceIds = {
+  monthly: isSandbox
+    ? import.meta.env.POLAR_PRICE_MONTHLY_SBX
+    : import.meta.env.POLAR_PRICE_MONTHLY_PROD,
+  yearly: isSandbox
+    ? import.meta.env.POLAR_PRICE_YEARLY_SBX
+    : import.meta.env.POLAR_PRICE_YEARLY_PROD,
 };
 
-let checkoutUrl = polarLinks[plan as keyof typeof polarLinks] || polarLinks.monthly;
+const priceId = priceIds[plan as keyof typeof priceIds] ?? priceIds.monthly;
 
-const finalUrl = new URL(checkoutUrl);
+const ip =
+  Astro.request.headers.get("cf-connecting-ip") ||
+  Astro.request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
 
-// ==================== 기존 SDK 방식처럼 정보 전달 ====================
-if (user.email) {
-  finalUrl.searchParams.set("customerEmail", user.email);
+const body: Record<string, unknown> = {
+  product_price_id: priceId,
+  customer_email: user.email,
+  metadata: {
+    user_id: user.id,
+    plan,
+  },
+  success_url: import.meta.env.POLAR_SUCCESS_URL,
+};
+if (ip) body.customer_ip_address = ip;
+
+const res = await fetch(`${apiBase}/v1/checkouts/`, {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${import.meta.env.POLAR_ACCESS_TOKEN}`,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(body),
+});
+
+if (!res.ok) {
+  const err = await res.text();
+  console.error(`[Polar] checkout creation failed (${res.status}):`, err);
+  return Astro.redirect("/?error=checkout_failed");
 }
 
-if (user.id) {
-  finalUrl.searchParams.set("metadata[user_id]", user.id);
-  finalUrl.searchParams.set("metadata[supabase_id]", user.id);
-  finalUrl.searchParams.set("metadata[plan]", plan);
-}
+const checkout = await res.json();
+console.log(`[Polar] ${plan} checkout created for ${user.email}`);
 
-// IP 전달 (Polar이 통화 자동 감지하는데 도움이 됨)
-const ip = Astro.request.headers.get("cf-connecting-ip") ||
-           Astro.request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
-
-if (ip) {
-  finalUrl.searchParams.set("customerIpAddress", ip);
-}
-
-console.log(`[Polar] ${plan} checkout for ${user.email}`);
-
-return Astro.redirect(finalUrl.toString());
+return Astro.redirect(checkout.url);
 ---
