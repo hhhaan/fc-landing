@@ -32,6 +32,11 @@ const priceIds = {
 
 const priceId = priceIds[plan as keyof typeof priceIds] ?? priceIds.monthly;
 
+if (!priceId) {
+  console.error(`[Polar] price ID not configured — plan: ${plan}, sandbox: ${isSandbox}`);
+  return Astro.redirect("/?error=checkout_failed");
+}
+
 const ip =
   Astro.request.headers.get("cf-connecting-ip") ||
   Astro.request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
