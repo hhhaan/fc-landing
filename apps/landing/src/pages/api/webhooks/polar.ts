@@ -36,6 +36,7 @@ async function verifySignature(
   return msgSignature.split(' ').some((s) => s.split(',')[1] === computed);
 }
 
+// service-role 클라이언트 — RLS 우회, 쿠키 없는 서버사이드 전용
 function getSupabase() {
   return createClient(
     import.meta.env.PUBLIC_SUPABASE_URL,
@@ -66,9 +67,12 @@ export const POST: APIRoute = async ({ request }) => {
   console.log(`[Polar webhook] ${type} | user_id: ${userId ?? 'unknown'}`);
 
   const supabase = getSupabase();
+  const now = new Date().toISOString();
 
   try {
     switch (type) {
+      // created fires once on checkout; active fires when a trial converts to paid.
+      // both events mean the subscription is now billable → grant pro access.
       case 'subscription.created':
       case 'subscription.active': {
         if (!userId) {
@@ -76,101 +80,94 @@ export const POST: APIRoute = async ({ request }) => {
           break;
         }
 
-        await supabase.from('subscriptions').upsert(
-          {
-            user_id: userId,
-            polar_subscription_id: data.id as string,
-            polar_product_id: data.product_id as string,
-            polar_checkout_id: data.checkout_id as string | null,
-            status: data.status as string,
-            amount: data.amount as number | null,
-            currency: data.currency as string | null,
-            recurring_interval: data.recurring_interval as string | null,
-            current_period_start: data.current_period_start as string | null,
-            current_period_end: data.current_period_end as string | null,
-            cancel_at_period_end: (data.cancel_at_period_end as boolean) ?? false,
-            started_at: data.started_at as string | null,
-            trial_end: data.trial_end_at as string | null,
-            updated_at: new Date().toISOString(),
-          },
-          { onConflict: 'polar_subscription_id' }
-        );
+        const [subResult, profileResult] = await Promise.all([
+          supabase.from('subscriptions').upsert(
+            {
+              user_id: userId,
+              polar_subscription_id: data.id as string,
+              polar_product_id: data.product_id as string,
+              polar_checkout_id: data.checkout_id as string | null,
+              status: data.status as string,
+              amount: data.amount as number | null,
+              currency: data.currency as string | null,
+              recurring_interval: data.recurring_interval as string | null,
+              current_period_start: data.current_period_start as string | null,
+              current_period_end: data.current_period_end as string | null,
+              cancel_at_period_end: (data.cancel_at_period_end ?? false) as boolean,
+              started_at: data.started_at as string | null,
+              trial_end: data.trial_end_at as string | null,
+              updated_at: now,
+            },
+            { onConflict: 'polar_subscription_id' }
+          ),
+          supabase
+            .from('profiles')
+            .update({ plan: 'pro', polar_customer_id: data.customer_id as string, updated_at: now })
+            .eq('id', userId),
+        ]);
 
-        await supabase
-          .from('profiles')
-          .update({
-            plan: 'pro',
-            polar_customer_id: data.customer_id as string,
-            updated_at: new Date().toISOString(),
-          })
-          .eq('id', userId);
-
+        if (subResult.error) throw new Error(`subscriptions upsert failed: ${subResult.error.message}`);
+        if (profileResult.error) throw new Error(`profiles update failed: ${profileResult.error.message}`);
         break;
       }
 
       case 'subscription.updated': {
-        await supabase
+        const { error } = await supabase
           .from('subscriptions')
           .update({
             status: data.status as string,
-            cancel_at_period_end: (data.cancel_at_period_end as boolean) ?? false,
+            cancel_at_period_end: (data.cancel_at_period_end ?? false) as boolean,
             current_period_start: data.current_period_start as string | null,
             current_period_end: data.current_period_end as string | null,
             ends_at: data.ends_at as string | null,
-            updated_at: new Date().toISOString(),
+            updated_at: now,
           })
           .eq('polar_subscription_id', data.id as string);
+
+        if (error) throw new Error(`subscriptions update failed: ${error.message}`);
         break;
       }
 
       case 'subscription.canceled': {
-        // 기간 끝까지 유지, plan은 아직 pro
-        await supabase
+        const { error } = await supabase
           .from('subscriptions')
           .update({
             status: 'canceled',
             cancel_at_period_end: true,
             canceled_at: data.canceled_at as string | null,
             ends_at: data.ends_at as string | null,
-            updated_at: new Date().toISOString(),
+            updated_at: now,
           })
           .eq('polar_subscription_id', data.id as string);
+
+        if (error) throw new Error(`subscriptions update failed: ${error.message}`);
         break;
       }
 
       case 'subscription.revoked': {
-        // 즉시 종료 → plan을 free로
-        await supabase
+        // update + select in one round-trip to avoid a separate SELECT for the fallback userId
+        const { data: updated, error: subError } = await supabase
           .from('subscriptions')
-          .update({
-            status: 'canceled',
-            canceled_at: new Date().toISOString(),
-            ends_at: data.ends_at as string | null,
-            updated_at: new Date().toISOString(),
-          })
-          .eq('polar_subscription_id', data.id as string);
+          .update({ status: 'canceled', canceled_at: now, ends_at: data.ends_at as string | null, updated_at: now })
+          .eq('polar_subscription_id', data.id as string)
+          .select('user_id')
+          .single();
 
-        if (userId) {
-          await supabase
+        if (subError) throw new Error(`subscriptions update failed: ${subError.message}`);
+
+        const resolvedUserId = userId ?? updated?.user_id;
+        if (resolvedUserId) {
+          const { error } = await supabase
             .from('profiles')
-            .update({ plan: 'free', updated_at: new Date().toISOString() })
-            .eq('id', userId);
-        } else {
-          // metadata 없으면 subscription DB에서 역조회
-          const { data: sub } = await supabase
-            .from('subscriptions')
-            .select('user_id')
-            .eq('polar_subscription_id', data.id as string)
-            .single();
-          if (sub?.user_id) {
-            await supabase
-              .from('profiles')
-              .update({ plan: 'free', updated_at: new Date().toISOString() })
-              .eq('id', sub.user_id);
-          }
+            .update({ plan: 'free', updated_at: now })
+            .eq('id', resolvedUserId);
+          if (error) throw new Error(`profiles update failed: ${error.message}`);
         }
         break;
       }
+
+      default:
+        console.log(`[Polar webhook] unhandled event type: ${type}`);
     }
   } catch (err) {
     console.error(`[Polar webhook] error handling ${type}:`, err);
