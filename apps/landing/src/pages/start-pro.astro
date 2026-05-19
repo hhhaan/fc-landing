@@ -1,0 +1,50 @@
+---
+import { createClient } from "../lib/supabase";
+
+const supabase = createClient({
+  request: Astro.request,
+  cookies: Astro.cookies,
+});
+
+const { data: { user } } = await supabase.auth.getUser();
+
+if (!user) {
+  const loginUrl = new URL("/login", Astro.url.origin);
+  loginUrl.searchParams.set("next", Astro.request.url);
+  return Astro.redirect(loginUrl.toString());
+}
+
+const plan = Astro.url.searchParams.get("plan") || "monthly";
+
+const polarLinks = {
+  monthly: "https://sandbox-api.polar.sh/v1/checkout-links/e4e271bc-5cc3-44c3-a1b4-6be9256827cf/redirect",
+  yearly:  "https://sandbox-api.polar.sh/v1/checkout-links/5dde571a-03b6-4a17-ba3f-f27e0e8e4eb1/redirect",
+};
+
+let checkoutUrl = polarLinks[plan as keyof typeof polarLinks] || polarLinks.monthly;
+
+const finalUrl = new URL(checkoutUrl);
+
+// ==================== 기존 SDK 방식처럼 정보 전달 ====================
+if (user.email) {
+  finalUrl.searchParams.set("customerEmail", user.email);
+}
+
+if (user.id) {
+  finalUrl.searchParams.set("metadata[user_id]", user.id);
+  finalUrl.searchParams.set("metadata[supabase_id]", user.id);
+  finalUrl.searchParams.set("metadata[plan]", plan);
+}
+
+// IP 전달 (Polar이 통화 자동 감지하는데 도움이 됨)
+const ip = Astro.request.headers.get("cf-connecting-ip") ||
+           Astro.request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+
+if (ip) {
+  finalUrl.searchParams.set("customerIpAddress", ip);
+}
+
+console.log(`[Polar] ${plan} checkout for ${user.email}`);
+
+return Astro.redirect(finalUrl.toString());
+---

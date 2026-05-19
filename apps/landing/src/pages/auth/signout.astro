@@ -1,0 +1,14 @@
+---
+import { createClient } from "../../lib/supabase";
+
+// 서버에서 로그아웃 처리
+const supabase = createClient({
+  request: Astro.request,
+  cookies: Astro.cookies,
+});
+
+await supabase.auth.signOut();
+
+// 로그아웃 완료 후 홈으로 리다이렉트
+return Astro.redirect("/");
+---

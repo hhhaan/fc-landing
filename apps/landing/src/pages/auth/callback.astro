@@ -1,0 +1,62 @@
+---
+import { createClient } from "../../lib/supabase";
+
+const supabase = createClient({
+  request: Astro.request,
+  cookies: Astro.cookies,
+});
+
+const url = new URL(Astro.request.url);
+const code = url.searchParams.get("code");
+const error = url.searchParams.get("error");
+const errorDescription = url.searchParams.get("error_description");
+const next = url.searchParams.get("next") || "/";   // ← next 파라미터 추가
+
+console.log("[Callback] Received →", {
+  hasCode: !!code,
+  code: code?.substring(0, 10) + "...",
+  error,
+  errorDescription,
+  next,
+  fullUrl: Astro.request.url
+});
+
+if (error) {
+  return Astro.redirect(`/login?error=${encodeURIComponent(errorDescription || error)}`);
+}
+
+if (code) {
+  try {
+    const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+
+    if (exchangeError) {
+      console.error("[Callback] Exchange Error:", exchangeError);
+      return Astro.redirect(`/login?error=${encodeURIComponent(exchangeError.message)}`);
+    }
+
+    // 성공! → next 파라미터가 있으면 그곳으로 이동
+    console.log("[Callback] Success → Redirect to:", next);
+    return Astro.redirect(next);
+  } catch (err) {
+    console.error("[Callback] Unexpected Error:", err);
+    return Astro.redirect(`/login?error=exchange_failed`);
+  }
+}
+
+// code도 error도 없음
+return Astro.redirect("/login?error=invalid_callback");
+---
+
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>처리 중... — First Crack</title>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-bg-secondary">
+  <div class="text-center">
+    <p class="text-fg-secondary">로그인 처리 중입니다...</p>
+    <p class="text-xs text-fg-muted mt-2">잠시만 기다려주세요</p>
+  </div>
+</body>
+</html>
