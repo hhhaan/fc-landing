@@ -17,8 +17,8 @@ if (!user) {
 const plan = Astro.url.searchParams.get("plan") || "monthly";
 
 const polarLinks = {
-  monthly: "https://sandbox-api.polar.sh/v1/checkout-links/e4e271bc-5cc3-44c3-a1b4-6be9256827cf/redirect",
-  yearly:  "https://sandbox-api.polar.sh/v1/checkout-links/5dde571a-03b6-4a17-ba3f-f27e0e8e4eb1/redirect",
+  monthly: "https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_K4Acq87capkMXya8mkdIC6BfJ0LFYiPBFoG1U3w85yu/redirect",
+  yearly:  "https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_zNOTdCl6QxypJ94gFSD2YAFSk5bx9B7geWzVR1ztEHZ/redirect",
 };
 
 let checkoutUrl = polarLinks[plan as keyof typeof polarLinks] || polarLinks.monthly;
