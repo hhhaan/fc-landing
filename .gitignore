@@ -1,0 +1,27 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# build output
+dist/
+.output/
+.vercel/
+.netlify/
+
+# env files
+.env
+.env.local
+.env.*.local
+
+# astro
+.astro/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*

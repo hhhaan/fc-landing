@@ -1,0 +1,18 @@
+{
+    "name": "fc-landing",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev:landing": "pnpm --filter @fc/landing dev",
+        "dev:docs": "pnpm --filter @fc/docs dev",
+        "build:landing": "pnpm --filter @fc/landing build",
+        "build:docs": "pnpm --filter @fc/docs build",
+        "dev": "pnpm dev:landing & pnpm dev:docs"
+    },
+    "dependencies": {
+        "@supabase/ssr": "^0.10.3",
+        "@supabase/supabase-js": "^2.105.4",
+        "@tailwindcss/vite": "^4.3.0",
+        "tailwindcss": "^4.3.0"
+    }
+}
