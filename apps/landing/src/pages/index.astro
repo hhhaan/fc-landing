@@ -413,8 +413,10 @@ const userEmail = user?.email;
               <div class="pricing-card-inner">
                 <div class="pricing-tier text-micro">ENTERPRISE</div>
                 <div class="pricing-amount">
-                  <span class="price-num">문의</span>
+                  <span class="price-num" id="enterprise-price" data-monthly="$59" data-yearly="$49">$59</span>
+                  <span class="price-period text-caption" id="enterprise-period" data-monthly="/월" data-yearly="/월">/월</span>
                 </div>
+                <p class="price-yearly-note text-micro" id="enterprise-yearly-note" hidden>연 $590 청구</p>
                 <p class="text-body pricing-desc">대형 로스터리, 멀티 로케이션 운영에.</p>
                 <ul class="pricing-features">
                   <li class="pricing-feature">무제한 배치 & 팀</li>
@@ -422,7 +424,13 @@ const userEmail = user?.email;
                   <li class="pricing-feature">SLA 보장</li>
                   <li class="pricing-feature">API 접근</li>
                 </ul>
-                <a href="/contact" class="btn btn-secondary" style="width: 100%; justify-content: center;">문의하기</a>
+                <a
+                  id="enterprise-start-btn"
+                  href="/start-pro?plan=enterprise-monthly"
+                  class="btn btn-secondary"
+                  style="width: 100%; justify-content: center;">
+                  시작하기
+                </a>
               </div>
             </div>
 
@@ -471,15 +479,16 @@ const userEmail = user?.email;
     </footer>
 
     <script>
-      // 기존 billing toggle
       const btnMonthly = document.getElementById('btn-monthly')!;
       const btnYearly = document.getElementById('btn-yearly')!;
       const proPrice = document.getElementById('pro-price')!;
       const proPeriod = document.getElementById('pro-period')!;
       const proYearlyNote = document.getElementById('pro-yearly-note')!;
-
-      // Pro 버튼 - 타입 명시적으로 지정 (중요!)
       const proStartBtn = document.getElementById('pro-start-btn') as HTMLAnchorElement | null;
+      const enterprisePrice = document.getElementById('enterprise-price')!;
+      const enterprisePeriod = document.getElementById('enterprise-period')!;
+      const enterpriseYearlyNote = document.getElementById('enterprise-yearly-note')!;
+      const enterpriseStartBtn = document.getElementById('enterprise-start-btn') as HTMLAnchorElement | null;
 
       function setBilling(isYearly: boolean) {
         btnMonthly.classList.toggle('toggle-btn-active', !isYearly);
@@ -487,23 +496,20 @@ const userEmail = user?.email;
         btnMonthly.setAttribute('aria-pressed', String(!isYearly));
         btnYearly.setAttribute('aria-pressed', String(isYearly));
 
-        // 가격 업데이트
         proPrice.textContent = isYearly ? (proPrice.dataset.yearly ?? '') : (proPrice.dataset.monthly ?? '');
         proPeriod.textContent = isYearly ? (proPeriod.dataset.yearly ?? '') : (proPeriod.dataset.monthly ?? '');
         proYearlyNote.hidden = !isYearly;
+        if (proStartBtn) proStartBtn.href = isYearly ? "/start-pro?plan=yearly" : "/start-pro?plan=monthly";
 
-        // Pro 버튼 링크 업데이트
-        if (proStartBtn) {
-          proStartBtn.href = isYearly 
-            ? "/start-pro?plan=yearly" 
-            : "/start-pro?plan=monthly";
-        }
+        enterprisePrice.textContent = isYearly ? (enterprisePrice.dataset.yearly ?? '') : (enterprisePrice.dataset.monthly ?? '');
+        enterprisePeriod.textContent = isYearly ? (enterprisePeriod.dataset.yearly ?? '') : (enterprisePeriod.dataset.monthly ?? '');
+        enterpriseYearlyNote.hidden = !isYearly;
+        if (enterpriseStartBtn) enterpriseStartBtn.href = isYearly ? "/start-pro?plan=enterprise-yearly" : "/start-pro?plan=enterprise-monthly";
       }
 
       btnMonthly.addEventListener('click', () => setBilling(false));
       btnYearly.addEventListener('click', () => setBilling(true));
 
-      // 페이지 로드 시 초기값 설정
       setBilling(false);
     </script>
   </body>

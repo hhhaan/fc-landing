@@ -6,20 +6,22 @@ if (userOrRedirect instanceof Response) return userOrRedirect;
 const user = userOrRedirect;
 
 const rawPlan = Astro.url.searchParams.get("plan");
-const plan = rawPlan === "yearly" ? "yearly" : "monthly";
+const VALID_PLANS = ["monthly", "yearly", "enterprise-monthly", "enterprise-yearly"] as const;
+type Plan = typeof VALID_PLANS[number];
+const plan: Plan = (VALID_PLANS as readonly string[]).includes(rawPlan ?? "")
+  ? (rawPlan as Plan)
+  : "monthly";
 
 const isSandbox = import.meta.env.POLAR_SERVER === "sandbox";
 const apiBase = isSandbox
   ? "https://sandbox-api.polar.sh"
   : "https://api.polar.sh";
 
-const priceIds = {
-  monthly: isSandbox
-    ? import.meta.env.POLAR_PRICE_MONTHLY_SBX
-    : import.meta.env.POLAR_PRICE_MONTHLY_PROD,
-  yearly: isSandbox
-    ? import.meta.env.POLAR_PRICE_YEARLY_SBX
-    : import.meta.env.POLAR_PRICE_YEARLY_PROD,
+const priceIds: Record<Plan, string | undefined> = {
+  monthly:              isSandbox ? import.meta.env.POLAR_PRICE_MONTHLY_SBX              : import.meta.env.POLAR_PRICE_MONTHLY_PROD,
+  yearly:               isSandbox ? import.meta.env.POLAR_PRICE_YEARLY_SBX               : import.meta.env.POLAR_PRICE_YEARLY_PROD,
+  "enterprise-monthly": isSandbox ? import.meta.env.POLAR_PRICE_ENTERPRISE_MONTHLY_SBX   : import.meta.env.POLAR_PRICE_ENTERPRISE_MONTHLY_PROD,
+  "enterprise-yearly":  isSandbox ? import.meta.env.POLAR_PRICE_ENTERPRISE_YEARLY_SBX    : import.meta.env.POLAR_PRICE_ENTERPRISE_YEARLY_PROD,
 };
 
 const priceId = priceIds[plan];
