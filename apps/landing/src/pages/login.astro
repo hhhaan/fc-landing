@@ -3,7 +3,6 @@ import "../styles/global.css";
 import Favicon from "../components/ui/Favicon.astro";
 import { createClient } from "../lib/supabase";
 import { safeRedirectPath } from "../lib/safeRedirect";
-import { buildWebAuthCallbackUrl } from "../lib/siteUrl";
 
 const supabaseServer = createClient({
   request: Astro.request,
@@ -11,7 +10,6 @@ const supabaseServer = createClient({
 });
 
 const next = safeRedirectPath(Astro.url.searchParams.get("next"));
-const oauthRedirectTo = buildWebAuthCallbackUrl(next, Astro.url.origin);
 
 const { data: { user } } = await supabaseServer.auth.getUser();
 
@@ -128,7 +126,7 @@ const signupHref =
       </div>
     </main>
 
-    <script define:vars={{ oauthRedirectTo }}>
+    <script>
       import { createBrowserClient } from "@supabase/ssr";
       import { safeRedirectPath } from "../lib/safeRedirect";
       import { buildWebAuthCallbackUrl } from "../lib/siteUrl";
@@ -148,14 +146,20 @@ const signupHref =
       );
 
       document.getElementById("google-btn")?.addEventListener("click", async () => {
-        const { error } = await supabase.auth.signInWithOAuth({
+        clearMessages();
+        const { data, error } = await supabase.auth.signInWithOAuth({
           provider: "google",
           options: {
             redirectTo,
           },
         });
 
-        if (error) showError("Google sign-in failed: " + error.message);
+        if (error) {
+          showError("Google sign-in failed: " + error.message);
+          return;
+        }
+
+        if (data?.url) window.location.href = data.url;
       });
 
       document.getElementById("login-form")?.addEventListener("submit", async (e) => {
