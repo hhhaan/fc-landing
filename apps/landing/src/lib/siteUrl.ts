@@ -1,28 +1,32 @@
 import { safeRedirectPath } from "./safeRedirect";
 
 /**
- * Canonical HTTPS origin for the landing site (Cloudflare env).
- * Falls back to the current request/tab origin in dev.
+ * Origin used in Supabase `redirectTo` for web OAuth.
+ *
+ * Prefer the host the user is actually on (request/tab origin). A fixed
+ * PUBLIC_SITE_URL must not override it — e.g. browsing firstcrackiscoming.com
+ * while PUBLIC_SITE_URL is fc-landing.pages.dev would send the wrong redirectTo,
+ * Supabase would reject it, and fall back to Site URL (still firstcrack:// → app opens).
  */
 export function getSiteOrigin(fallbackOrigin?: string): string {
+  if (fallbackOrigin) return fallbackOrigin.replace(/\/$/, "");
   const configured = import.meta.env.PUBLIC_SITE_URL;
-  const raw = configured || fallbackOrigin || "http://localhost:4321";
-  return raw.replace(/\/$/, "");
+  if (configured) return configured.replace(/\/$/, "");
+  return "http://localhost:4321";
 }
 
 /**
  * Web OAuth / email-confirm callback URL passed to Supabase as `redirectTo`.
  *
- * Must exactly match an entry in Supabase Dashboard → Authentication →
- * URL Configuration → Redirect URLs. If it does not match, Supabase falls
- * back to Site URL — when Site URL is `firstcrack://…` (desktop), the browser
- * shows "Open First Crack.app" even during a website login.
+ * Must match Supabase Dashboard → Authentication → Redirect URLs for the
+ * same host (e.g. `https://firstcrackiscoming.com/**`). On mismatch Supabase
+ * falls back to Site URL — if that is still `firstcrack://`, macOS opens the app.
  */
 export function buildWebAuthCallbackUrl(
   next: string | null | undefined,
-  fallbackOrigin?: string,
+  requestOrigin?: string,
 ): string {
-  const origin = getSiteOrigin(fallbackOrigin);
+  const origin = getSiteOrigin(requestOrigin);
   const path = safeRedirectPath(next);
   return `${origin}/auth/callback?next=${encodeURIComponent(path)}`;
 }

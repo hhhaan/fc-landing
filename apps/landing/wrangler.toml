@@ -6,7 +6,7 @@ compatibility_flags = ["nodejs_compat"]
 [vars]
 PUBLIC_SUPABASE_URL = "https://vjdgdolfxvnxushxrmff.supabase.co"
 PUBLIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqZGdkb2xmeHZueHVzaHhybWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5MzMyNjMsImV4cCI6MjA5MjUwOTI2M30.4NR4k6sz72AEa_-oFc8vGk_gfZlztNoBtUlDbz4SjA8"
-PUBLIC_SITE_URL = "https://fc-landing.pages.dev"
+PUBLIC_SITE_URL = "https://firstcrackiscoming.com"
 POLAR_SUCCESS_URL = "https://fc-landing.pages.dev/account?welcome=1"
 POLAR_SERVER = "sandbox"
 POLAR_PRICE_MONTHLY_SBX = "b7a53b38-ebc6-4a07-9728-a23bc2a94883"

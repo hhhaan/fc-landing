@@ -149,9 +149,10 @@ const loginHref =
 
       const urlParams = new URLSearchParams(window.location.search);
       const nextUrl = safeRedirectPath(urlParams.get("next"));
-      const redirectTo =
-        oauthRedirectTo ||
-        buildWebAuthCallbackUrl(nextUrl, window.location.origin);
+      const redirectTo = buildWebAuthCallbackUrl(
+        nextUrl,
+        window.location.origin,
+      );
 
       document.getElementById("google-btn")?.addEventListener("click", async () => {
         const { error } = await supabase.auth.signInWithOAuth({
