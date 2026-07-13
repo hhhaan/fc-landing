@@ -98,7 +98,7 @@ body.ox {
 
 | Element | Size | Weight | Tracking | Notes |
 |---------|------|--------|----------|-------|
-| Hero title | `clamp(2.25rem, 8vw, 6rem)` | 500 | `-0.04em` | `.ox-hero-title` |
+| Hero title | `clamp(2rem, 4.5vw, 3.5rem)` | 500 | `-0.04em` | `.ox-hero-title` |
 | Section H2 | `clamp(2rem, 4vw, 3rem)` | 500 | `-0.035em` | `.ox-h2` |
 | Auth / page title | `clamp(1.75rem, 4vw, 2.25rem)` | 500 | `-0.03em` | `.ox-auth-title`, `.ox-dl-title` |
 | Card title | `1.5rem` | 600 | `-0.025em` | Price/download cards |
@@ -269,6 +269,7 @@ body.ox
 └── main.ox-main.noise-overlay
     ├── header.ox-header (fixed, dynamic)
     ├── section.ox-hero.ox-pane
+    │   └── .ox-hero-inner (2-col grid ≥1024px: copy + drum wireframe canvas)
     ├── section.ox-section.ox-pane#anchor
     ├── section.ox-process.ox-pane (inverted)
     ├── section.ox-section.ox-pane
