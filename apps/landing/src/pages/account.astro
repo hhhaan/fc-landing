@@ -4,7 +4,10 @@ import Favicon from "../components/ui/Favicon.astro";
 import { requireLogin } from "../lib/auth";
 import { createClient } from "../lib/supabase";
 
-const userOrRedirect = await requireLogin(Astro, Astro.request.url);
+const userOrRedirect = await requireLogin(
+  Astro,
+  `${Astro.url.pathname}${Astro.url.search}`,
+);
 if (userOrRedirect instanceof Response) return userOrRedirect;
 const user = userOrRedirect;
 
@@ -24,18 +27,28 @@ const { data: subscription, error: subError } = await supabase
 if (subError) console.error("[account] subscription fetch error", subError.message);
 
 const isPro = !!subscription;
-
 const showWelcome = Astro.url.searchParams.get("welcome") === "1";
+const year = new Date().getFullYear();
 
-function formatDate(iso: string | null): string {
+function formatDate(iso: string | null | undefined): string {
   if (!iso) return "—";
-  return new Date(iso).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  return new Date(iso).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 }
 
 const now = new Date();
 const trialEnd = subscription?.trial_end ? new Date(subscription.trial_end) : null;
-const isTrialActive = trialEnd && trialEnd > now;
-const billingInterval = subscription?.recurring_interval === "year" ? "Yearly" : "Monthly";
+const isTrialActive = !!(trialEnd && trialEnd > now);
+const isPastDue = subscription?.status === "past_due";
+const billingInterval =
+  subscription?.recurring_interval === "year" ? "Yearly" : "Monthly";
+
+const rawProvider =
+  user.app_metadata?.provider ?? user.identities?.[0]?.provider ?? "email";
+const signInMethod = rawProvider === "google" ? "Google" : "Email & password";
 ---
 
 <html lang="en">
@@ -43,312 +56,705 @@ const billingInterval = subscription?.recurring_interval === "year" ? "Yearly" :
     <meta charset="UTF-8" />
     <Favicon />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Manage your First Crack account — plan, billing, and desktop app access."
+    />
     <title>Account — First Crack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body>
+  <body class="ox">
+    <main class="ox-ac noise-overlay">
+      <div class="ox-grid-bg" aria-hidden="true"></div>
 
-    <!-- NAV -->
-    <header class="nav">
-      <div class="nav-inner">
-        <a href="/" class="nav-logo">
-          <span class="nav-logo-text">First Crack</span>
-        </a>
-        <div class="nav-actions">
-          <span class="nav-email">{user.email}</span>
-          <form action="/auth/signout" method="POST" class="inline">
-            <button type="submit" class="btn btn-ghost btn-compact">Sign out</button>
-          </form>
-        </div>
-      </div>
-    </header>
+      <header class="ox-auth-header">
+        <nav class="ox-auth-nav">
+          <a href="/" class="ox-brand">
+            <span class="ox-brand-name">First Crack</span>
+          </a>
+          <div class="ox-auth-nav-end">
+            <span class="ox-auth-email">{user.email}</span>
+            <form action="/auth/signout" method="POST" class="ox-ac-signout">
+              <button type="submit" class="ox-btn ox-btn-outline ox-btn-sm">
+                Sign out
+              </button>
+            </form>
+          </div>
+        </nav>
+      </header>
 
-    <main class="page-main">
-      <div class="page-container">
-
-        {showWelcome && (
-          <div class="welcome-banner" role="alert">
-            <span class="welcome-icon" aria-hidden="true">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 6L9 17l-5-5"/>
-              </svg>
-            </span>
-            <div>
-              <p class="welcome-heading">Welcome to Pro!</p>
-              <p class="welcome-body">Your 14-day free trial has started. Download the app to get started.</p>
+      <div class="ox-ac-main">
+        <div class="ox-shell ox-ac-inner">
+          <div class="ox-ac-head">
+            <div class="ox-eyebrow">
+              <span class="ox-line"></span>
+              Account
             </div>
-          </div>
-        )}
-
-        <div class="account-card">
-
-          <!-- EMAIL SECTION -->
-          <div class="account-section">
-            <span class="section-label">EMAIL</span>
-            <span class="section-value">{user.email}</span>
+            <h1 class="ox-ac-title">Your workspace</h1>
+            <p class="ox-ac-lead">
+              Plan, billing, and desktop access for your roastery — all tied to
+              this sign-in.
+            </p>
           </div>
 
-          <div class="card-divider"></div>
+          {
+            showWelcome && (
+              <div class="ox-ac-banner ox-ac-banner-success" role="status">
+                <p class="ox-ac-banner-title">Welcome to Pro</p>
+                <p class="ox-ac-banner-body">
+                  Your trial has started. Download the desktop app and sign in
+                  with the same account to sync profiles and batches.
+                </p>
+              </div>
+            )
+          }
 
-          <!-- PLAN SECTION -->
-          <div class="account-section">
-            <span class="section-label">PLAN</span>
-            <div class="plan-row">
-              {isPro ? (
-                <span class="badge-pro">PRO</span>
-              ) : (
-                <span class="badge-free">FREE</span>
-              )}
-              {isPro ? (
-                <div class="plan-details">
-                  <span class="plan-interval">{billingInterval}</span>
-                  {isTrialActive && (
-                    <span class="plan-detail-row">
-                      <span class="detail-label">Trial ends</span>
-                      <span class="detail-value">{formatDate(subscription?.trial_end ?? null)}</span>
-                    </span>
-                  )}
-                  <span class="plan-detail-row">
-                    <span class="detail-label">Next billing date</span>
-                    <span class="detail-value">{formatDate(subscription?.current_period_end ?? null)}</span>
+          {
+            isPastDue && (
+              <div class="ox-ac-banner ox-ac-banner-warn" role="alert">
+                <p class="ox-ac-banner-title">Payment issue</p>
+                <p class="ox-ac-banner-body">
+                  We could not process your last payment. Email{" "}
+                  <a href="mailto:hello@firstcrackiscoming.com">
+                    hello@firstcrackiscoming.com
+                  </a>{" "}
+                  to restore Pro access.
+                </p>
+              </div>
+            )
+          }
+
+          <div class="ox-ac-layout">
+            <div class="ox-ac-stack">
+              <article class="ox-ac-card">
+                <header class="ox-ac-card-head">
+                  <span class="ox-ac-tag">Plan</span>
+                  <h2>Subscription</h2>
+                </header>
+
+                <div class="ox-ac-plan">
+                  <span class:list={["ox-ac-badge", isPro ? "is-pro" : "is-free"]}>
+                    {isPro ? "Pro" : "Free"}
                   </span>
+                  <div class="ox-ac-plan-body">
+                    {
+                      isPro ? (
+                        <>
+                          <p class="ox-ac-plan-name">{billingInterval} billing</p>
+                          {isTrialActive && (
+                            <dl class="ox-ac-meta">
+                              <div>
+                                <dt>Trial ends</dt>
+                                <dd>{formatDate(subscription?.trial_end)}</dd>
+                              </div>
+                            </dl>
+                          )}
+                          <dl class="ox-ac-meta">
+                            <div>
+                              <dt>Next billing date</dt>
+                              <dd>
+                                {formatDate(subscription?.current_period_end)}
+                              </dd>
+                            </div>
+                          </dl>
+                        </>
+                      ) : (
+                        <>
+                          <p class="ox-ac-plan-name">
+                            20 batches on the floor — upgrade when you need cloud
+                            sync and unlimited archives.
+                          </p>
+                          <div class="ox-ac-card-actions">
+                            <a
+                              href="/start-pro?plan=monthly"
+                              class="ox-btn ox-btn-solid ox-btn-sm"
+                            >
+                              Start 14-day trial
+                            </a>
+                            <a href="/#pricing" class="ox-btn ox-btn-outline ox-btn-sm">
+                              Compare plans
+                            </a>
+                          </div>
+                        </>
+                      )
+                    }
+                  </div>
                 </div>
-              ) : (
-                <a href="/#pricing" class="upgrade-link">Upgrade to Pro →</a>
-              )}
+              </article>
+
+              <article class="ox-ac-card">
+                <header class="ox-ac-card-head">
+                  <span class="ox-ac-tag">Profile</span>
+                  <h2>Sign-in</h2>
+                </header>
+                <dl class="ox-ac-meta ox-ac-meta-block">
+                  <div>
+                    <dt>Email</dt>
+                    <dd>{user.email}</dd>
+                  </div>
+                  <div>
+                    <dt>Method</dt>
+                    <dd>{signInMethod}</dd>
+                  </div>
+                  <div>
+                    <dt>Member since</dt>
+                    <dd>{formatDate(user.created_at)}</dd>
+                  </div>
+                </dl>
+              </article>
+
+              <article class="ox-ac-card">
+                <header class="ox-ac-card-head">
+                  <span class="ox-ac-tag">Desktop</span>
+                  <h2>First Crack app</h2>
+                </header>
+                <p class="ox-ac-card-copy">
+                  Roasting runs in the native macOS and Windows app. Use this
+                  account to sign in on the roast floor — profiles and batches
+                  sync when you are on Pro.
+                </p>
+                <div class="ox-ac-card-actions">
+                  <a href="/download" class="ox-btn ox-btn-solid ox-btn-sm">
+                    Download app
+                  </a>
+                </div>
+              </article>
             </div>
+
+            <aside class="ox-ac-aside">
+              <div class="ox-ac-panel">
+                <h3 class="ox-ac-panel-title">Getting started</h3>
+                <ol class="ox-ac-steps">
+                  <li>
+                    <span class="ox-ac-step-n">1</span>
+                    <span>Download the desktop app for your platform.</span>
+                  </li>
+                  <li>
+                    <span class="ox-ac-step-n">2</span>
+                    <span>Sign in with <strong>{user.email}</strong>.</span>
+                  </li>
+                  <li>
+                    <span class="ox-ac-step-n">3</span>
+                    <span>Connect your roaster and run your first batch.</span>
+                  </li>
+                </ol>
+              </div>
+
+              <div class="ox-ac-panel">
+                <h3 class="ox-ac-panel-title">Help</h3>
+                <nav class="ox-ac-links" aria-label="Account help">
+                  <a href="mailto:hello@firstcrackiscoming.com">Contact support</a>
+                  <a href="/privacy">Privacy policy</a>
+                  <a href="/terms">Terms of service</a>
+                </nav>
+              </div>
+            </aside>
           </div>
-
         </div>
-
-        <div class="download-cta">
-          <a href="/download" class="btn btn-primary btn-comfort">Download First Crack</a>
-        </div>
-
       </div>
-    </main>
 
+      <footer class="ox-ac-footer">
+        <div class="ox-shell ox-ac-footer-inner">
+          <span>© {year} First Crack</span>
+          <nav aria-label="Footer">
+            <a href="/">Home</a>
+            <a href="/download">Download</a>
+            <a href="mailto:hello@firstcrackiscoming.com">Contact</a>
+          </nav>
+        </div>
+      </footer>
+    </main>
   </body>
 </html>
 
-<style>
-  /* =============================================
-     NAV
-     ============================================= */
-  .nav-inner {
-    max-width: 960px;
+<style is:global>
+  body.ox {
+    --ox-bg: #fafaf9;
+    --ox-fg: #080503;
+    --ox-muted: #5e534a;
+    --ox-muted-bg: #ecebe7;
+    --ox-border: rgba(8, 5, 3, 0.06);
+    --ox-border-strong: rgba(8, 5, 3, 0.12);
+    --ox-sans: "Instrument Sans", system-ui, -apple-system, sans-serif;
+    --ox-mono: "JetBrains Mono", ui-monospace, monospace;
+    --ox-max: 1400px;
+    --ox-pad: 24px;
+
+    margin: 0;
+    background: var(--ox-bg);
+    color: var(--ox-fg);
+    font-family: var(--ox-sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body.ox *,
+  body.ox *::before,
+  body.ox *::after {
+    box-sizing: border-box;
+  }
+
+  body.ox a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  body.ox button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  .ox-shell {
+    max-width: var(--ox-max);
+    margin-inline: auto;
+    padding-inline: var(--ox-pad);
+  }
+
+  .ox-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 0;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: -0.01em;
+    border: 1px solid transparent;
+    transition: opacity 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .ox-btn-sm {
+    height: 32px;
+    padding: 0 20px;
+    font-size: 13px;
+  }
+
+  body.ox a.ox-btn-solid,
+  body.ox .ox-btn-solid {
+    background: var(--ox-fg);
+    color: #fff;
+    border-color: var(--ox-fg);
+  }
+
+  body.ox a.ox-btn-solid:hover,
+  body.ox .ox-btn-solid:hover {
+    opacity: 0.9;
+  }
+
+  .ox-btn-outline {
+    background: transparent;
+    color: var(--ox-fg);
+    border-color: var(--ox-border-strong);
+  }
+
+  .ox-btn-outline:hover {
+    background: rgba(8, 5, 3, 0.03);
+    border-color: rgba(8, 5, 3, 0.28);
+  }
+
+  .ox-brand-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .ox-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--ox-mono);
+    font-size: 13px;
+    color: var(--ox-muted);
+    margin-bottom: 20px;
+  }
+
+  .ox-line {
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: rgba(8, 5, 3, 0.3);
+    flex-shrink: 0;
+  }
+
+  .noise-overlay::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .ox-grid-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.3;
+    background-image:
+      linear-gradient(var(--ox-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--ox-border) 1px, transparent 1px);
+    background-size: 12.5% 12.5%;
+  }
+
+  .ox-auth-header {
+    position: relative;
+    z-index: 2;
+    border-bottom: 1px solid var(--ox-border);
+    background: rgba(250, 250, 249, 0.85);
+    backdrop-filter: blur(16px);
+  }
+
+  .ox-auth-nav {
+    max-width: var(--ox-max);
     margin: 0 auto;
-    padding: 0 var(--space-24);
-    height: 56px;
+    padding: 0 var(--ox-pad);
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-  .nav-logo {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: var(--color-fg);
-  }
-  .nav-logo-text {
-    font-family: var(--font-display);
-    font-size: var(--text-nav);
-    font-weight: 700;
-    letter-spacing: -0.01em;
-  }
-  .nav-actions {
-    display: flex;
-    align-items: center;
-    gap: var(--space-12);
-  }
-  .nav-email {
-    font-size: var(--text-sm);
-    color: var(--color-fg-muted);
+    gap: 24px;
   }
 
-  /* =============================================
-     PAGE LAYOUT
-     ============================================= */
-  .page-main {
-    background: var(--color-bg-secondary);
-    min-height: calc(100vh - 56px);
-    padding-block: var(--space-48);
+  .ox-auth-nav-end {
+    display: flex;
+    align-items: center;
+    gap: 16px;
   }
-  .page-container {
-    max-width: 560px;
-    margin: 0 auto;
-    padding: 0 var(--space-24);
+
+  .ox-auth-email {
+    display: none;
+    font-size: 13px;
+    color: var(--ox-muted);
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ox-ac-signout {
+    margin: 0;
+  }
+
+  @media (min-width: 640px) {
+    .ox-auth-email {
+      display: inline;
+    }
+  }
+
+  .ox-ac {
+    position: relative;
+    min-height: 100svh;
     display: flex;
     flex-direction: column;
-    gap: var(--space-24);
+    overflow: hidden;
   }
 
-  /* =============================================
-     WELCOME BANNER
-     ============================================= */
-  .welcome-banner {
-    --banner-bg: #f0fdf4;
-    --banner-border: #86efac;
-    --banner-icon-bg: #dcfce7;
-    --banner-icon-color: #16a34a;
-    --banner-title-color: #15803d;
-    --banner-body-color: #166534;
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-12);
-    background: var(--banner-bg);
-    border: 1px solid var(--banner-border);
-    border-radius: 0;
-    padding: var(--space-16) var(--space-20);
+  .ox-ac-main {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    padding: 48px 0 64px;
   }
-  .welcome-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    width: 32px;
-    height: 32px;
-    background: var(--banner-icon-bg);
-    border-radius: 0;
-    color: var(--banner-icon-color);
-    margin-top: 1px;
+
+  .ox-ac-head {
+    max-width: 36rem;
+    margin-bottom: 40px;
   }
-  .welcome-heading {
-    font-size: var(--text-base);
+
+  .ox-ac-title {
+    margin: 0 0 12px;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  .ox-ac-lead {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ox-muted);
+  }
+
+  .ox-ac-banner {
+    margin-bottom: 24px;
+    padding: 16px 20px;
+    border: 1px solid var(--ox-border-strong);
+    background: #fff;
+  }
+
+  .ox-ac-banner-success {
+    border-color: rgba(2, 122, 72, 0.28);
+    background: rgba(2, 122, 72, 0.06);
+  }
+
+  .ox-ac-banner-warn {
+    border-color: rgba(180, 35, 24, 0.28);
+    background: rgba(180, 35, 24, 0.05);
+  }
+
+  .ox-ac-banner-title {
+    margin: 0 0 6px;
+    font-size: 15px;
     font-weight: 600;
-    color: var(--banner-title-color);
-    margin-bottom: var(--space-4);
   }
-  .welcome-body {
-    font-size: var(--text-sm);
-    color: var(--banner-body-color);
+
+  .ox-ac-banner-body {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ox-muted);
+  }
+
+  .ox-ac-banner-body a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .ox-ac-layout {
+    display: grid;
+    gap: 24px;
+    align-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    .ox-ac-layout {
+      grid-template-columns: minmax(0, 1fr) 280px;
+      gap: 32px;
+    }
+  }
+
+  .ox-ac-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .ox-ac-card {
+    padding: 28px 24px;
+    border: 1px solid var(--ox-border);
+    background: #fff;
+  }
+
+  @media (min-width: 640px) {
+    .ox-ac-card {
+      padding: 32px 28px;
+    }
+  }
+
+  .ox-ac-card-head {
+    margin-bottom: 20px;
+  }
+
+  .ox-ac-tag {
+    display: block;
+    margin-bottom: 10px;
+    font-family: var(--ox-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ox-muted);
+  }
+
+  .ox-ac-card-head h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .ox-ac-card-copy {
+    margin: 0 0 20px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ox-muted);
+  }
+
+  .ox-ac-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .ox-ac-plan {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .ox-ac-badge {
+    flex-shrink: 0;
+    margin-top: 2px;
+    padding: 4px 10px;
+    font-family: var(--ox-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .ox-ac-badge.is-pro {
+    background: var(--ox-fg);
+    color: #fff;
+  }
+
+  .ox-ac-badge.is-free {
+    border: 1px solid var(--ox-border-strong);
+    color: var(--ox-muted);
+    background: var(--ox-muted-bg);
+  }
+
+  .ox-ac-plan-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ox-ac-plan-name {
+    margin: 0 0 12px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ox-muted);
+  }
+
+  .ox-ac-meta {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .ox-ac-meta-block {
+    gap: 16px;
+  }
+
+  .ox-ac-meta div {
+    display: grid;
+    gap: 4px;
+  }
+
+  .ox-ac-meta dt {
+    font-family: var(--ox-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ox-muted);
+  }
+
+  .ox-ac-meta dd {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+    word-break: break-word;
+  }
+
+  .ox-ac-aside {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .ox-ac-panel {
+    padding: 24px;
+    border: 1px solid var(--ox-border);
+    background: #fff;
+  }
+
+  .ox-ac-panel-title {
+    margin: 0 0 16px;
+    font-size: 13px;
+    font-family: var(--ox-mono);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ox-muted);
+  }
+
+  .ox-ac-steps {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .ox-ac-steps li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 14px;
     line-height: 1.5;
+    color: rgba(8, 5, 3, 0.82);
   }
 
-  /* =============================================
-     ACCOUNT CARD
-     ============================================= */
-  .account-card {
-    background: var(--color-bg);
-    border: 1px solid var(--color-border);
-    border-radius: 0;
-    padding: var(--space-28);
-    display: flex;
-    flex-direction: column;
-  }
-  .account-section {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-8);
-    padding-block: var(--space-20);
-  }
-  .account-section:first-child {
-    padding-top: 0;
-  }
-  .account-section:last-child {
-    padding-bottom: 0;
-  }
-  .card-divider {
-    height: 1px;
-    background: var(--color-border);
-  }
-  .section-label {
-    font-size: var(--text-micro);
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    color: var(--color-fg-muted);
-  }
-  .section-value {
-    font-size: var(--text-base);
-    color: var(--color-fg);
-  }
-
-  /* =============================================
-     PLAN SECTION
-     ============================================= */
-  .plan-row {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-12);
-  }
-  .badge-pro {
-    display: inline-block;
-    font-size: var(--text-micro);
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    background: var(--color-dark);
-    color: var(--color-mint);
-    border-radius: 0;
-    padding: 3px var(--space-8);
+  .ox-ac-step-n {
     flex-shrink: 0;
-    margin-top: 2px;
-  }
-  .badge-free {
-    display: inline-block;
-    font-size: var(--text-micro);
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    background: var(--color-bg-secondary);
-    color: var(--color-fg-muted);
-    border: 1px solid var(--color-border);
-    border-radius: 0;
-    padding: 3px var(--space-8);
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-  .plan-details {
+    width: 22px;
+    height: 22px;
     display: flex;
-    flex-direction: column;
-    gap: var(--space-8);
-  }
-  .plan-interval {
-    font-size: var(--text-base);
-    font-weight: 500;
-    color: var(--color-fg);
-  }
-  .plan-detail-row {
-    display: flex;
-    gap: var(--space-8);
-    font-size: var(--text-sm);
-  }
-  .detail-label {
-    color: var(--color-fg-muted);
-  }
-  .detail-value {
-    color: var(--color-fg-secondary);
-    font-weight: 500;
-  }
-  .upgrade-link {
-    font-size: var(--text-base);
-    color: var(--color-fg);
-    font-weight: 500;
-    text-decoration: none;
-    margin-top: 2px;
-    transition: color var(--motion-fast) ease;
-  }
-  .upgrade-link:hover {
-    color: var(--color-fg-secondary);
-  }
-
-  /* =============================================
-     DOWNLOAD CTA
-     ============================================= */
-  .download-cta {
-    display: flex;
+    align-items: center;
     justify-content: center;
+    font-family: var(--ox-mono);
+    font-size: 11px;
+    background: var(--ox-muted-bg);
+    color: var(--ox-muted);
   }
 
-  /* =============================================
-     RESPONSIVE
-     ============================================= */
-  @media (max-width: 600px) {
-    .nav-email {
-      display: none;
-    }
-    .page-main {
-      padding-block: var(--space-32);
-    }
-    .account-card {
-      padding: var(--space-20);
+  .ox-ac-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .ox-ac-links a {
+    font-size: 14px;
+    color: rgba(8, 5, 3, 0.75);
+    transition: color 0.2s ease;
+  }
+
+  .ox-ac-links a:hover {
+    color: var(--ox-fg);
+  }
+
+  .ox-ac-footer {
+    position: relative;
+    z-index: 2;
+    border-top: 1px solid var(--ox-border);
+    padding: 24px 0;
+  }
+
+  .ox-ac-footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--ox-muted);
+  }
+
+  .ox-ac-footer-inner nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .ox-ac-footer-inner a:hover {
+    color: var(--ox-fg);
+  }
+
+  @media (min-width: 1024px) {
+    body.ox {
+      --ox-pad: 48px;
     }
   }
 </style>
