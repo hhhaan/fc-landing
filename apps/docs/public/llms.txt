@@ -1,0 +1,20 @@
+# First Crack Documentation
+
+## 한국어
+
+- [사용 가이드](https://docs.firstcrackiscoming.com/)
+
+- [시스템 사양](https://docs.firstcrackiscoming.com/start/system-requirements/)
+- [macOS 설치](https://docs.firstcrackiscoming.com/start/install-mac/)
+- [Windows 설치](https://docs.firstcrackiscoming.com/start/install-windows/)
+- [로스팅 머신 연동 개요](https://docs.firstcrackiscoming.com/machines/)
+- [Modbus 연동](https://docs.firstcrackiscoming.com/machines/modbus/)
+- [Phidget 연동](https://docs.firstcrackiscoming.com/machines/phidget/)
+- [Artisan 설정 가져오기](https://docs.firstcrackiscoming.com/machines/artisan/)
+- [시리얼 포트 드라이버](https://docs.firstcrackiscoming.com/machines/serial-driver/)
+- [연동 문제 해결](https://docs.firstcrackiscoming.com/machines/troubleshooting/)
+- [요금제](https://docs.firstcrackiscoming.com/service/plans/)
+- [구독 · 결제](https://docs.firstcrackiscoming.com/service/billing/)
+- [환불 규칙](https://docs.firstcrackiscoming.com/service/refund/)
+- [이용약관 요약](https://docs.firstcrackiscoming.com/service/terms/)
+- [문의하기](https://docs.firstcrackiscoming.com/support/contact/)

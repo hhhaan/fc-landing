@@ -1,0 +1,23 @@
+---
+interface Props {
+	step: string;
+	title: string;
+	href?: string;
+	linkLabel?: string;
+}
+
+const { step, title, href, linkLabel } = Astro.props;
+---
+
+<article class="ox-docs-card">
+	<span class="ox-docs-card-tag">{step}</span>
+	<h3>{title}</h3>
+	<div class="ox-docs-card-body"><slot /></div>
+	{
+		href && linkLabel && (
+			<a href={href} class="ox-docs-card-link">
+				{linkLabel} →
+			</a>
+		)
+	}
+</article>

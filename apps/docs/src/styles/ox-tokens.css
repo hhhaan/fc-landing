@@ -1,0 +1,24 @@
+/* First Crack ox design tokens — see apps/landing/DESIGN_RULES.md */
+:root,
+:root[data-theme='light'],
+[data-theme='light'] {
+	--ox-bg: #fafaf9;
+	--ox-fg: #080503;
+	--ox-muted: #5e534a;
+	--ox-muted-bg: #ecebe7;
+	--ox-border: rgba(8, 5, 3, 0.06);
+	--ox-border-strong: rgba(8, 5, 3, 0.12);
+	--ox-sans: 'Instrument Sans', system-ui, -apple-system, sans-serif;
+	--ox-mono: 'JetBrains Mono', ui-monospace, monospace;
+	--ox-max: 1400px;
+	--ox-pad: 24px;
+	--ox-card: #fff;
+	--ox-success: #027a48;
+	--ox-error: #b42318;
+}
+
+@media (min-width: 1024px) {
+	:root {
+		--ox-pad: 48px;
+	}
+}

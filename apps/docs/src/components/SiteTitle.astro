@@ -1,0 +1,19 @@
+---
+const { siteTitleHref } = Astro.locals.starlightRoute;
+---
+
+<a href={siteTitleHref} class="ox-brand-name">
+	First Crack <span class="ox-docs-site-label">Docs</span>
+</a>
+
+<style>
+	.ox-docs-site-label {
+		font-family: var(--ox-mono);
+		font-size: 0.72em;
+		font-weight: 500;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--ox-muted);
+		margin-left: 0.35em;
+	}
+</style>

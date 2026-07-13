@@ -1,40 +1,44 @@
 ---
-title: Welcome to Starlight
-description: Get started building your docs site with Starlight.
-template: splash # Remove or comment out this line to display the site sidebar on this page.
-hero:
-  tagline: Congrats on setting up a new Starlight project!
-  image:
-    file: ../../assets/houston.webp
-  actions:
-    - text: Example Guide
-      link: /guides/example/
-      icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
-      icon: external
-      variant: minimal
+title: First Crack 사용 가이드
+description: 설치, 로스팅 머신 연동, 요금제·환불 — First Crack 문서
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import OxCard from '../../components/OxCard.astro';
 
-## Next steps
+<div class="ox-docs-lead-actions">
+  <a href="/machines" class="ox-btn ox-btn-solid ox-btn-sm">머신 연동</a>
+  <a href="https://firstcrackiscoming.com/download" class="ox-btn ox-btn-outline ox-btn-sm" target="_blank" rel="noopener noreferrer">앱 다운로드</a>
+</div>
 
-<CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
-	</Card>
-	<Card title="Change page layout" icon="document">
-		Delete `template: splash` in `src/content/docs/index.mdx` to display a
-		sidebar on this page.
-	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
-	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
-	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
-	</Card>
-</CardGrid>
+## 빠른 시작
+
+<div class="ox-docs-cards">
+  <OxCard step="01" title="앱 설치" href="https://firstcrackiscoming.com/download" linkLabel="다운로드">
+    macOS(Apple Silicon / Intel) 또는 Windows 10/11용 설치 파일을 받습니다.
+  </OxCard>
+  <OxCard step="02" title="머신 연결" href="/machines" linkLabel="연동 가이드">
+    Modbus, Phidget, Artisan 설정을 따라 로스터를 연결합니다.
+  </OxCard>
+  <OxCard step="03" title="첫 배치 기록" href="/machines/troubleshooting" linkLabel="문제 해결">
+    레퍼런스 프로파일을 불러와 첫 로스팅을 기록합니다.
+  </OxCard>
+</div>
+
+## 문서 섹션
+
+| 섹션 | 내용 |
+|------|------|
+| **시작하기** | 시스템 사양, macOS·Windows 설치 |
+| **로스팅 머신 연동** | Modbus, Phidget, Artisan, 트러블슈팅 |
+| **서비스 · 결제** | Pro / Pro+, Polar 결제, 환불 규칙 |
+| **지원** | 이메일 문의, 로그 전달 |
+
+## 지원 프로토콜
+
+<div class="ox-docs-chips">
+  <span class="ox-docs-chip">Modbus RTU / TCP</span>
+  <span class="ox-docs-chip">Phidget22</span>
+  <span class="ox-docs-chip">Artisan-ready</span>
+</div>
+
+Artisan 또는 Cropster와 연동 가능한 모델이면 First Crack도 대부분 동일한 통신 설정으로 연결할 수 있습니다. 모델을 모르거나 연동이 어려우면 [문의하기](/support/contact/)로 설정 화면 캡처와 함께 연락해 주세요.

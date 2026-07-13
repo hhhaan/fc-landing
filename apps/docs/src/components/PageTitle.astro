@@ -1,0 +1,12 @@
+---
+const { title, description } = Astro.locals.starlightRoute.entry.data;
+---
+
+<header class="ox-docs-page-head">
+	<div class="ox-eyebrow">
+		<span class="ox-line"></span>
+		Guide
+	</div>
+	<h1 id="_top">{title}</h1>
+	{description && <p class="ox-docs-page-desc">{description}</p>}
+</header>

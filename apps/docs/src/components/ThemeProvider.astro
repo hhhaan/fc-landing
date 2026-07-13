@@ -1,0 +1,9 @@
+<script is:inline>
+	(() => {
+		const root = document.documentElement;
+		root.dataset.theme = 'light';
+		try {
+			localStorage.setItem('starlight-theme', 'light');
+		} catch {}
+	})();
+</script>

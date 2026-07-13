@@ -1,0 +1,52 @@
+---
+import Pagination from 'virtual:starlight/components/Pagination';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="ox-docs-page-footer">
+	<Pagination />
+	<div class="ox-docs-footer-bar">
+		<span>© {year} First Crack</span>
+		<nav aria-label="Footer">
+			<a href="https://firstcrackiscoming.com/download">Download</a>
+			<a href="https://firstcrackiscoming.com/terms">Terms</a>
+			<a href="https://firstcrackiscoming.com/privacy">Privacy</a>
+			<a href="mailto:hello@firstcrackiscoming.com">Contact</a>
+		</nav>
+	</div>
+</footer>
+
+<style>
+	.ox-docs-page-footer {
+		margin-top: 3rem;
+	}
+
+	.ox-docs-footer-bar {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 16px;
+		padding-top: 24px;
+		margin-top: 24px;
+		border-top: 1px solid var(--ox-border);
+		font-size: 13px;
+		color: var(--ox-muted);
+	}
+
+	.ox-docs-footer-bar nav {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 20px;
+	}
+
+	.ox-docs-footer-bar a {
+		color: var(--ox-muted);
+		text-decoration: none;
+	}
+
+	.ox-docs-footer-bar a:hover {
+		color: var(--ox-fg);
+	}
+</style>
