@@ -1,6 +1,7 @@
 ---
 import Favicon from "../components/ui/Favicon.astro";
 import { requireLogin } from "../lib/auth";
+import { polarPriceId } from "../lib/polarPlans";
 
 const userOrRedirect = await requireLogin(
   Astro,
@@ -11,6 +12,12 @@ const user = userOrRedirect;
 
 const checkoutError = Astro.url.searchParams.get("error") === "checkout_failed";
 const year = new Date().getFullYear();
+const env = import.meta.env;
+
+const proPlusCheckoutReady = !!(
+  polarPriceId("pro-plus-monthly", env) && polarPriceId("pro-plus-yearly", env)
+);
+const defaultTier = proPlusCheckoutReady ? "pro_plus" : "pro";
 ---
 
 <html lang="en">
@@ -92,11 +99,15 @@ const year = new Date().getFullYear();
 
           <div class="ox-price-grid" id="plan-cards">
             <article
-              class="ox-price-card ox-cp-card"
+              class:list={[
+                "ox-price-card",
+                "ox-cp-card",
+                defaultTier === "pro" && "is-selected",
+              ]}
               data-tier="pro"
               tabindex="0"
               role="button"
-              aria-pressed="false"
+              aria-pressed={defaultTier === "pro"}
             >
               <div class="ox-price-top">
                 <span class="ox-price-n">01</span>
@@ -119,14 +130,28 @@ const year = new Date().getFullYear();
                 <li>1 seat</li>
                 <li>Desktop app (macOS &amp; Windows)</li>
               </ul>
+              <a
+                href="/start-pro?plan=pro-yearly"
+                class="ox-btn ox-btn-outline ox-btn-block ox-cp-checkout"
+                data-tier="pro"
+                data-href-monthly="/start-pro?plan=pro-monthly"
+                data-href-yearly="/start-pro?plan=pro-yearly"
+              >
+                Start 14-day trial
+              </a>
             </article>
 
             <article
-              class="ox-price-card ox-cp-card is-featured is-selected"
+              class:list={[
+                "ox-price-card",
+                "ox-cp-card",
+                "is-featured",
+                defaultTier === "pro_plus" && "is-selected",
+              ]}
               data-tier="pro_plus"
               tabindex="0"
               role="button"
-              aria-pressed="true"
+              aria-pressed={defaultTier === "pro_plus"}
             >
               <div class="ox-price-badge">Most popular</div>
               <div class="ox-price-top">
@@ -150,6 +175,27 @@ const year = new Date().getFullYear();
                 <li>Payment / store sync (roadmap GA)</li>
                 <li>1 seat</li>
               </ul>
+              {
+                proPlusCheckoutReady ? (
+                  <a
+                    href="/start-pro?plan=pro-plus-yearly"
+                    class="ox-btn ox-btn-solid ox-btn-block ox-cp-checkout"
+                    data-tier="pro_plus"
+                    data-href-monthly="/start-pro?plan=pro-plus-monthly"
+                    data-href-yearly="/start-pro?plan=pro-plus-yearly"
+                  >
+                    Start 14-day trial
+                  </a>
+                ) : (
+                  <p class="ox-cp-unavailable">
+                    Pro+ checkout is being configured. Choose Pro or email{" "}
+                    <a href="mailto:hello@firstcrackiscoming.com">
+                      hello@firstcrackiscoming.com
+                    </a>
+                    .
+                  </p>
+                )
+              }
             </article>
 
             <article class="ox-price-card ox-cp-card is-enterprise" data-tier="enterprise">
@@ -241,16 +287,24 @@ const year = new Date().getFullYear();
       <div class="ox-cp-sticky" id="checkout-bar">
         <div class="ox-shell ox-cp-sticky-inner">
           <div class="ox-cp-sticky-copy">
-            <span class="ox-cp-sticky-label" id="sticky-label">Pro+ · Annual</span>
-            <span class="ox-cp-sticky-price" id="sticky-price">$63/mo</span>
-            <span class="ox-cp-sticky-note" id="sticky-note">Billed $756 / year</span>
+            <span class="ox-cp-sticky-label" id="sticky-label">
+              {defaultTier === "pro_plus" ? "Pro+ · Annual" : "Pro · Annual"}
+            </span>
+            <span class="ox-cp-sticky-price" id="sticky-price">
+              {defaultTier === "pro_plus" ? "$63/mo" : "$39/mo"}
+            </span>
+            <span class="ox-cp-sticky-note" id="sticky-note">
+              {defaultTier === "pro_plus"
+                ? "Billed $756 / year"
+                : "Billed $468 / year"}
+            </span>
           </div>
           <a
-            href="/start-pro?plan=pro-plus-yearly"
+            href={`/start-pro?plan=${defaultTier === "pro_plus" ? "pro-plus-yearly" : "pro-yearly"}`}
             class="ox-btn ox-btn-solid"
             id="sticky-cta"
           >
-            Start 14-day trial
+            Continue to checkout
           </a>
         </div>
       </div>
@@ -267,44 +321,53 @@ const year = new Date().getFullYear();
       </footer>
     </main>
 
-    <script>
-      const PLAN_LABELS: Record<string, string> = {
+    <script define:vars={{ defaultTier, proPlusCheckoutReady }}>
+      const PLAN_LABELS = {
         pro: "Pro",
         pro_plus: "Pro+",
       };
 
-      const PLAN_SLUG: Record<string, { monthly: string; yearly: string }> = {
+      const PLAN_SLUG = {
         pro: { monthly: "pro-monthly", yearly: "pro-yearly" },
         pro_plus: { monthly: "pro-plus-monthly", yearly: "pro-plus-yearly" },
       };
 
-      const PLAN_YEARLY_NOTE: Record<string, string> = {
+      const PLAN_YEARLY_NOTE = {
         pro: "Billed $468 / year",
         pro_plus: "Billed $756 / year",
       };
 
       let billingYearly = true;
-      let selectedTier = "pro_plus";
+      let selectedTier = defaultTier;
 
       const btnMonthly = document.getElementById("btn-monthly");
       const btnYearly = document.getElementById("btn-yearly");
-      const cards = document.querySelectorAll<HTMLElement>(".ox-cp-card[data-tier]");
+      const cards = document.querySelectorAll(".ox-cp-card[data-tier]");
+      const checkoutLinks = document.querySelectorAll(".ox-cp-checkout");
       const stickyLabel = document.getElementById("sticky-label");
       const stickyPrice = document.getElementById("sticky-price");
       const stickyNote = document.getElementById("sticky-note");
-      const stickyCta = document.getElementById("sticky-cta") as HTMLAnchorElement | null;
+      const stickyCta = document.getElementById("sticky-cta");
 
       function updatePrices() {
         cards.forEach((card) => {
           if (card.dataset.tier === "enterprise") return;
-          const num = card.querySelector<HTMLElement>(".ox-price-num");
-          const note = card.querySelector<HTMLElement>(".ox-price-note");
+          const num = card.querySelector(".ox-price-num");
+          const note = card.querySelector(".ox-price-note");
           if (num) {
             num.textContent = billingYearly
               ? (num.dataset.yearly ?? "")
               : (num.dataset.monthly ?? "");
           }
           if (note) note.hidden = !billingYearly;
+        });
+      }
+
+      function updateCheckoutLinks() {
+        checkoutLinks.forEach((link) => {
+          link.href = billingYearly
+            ? (link.dataset.hrefYearly ?? link.href)
+            : (link.dataset.hrefMonthly ?? link.href);
         });
       }
 
@@ -333,21 +396,25 @@ const year = new Date().getFullYear();
           if (slug) {
             stickyCta.href = `/start-pro?plan=${billingYearly ? slug.yearly : slug.monthly}`;
           }
+          stickyCta.hidden =
+            selectedTier === "pro_plus" && !proPlusCheckoutReady;
         }
       }
 
-      function setBilling(isYearly: boolean) {
+      function setBilling(isYearly) {
         billingYearly = isYearly;
         btnMonthly?.classList.toggle("is-active", !isYearly);
         btnYearly?.classList.toggle("is-active", isYearly);
         btnMonthly?.setAttribute("aria-pressed", String(!isYearly));
         btnYearly?.setAttribute("aria-pressed", String(isYearly));
         updatePrices();
+        updateCheckoutLinks();
         updateSticky();
       }
 
-      function selectTier(tier: string) {
+      function selectTier(tier) {
         if (tier === "enterprise") return;
+        if (tier === "pro_plus" && !proPlusCheckoutReady) return;
         selectedTier = tier;
         cards.forEach((card) => {
           const isSelected = card.dataset.tier === tier;
@@ -360,10 +427,19 @@ const year = new Date().getFullYear();
       btnMonthly?.addEventListener("click", () => setBilling(false));
       btnYearly?.addEventListener("click", () => setBilling(true));
 
+      checkoutLinks.forEach((link) => {
+        link.addEventListener("click", (e) => e.stopPropagation());
+      });
+
       cards.forEach((card) => {
         const tier = card.dataset.tier;
         if (!tier || tier === "enterprise") return;
-        card.addEventListener("click", () => selectTier(tier));
+        card.addEventListener("click", (e) => {
+          if (e.target instanceof Element && e.target.closest(".ox-cp-checkout")) {
+            return;
+          }
+          selectTier(tier);
+        });
         card.addEventListener("keydown", (e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
@@ -812,6 +888,32 @@ const year = new Date().getFullYear();
     height: 5px;
     border-radius: 50%;
     background: currentColor;
+  }
+
+  .ox-cp-checkout {
+    margin-top: auto;
+  }
+
+  .ox-price-card.is-featured .ox-cp-checkout.ox-btn-solid {
+    background: var(--ox-bg);
+    color: var(--ox-fg);
+    border-color: var(--ox-bg);
+  }
+
+  .ox-price-card.is-featured .ox-cp-checkout.ox-btn-solid:hover {
+    opacity: 0.92;
+  }
+
+  .ox-cp-unavailable {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.55;
+    color: rgba(250, 250, 249, 0.65);
+  }
+
+  .ox-cp-unavailable a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .ox-cp-table-wrap {
