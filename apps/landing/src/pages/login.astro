@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import Favicon from "../components/ui/Favicon.astro";
 import { createClient } from "../lib/supabase";           // Server Client
 
 // Server-side: 이미 로그인된 경우 홈으로 리다이렉트
@@ -18,6 +19,7 @@ if (user) {
 <html lang="ko" class="h-full">
 <head>
   <meta charset="UTF-8" />
+  <Favicon />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="First Crack — 로그인. 로스터를 위한 스마트 로스팅 플랫폼." />
   <title>Sign in — First Crack</title>

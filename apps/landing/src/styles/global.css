@@ -1,141 +1,121 @@
 @import 'tailwindcss';
+
 :root {
-    /* --- Color: Surfaces --- */
-    --color-bg: #ffffff;
-    --color-bg-secondary: #f5f5f5;
-    --color-bg-warm: #f5f2ef;
-    --color-bg-warm-80: rgba(245, 242, 239, 0.8);
-    --color-bg-alt: #f6f6f6;
+  /* ── DataRobot-inspired palette ── */
+  --color-mint:   #81FBA5;
+  --color-yellow: #F5FF00;
+  --color-dark:   #0B0B0B;
+  --color-purple: #5C41FF;
 
-    /* --- Color: Text --- */
-    --color-fg: #000000;
-    --color-fg-secondary: #4e4e4e;
-    --color-fg-muted: #777169;
+  /* Surfaces */
+  --color-bg:           #FFFFFF;
+  --color-bg-secondary: #F9FAFB;
+  --color-bg-dark:      #0B0B0B;
 
-    /* --- Color: Interactive --- */
-    --color-border: #e5e5e5;
-    --color-border-subtle: rgba(0, 0, 0, 0.05);
-    --color-ring: rgb(147 197 253 / 0.5);
-    --color-grid-cyan: rgba(127, 255, 255, 0.25);
+  /* Text */
+  --color-fg:           #0B0B0B;
+  --color-fg-secondary: #4A4A4A;
+  --color-fg-muted:     #767676;
+  --color-fg-on-dark:   #FFFFFF;
+  --color-link:         #A6B0FF;
 
-    /* --- Shadows --- */
-    --shadow-inset-border: rgba(0, 0, 0, 0.075) 0px 0px 0px 0.5px inset;
-    --shadow-inset-dark: rgba(0, 0, 0, 0.1) 0px 0px 0px 0.5px inset;
-    --shadow-inset-ring: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px inset;
-    --shadow-outline-ring: rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
-    --shadow-soft-lift: rgba(0, 0, 0, 0.04) 0px 4px 4px;
-    --shadow-edge: rgba(0, 0, 0, 0.08) 0px 0px 0px 0.5px;
-    --shadow-card:
-        rgba(0, 0, 0, 0.06) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 1px 2px, rgba(0, 0, 0, 0.04) 0px 2px 4px;
-    --shadow-button: rgba(0, 0, 0, 0.4) 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 4px 4px;
-    --shadow-warm-lift: rgba(78, 50, 23, 0.04) 0px 6px 16px;
+  /* Borders */
+  --color-border:        #F0F0F0;
+  --color-border-dark:   #231F20;
+  --color-border-subtle: rgba(0, 0, 0, 0.04);
+  --color-ring:          rgba(129, 251, 165, 0.6);
 
-    /* --- Typography: Font families --- */
-    --font-display: 'Pretendard Variable', 'Pretendard', system-ui, sans-serif;
-    --font-body: 'Pretendard Variable', 'Pretendard', system-ui, sans-serif;
-    --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  /* Shadows */
+  --shadow-subtle:       rgba(0,0,0,0.06) 0px 1px 3px;
+  --shadow-card:         rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 8px;
+  --shadow-button:       rgba(0,0,0,0.10) 0px 1px 3px;
+  --shadow-inset-border: rgba(0,0,0,0.08) 0px 0px 0px 1px inset;
 
-    /* --- Typography: Scale --- */
-    --text-hero: 3rem; /* 48px */
-    --text-section: 2.25rem; /* 36px */
-    --text-card: 2rem; /* 32px */
-    --text-xl: 1.25rem; /* 20px */
-    --text-lg: 1.125rem; /* 18px */
-    --text-base: 1rem; /* 16px */
-    --text-nav: 0.9375rem; /* 15px */
-    --text-btn-up: 0.875rem; /* 14px */
-    --text-sm: 0.8125rem; /* 13px */
-    --text-micro: 0.75rem; /* 12px */
-    --text-tiny: 0.625rem; /* 10px */
+  /* Legacy shadow aliases (login/signup/download pages) */
+  --shadow-outline-ring: rgba(0,0,0,0.1) 0px 0px 0px 1px;
+  --shadow-soft-lift:    rgba(0,0,0,0.04) 0px 4px 4px;
+  --shadow-warm-lift:    rgba(0,0,0,0.06) 0px 4px 12px;
+  --shadow-inset-dark:   rgba(0,0,0,0.1) 0px 0px 0px 0.5px inset;
+  --shadow-inset-ring:   rgba(0,0,0,0.1) 0px 0px 0px 1px inset;
+  --shadow-edge:         rgba(0,0,0,0.08) 0px 0px 0px 0.5px;
 
-    /* --- Spacing (8px base) --- */
-    --space-1: 1px;
-    --space-3: 3px;
-    --space-4: 4px;
-    --space-8: 8px;
-    --space-10: 10px;
-    --space-12: 12px;
-    --space-16: 16px;
-    --space-20: 20px;
-    --space-24: 24px;
-    --space-28: 28px;
-    --space-32: 32px;
-    --space-40: 40px;
+  /* Fonts */
+  --font-display: 'Pretendard Variable', 'Pretendard', system-ui, sans-serif;
+  --font-body:    'Pretendard Variable', 'Pretendard', system-ui, sans-serif;
+  --font-mono:    'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-    /* --- Border radius --- */
-    --radius-minimal: 2px;
-    --radius-subtle: 4px;
-    --radius-standard: 8px;
-    --radius-comfort: 12px;
-    --radius-card: 16px;
-    --radius-large: 20px;
-    --radius-section: 24px;
-    --radius-warm-btn: 30px;
-    --radius-pill: 9999px;
+  /* Type scale */
+  --text-hero:    5rem;      /* 80px */
+  --text-section: 2.5rem;   /* 40px */
+  --text-card:    1.375rem; /* 22px */
+  --text-xl:      1.25rem;
+  --text-lg:      1.125rem;
+  --text-base:    1rem;
+  --text-nav:     0.9375rem;
+  --text-btn-up:  0.875rem;
+  --text-sm:      0.8125rem;
+  --text-micro:   0.75rem;
+  --text-tiny:    0.625rem;
 
-    /* --- Motion --- */
-    --motion-fast: 150ms;
-    --motion-standard: 250ms;
-    --ease-enter: cubic-bezier(0.2, 0.6, 0.25, 1);
-    --ease-exit: cubic-bezier(0.4, 0, 1, 1);
-}
+  /* Spacing */
+  --space-1:   1px;
+  --space-3:   3px;
+  --space-4:   4px;
+  --space-8:   8px;
+  --space-10:  10px;
+  --space-12:  12px;
+  --space-16:  16px;
+  --space-20:  20px;
+  --space-24:  24px;
+  --space-28:  28px;
+  --space-32:  32px;
+  --space-40:  40px;
+  --space-48:  48px;
+  --space-64:  64px;
+  --space-80:  80px;
+  --space-96:  96px;
 
-/* ============================================================
-   DARK MODE TOKENS  (.dark on <html> or <body>)
-   ============================================================ */
+  /* Border radius */
+  --radius-minimal:  2px;
+  --radius-subtle:   4px;
+  --radius-standard: 6px;
+  --radius-comfort:  8px;
+  --radius-card:     8px;
+  --radius-large:    12px;
+  --radius-section:  16px;
+  --radius-warm-btn: 6px;
+  --radius-pill:     9999px;
 
-.dark {
-    --color-bg: #150f0f;
-    --color-bg-secondary: #2a2222;
-    --color-bg-warm: #2a2222;
-    --color-bg-warm-80: rgba(42, 34, 34, 0.8);
-    --color-bg-alt: #2a2222;
+  /* Motion */
+  --motion-fast:     150ms;
+  --motion-standard: 250ms;
+  --ease-enter:      cubic-bezier(0.2, 0.6, 0.25, 1);
+  --ease-exit:       cubic-bezier(0.4, 0, 1, 1);
 
-    --color-fg: #fafafa;
-    --color-fg-secondary: #a8a29e;
-    --color-fg-muted: #78716c;
-
-    --color-border: #322929;
-    --color-border-subtle: rgba(255, 255, 255, 0.05);
-
-    /* shadows need higher opacity on dark surfaces to be visible */
-    --shadow-inset-border: rgba(255, 255, 255, 0.06) 0px 0px 0px 0.5px inset;
-    --shadow-inset-dark: rgba(255, 255, 255, 0.08) 0px 0px 0px 0.5px inset;
-    --shadow-outline-ring: rgba(255, 255, 255, 0.06) 0px 0px 0px 1px;
-    --shadow-soft-lift: rgba(0, 0, 0, 0.3) 0px 4px 4px;
-    --shadow-card:
-        rgba(255, 255, 255, 0.04) 0px 0px 0px 1px, rgba(0, 0, 0, 0.3) 0px 1px 2px, rgba(0, 0, 0, 0.2) 0px 2px 4px;
-    --shadow-button: rgba(0, 0, 0, 0.6) 0px 0px 1px, rgba(0, 0, 0, 0.2) 0px 4px 4px;
-    --shadow-warm-lift: rgba(78, 50, 23, 0.12) 0px 6px 16px;
+  /* Legacy compat */
+  --color-bg-warm:    #F9FAFB;
+  --color-bg-warm-80: rgba(249,250,251,0.8);
+  --color-bg-alt:     #F9FAFB;
 }
 
 /* ============================================================
    @FONT-FACE
-   Place font files in /public/fonts/ and update src paths.
    ============================================================ */
 
 @font-face {
-    font-family: 'Pretendard Variable';
-    src: url('/fonts/PretendardVariable.woff2') format('woff2');
-    font-weight: 100 900;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Pretendard Variable';
+  src: url('/fonts/PretendardVariable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Inter';
-    src: url('/fonts/Inter-Variable.woff2') format('woff2');
-    font-weight: 100 900;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Geist Mono';
-    src: url('/fonts/GeistMono-Variable.woff2') format('woff2');
-    font-weight: 100 900;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Geist Mono';
+  src: url('/fonts/GeistMono-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
 }
 
 /* ============================================================
@@ -145,257 +125,215 @@
 *,
 *::before,
 *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html {
-    font-size: 16px;
-    text-size-adjust: 100%;
-    -webkit-text-size-adjust: 100%;
-    scroll-behavior: smooth;
+  font-size: 16px;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
-    background-color: var(--color-bg);
-    color: var(--color-fg);
-    font-family: var(--font-body);
-    font-size: var(--text-base);
-    font-weight: 400;
-    line-height: 1.5;
-    letter-spacing: 0.16px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-img,
-video,
-svg {
-    display: block;
-    max-width: 100%;
-}
+img, video, svg { display: block; max-width: 100%; }
 
-button,
-input,
-select,
-textarea {
-    font-family: inherit;
-    font-size: inherit;
-}
+button, input, select, textarea { font-family: inherit; font-size: inherit; }
 
-a {
-    color: inherit;
-    text-decoration: none;
-}
+a { color: inherit; text-decoration: none; }
 
-ul,
-ol {
-    list-style: none;
-}
+ul, ol { list-style: none; }
 
 /* ============================================================
    TYPOGRAPHY
    ============================================================ */
 
-/* Display: Hero (48px Waldenburg 300) */
 .text-display-hero {
-    font-family: var(--font-display);
-    font-size: var(--text-hero);
-    font-weight: 300;
-    line-height: 1.08;
-    letter-spacing: -0.96px;
+  font-family: var(--font-display);
+  font-size: var(--text-hero);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
 }
 
-/* Display: Section heading (36px Waldenburg 300) */
 .text-display-section {
-    font-family: var(--font-display);
-    font-size: var(--text-section);
-    font-weight: 300;
-    line-height: 1.17;
-    letter-spacing: normal;
+  font-family: var(--font-display);
+  font-size: var(--text-section);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
-/* Display: Card heading (32px Waldenburg 300) */
 .text-display-card {
-    font-family: var(--font-display);
-    font-size: var(--text-card);
-    font-weight: 300;
-    line-height: 1.13;
-    letter-spacing: normal;
+  font-family: var(--font-display);
+  font-size: var(--text-card);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
 }
 
-/* Body: Large introduction (20px Inter 400) */
 .text-body-xl {
-    font-family: var(--font-body);
-    font-size: var(--text-xl);
-    font-weight: 400;
-    line-height: 1.35;
-    letter-spacing: normal;
+  font-family: var(--font-body);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  line-height: 1.5;
 }
 
-/* Body: Standard reading (18px Inter 400) */
 .text-body-lg {
-    font-family: var(--font-body);
-    font-size: var(--text-lg);
-    font-weight: 400;
-    line-height: 1.6;
-    letter-spacing: 0.18px;
-    color: var(--color-fg-secondary);
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--color-fg-secondary);
 }
 
-/* Body: UI text (16px Inter 400) */
 .text-body {
-    font-family: var(--font-body);
-    font-size: var(--text-base);
-    font-weight: 400;
-    line-height: 1.5;
-    letter-spacing: 0.16px;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 400;
+  line-height: 1.5;
 }
 
-/* Body: Emphasized (16px Inter 500) */
 .text-body-medium {
-    font-family: var(--font-body);
-    font-size: var(--text-base);
-    font-weight: 500;
-    line-height: 1.5;
-    letter-spacing: 0.16px;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 500;
+  line-height: 1.5;
 }
 
-/* Nav / UI (15px Inter 500) */
 .text-nav {
-    font-family: var(--font-body);
-    font-size: var(--text-nav);
-    font-weight: 500;
-    line-height: 1.47;
-    letter-spacing: 0.15px;
+  font-family: var(--font-body);
+  font-size: var(--text-nav);
+  font-weight: 500;
+  line-height: 1.47;
 }
 
-/* Caption (14px Inter 400) */
 .text-caption {
-    font-family: var(--font-body);
-    font-size: var(--text-btn-up);
-    font-weight: 400;
-    line-height: 1.5;
-    letter-spacing: 0.14px;
-    color: var(--color-fg-muted);
+  font-family: var(--font-body);
+  font-size: var(--text-btn-up);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-fg-muted);
 }
 
-/* Code (13px Geist Mono) */
-.text-code,
-code,
-pre {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    font-weight: 400;
-    line-height: 1.85;
-    letter-spacing: normal;
+.text-code, code, pre {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  line-height: 1.85;
 }
 
-/* Micro (12px Inter 500) */
 .text-micro {
-    font-family: var(--font-body);
-    font-size: var(--text-micro);
-    font-weight: 500;
-    line-height: 1.33;
-    letter-spacing: normal;
+  font-family: var(--font-body);
+  font-size: var(--text-micro);
+  font-weight: 500;
+  line-height: 1.33;
 }
 
 /* ============================================================
    BUTTONS
    ============================================================ */
 
-/* Base button reset */
 .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-8);
-    border: none;
-    cursor: pointer;
-    border-radius: var(--radius-pill);
-    font-family: var(--font-body);
-    font-size: var(--text-nav);
-    font-weight: 500;
-    line-height: 1.47;
-    letter-spacing: normal;
-    padding: var(--space-10) var(--space-20);
-    transition:
-        background-color var(--motion-fast) ease,
-        box-shadow var(--motion-fast) ease,
-        opacity var(--motion-fast) ease;
-    white-space: nowrap;
-    text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: var(--text-nav);
+  font-weight: 500;
+  line-height: 1.47;
+  padding: var(--space-10) var(--space-20);
+  transition:
+    background-color var(--motion-fast) ease,
+    opacity var(--motion-fast) ease,
+    box-shadow var(--motion-fast) ease;
+  white-space: nowrap;
+  text-decoration: none;
+  border: none;
 }
 
-/* Primary: solid black */
+/* Primary: mint fill, 6px radius */
 .btn-primary {
-    background-color: var(--color-fg);
-    color: var(--color-bg);
-    box-shadow: var(--shadow-button);
+  background-color: var(--color-mint);
+  color: var(--color-dark);
+  border-radius: var(--radius-standard);
 }
-.btn-primary:hover {
-    opacity: 0.88;
-}
+.btn-primary:hover { opacity: 0.85; }
 
-/* Secondary: border outline */
+/* Secondary: outlined, 0px radius (sharp) */
 .btn-secondary {
-    background-color: transparent;
-    color: var(--color-fg);
-    box-shadow: var(--shadow-outline-ring);
+  background-color: var(--color-bg);
+  color: var(--color-border-dark);
+  border-radius: 0px;
+  border: 1.5px solid var(--color-border-dark);
 }
-.btn-secondary:hover {
-    background-color: var(--color-bg-secondary);
-}
-
-/* Warm stone: signature ElevenLabs warm CTA */
-.btn-warm {
-    background-color: var(--color-bg-warm-80);
-    color: var(--color-fg);
-    border-radius: var(--radius-warm-btn);
-    padding: var(--space-12) var(--space-20);
-    box-shadow: var(--shadow-warm-lift), var(--shadow-inset-border);
-}
-.btn-warm:hover {
-    background-color: var(--color-bg-warm);
-    box-shadow:
-        rgba(78, 50, 23, 0.08) 0px 8px 20px,
-        var(--shadow-inset-border);
-}
+.btn-secondary:hover { background-color: var(--color-bg-secondary); }
 
 /* Ghost: transparent */
 .btn-ghost {
-    background-color: transparent;
-    color: var(--color-fg);
+  background-color: transparent;
+  color: var(--color-fg);
+  border-radius: var(--radius-standard);
 }
-.btn-ghost:hover {
-    background-color: rgba(0, 0, 0, 0.06);
+.btn-ghost:hover { background-color: rgba(0,0,0,0.06); }
+
+/* Warm: backward compat alias → secondary style */
+.btn-warm {
+  background-color: var(--color-bg);
+  color: var(--color-border-dark);
+  border-radius: 0px;
+  border: 1.5px solid var(--color-border-dark);
 }
+.btn-warm:hover { background-color: var(--color-bg-secondary); }
+
+/* Dark surface variant */
+.btn-on-dark {
+  background-color: var(--color-mint);
+  color: var(--color-dark);
+  border-radius: var(--radius-standard);
+}
+.btn-on-dark:hover { opacity: 0.85; }
+
+.btn-on-dark-outline {
+  background-color: transparent;
+  color: var(--color-fg-on-dark);
+  border-radius: 0px;
+  border: 1.5px solid rgba(255,255,255,0.4);
+}
+.btn-on-dark-outline:hover { background-color: rgba(255,255,255,0.08); }
 
 /* Sizes */
-.btn-compact {
-    padding: var(--space-8) var(--space-16);
-}
-.btn-comfort {
-    padding: 14px var(--space-28);
-}
+.btn-compact { padding: var(--space-8) var(--space-16); }
+.btn-comfort { padding: 14px var(--space-28); }
 
-/* Uppercase CTA label */
 .btn-label-up {
-    font-family: var(--font-body);
-    font-size: var(--text-btn-up);
-    font-weight: 700;
-    letter-spacing: 0.7px;
-    text-transform: uppercase;
+  font-size: var(--text-btn-up);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
-/* Disabled state */
 .btn:disabled,
 .btn[aria-disabled='true'] {
-    opacity: 0.4;
-    cursor: not-allowed;
-    pointer-events: none;
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 /* ============================================================
@@ -403,21 +341,21 @@ pre {
    ============================================================ */
 
 .card {
-    background-color: var(--color-bg);
-    border-radius: var(--radius-card);
-    box-shadow: var(--shadow-card);
-    overflow: hidden;
+  background-color: var(--color-bg);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
 }
 
 .card-lg {
-    border-radius: var(--radius-large);
-    box-shadow: var(--shadow-card);
+  border-radius: var(--radius-large);
+  box-shadow: var(--shadow-card);
 }
 
 .card-section {
-    background-color: var(--color-bg);
-    border-radius: var(--radius-section);
-    box-shadow: var(--shadow-card);
+  background-color: var(--color-bg);
+  border-radius: var(--radius-section);
+  box-shadow: var(--shadow-card);
 }
 
 /* ============================================================
@@ -425,36 +363,31 @@ pre {
    ============================================================ */
 
 .input {
-    width: 100%;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-standard);
-    background-color: var(--color-bg);
-    color: var(--color-fg);
-    font-family: var(--font-body);
-    font-size: var(--text-base);
-    font-weight: 400;
-    line-height: 1.5;
-    letter-spacing: 0.16px;
-    padding: var(--space-12) var(--space-16);
-    transition:
-        box-shadow var(--motion-fast) ease,
-        border-color var(--motion-fast) ease;
-    outline: none;
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-comfort);
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 400;
+  line-height: 1.5;
+  padding: var(--space-12) var(--space-16);
+  transition:
+    box-shadow var(--motion-fast) ease,
+    border-color var(--motion-fast) ease;
+  outline: none;
 }
-.input::placeholder {
-    color: var(--color-fg-muted);
-}
+.input::placeholder { color: var(--color-fg-muted); }
 .input:focus {
-    border-color: transparent;
-    box-shadow:
-        0 0 0 2px var(--color-bg),
-        0 0 0 4px var(--color-ring);
+  border-color: transparent;
+  box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-ring);
 }
 
 .textarea {
-    padding: var(--space-12) var(--space-20);
-    resize: vertical;
-    min-height: 120px;
+  padding: var(--space-12) var(--space-20);
+  resize: vertical;
+  min-height: 120px;
 }
 
 /* ============================================================
@@ -462,68 +395,71 @@ pre {
    ============================================================ */
 
 .nav {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background-color: var(--color-fg); /* solid dark header */
-    color: var(--color-bg);
-    border-bottom: 1px solid var(--color-border-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .nav-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 var(--space-24);
-    height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--space-24);
+  height: 56px;
 }
 
 .nav-link {
-    font-family: var(--font-body);
-    font-size: var(--text-nav);
-    font-weight: 500;
-    line-height: 1.47;
-    letter-spacing: 0.15px;
-    color: inherit;
-    transition: opacity var(--motion-fast) ease;
+  font-family: var(--font-body);
+  font-size: var(--text-nav);
+  font-weight: 500;
+  color: inherit;
+  transition: opacity var(--motion-fast) ease;
 }
-.nav-link:hover {
-    opacity: 0.7;
-}
+.nav-link:hover { opacity: 0.6; }
 
 /* ============================================================
    LAYOUT UTILITIES
    ============================================================ */
 
 .container {
-    width: 100%;
-    max-width: 1280px;
-    margin-inline: auto;
-    padding-inline: var(--space-24);
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: var(--space-24);
 }
 
-.container-narrow {
-    max-width: 768px;
-}
+.container-narrow { max-width: 768px; }
 
-.section {
-    padding-block: var(--space-40);
-}
-
-.section-lg {
-    padding-block: 80px;
-}
+.section     { padding-block: var(--space-40); }
+.section-lg  { padding-block: var(--space-80); }
 
 /* ============================================================
-   SKELETON / LOADING STATES
+   BADGE
    ============================================================ */
 
-.skeleton {
-    background-color: rgba(245, 242, 239, 0.4);
-    border-radius: var(--radius-standard);
-    /* no shimmer — DESIGN.md spec: "No shimmer" */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  padding: var(--space-4) var(--space-12);
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-secondary);
+  color: var(--color-fg-secondary);
+  border: 1px solid var(--color-border);
+}
+
+.badge-live {
+  background: var(--color-dark);
+  color: #fff;
+  font-size: var(--text-micro);
+  border-color: var(--color-dark);
 }
 
 /* ============================================================
@@ -531,26 +467,35 @@ pre {
    ============================================================ */
 
 pre {
-    background-color: var(--color-bg-secondary);
-    border-radius: var(--radius-large);
-    box-shadow: var(--shadow-card);
-    padding: var(--space-24);
-    overflow-x: auto;
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--radius-large);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-24);
+  overflow-x: auto;
 }
 
 code:not(pre > code) {
-    background-color: var(--color-bg-secondary);
-    border-radius: var(--radius-subtle);
-    padding: var(--space-1) var(--space-4);
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--radius-subtle);
+  padding: var(--space-1) var(--space-4);
 }
 
 /* ============================================================
-   FOCUS (ACCESSIBILITY)
+   SKELETON
+   ============================================================ */
+
+.skeleton {
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--radius-standard);
+}
+
+/* ============================================================
+   FOCUS
    ============================================================ */
 
 :focus-visible {
-    outline: 2px solid var(--color-ring);
-    outline-offset: 2px;
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
 }
 
 /* ============================================================
@@ -558,44 +503,30 @@ code:not(pre > code) {
    ============================================================ */
 
 @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-    }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* ============================================================
-   RESPONSIVE
+   RESPONSIVE  (<1024px)
    ============================================================ */
 
-/* Mobile: <1024px — single column, stacked layout */
 @media (max-width: 1023px) {
-    .container {
-        padding-inline: var(--space-16);
-    }
+  .container { padding-inline: var(--space-16); }
 
-    .section-lg {
-        padding-block: var(--space-40);
-    }
+  .section-lg { padding-block: var(--space-40); }
 
-    .text-display-hero {
-        font-size: 2.25rem; /* scale down to section heading size */
-        letter-spacing: -0.5px;
-    }
+  .text-display-hero {
+    font-size: 2.5rem;
+    letter-spacing: -0.02em;
+  }
 
-    .text-display-section {
-        font-size: 1.75rem;
-    }
+  .text-display-section { font-size: 1.875rem; }
+  .text-display-card    { font-size: 1.25rem; }
 
-    .text-display-card {
-        font-size: 1.5rem;
-    }
-
-    .nav-inner {
-        padding-inline: var(--space-16);
-    }
+  .nav-inner { padding-inline: var(--space-16); }
 }

@@ -25,3 +25,11 @@ Thumbs.db
 *.log
 npm-debug.log*
 pnpm-debug.log*
+
+# Polar product id dumps
+scripts/polar-products.out.env
+
+
+.omo
+DESIGN.md
+docs/superpowers/*

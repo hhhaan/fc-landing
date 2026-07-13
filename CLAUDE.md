@@ -91,3 +91,20 @@ Use CSS custom properties (e.g., `var(--color-fg-secondary)`, `var(--space-24)`)
 - `LOGSNAG_TOKEN`, `LOGSNAG_PROJECT`
 
 Access all env vars via `import.meta.env.VAR_NAME`. The `cf-connecting-ip` header is available server-side on Cloudflare Workers/Pages.
+
+## Geo market (CF-IPCountry)
+
+Landing home content is **market-aware**:
+
+1. `?market=kr|us|jp|global` (sets cookie `fc_market`)
+2. Cookie `fc_market`
+3. Request header **`CF-IPCountry`** (`KR`→kr, `JP`→jp, `US`→us, else global)
+4. Fallback `global` (USD)
+
+| File | Role |
+|------|------|
+| `src/lib/market.ts` | Resolve market |
+| `src/content/markets.ts` | Sales points + prices per market (align with fc-desktop `docs/pricing`) |
+| `src/pages/{kr,us,jp,global}.astro` | Cookie + redirect to `/` |
+
+Local dev: use `/?market=kr` or `/kr`. See `docs/geo-market-routing.md`.

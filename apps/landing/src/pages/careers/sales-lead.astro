@@ -1,0 +1,133 @@
+---
+import "../../styles/global.css";
+import Favicon from "../../components/ui/Favicon.astro";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <Favicon />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Sales Lead at First Crack — bring specialty roasteries onto the platform." />
+    <title>Sales Lead — First Crack Careers</title>
+  </head>
+  <body class="jd">
+    <header class="jd-nav"><div class="jd-nav-inner"><a href="/" class="jd-nav-brand">First Crack</a><nav class="jd-nav-links"><a href="/careers" class="jd-nav-link jd-back">&larr; Back to jobs</a></nav></div></header>
+    <main>
+      <div class="jd-container">
+        <div class="jd-layout">
+          <article class="jd-main">
+            <div class="jd-header">
+              <span class="jd-dept">Sales</span>
+              <h1 class="jd-title">Sales Lead</h1>
+              <div class="jd-meta"><span class="jd-loc">Remote — APAC</span><span class="jd-type">Full-time</span></div>
+              <button type="button" class="jd-apply-btn" onclick="document.getElementById('apply-form').scrollIntoView({behavior:'smooth'})">Apply</button>
+            </div>
+
+            <section class="jd-section">
+              <h2>About Us</h2>
+              <p>First Crack builds desktop software that specialty coffee roasters rely on every day. Our application connects directly to roasting machines, displays live temperature curves, and manages everything from batch history to production scheduling. We're a small, remote-first team shipping on macOS and Windows with cloud sync for teams.</p>
+            </section>
+
+            <section class="jd-section">
+              <h2>About the Role</h2>
+              <p>Own the sales motion for First Crack across APAC. You'll find, pitch, and close specialty roasteries — from single-machine cafés to multi-location production floors. This is not a "demo and forget" role. You'll understand each roastery's workflow, show them how First Crack fits, and build relationships that last. You're the first sales hire, so you'll also define the playbook.</p>
+            </section>
+
+            <section class="jd-section">
+              <h2>Responsibilities</h2>
+              <ul>
+                <li>Build and manage a pipeline of specialty roasteries across APAC</li>
+                <li>Run discovery calls, product demos, and on-site visits</li>
+                <li>Close deals — from free trials to annual enterprise contracts</li>
+                <li>Define the sales playbook, pricing strategy, and outreach motion</li>
+                <li>Work with the product team to relay customer feedback and feature requests</li>
+                <li>Represent First Crack at coffee industry events and trade shows</li>
+              </ul>
+            </section>
+
+            <section class="jd-section">
+              <h2>Desirable Skills, Knowledge, and Experience</h2>
+              <ul>
+                <li>3+ years in B2B SaaS sales, ideally selling to SMBs or mid-market</li>
+                <li>Track record of closing deals and building pipeline from scratch</li>
+                <li>Comfortable with technical products — you can demo software and handle objections</li>
+                <li>Strong network in the specialty coffee industry is a significant plus</li>
+                <li>Willingness to travel across APAC for on-site visits and events</li>
+                <li>Self-starter who can build a sales motion without a large team behind them</li>
+              </ul>
+            </section>
+
+            <section class="jd-section"><h2>Compensation</h2><p>Competitive base salary plus uncapped commission. This role is eligible for equity participation. OTE (on-target earnings) significantly above base.</p></section>
+
+            <section class="jd-section">
+              <h2>Benefits</h2>
+              <ul>
+                <li>Remote-first — work from wherever your coffee tastes best</li>
+                <li>Competitive pay &amp; meaningful equity</li>
+                <li>Take-what-you-need vacation (we actually mean it)</li>
+                <li>Tooling budget + AI credits stipend</li>
+                <li>Coffee budget — green, roasted, brewing gear</li>
+                <li>Hands-on roasting workshop for every new hire</li>
+              </ul>
+            </section>
+
+            <section class="jd-section jd-eeo"><p>First Crack is proud to be an equal opportunity employer. We are committed to providing equal employment opportunity for all people and place great value in both diversity and inclusiveness. All qualified applicants will be considered for employment without regard to their, or any other person's, perceived or actual race, color, religion, sex, gender, gender identity, gender expression, sexual orientation, national origin, ancestry, citizenship, age, physical or mental disability, medical condition, family care status, or any other basis protected by law.</p></section>
+          </article>
+
+          <aside class="jd-sidebar">
+            <div class="jd-apply-card" id="apply-form">
+              <h3>Apply for this job</h3>
+              <p>Send your resume and tell us about a deal you're proud of closing.</p>
+              <a href="mailto:careers@firstcrackiscoming.com?subject=Sales%20Lead%20Application" class="jd-btn">Apply via email</a>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </main>
+    <footer class="jd-footer"><div class="jd-container"><span>First Crack &copy; 2026</span><nav><a href="/about">About</a><a href="/careers">Careers</a><a href="mailto:hello@firstcrackiscoming.com">Contact</a></nav></div></footer>
+  </body>
+</html>
+
+<style is:global>
+  :root { --jd-mint: #81fba5; --jd-dark: #0b0b0b; --jd-fg: #0b0b0b; --jd-fg-2: #4a4a4a; --jd-fg-muted: #767676; --jd-bg: #fff; --jd-border: rgba(0,0,0,0.08); --jd-border-s: rgba(0,0,0,0.14); --jd-sans: 'Pretendard Variable','Pretendard',system-ui,sans-serif; --jd-mono: 'Geist Mono',ui-monospace,monospace; }
+  .jd { margin: 0; font-family: var(--jd-sans); font-size: 16px; line-height: 1.5; color: var(--jd-fg); background: var(--jd-bg); -webkit-font-smoothing: antialiased; }
+  .jd *,.jd *::before,.jd *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  .jd a { color: inherit; text-decoration: none; }
+  .jd-container { max-width: 1100px; margin-inline: auto; padding-inline: 24px; }
+  .jd-nav { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--jd-border); }
+  .jd-nav-inner { display: flex; align-items: center; justify-content: space-between; max-width: 1100px; margin: 0 auto; padding: 0 24px; height: 56px; }
+  .jd-nav-brand { font-family: var(--jd-sans); font-size: 1.125rem; font-weight: 700; letter-spacing: -0.02em; }
+  .jd-back { font-size: 0.9375rem; font-weight: 500; color: var(--jd-fg-2); transition: color 0.15s; }
+  .jd-back:hover { color: var(--jd-fg); }
+  .jd-layout { display: grid; grid-template-columns: 1fr 320px; gap: 48px; padding: 48px 0 80px; align-items: start; }
+  @media (max-width: 900px) { .jd-layout { grid-template-columns: 1fr; gap: 32px; } }
+  .jd-header { margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid var(--jd-border); }
+  .jd-dept { display: inline-block; font-family: var(--jd-mono); font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--jd-fg-muted); margin-bottom: 8px; }
+  .jd-title { font-family: var(--jd-sans); font-size: clamp(1.75rem, 4vw, 2.25rem); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 12px; }
+  .jd-meta { display: flex; gap: 20px; font-size: 0.9375rem; color: var(--jd-fg-muted); margin-bottom: 20px; }
+  .jd-loc { color: var(--jd-mint); font-weight: 600; }
+  .jd-apply-btn { display: inline-flex; align-items: center; justify-content: center; height: 40px; padding: 0 24px; font-family: var(--jd-sans); font-size: 0.9375rem; font-weight: 600; border-radius: 0; background: var(--jd-dark); color: #fff; border: none; cursor: pointer; transition: opacity 0.15s; }
+  .jd-apply-btn:hover { opacity: 0.9; }
+  .jd-section { margin-bottom: 36px; }
+  .jd-section h2 { font-family: var(--jd-sans); font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 14px; }
+  .jd-section p { font-size: 0.9375rem; line-height: 1.7; color: var(--jd-fg-2); margin-bottom: 12px; }
+  .jd-section ul { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+  .jd-section li { position: relative; padding-left: 18px; font-size: 0.9375rem; line-height: 1.65; color: var(--jd-fg-2); }
+  .jd-section li::before { content: ""; position: absolute; left: 3px; top: 0.65em; width: 4px; height: 4px; border-radius: 50%; background: var(--jd-mint); }
+  .jd-eeo { padding-top: 24px; border-top: 1px solid var(--jd-border); }
+  .jd-eeo p { font-size: 0.8125rem; line-height: 1.65; color: var(--jd-fg-muted); }
+  .jd-apply-card { position: sticky; top: 80px; padding: 28px; border: 1px solid var(--jd-border); border-radius: 0; background: var(--jd-bg); }
+  .jd-apply-card h3 { font-family: var(--jd-sans); font-size: 1.125rem; font-weight: 700; margin-bottom: 10px; }
+  .jd-apply-card p { font-size: 0.875rem; line-height: 1.6; color: var(--jd-fg-2); margin-bottom: 16px; }
+  .jd-btn { display: flex; align-items: center; justify-content: center; height: 44px; width: 100%; font-family: var(--jd-sans); font-size: 0.9375rem; font-weight: 600; border-radius: 0; background: var(--jd-mint); color: var(--jd-dark); text-decoration: none; transition: opacity 0.15s; }
+  .jd-btn:hover { opacity: 0.85; }
+  .jd-apply-note { font-family: var(--jd-mono); font-size: 0.75rem; color: var(--jd-fg-muted); text-align: center; margin-top: 10px; margin-bottom: 0; }
+  .jd-footer { background: var(--jd-dark); padding: 24px 0; }
+  .jd-footer .jd-container { display: flex; align-items: center; justify-content: space-between; }
+  .jd-footer span { font-size: 0.8125rem; color: rgba(255,255,255,0.4); }
+  .jd-footer nav { display: flex; gap: 20px; }
+  .jd-footer nav a { font-size: 0.8125rem; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.15s; }
+  .jd-footer nav a:hover { color: rgba(255,255,255,0.8); }
+  @media (max-width: 639px) { .jd-footer .jd-container { flex-direction: column; gap: 12px; } }
+</style>

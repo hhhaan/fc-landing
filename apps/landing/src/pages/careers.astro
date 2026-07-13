@@ -1,0 +1,290 @@
+---
+import "../styles/global.css";
+import Favicon from "../components/ui/Favicon.astro";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <Favicon />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="First Crack careers — join the team building roasting software for specialty coffee." />
+    <title>Careers — First Crack</title>
+  </head>
+  <body class="cr">
+
+    <header class="cr-nav">
+      <div class="cr-nav-inner">
+        <a href="/" class="cr-nav-brand">First Crack</a>
+        <nav class="cr-nav-links">
+          <a href="/" class="cr-nav-link">Home</a>
+          <a href="/about" class="cr-nav-link">About</a>
+          <a href="/careers" class="cr-nav-link is-active">Careers</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero -->
+      <section class="cr-hero">
+        <div class="cr-container cr-container-narrow">
+          <h1 class="cr-hero-title">Build the future of coffee roasting</h1>
+          <p class="cr-hero-lead">
+            We're a small team shipping desktop software that specialty roasters rely on every day. Remote-first, craft-obsessed, and moving fast.
+          </p>
+        </div>
+      </section>
+
+      <!-- Job Listings -->
+      <section class="cr-jobs">
+        <div class="cr-container">
+          <!-- Filters -->
+          <div class="cr-filters">
+            <div class="cr-filter">
+              <label class="cr-filter-label">Department</label>
+              <select id="filter-dept" class="cr-filter-select">
+                <option value="">All</option>
+                <option value="engineering">Engineering</option>
+                <option value="design">Design</option>
+                <option value="sales">Sales</option>
+                <option value="product">Product</option>
+              </select>
+            </div>
+            <div class="cr-filter">
+              <label class="cr-filter-label">Location</label>
+              <select id="filter-loc" class="cr-filter-select">
+                <option value="">All</option>
+                <option value="apac">APAC</option>
+                <option value="emea">EMEA</option>
+                <option value="americas">Americas</option>
+              </select>
+            </div>
+            <div class="cr-filter cr-filter-search">
+              <label class="cr-filter-label">Search</label>
+              <input type="text" id="filter-search" class="cr-filter-input" placeholder="Search roles..." />
+            </div>
+          </div>
+
+          <!-- Table header -->
+          <div class="cr-table-head">
+            <div class="cr-col cr-col-title">Position Title</div>
+            <div class="cr-col cr-col-dept">Department</div>
+            <div class="cr-col cr-col-loc">Location</div>
+          </div>
+
+          <!-- Job rows -->
+          <div class="cr-table-body" id="job-list">
+            <a href="/careers/desktop-engineer" class="cr-row" data-dept="engineering" data-loc="apac americas">
+              <div class="cr-col cr-col-title">Desktop Engineer</div>
+              <div class="cr-col cr-col-dept">Engineering</div>
+              <div class="cr-col cr-col-loc">Remote — APAC / Americas</div>
+            </a>
+            <a href="/careers/backend-engineer" class="cr-row" data-dept="engineering" data-loc="apac emea">
+              <div class="cr-col cr-col-title">Backend Engineer</div>
+              <div class="cr-col cr-col-dept">Engineering</div>
+              <div class="cr-col cr-col-loc">Remote — APAC / EMEA</div>
+            </a>
+            <a href="/careers/product-designer" class="cr-row" data-dept="design" data-loc="apac emea">
+              <div class="cr-col cr-col-title">Product Designer</div>
+              <div class="cr-col cr-col-dept">Design</div>
+              <div class="cr-col cr-col-loc">Remote — APAC / EMEA</div>
+            </a>
+            <a href="/careers/forward-deployed-engineer" class="cr-row" data-dept="engineering sales" data-loc="apac emea">
+              <div class="cr-col cr-col-title">Forward Deployed Engineer</div>
+              <div class="cr-col cr-col-dept">Engineering · Sales</div>
+              <div class="cr-col cr-col-loc">Remote — APAC / EMEA</div>
+            </a>
+            <a href="/careers/sales-lead" class="cr-row" data-dept="sales" data-loc="apac">
+              <div class="cr-col cr-col-title">Sales Lead</div>
+              <div class="cr-col cr-col-dept">Sales</div>
+              <div class="cr-col cr-col-loc">Remote — APAC</div>
+            </a>
+          </div>
+
+          <div class="cr-jobs-count" id="jobs-count">Showing 5 of 5 roles</div>
+        </div>
+      </section>
+
+      <!-- Why work here -->
+      <section class="cr-section cr-section-alt">
+        <div class="cr-container cr-container-narrow">
+          <h2 class="cr-section-title">Why First Crack</h2>
+          <div class="cr-why">
+            <div class="cr-why-item">
+              <h4>Remote-first</h4>
+              <p>Work from wherever your coffee tastes best. We overlap a few core hours but trust you to manage your time.</p>
+            </div>
+            <div class="cr-why-item">
+              <h4>Ship every week</h4>
+              <p>No six-month roadmaps. Your work goes from commit to roast floor in days.</p>
+            </div>
+            <div class="cr-why-item">
+              <h4>Craft matters</h4>
+              <p>Every hire learns to roast. You build tools for a craft you've practiced yourself.</p>
+            </div>
+            <div class="cr-why-item">
+              <h4>Competitive pay &amp; equity</h4>
+              <p>Salary that reflects your experience, meaningful equity, and a coffee budget — obviously.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="cr-cta">
+        <div class="cr-container cr-container-narrow">
+          <h2 class="cr-cta-title">Don't see your role?</h2>
+          <p class="cr-cta-lead">We create roles for the right people. Tell us why you'd make First Crack better.</p>
+          <a href="mailto:careers@firstcrackiscoming.com" class="cr-btn">Apply now</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="cr-footer">
+      <div class="cr-container">
+        <div class="cr-footer-inner">
+          <span class="cr-footer-logo">First Crack &copy; 2026</span>
+          <nav class="cr-footer-links">
+            <a href="/about">About</a>
+            <a href="/careers">Careers</a>
+            <a href="mailto:hello@firstcrackiscoming.com">Contact</a>
+          </nav>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const dept = document.getElementById('filter-dept') as HTMLSelectElement;
+      const loc = document.getElementById('filter-loc') as HTMLSelectElement;
+      const search = document.getElementById('filter-search') as HTMLInputElement;
+      const rows = document.querySelectorAll('.cr-row') as NodeListOf<HTMLElement>;
+      const count = document.getElementById('jobs-count')!;
+
+      function filter() {
+        const d = dept.value;
+        const l = loc.value;
+        const q = search.value.toLowerCase();
+        let visible = 0;
+        rows.forEach((row) => {
+          const rd = row.dataset.dept || '';
+          const rl = row.dataset.loc || '';
+          const title = row.querySelector('.cr-col-title')?.textContent?.toLowerCase() || '';
+          const deptText = row.querySelector('.cr-col-dept')?.textContent?.toLowerCase() || '';
+          const show =
+            (!d || rd.includes(d)) &&
+            (!l || rl.includes(l)) &&
+            (!q || title.includes(q) || deptText.includes(q));
+          row.style.display = show ? '' : 'none';
+          if (show) visible++;
+        });
+        count.textContent = `Showing ${visible} of ${rows.length} roles`;
+      }
+
+      dept.addEventListener('change', filter);
+      loc.addEventListener('change', filter);
+      search.addEventListener('input', filter);
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --cr-mint: #81fba5;
+    --cr-mint-dim: rgba(129, 251, 165, 0.12);
+    --cr-dark: #0b0b0b;
+    --cr-fg: #0b0b0b;
+    --cr-fg-secondary: #4a4a4a;
+    --cr-fg-muted: #767676;
+    --cr-bg: #ffffff;
+    --cr-bg-alt: #f9fafb;
+    --cr-border: rgba(0, 0, 0, 0.05);
+    --cr-border-strong: rgba(0, 0, 0, 0.1);
+    --cr-sans: 'Pretendard Variable', 'Pretendard', system-ui, -apple-system, sans-serif;
+    --cr-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --cr-max: 1280px;
+  }
+
+  .cr { margin: 0; font-family: var(--cr-sans); font-size: 16px; line-height: 1.5; color: var(--cr-fg); background: var(--cr-bg); -webkit-font-smoothing: antialiased; }
+  .cr *, .cr *::before, .cr *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  .cr a { color: inherit; text-decoration: none; }
+
+  .cr-container { max-width: var(--cr-max); margin-inline: auto; padding-inline: 24px; }
+  .cr-container-narrow { max-width: 900px; }
+
+  /* Nav */
+  .cr-nav { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); border-bottom: 1px solid var(--cr-border); }
+  .cr-nav-inner { display: flex; align-items: center; justify-content: space-between; max-width: var(--cr-max); margin: 0 auto; padding: 0 24px; height: 56px; }
+  .cr-nav-brand { font-family: var(--cr-sans); font-size: 1.125rem; font-weight: 700; letter-spacing: -0.02em; color: var(--cr-fg); text-decoration: none; }
+  .cr-nav-links { display: flex; gap: 4px; }
+  .cr-nav-link { padding: 8px 14px; font-size: 0.9375rem; font-weight: 500; color: var(--cr-fg-secondary); border-radius: 0; transition: background 0.15s; }
+  .cr-nav-link:hover { background: rgba(0,0,0,0.04); }
+  .cr-nav-link.is-active { color: var(--cr-fg); background: rgba(0,0,0,0.05); }
+
+  /* Hero */
+  .cr-hero { padding: 72px 0 48px; }
+  .cr-hero-title { font-family: var(--cr-sans); font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 16px; }
+  .cr-hero-lead { font-size: 1.125rem; line-height: 1.7; color: var(--cr-fg-secondary); max-width: 36rem; }
+
+  /* Filters */
+  .cr-jobs { padding: 0 0 64px; }
+  .cr-filters { display: flex; gap: 16px; padding: 24px 0; border-bottom: 1px solid var(--cr-border); flex-wrap: wrap; }
+  .cr-filter { display: flex; flex-direction: column; gap: 4px; }
+  .cr-filter-label { font-family: var(--cr-mono); font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cr-fg-muted); }
+  .cr-filter-select { height: 40px; padding: 0 32px 0 12px; font-family: var(--cr-sans); font-size: 0.9375rem; border: 1px solid var(--cr-border-strong); border-radius: 0; background: var(--cr-bg); color: var(--cr-fg); cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 5L6 8L9 5' stroke='%23767676' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; }
+  .cr-filter-select:focus { outline: 2px solid var(--cr-mint); outline-offset: 1px; border-color: transparent; }
+  .cr-filter-search { flex: 1; min-width: 200px; }
+  .cr-filter-input { height: 40px; padding: 0 12px; font-family: var(--cr-sans); font-size: 0.9375rem; border: 1px solid var(--cr-border-strong); border-radius: 0; background: var(--cr-bg); color: var(--cr-fg); }
+  .cr-filter-input:focus { outline: 2px solid var(--cr-mint); outline-offset: 1px; border-color: transparent; }
+  .cr-filter-input::placeholder { color: var(--cr-fg-muted); }
+
+  /* Table */
+  .cr-table-head { display: grid; grid-template-columns: 2fr 1.2fr 1.5fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--cr-border); }
+  .cr-table-head .cr-col { font-family: var(--cr-mono); font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cr-fg-muted); }
+
+  .cr-row { display: grid; grid-template-columns: 2fr 1.2fr 1.5fr; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--cr-border); color: var(--cr-fg); text-decoration: none; transition: background 0.15s; }
+  .cr-row:hover { background: rgba(0,0,0,0.02); }
+
+  .cr-col-title { font-weight: 600; font-size: 0.9375rem; }
+  .cr-col-dept { font-size: 0.875rem; color: var(--cr-fg-secondary); }
+  .cr-col-loc { font-size: 0.875rem; color: var(--cr-fg-muted); }
+
+  .cr-jobs-count { padding: 16px 0; font-size: 0.8125rem; color: var(--cr-fg-muted); }
+
+  /* Section */
+  .cr-section { padding: 80px 0; }
+  .cr-section-alt { background: var(--cr-bg-alt); border-top: 1px solid var(--cr-border); border-bottom: 1px solid var(--cr-border); }
+  .cr-section-title { font-family: var(--cr-sans); font-size: clamp(1.75rem, 4vw, 2.25rem); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 40px; }
+
+  .cr-why { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  @media (max-width: 639px) { .cr-why { grid-template-columns: 1fr; } }
+  .cr-why-item { padding: 24px; border: 1px solid var(--cr-border); border-radius: 0; }
+  .cr-why-item h4 { font-size: 1rem; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 6px; }
+  .cr-why-item p { font-size: 0.875rem; line-height: 1.6; color: var(--cr-fg-secondary); }
+
+  /* CTA */
+  .cr-cta { padding: 96px 0; background: var(--cr-dark); color: #fff; }
+  .cr-cta-title { font-family: var(--cr-sans); font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 12px; }
+  .cr-cta-lead { font-size: 1.125rem; line-height: 1.7; color: rgba(255,255,255,0.5); max-width: 30rem; margin-bottom: 24px; }
+
+  /* Button */
+  .cr-btn { display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 24px; font-family: var(--cr-sans); font-size: 0.9375rem; font-weight: 600; border-radius: 0; background: var(--cr-mint); color: var(--cr-dark); text-decoration: none; transition: opacity 0.15s; cursor: pointer; border: none; }
+  .cr-btn:hover { opacity: 0.85; }
+
+  /* Footer */
+  .cr-footer { background: var(--cr-dark); border-top: 1px solid rgba(255,255,255,0.08); padding: 32px 0; }
+  .cr-footer-inner { display: flex; align-items: center; justify-content: space-between; }
+  .cr-footer-logo { font-family: var(--cr-sans); font-size: 0.8125rem; color: rgba(255,255,255,0.4); }
+  .cr-footer-links { display: flex; gap: 24px; }
+  .cr-footer-links a { font-size: 0.8125rem; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.15s; }
+  .cr-footer-links a:hover { color: rgba(255,255,255,0.8); }
+
+  @media (max-width: 767px) {
+    .cr-hero { padding: 48px 0 32px; }
+    .cr-table-head { display: none; }
+    .cr-row { grid-template-columns: 1fr; gap: 4px; padding: 16px 0; }
+    .cr-col-dept, .cr-col-loc { font-size: 0.8125rem; }
+    .cr-filters { flex-direction: column; }
+    .cr-cta { padding: 64px 0; }
+    .cr-footer-inner { flex-direction: column; gap: 14px; }
+  }
+</style>

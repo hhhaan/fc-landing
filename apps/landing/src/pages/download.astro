@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import Favicon from "../components/ui/Favicon.astro";
 import { createClient } from "../lib/supabase";
 
 const supabase = createClient({
@@ -23,6 +24,7 @@ const DOWNLOAD_LINKS = {
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
+    <Favicon />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="First Crack — 로스터를 위한 스마트 로스팅 플랫폼. 데스크탑 앱 다운로드." />
     <title>Download — First Crack</title>
@@ -209,7 +211,7 @@ const DOWNLOAD_LINKS = {
           <a href="/privacy" class="footer-link text-caption">Privacy</a>
           <a href="/terms" class="footer-link text-caption">Terms</a>
           <a href="/docs" class="footer-link text-caption">Docs</a>
-          <a href="mailto:hello@firstcrack.io" class="footer-link text-caption">Contact</a>
+          <a href="mailto:hello@firstcrackiscoming.com" class="footer-link text-caption">Contact</a>
         </nav>
       </div>
     </footer>
@@ -243,9 +245,14 @@ const DOWNLOAD_LINKS = {
 </html>
 
 <style>
+  /* --- Radius 0: sharp corners everywhere --- */
+  :global(.card) { border-radius: 0 !important; }
+  :global(.card-lg) { border-radius: 0 !important; }
+  :global(.btn-primary) { border-radius: 0 !important; }
+
   /* --- Recommended Highlight --- */
   .download-card-recommended {
-    border: 2px solid var(--color-fg) !important;
+    border: 1px solid var(--color-fg) !important;
     transform: scale(1.02);
     box-shadow: var(--shadow-warm-lift), var(--shadow-card) !important;
     position: relative;
@@ -258,7 +265,7 @@ const DOWNLOAD_LINKS = {
     background: var(--color-fg);
     color: var(--color-bg);
     padding: var(--space-4) var(--space-12);
-    border-radius: var(--radius-pill);
+    border-radius: 0;
     font-size: var(--text-micro);
     font-weight: 600;
   }
@@ -289,7 +296,7 @@ const DOWNLOAD_LINKS = {
   .nav .nav-link {
     color: var(--color-fg-secondary);
     padding: var(--space-8) var(--space-12);
-    border-radius: var(--radius-subtle);
+    border-radius: 0;
     transition: color var(--motion-fast) ease, background-color var(--motion-fast) ease;
   }
   .nav .nav-link:hover {
@@ -304,7 +311,7 @@ const DOWNLOAD_LINKS = {
   .btn-nav-ghost {
     background: transparent;
     color: var(--color-fg-secondary);
-    border-radius: var(--radius-pill);
+    border-radius: 0;
     padding: var(--space-8) var(--space-16);
     font-size: var(--text-nav);
     font-weight: 500;
@@ -314,7 +321,7 @@ const DOWNLOAD_LINKS = {
   .btn-nav-signup {
     background: var(--color-fg);
     color: var(--color-bg);
-    border-radius: var(--radius-pill);
+    border-radius: 0;
     padding: var(--space-8) var(--space-16);
     font-size: var(--text-nav);
     font-weight: 500;
@@ -347,7 +354,7 @@ const DOWNLOAD_LINKS = {
     font-size: var(--text-sm);
     font-weight: 500;
     padding: var(--space-4) var(--space-12);
-    border-radius: var(--radius-pill);
+    border-radius: 0;
     background: var(--color-bg-secondary);
     color: var(--color-fg-secondary);
     box-shadow: var(--shadow-inset-border);
@@ -397,7 +404,7 @@ const DOWNLOAD_LINKS = {
     align-items: center;
     justify-content: center;
     background: var(--color-bg-secondary);
-    border-radius: var(--radius-comfort);
+    border-radius: 0;
     color: var(--color-fg);
   }
   .platform-title { font-size: 1.5rem; }
@@ -433,7 +440,7 @@ const DOWNLOAD_LINKS = {
     background: var(--color-fg);
     color: var(--color-bg);
     padding: var(--space-8) var(--space-20);
-    border-radius: var(--radius-standard);
+    border-radius: 0;
     min-width: 140px;
   }
   .mobile-app-visual {
@@ -445,7 +452,7 @@ const DOWNLOAD_LINKS = {
     height: 480px;
     background: var(--color-bg);
     border: 8px solid var(--color-fg);
-    border-radius: 36px;
+    border-radius: 0;
     padding: 12px;
     position: relative;
     box-shadow: var(--shadow-card);
@@ -454,7 +461,7 @@ const DOWNLOAD_LINKS = {
     width: 100%;
     height: 100%;
     background: var(--color-bg-secondary);
-    border-radius: 24px;
+    border-radius: 0;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -1,10 +1,12 @@
 ---
 import "../styles/global.css";
+import Favicon from "../components/ui/Favicon.astro";
 ---
 
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
+    <Favicon />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="First Crack 서비스 이용약관 — 서비스 이용 규칙, 책임, 결제 및 환불 정책." />
     <title>Terms of Service — First Crack</title>
@@ -114,7 +116,7 @@ import "../styles/global.css";
 
         <section class="legal-section">
           <h2 class="legal-h2">10. Contact</h2>
-          <p>For questions about these terms, please contact <a href="mailto:hello@firstcrack.io" class="legal-link">hello@firstcrack.io</a>.</p>
+          <p>For questions about these terms, please contact <a href="mailto:hello@firstcrackiscoming.com" class="legal-link">hello@firstcrackiscoming.com</a>.</p>
         </section>
       </div>
     </main>
@@ -130,7 +132,7 @@ import "../styles/global.css";
           <a href="/privacy" class="footer-link">Privacy</a>
           <a href="/terms" class="footer-link">Terms</a>
           <a href="/docs" class="footer-link">Docs</a>
-          <a href="mailto:hello@firstcrack.io" class="footer-link">Contact</a>
+          <a href="mailto:hello@firstcrackiscoming.com" class="footer-link">Contact</a>
         </nav>
       </div>
     </footer>
@@ -224,7 +226,7 @@ import "../styles/global.css";
     color: var(--color-fg-secondary);
     background: var(--color-bg-secondary);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-standard);
+    border-radius: 0;
     padding: var(--space-8) var(--space-16);
     white-space: nowrap;
     display: flex;
@@ -268,7 +270,7 @@ import "../styles/global.css";
   .nav .nav-link {
     color: var(--color-fg-secondary);
     padding: var(--space-8) var(--space-12);
-    border-radius: var(--radius-subtle);
+    border-radius: 0;
     transition: color var(--motion-fast) ease;
     font-size: var(--text-nav);
     font-weight: 500;
