@@ -3,6 +3,7 @@ import "../styles/global.css";
 import Favicon from "../components/ui/Favicon.astro";
 import { createClient } from "../lib/supabase";
 import { safeRedirectPath } from "../lib/safeRedirect";
+import { resolveTrialCta } from "../lib/trialCta";
 
 const supabaseServer = createClient({
   request: Astro.request,
@@ -12,7 +13,8 @@ const supabaseServer = createClient({
 const { data: { user } } = await supabaseServer.auth.getUser();
 
 if (user) {
-  return Astro.redirect("/");
+  const trialCta = await resolveTrialCta(Astro);
+  return Astro.redirect(trialCta.href);
 }
 
 const next = safeRedirectPath(Astro.url.searchParams.get("next"));

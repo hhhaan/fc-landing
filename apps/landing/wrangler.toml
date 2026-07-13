@@ -11,6 +11,7 @@ POLAR_SUCCESS_URL = "https://fc-landing.pages.dev/account?welcome=1"
 POLAR_SERVER = "sandbox"
 POLAR_PRICE_MONTHLY_SBX = "b7a53b38-ebc6-4a07-9728-a23bc2a94883"
 POLAR_PRICE_YEARLY_SBX = "7a4e2064-aa79-4f77-acf1-2d68b54f1e0d"
+# Pro+ sandbox price IDs — set in Cloudflare Pages vars after Polar product setup
 POLAR_PRICE_ENTERPRISE_MONTHLY_SBX = "e3fac14e-bcff-47d0-8ec8-349ec4421021"
 POLAR_PRICE_ENTERPRISE_YEARLY_SBX = "8349ba5b-dadf-4f81-9dae-fcb546ff8d87"
 LOGSNAG_PROJECT = "first-crack"

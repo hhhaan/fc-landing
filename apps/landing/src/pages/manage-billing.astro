@@ -1,0 +1,61 @@
+---
+import { requireLogin } from "../lib/auth";
+import { createClient } from "../lib/supabase";
+import { polarApiBase } from "../lib/polarPlans";
+
+const userOrRedirect = await requireLogin(Astro, Astro.request.url);
+if (userOrRedirect instanceof Response) return userOrRedirect;
+const user = userOrRedirect;
+
+const supabase = createClient({
+  request: Astro.request,
+  cookies: Astro.cookies,
+});
+
+const { data: profile, error: profileError } = await supabase
+  .from("profiles")
+  .select("polar_customer_id")
+  .eq("id", user.id)
+  .maybeSingle();
+
+if (profileError) {
+  console.error("[manage-billing] profile fetch error", profileError.message);
+}
+
+const customerId = profile?.polar_customer_id;
+if (!customerId) {
+  return Astro.redirect("/account?billing=unavailable");
+}
+
+const returnUrl = new URL("/account", Astro.url.origin).href;
+
+const res = await fetch(`${polarApiBase(import.meta.env)}/v1/customer-sessions/`, {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${import.meta.env.POLAR_ACCESS_TOKEN}`,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    customer_id: customerId,
+    return_url: returnUrl,
+  }),
+});
+
+if (!res.ok) {
+  console.error(`[Polar] customer session failed (${res.status}):`, await res.text());
+  return Astro.redirect("/account?billing=error");
+}
+
+let session: { customer_portal_url?: string };
+try {
+  session = await res.json();
+} catch {
+  return Astro.redirect("/account?billing=error");
+}
+
+if (!session.customer_portal_url) {
+  return Astro.redirect("/account?billing=error");
+}
+
+return Astro.redirect(session.customer_portal_url);
+---

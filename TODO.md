@@ -72,8 +72,16 @@ git push
 POLAR_SERVER = "production"
 POLAR_PRICE_MONTHLY_PROD = "..."
 POLAR_PRICE_YEARLY_PROD = "..."
+POLAR_PRICE_PRO_PLUS_MONTHLY_PROD = "..."
+POLAR_PRICE_PRO_PLUS_YEARLY_PROD = "..."
 POLAR_PRICE_ENTERPRISE_MONTHLY_PROD = "..."
 POLAR_PRICE_ENTERPRISE_YEARLY_PROD = "..."
+```
+
+Sandbox Pro+ (compare-plans / `pro-plus-*` checkout):
+```toml
+POLAR_PRICE_PRO_PLUS_MONTHLY_SBX = "..."  # Polar Dashboard → Pro+ product → monthly price ID
+POLAR_PRICE_PRO_PLUS_YEARLY_SBX = "..."
 ```
 
 ### Secrets 업데이트

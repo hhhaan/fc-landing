@@ -1,0 +1,695 @@
+---
+interface Props {
+  theme?: "dark" | "light";
+  animate?: boolean;
+  loopEnd?: number;
+}
+
+const { theme = "dark", animate = true, loopEnd = 582 } = Astro.props;
+---
+
+<div
+  class="ox-roast-chart"
+  data-theme={theme}
+  data-animate={animate ? "true" : "false"}
+  data-loop-end={loopEnd}
+  aria-hidden="true"
+>
+  <div class="ox-roast-chart-head">
+    <div class="ox-roast-chart-meta">
+      <span class="ox-roast-chart-batch">Ethiopia Guji · Washed · #2847</span>
+      <span class="ox-roast-chart-weight">12.4 kg</span>
+    </div>
+    <div class="ox-roast-chart-status">
+      <span class="ox-roast-chart-live" data-live-dot></span>
+      <span data-status-label>Live roast</span>
+    </div>
+  </div>
+
+  <div class="ox-roast-chart-canvas-wrap">
+    <canvas class="ox-roast-chart-canvas"></canvas>
+  </div>
+
+  <div class="ox-roast-chart-legend">
+    <span><i class="ox-roast-swatch ox-roast-swatch-bt"></i>BT</span>
+    <span><i class="ox-roast-swatch ox-roast-swatch-et"></i>ET</span>
+    <span><i class="ox-roast-swatch ox-roast-swatch-ref"></i>Reference</span>
+    <span><i class="ox-roast-swatch ox-roast-swatch-ror"></i>RoR</span>
+  </div>
+
+  <div class="ox-roast-chart-metrics">
+    <div>
+      <label>BT</label>
+      <b data-metric-bt>—</b>
+    </div>
+    <div>
+      <label>ET</label>
+      <b data-metric-et>—</b>
+    </div>
+    <div>
+      <label>RoR</label>
+      <b data-metric-ror>—</b>
+    </div>
+    <div>
+      <label>Time</label>
+      <b data-metric-time>00:00</b>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ox-roast-chart {
+    --rc-bg: rgba(0, 0, 0, 0.32);
+    --rc-border: rgba(250, 250, 249, 0.1);
+    --rc-text: #fafaf9;
+    --rc-muted: rgba(250, 250, 249, 0.45);
+    --rc-grid: rgba(250, 250, 249, 0.07);
+    --rc-metric-bg: rgba(8, 5, 3, 0.45);
+    border: 1px solid var(--rc-border);
+    background: var(--rc-bg);
+  }
+
+  .ox-roast-chart[data-theme="light"] {
+    --rc-bg: #fff;
+    --rc-border: rgba(8, 5, 3, 0.08);
+    --rc-text: #080503;
+    --rc-muted: rgba(94, 83, 74, 0.85);
+    --rc-grid: rgba(8, 5, 3, 0.06);
+    --rc-metric-bg: #fafaf9;
+  }
+
+  .ox-roast-chart-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--rc-border);
+  }
+
+  .ox-roast-chart-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .ox-roast-chart-batch {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--rc-text);
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ox-roast-chart-weight {
+    font-family: var(--ox-mono);
+    font-size: 10px;
+    color: var(--rc-muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .ox-roast-chart-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--ox-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--rc-muted);
+    flex-shrink: 0;
+  }
+
+  .ox-roast-chart-live {
+    width: 6px;
+    height: 6px;
+    background: #22c55e;
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
+    animation: ox-roast-pulse 2s ease-out infinite;
+  }
+
+  @keyframes ox-roast-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
+    }
+    70% {
+      box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+    }
+  }
+
+  .ox-roast-chart-canvas-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    min-height: 220px;
+  }
+
+  .ox-roast-chart-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ox-roast-chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 10px 16px;
+    border-top: 1px solid var(--rc-border);
+    border-bottom: 1px solid var(--rc-border);
+    font-family: var(--ox-mono);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--rc-muted);
+  }
+
+  .ox-roast-chart-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .ox-roast-swatch {
+    display: inline-block;
+    width: 14px;
+    height: 2px;
+  }
+
+  .ox-roast-swatch-bt {
+    background: #fafaf9;
+    height: 3px;
+  }
+
+  .ox-roast-chart[data-theme="light"] .ox-roast-swatch-bt {
+    background: #080503;
+  }
+
+  .ox-roast-swatch-et {
+    background: rgba(250, 250, 249, 0.42);
+  }
+
+  .ox-roast-chart[data-theme="light"] .ox-roast-swatch-et {
+    background: rgba(8, 5, 3, 0.28);
+  }
+
+  .ox-roast-swatch-ref {
+    background: repeating-linear-gradient(
+      90deg,
+      rgba(251, 191, 36, 0.9) 0 4px,
+      transparent 4px 7px
+    );
+    height: 2px;
+  }
+
+  .ox-roast-swatch-ror {
+    background: rgba(34, 197, 94, 0.75);
+  }
+
+  .ox-roast-chart-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--rc-border);
+    border-top: 1px solid var(--rc-border);
+  }
+
+  .ox-roast-chart-metrics > div {
+    background: var(--rc-metric-bg);
+    padding: 12px 8px;
+    text-align: center;
+  }
+
+  .ox-roast-chart-metrics label {
+    display: block;
+    font-family: var(--ox-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--rc-muted);
+    margin-bottom: 4px;
+  }
+
+  .ox-roast-chart-metrics b {
+    font-family: var(--ox-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--rc-text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ox-roast-chart-live {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  import {
+    ROAST_EVENTS,
+    ROAST_PHASES,
+    generateRoastProfile,
+    formatRoastTime,
+    formatTemp,
+    formatRor,
+    type RoastPoint,
+  } from "../../lib/roastChartData";
+
+  type Theme = "dark" | "light";
+
+  const PALETTE = {
+    dark: {
+      bg: "rgba(4, 3, 2, 0.55)",
+      grid: "rgba(250, 250, 249, 0.07)",
+      gridStrong: "rgba(250, 250, 249, 0.12)",
+      text: "rgba(250, 250, 249, 0.55)",
+      textStrong: "rgba(250, 250, 249, 0.82)",
+      bt: "#fafaf9",
+      et: "rgba(250, 250, 249, 0.38)",
+      ref: "rgba(251, 191, 36, 0.72)",
+      ror: "rgba(34, 197, 94, 0.78)",
+      rorFill: "rgba(34, 197, 94, 0.12)",
+      cursor: "#fafaf9",
+      cursorGlow: "rgba(250, 250, 249, 0.18)",
+      event: "rgba(250, 250, 249, 0.22)",
+      eventLabel: "rgba(250, 250, 249, 0.62)",
+    },
+    light: {
+      bg: "#f7f6f3",
+      grid: "rgba(8, 5, 3, 0.06)",
+      gridStrong: "rgba(8, 5, 3, 0.1)",
+      text: "rgba(94, 83, 74, 0.75)",
+      textStrong: "rgba(8, 5, 3, 0.82)",
+      bt: "#080503",
+      et: "rgba(8, 5, 3, 0.28)",
+      ref: "rgba(217, 119, 6, 0.72)",
+      ror: "rgba(22, 163, 74, 0.78)",
+      rorFill: "rgba(22, 163, 74, 0.1)",
+      cursor: "#080503",
+      cursorGlow: "rgba(8, 5, 3, 0.08)",
+      event: "rgba(8, 5, 3, 0.14)",
+      eventLabel: "rgba(94, 83, 74, 0.85)",
+    },
+  } as const;
+
+  class RoastChartRenderer {
+    private root: HTMLElement;
+    private canvas: HTMLCanvasElement;
+    private ctx: CanvasRenderingContext2D;
+    private theme: Theme;
+    private palette: (typeof PALETTE)[Theme];
+    private data: RoastPoint[];
+    private loopEnd: number;
+    private animate: boolean;
+    private playhead = 0;
+    private raf = 0;
+    private lastTs = 0;
+    private pauseUntil = 0;
+    private dpr = 1;
+    private width = 0;
+    private height = 0;
+    private margin = { top: 22, right: 44, bottom: 30, left: 44 };
+    private rorSplit = 0.28;
+    private tempMin = 80;
+    private tempMax = 250;
+    private rorMax = 28;
+    private timeMax = 780;
+    private resizeObserver?: ResizeObserver;
+
+    constructor(root: HTMLElement) {
+      this.root = root;
+      const canvas = root.querySelector<HTMLCanvasElement>(".ox-roast-chart-canvas");
+      if (!canvas) throw new Error("Roast chart canvas missing");
+      const ctx = canvas.getContext("2d");
+      if (!ctx) throw new Error("2d context unavailable");
+      this.canvas = canvas;
+      this.ctx = ctx;
+      this.theme = (root.dataset.theme as Theme) || "dark";
+      this.palette = PALETTE[this.theme];
+      this.data = generateRoastProfile();
+      this.loopEnd = Number(root.dataset.loopEnd || 582);
+      this.animate = root.dataset.animate !== "false";
+      this.setup();
+    }
+
+    private setup() {
+      this.resize();
+      this.resizeObserver = new ResizeObserver(() => this.resize());
+      this.resizeObserver.observe(this.root);
+      window.addEventListener("resize", this.onResize, { passive: true });
+
+      if (this.animate && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        this.lastTs = performance.now();
+        this.tick(this.lastTs);
+      } else {
+        this.playhead = this.indexAtTime(this.loopEnd);
+        this.render();
+        this.updateMetrics(this.data[this.playhead]);
+      }
+    }
+
+    private onResize = () => this.resize();
+
+    private resize() {
+      const wrap = this.root.querySelector<HTMLElement>(".ox-roast-chart-canvas-wrap");
+      if (!wrap) return;
+      const rect = wrap.getBoundingClientRect();
+      this.dpr = Math.min(window.devicePixelRatio || 1, 2);
+      this.width = Math.max(1, Math.floor(rect.width));
+      this.height = Math.max(1, Math.floor(rect.height));
+      this.canvas.width = Math.floor(this.width * this.dpr);
+      this.canvas.height = Math.floor(this.height * this.dpr);
+      this.canvas.style.width = `${this.width}px`;
+      this.canvas.style.height = `${this.height}px`;
+      this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+      this.render();
+    }
+
+    private plot() {
+      const rorH = Math.floor((this.height - this.margin.top - this.margin.bottom) * this.rorSplit);
+      const mainH = this.height - this.margin.top - this.margin.bottom - rorH - 8;
+      const x0 = this.margin.left;
+      const x1 = this.width - this.margin.right;
+      const mainY0 = this.margin.top;
+      const mainY1 = mainY0 + mainH;
+      const rorY0 = mainY1 + 8;
+      const rorY1 = rorY0 + rorH;
+      return { x0, x1, mainY0, mainY1, rorY0, rorY1, mainH, rorH };
+    }
+
+    private xAt(t: number, x0: number, x1: number) {
+      return x0 + (t / this.timeMax) * (x1 - x0);
+    }
+
+    private yTemp(v: number, y0: number, y1: number) {
+      const p = (v - this.tempMin) / (this.tempMax - this.tempMin);
+      return y1 - p * (y1 - y0);
+    }
+
+    private yRor(v: number, y0: number, y1: number) {
+      const p = Math.min(1, v / this.rorMax);
+      return y1 - p * (y1 - y0);
+    }
+
+    private indexAtTime(t: number) {
+      let lo = 0;
+      let hi = this.data.length - 1;
+      while (lo < hi) {
+        const mid = Math.floor((lo + hi + 1) / 2);
+        if (this.data[mid].t <= t) lo = mid;
+        else hi = mid - 1;
+      }
+      return lo;
+    }
+
+    private drawGrid(x0: number, x1: number, y0: number, y1: number, ticks: number[], mapY: (v: number) => number, suffix: string) {
+      const { ctx, palette } = this;
+      ctx.save();
+      ctx.strokeStyle = palette.grid;
+      ctx.lineWidth = 1;
+      ctx.fillStyle = palette.text;
+      ctx.font = '500 10px "JetBrains Mono", ui-monospace, monospace';
+      ctx.textAlign = "right";
+      ctx.textBaseline = "middle";
+
+      for (const v of ticks) {
+        const y = mapY(v);
+        ctx.beginPath();
+        ctx.moveTo(x0, y + 0.5);
+        ctx.lineTo(x1, y + 0.5);
+        ctx.stroke();
+        ctx.fillText(`${v}${suffix}`, x0 - 8, y);
+      }
+      ctx.restore();
+    }
+
+    private drawTimeAxis(x0: number, x1: number, y: number) {
+      const { ctx, palette } = this;
+      const ticks = [0, 180, 360, 540, 720];
+      ctx.save();
+      ctx.strokeStyle = palette.gridStrong;
+      ctx.fillStyle = palette.text;
+      ctx.font = '500 10px "JetBrains Mono", ui-monospace, monospace';
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+      ctx.beginPath();
+      ctx.moveTo(x0, y + 0.5);
+      ctx.lineTo(x1, y + 0.5);
+      ctx.stroke();
+
+      for (const t of ticks) {
+        const x = this.xAt(t, x0, x1);
+        ctx.beginPath();
+        ctx.moveTo(x + 0.5, y - 4);
+        ctx.lineTo(x + 0.5, y + 4);
+        ctx.stroke();
+        ctx.fillText(formatRoastTime(t), x, y + 6);
+      }
+      ctx.restore();
+    }
+
+    private drawPhases(x0: number, x1: number, y0: number, y1: number) {
+      const { ctx } = this;
+      for (const phase of ROAST_PHASES) {
+        const xA = this.xAt(phase.start, x0, x1);
+        const xB = this.xAt(phase.end, x0, x1);
+        ctx.fillStyle = `rgba(${phase.color}, 0.08)`;
+        ctx.fillRect(xA, y0, xB - xA, y1 - y0);
+        ctx.fillStyle = `rgba(${phase.color}, 0.55)`;
+        ctx.font = '500 9px "JetBrains Mono", ui-monospace, monospace';
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+        if (xB - xA > 54) {
+          ctx.fillText(phase.label.toUpperCase(), (xA + xB) / 2, y0 + 6);
+        }
+      }
+    }
+
+    private drawEvents(x0: number, x1: number, y0: number, y1: number, until: number) {
+      const { ctx, palette } = this;
+      ctx.save();
+      ctx.setLineDash([3, 4]);
+      ctx.strokeStyle = palette.event;
+      ctx.fillStyle = palette.eventLabel;
+      ctx.font = '500 9px "JetBrains Mono", ui-monospace, monospace';
+      ctx.textAlign = "left";
+      ctx.textBaseline = "top";
+
+      for (const ev of ROAST_EVENTS) {
+        if (ev.time > until) continue;
+        const x = this.xAt(ev.time, x0, x1);
+        const label = ev.id === "fc" ? "FC · 1st crack" : ev.label;
+        ctx.beginPath();
+        ctx.moveTo(x + 0.5, y0);
+        ctx.lineTo(x + 0.5, y1);
+        ctx.stroke();
+        ctx.fillText(label, x + 4, y0 + 4);
+      }
+      ctx.restore();
+    }
+
+    private drawSeries(
+      points: RoastPoint[],
+      until: number,
+      key: "bt" | "et" | "refBt" | "refEt" | "ror",
+      color: string,
+      width: number,
+      x0: number,
+      x1: number,
+      y0: number,
+      y1: number,
+      mapY: (v: number) => number,
+      dashed = false,
+    ) {
+      const { ctx } = this;
+      const end = this.indexAtTime(until);
+      if (end <= 0) return;
+
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+      ctx.lineJoin = "round";
+      ctx.lineCap = "round";
+      if (dashed) ctx.setLineDash([5, 4]);
+
+      ctx.beginPath();
+      for (let i = 0; i <= end; i++) {
+        const p = points[i];
+        const x = this.xAt(p.t, x0, x1);
+        const y = mapY(p[key]);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    private drawRorFill(points: RoastPoint[], until: number, x0: number, x1: number, y0: number, y1: number, mapY: (v: number) => number) {
+      const { ctx, palette } = this;
+      const end = this.indexAtTime(until);
+      if (end <= 0) return;
+
+      ctx.save();
+      ctx.beginPath();
+      for (let i = 0; i <= end; i++) {
+        const p = points[i];
+        const x = this.xAt(p.t, x0, x1);
+        const y = mapY(p.ror);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      const last = points[end];
+      ctx.lineTo(this.xAt(last.t, x0, x1), y1);
+      ctx.lineTo(x0, y1);
+      ctx.closePath();
+      ctx.fillStyle = palette.rorFill;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    private drawCursor(point: RoastPoint, x0: number, x1: number, mainY0: number, mainY1: number, rorY0: number, rorY1: number) {
+      const { ctx, palette } = this;
+      const x = this.xAt(point.t, x0, x1);
+      const yBt = this.yTemp(point.bt, mainY0, mainY1);
+
+      ctx.save();
+      ctx.strokeStyle = palette.cursorGlow;
+      ctx.lineWidth = 8;
+      ctx.beginPath();
+      ctx.moveTo(x + 0.5, mainY0);
+      ctx.lineTo(x + 0.5, rorY1);
+      ctx.stroke();
+
+      ctx.strokeStyle = palette.cursor;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([2, 3]);
+      ctx.beginPath();
+      ctx.moveTo(x + 0.5, mainY0);
+      ctx.lineTo(x + 0.5, rorY1);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = palette.cursorGlow;
+      ctx.beginPath();
+      ctx.arc(x, yBt, 7, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = palette.bt;
+      ctx.beginPath();
+      ctx.arc(x, yBt, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    private render() {
+      const { ctx, palette, data } = this;
+      const current = data[this.playhead] ?? data[data.length - 1];
+      const until = current.t;
+      const plot = this.plot();
+
+      ctx.clearRect(0, 0, this.width, this.height);
+      ctx.fillStyle = palette.bg;
+      ctx.fillRect(0, 0, this.width, this.height);
+
+      const mapTemp = (v: number) => this.yTemp(v, plot.mainY0, plot.mainY1);
+      const mapRor = (v: number) => this.yRor(v, plot.rorY0, plot.rorY1);
+
+      this.drawPhases(plot.x0, plot.x1, plot.mainY0, plot.mainY1);
+      this.drawGrid(plot.x0, plot.x1, plot.mainY0, plot.mainY1, [100, 150, 200, 250], mapTemp, "°");
+      this.drawGrid(plot.x0, plot.x1, plot.rorY0, plot.rorY1, [10, 20], mapRor, "");
+
+      ctx.save();
+      ctx.strokeStyle = palette.gridStrong;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(plot.x0 + 0.5, plot.mainY0 + 0.5, plot.x1 - plot.x0 - 1, plot.mainY1 - plot.mainY0 - 1);
+      ctx.strokeRect(plot.x0 + 0.5, plot.rorY0 + 0.5, plot.x1 - plot.x0 - 1, plot.rorY1 - plot.rorY0 - 1);
+      ctx.restore();
+
+      this.drawSeries(data, until, "refBt", palette.ref, 1.5, plot.x0, plot.x1, plot.mainY0, plot.mainY1, mapTemp, true);
+      this.drawSeries(data, until, "refEt", palette.ref, 1, plot.x0, plot.x1, plot.mainY0, plot.mainY1, mapTemp, true);
+      this.drawRorFill(data, until, plot.x0, plot.x1, plot.rorY0, plot.rorY1, mapRor);
+      this.drawSeries(data, until, "et", palette.et, 1.5, plot.x0, plot.x1, plot.mainY0, plot.mainY1, mapTemp);
+      this.drawSeries(data, until, "bt", palette.bt, 2.25, plot.x0, plot.x1, plot.mainY0, plot.mainY1, mapTemp);
+      this.drawSeries(data, until, "ror", palette.ror, 1.75, plot.x0, plot.x1, plot.rorY0, plot.rorY1, mapRor);
+
+      this.drawEvents(plot.x0, plot.x1, plot.mainY0, plot.rorY1, until);
+      this.drawTimeAxis(plot.x0, plot.x1, plot.rorY1 + 2);
+      this.drawCursor(current, plot.x0, plot.x1, plot.mainY0, plot.mainY1, plot.rorY0, plot.rorY1);
+
+      ctx.save();
+      ctx.fillStyle = palette.textStrong;
+      ctx.font = '500 9px "JetBrains Mono", ui-monospace, monospace';
+      ctx.textAlign = "left";
+      ctx.textBaseline = "bottom";
+      ctx.fillText("°C", plot.x0, plot.mainY0 - 6);
+      ctx.textAlign = "right";
+      ctx.fillText("°/m", plot.x1, plot.rorY0 - 4);
+      ctx.restore();
+
+      this.updateMetrics(current);
+    }
+
+    private updateMetrics(point: RoastPoint) {
+      const bt = this.root.querySelector("[data-metric-bt]");
+      const et = this.root.querySelector("[data-metric-et]");
+      const ror = this.root.querySelector("[data-metric-ror]");
+      const time = this.root.querySelector("[data-metric-time]");
+      if (bt) bt.textContent = formatTemp(point.bt);
+      if (et) et.textContent = formatTemp(point.et);
+      if (ror) ror.textContent = formatRor(point.ror);
+      if (time) time.textContent = formatRoastTime(point.t);
+    }
+
+    private tick = (ts: number) => {
+      if (ts < this.pauseUntil) {
+        this.raf = requestAnimationFrame(this.tick);
+        return;
+      }
+
+      const dt = Math.min(48, ts - this.lastTs);
+      this.lastTs = ts;
+      const speed = 38;
+      const nextT = this.data[this.playhead].t + (dt / 1000) * speed;
+
+      if (nextT >= this.loopEnd) {
+        this.playhead = this.indexAtTime(this.loopEnd);
+        this.render();
+        this.pauseUntil = ts + 1800;
+        this.playhead = 0;
+        this.lastTs = ts;
+      } else {
+        this.playhead = this.indexAtTime(nextT);
+        this.render();
+      }
+
+      this.raf = requestAnimationFrame(this.tick);
+    };
+
+    destroy() {
+      cancelAnimationFrame(this.raf);
+      this.resizeObserver?.disconnect();
+      window.removeEventListener("resize", this.onResize);
+    }
+  }
+
+  const charts: RoastChartRenderer[] = [];
+
+  function initCharts() {
+    document.querySelectorAll<HTMLElement>(".ox-roast-chart").forEach((root) => {
+      if (root.dataset.ready === "true") return;
+      root.dataset.ready = "true";
+      charts.push(new RoastChartRenderer(root));
+    });
+  }
+
+  initCharts();
+  document.addEventListener("astro:page-load", initCharts);
+</script>

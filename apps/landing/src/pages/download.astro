@@ -3,8 +3,10 @@ import "../styles/global.css";
 import Favicon from "../components/ui/Favicon.astro";
 import OxNavAuth from "../components/ui/OxNavAuth.astro";
 import { getViewer } from "../lib/authState";
+import { resolveTrialCta } from "../lib/trialCta";
 
 const user = await getViewer(Astro);
+const trialCta = await resolveTrialCta(Astro);
 const year = new Date().getFullYear();
 
 const DOWNLOAD_LINKS = {
@@ -108,9 +110,20 @@ const DOWNLOAD_LINKS = {
           </div>
 
           <p class="ox-dl-fine">
-            New here?
-            <a href="/signup">Start a 14-day trial</a>
-            — 20 batches, no credit card.
+            {
+              trialCta.href === "/download" ? (
+                <>
+                  Already on Pro? Sign in on the desktop app with the same
+                  account.
+                </>
+              ) : (
+                <>
+                  New here?{" "}
+                  <a href={trialCta.href}>{trialCta.label}</a>
+                  — 20 batches, no credit card.
+                </>
+              )
+            }
           </p>
         </div>
       </div>

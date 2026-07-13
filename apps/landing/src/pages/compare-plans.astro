@@ -1,0 +1,957 @@
+---
+import Favicon from "../components/ui/Favicon.astro";
+import { requireLogin } from "../lib/auth";
+
+const userOrRedirect = await requireLogin(
+  Astro,
+  `${Astro.url.pathname}${Astro.url.search}`,
+);
+if (userOrRedirect instanceof Response) return userOrRedirect;
+const user = userOrRedirect;
+
+const checkoutError = Astro.url.searchParams.get("error") === "checkout_failed";
+const year = new Date().getFullYear();
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <Favicon />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Compare First Crack Pro and Pro+ plans and start your 14-day trial."
+    />
+    <title>Compare plans — First Crack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="ox">
+    <main class="ox-cp noise-overlay">
+      <div class="ox-grid-bg" aria-hidden="true"></div>
+
+      <header class="ox-auth-header">
+        <nav class="ox-auth-nav">
+          <a href="/account" class="ox-brand">
+            <span class="ox-brand-name">First Crack</span>
+          </a>
+          <div class="ox-auth-nav-end">
+            <a href="/account" class="ox-cp-back">Account</a>
+            <span class="ox-auth-email">{user.email}</span>
+          </div>
+        </nav>
+      </header>
+
+      <div class="ox-cp-main">
+        <div class="ox-shell ox-cp-inner">
+          <div class="ox-cp-head">
+            <div class="ox-eyebrow">
+              <span class="ox-line"></span>
+              Upgrade
+            </div>
+            <h1 class="ox-cp-title">Compare plans</h1>
+            <p class="ox-cp-lead">
+              Pick Pro or Pro+, start a 14-day trial, and keep roasting on the
+              desktop app with cloud sync.
+            </p>
+          </div>
+
+          {
+            checkoutError && (
+              <div class="ox-cp-banner" role="alert">
+                <p>
+                  Checkout could not start. Try again or email{" "}
+                  <a href="mailto:hello@firstcrackiscoming.com">
+                    hello@firstcrackiscoming.com
+                  </a>
+                  .
+                </p>
+              </div>
+            )
+          }
+
+          <div class="ox-bill">
+            <div class="ox-bill-toggle" role="group" aria-label="Billing period">
+              <button type="button" id="btn-monthly" aria-pressed="false">
+                Monthly
+              </button>
+              <button
+                type="button"
+                class="is-active"
+                id="btn-yearly"
+                aria-pressed="true"
+              >
+                Annual <em>Save ~20%</em>
+              </button>
+            </div>
+          </div>
+
+          <div class="ox-price-grid" id="plan-cards">
+            <article
+              class="ox-price-card ox-cp-card"
+              data-tier="pro"
+              tabindex="0"
+              role="button"
+              aria-pressed="false"
+            >
+              <div class="ox-price-top">
+                <span class="ox-price-n">01</span>
+                <h3>Pro</h3>
+                <p>Core floor ops — roast, inventory, schedule</p>
+              </div>
+              <div class="ox-price-amt">
+                <span
+                  class="ox-price-num"
+                  data-monthly="$49"
+                  data-yearly="$39">$39</span
+                >
+                <span class="ox-price-per">/mo</span>
+              </div>
+              <p class="ox-price-note">Billed $468 / year</p>
+              <ul>
+                <li>200 batches / billing month</li>
+                <li>Live roast + history + profiles</li>
+                <li>Beans, blends, day plan</li>
+                <li>1 seat</li>
+                <li>Desktop app (macOS &amp; Windows)</li>
+              </ul>
+            </article>
+
+            <article
+              class="ox-price-card ox-cp-card is-featured is-selected"
+              data-tier="pro_plus"
+              tabindex="0"
+              role="button"
+              aria-pressed="true"
+            >
+              <div class="ox-price-badge">Most popular</div>
+              <div class="ox-price-top">
+                <span class="ox-price-n">02</span>
+                <h3>Pro+</h3>
+                <p>Unlimited batches + commerce integrations</p>
+              </div>
+              <div class="ox-price-amt">
+                <span
+                  class="ox-price-num"
+                  data-monthly="$79"
+                  data-yearly="$63">$63</span
+                >
+                <span class="ox-price-per">/mo</span>
+              </div>
+              <p class="ox-price-note">Billed $756 / year</p>
+              <ul>
+                <li>Unlimited batches</li>
+                <li>Everything in Pro</li>
+                <li>Shopify &amp; commerce connectors</li>
+                <li>Payment / store sync (roadmap GA)</li>
+                <li>1 seat</li>
+              </ul>
+            </article>
+
+            <article class="ox-price-card ox-cp-card is-enterprise" data-tier="enterprise">
+              <div class="ox-price-top">
+                <span class="ox-price-n">03</span>
+                <h3>Enterprise</h3>
+                <p>Teams, custom work, dedicated engineer (FDE)</p>
+              </div>
+              <div class="ox-price-amt">
+                <span class="ox-price-num">Contact</span>
+              </div>
+              <ul>
+                <li>Unlimited batches + team seats</li>
+                <li>Custom features &amp; FDE support</li>
+                <li>From $300/mo + $19/seat</li>
+                <li>Priority onboarding</li>
+                <li>Contract &amp; invoice options</li>
+              </ul>
+              <a
+                href="mailto:sales@firstcrackiscoming.com?subject=Enterprise%20inquiry"
+                class="ox-btn ox-btn-outline ox-btn-block"
+              >
+                Contact sales
+              </a>
+            </article>
+          </div>
+
+          <div class="ox-cp-table-wrap">
+            <h2 class="ox-cp-table-title">Full comparison</h2>
+            <table class="ox-cp-table">
+              <thead>
+                <tr>
+                  <th scope="col">Feature</th>
+                  <th scope="col">Free</th>
+                  <th scope="col">Pro</th>
+                  <th scope="col">Pro+</th>
+                  <th scope="col">Enterprise</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Batches</th>
+                  <td>20 / mo</td>
+                  <td>200 / mo</td>
+                  <td>Unlimited</td>
+                  <td>Unlimited</td>
+                </tr>
+                <tr>
+                  <th scope="row">Desktop app</th>
+                  <td>✓</td>
+                  <td>✓</td>
+                  <td>✓</td>
+                  <td>✓</td>
+                </tr>
+                <tr>
+                  <th scope="row">Live roast + history</th>
+                  <td>✓</td>
+                  <td>✓</td>
+                  <td>✓</td>
+                  <td>✓</td>
+                </tr>
+                <tr>
+                  <th scope="row">Commerce connectors</th>
+                  <td>—</td>
+                  <td>—</td>
+                  <td>✓</td>
+                  <td>✓</td>
+                </tr>
+                <tr>
+                  <th scope="row">Seats</th>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>Team</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="ox-cp-policy">
+            14-day trial · 20 batches · No credit card required to start.
+            Cancel anytime before you are charged — manage billing in{" "}
+            <a href="/account">Account</a> or read our{" "}
+            <a href="/terms">cancellation terms</a>.
+          </p>
+        </div>
+      </div>
+
+      <div class="ox-cp-sticky" id="checkout-bar">
+        <div class="ox-shell ox-cp-sticky-inner">
+          <div class="ox-cp-sticky-copy">
+            <span class="ox-cp-sticky-label" id="sticky-label">Pro+ · Annual</span>
+            <span class="ox-cp-sticky-price" id="sticky-price">$63/mo</span>
+            <span class="ox-cp-sticky-note" id="sticky-note">Billed $756 / year</span>
+          </div>
+          <a
+            href="/start-pro?plan=pro-plus-yearly"
+            class="ox-btn ox-btn-solid"
+            id="sticky-cta"
+          >
+            Start 14-day trial
+          </a>
+        </div>
+      </div>
+
+      <footer class="ox-cp-footer">
+        <div class="ox-shell ox-cp-footer-inner">
+          <span>© {year} First Crack</span>
+          <nav aria-label="Footer">
+            <a href="/account">Account</a>
+            <a href="/download">Download</a>
+            <a href="/terms">Terms</a>
+          </nav>
+        </div>
+      </footer>
+    </main>
+
+    <script>
+      const PLAN_LABELS: Record<string, string> = {
+        pro: "Pro",
+        pro_plus: "Pro+",
+      };
+
+      const PLAN_SLUG: Record<string, { monthly: string; yearly: string }> = {
+        pro: { monthly: "pro-monthly", yearly: "pro-yearly" },
+        pro_plus: { monthly: "pro-plus-monthly", yearly: "pro-plus-yearly" },
+      };
+
+      const PLAN_YEARLY_NOTE: Record<string, string> = {
+        pro: "Billed $468 / year",
+        pro_plus: "Billed $756 / year",
+      };
+
+      let billingYearly = true;
+      let selectedTier = "pro_plus";
+
+      const btnMonthly = document.getElementById("btn-monthly");
+      const btnYearly = document.getElementById("btn-yearly");
+      const cards = document.querySelectorAll<HTMLElement>(".ox-cp-card[data-tier]");
+      const stickyLabel = document.getElementById("sticky-label");
+      const stickyPrice = document.getElementById("sticky-price");
+      const stickyNote = document.getElementById("sticky-note");
+      const stickyCta = document.getElementById("sticky-cta") as HTMLAnchorElement | null;
+
+      function updatePrices() {
+        cards.forEach((card) => {
+          if (card.dataset.tier === "enterprise") return;
+          const num = card.querySelector<HTMLElement>(".ox-price-num");
+          const note = card.querySelector<HTMLElement>(".ox-price-note");
+          if (num) {
+            num.textContent = billingYearly
+              ? (num.dataset.yearly ?? "")
+              : (num.dataset.monthly ?? "");
+          }
+          if (note) note.hidden = !billingYearly;
+        });
+      }
+
+      function updateSticky() {
+        const card = document.querySelector<HTMLElement>(
+          `.ox-cp-card[data-tier="${selectedTier}"]`,
+        );
+        const num = card?.querySelector<HTMLElement>(".ox-price-num");
+        const price = billingYearly
+          ? (num?.dataset.yearly ?? "")
+          : (num?.dataset.monthly ?? "");
+
+        if (stickyLabel) {
+          const period = billingYearly ? "Annual" : "Monthly";
+          stickyLabel.textContent = `${PLAN_LABELS[selectedTier] ?? selectedTier} · ${period}`;
+        }
+        if (stickyPrice) stickyPrice.textContent = `${price}/mo`;
+        if (stickyNote) {
+          stickyNote.textContent = billingYearly
+            ? (PLAN_YEARLY_NOTE[selectedTier] ?? "")
+            : "Billed monthly";
+          stickyNote.hidden = false;
+        }
+        if (stickyCta) {
+          const slug = PLAN_SLUG[selectedTier];
+          if (slug) {
+            stickyCta.href = `/start-pro?plan=${billingYearly ? slug.yearly : slug.monthly}`;
+          }
+        }
+      }
+
+      function setBilling(isYearly: boolean) {
+        billingYearly = isYearly;
+        btnMonthly?.classList.toggle("is-active", !isYearly);
+        btnYearly?.classList.toggle("is-active", isYearly);
+        btnMonthly?.setAttribute("aria-pressed", String(!isYearly));
+        btnYearly?.setAttribute("aria-pressed", String(isYearly));
+        updatePrices();
+        updateSticky();
+      }
+
+      function selectTier(tier: string) {
+        if (tier === "enterprise") return;
+        selectedTier = tier;
+        cards.forEach((card) => {
+          const isSelected = card.dataset.tier === tier;
+          card.classList.toggle("is-selected", isSelected);
+          card.setAttribute("aria-pressed", String(isSelected));
+        });
+        updateSticky();
+      }
+
+      btnMonthly?.addEventListener("click", () => setBilling(false));
+      btnYearly?.addEventListener("click", () => setBilling(true));
+
+      cards.forEach((card) => {
+        const tier = card.dataset.tier;
+        if (!tier || tier === "enterprise") return;
+        card.addEventListener("click", () => selectTier(tier));
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            selectTier(tier);
+          }
+        });
+      });
+
+      setBilling(true);
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  body.ox {
+    --ox-bg: #fafaf9;
+    --ox-fg: #080503;
+    --ox-muted: #5e534a;
+    --ox-muted-bg: #ecebe7;
+    --ox-border: rgba(8, 5, 3, 0.06);
+    --ox-border-strong: rgba(8, 5, 3, 0.12);
+    --ox-sans: "Instrument Sans", system-ui, -apple-system, sans-serif;
+    --ox-mono: "JetBrains Mono", ui-monospace, monospace;
+    --ox-max: 1400px;
+    --ox-pad: 24px;
+
+    margin: 0;
+    background: var(--ox-bg);
+    color: var(--ox-fg);
+    font-family: var(--ox-sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body.ox *,
+  body.ox *::before,
+  body.ox *::after {
+    box-sizing: border-box;
+  }
+
+  body.ox a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  body.ox button {
+    font-family: inherit;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+
+  .ox-shell {
+    max-width: var(--ox-max);
+    margin-inline: auto;
+    padding-inline: var(--ox-pad);
+  }
+
+  .ox-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 0;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: -0.01em;
+    border: 1px solid transparent;
+    transition: opacity 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap;
+    height: 44px;
+    padding: 0 24px;
+  }
+
+  body.ox a.ox-btn-solid,
+  body.ox .ox-btn-solid {
+    background: var(--ox-fg);
+    color: #fff;
+    border-color: var(--ox-fg);
+  }
+
+  body.ox a.ox-btn-solid:hover,
+  body.ox .ox-btn-solid:hover {
+    opacity: 0.9;
+  }
+
+  .ox-btn-outline {
+    background: transparent;
+    color: var(--ox-fg);
+    border-color: var(--ox-border-strong);
+  }
+
+  .ox-btn-outline:hover {
+    background: rgba(8, 5, 3, 0.03);
+    border-color: rgba(8, 5, 3, 0.28);
+  }
+
+  .ox-btn-block {
+    width: 100%;
+    margin-top: auto;
+  }
+
+  .ox-brand-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .ox-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--ox-mono);
+    font-size: 13px;
+    color: var(--ox-muted);
+    margin-bottom: 20px;
+  }
+
+  .ox-line {
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: rgba(8, 5, 3, 0.3);
+    flex-shrink: 0;
+  }
+
+  .noise-overlay::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .ox-grid-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.3;
+    background-image:
+      linear-gradient(var(--ox-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--ox-border) 1px, transparent 1px);
+    background-size: 12.5% 12.5%;
+  }
+
+  .ox-auth-header {
+    position: relative;
+    z-index: 2;
+    border-bottom: 1px solid var(--ox-border);
+    background: rgba(250, 250, 249, 0.85);
+    backdrop-filter: blur(16px);
+  }
+
+  .ox-auth-nav {
+    max-width: var(--ox-max);
+    margin: 0 auto;
+    padding: 0 var(--ox-pad);
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .ox-auth-nav-end {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .ox-auth-email {
+    display: none;
+    font-size: 13px;
+    color: var(--ox-muted);
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ox-cp-back {
+    font-size: 13px;
+    color: var(--ox-muted);
+    transition: color 0.2s ease;
+  }
+
+  .ox-cp-back:hover {
+    color: var(--ox-fg);
+  }
+
+  @media (min-width: 640px) {
+    .ox-auth-email {
+      display: inline;
+    }
+  }
+
+  .ox-cp {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding-bottom: 88px;
+  }
+
+  .ox-cp-main {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    padding: 48px 0 64px;
+  }
+
+  .ox-cp-head {
+    max-width: 36rem;
+    margin-bottom: 32px;
+  }
+
+  .ox-cp-title {
+    margin: 0 0 12px;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  .ox-cp-lead {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ox-muted);
+  }
+
+  .ox-cp-banner {
+    margin-bottom: 24px;
+    padding: 14px 18px;
+    border: 1px solid rgba(180, 35, 24, 0.28);
+    background: rgba(180, 35, 24, 0.05);
+    font-size: 14px;
+    color: var(--ox-muted);
+  }
+
+  .ox-cp-banner a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .ox-bill {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 32px;
+  }
+
+  .ox-bill-toggle {
+    display: inline-flex;
+    padding: 4px;
+    border: 1px solid var(--ox-border);
+    gap: 2px;
+    background: #fff;
+  }
+
+  .ox-bill-toggle button {
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ox-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .ox-bill-toggle button em {
+    font-style: normal;
+    font-size: 11px;
+    font-weight: 600;
+    color: #3f6b2a;
+    background: #e8f0df;
+    padding: 2px 7px;
+  }
+
+  .ox-bill-toggle button.is-active {
+    background: var(--ox-fg);
+    color: #ffffff;
+  }
+
+  .ox-bill-toggle button.is-active em {
+    background: rgba(250, 250, 249, 0.15);
+    color: var(--ox-bg);
+  }
+
+  .ox-price-grid {
+    display: grid;
+    gap: 16px;
+    max-width: 1100px;
+    margin-inline: auto;
+  }
+
+  @media (min-width: 900px) {
+    .ox-price-grid {
+      grid-template-columns: repeat(3, 1fr);
+      align-items: stretch;
+    }
+  }
+
+  .ox-price-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 32px 28px;
+    border: 1px solid var(--ox-border);
+    background: #fff;
+  }
+
+  .ox-cp-card:not(.is-enterprise) {
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .ox-cp-card:not(.is-enterprise):hover {
+    border-color: rgba(8, 5, 3, 0.2);
+  }
+
+  .ox-cp-card.is-selected:not(.is-featured) {
+    border-color: var(--ox-fg);
+    box-shadow: inset 0 0 0 1px var(--ox-fg);
+  }
+
+  .ox-cp-card.is-featured.is-selected {
+    box-shadow: inset 0 0 0 2px var(--ox-bg);
+  }
+
+  .ox-price-card.is-featured {
+    background: var(--ox-fg);
+    color: var(--ox-bg);
+    border-color: var(--ox-fg);
+  }
+
+  .ox-price-badge {
+    position: absolute;
+    top: -11px;
+    left: 28px;
+    font-family: var(--ox-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--ox-bg);
+    color: var(--ox-fg);
+    border: 1px solid var(--ox-border);
+    padding: 4px 10px;
+  }
+
+  .ox-price-n {
+    font-family: var(--ox-mono);
+    font-size: 12px;
+    color: var(--ox-muted);
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  .ox-price-card.is-featured .ox-price-n {
+    color: rgba(250, 250, 249, 0.45);
+  }
+
+  .ox-price-top h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    margin: 0 0 6px;
+  }
+
+  .ox-price-top p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--ox-muted);
+  }
+
+  .ox-price-card.is-featured .ox-price-top p {
+    color: rgba(250, 250, 249, 0.5);
+  }
+
+  .ox-price-amt {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 8px;
+  }
+
+  .ox-price-num {
+    font-size: 2.5rem;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  .ox-price-per {
+    font-size: 14px;
+    color: var(--ox-muted);
+  }
+
+  .ox-price-card.is-featured .ox-price-per {
+    color: rgba(250, 250, 249, 0.5);
+  }
+
+  .ox-price-note {
+    margin: -12px 0 0;
+    font-size: 12px;
+    color: var(--ox-muted);
+  }
+
+  .ox-price-card.is-featured .ox-price-note {
+    color: rgba(250, 250, 249, 0.45);
+  }
+
+  .ox-price-card ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    padding: 8px 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .ox-price-card li {
+    position: relative;
+    padding-left: 16px;
+    font-size: 14px;
+    color: var(--ox-muted);
+  }
+
+  .ox-price-card.is-featured li {
+    color: rgba(250, 250, 249, 0.6);
+  }
+
+  .ox-price-card li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .ox-cp-table-wrap {
+    margin-top: 48px;
+    max-width: 1100px;
+    margin-inline: auto;
+  }
+
+  .ox-cp-table-title {
+    margin: 0 0 16px;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .ox-cp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    background: #fff;
+    border: 1px solid var(--ox-border);
+  }
+
+  .ox-cp-table th,
+  .ox-cp-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--ox-border);
+    text-align: left;
+  }
+
+  .ox-cp-table thead th {
+    font-family: var(--ox-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ox-muted);
+    background: var(--ox-muted-bg);
+  }
+
+  .ox-cp-table tbody th {
+    font-weight: 500;
+    color: var(--ox-fg);
+  }
+
+  .ox-cp-table tbody td {
+    color: var(--ox-muted);
+  }
+
+  .ox-cp-policy {
+    margin: 32px auto 0;
+    max-width: 1100px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--ox-muted);
+  }
+
+  .ox-cp-policy a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .ox-cp-sticky {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    border-top: 1px solid var(--ox-border-strong);
+    background: rgba(250, 250, 249, 0.95);
+    backdrop-filter: blur(12px);
+    padding: 14px 0;
+  }
+
+  .ox-cp-sticky-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .ox-cp-sticky-copy {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px 12px;
+  }
+
+  .ox-cp-sticky-label {
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .ox-cp-sticky-price {
+    font-size: 15px;
+    color: var(--ox-muted);
+  }
+
+  .ox-cp-sticky-note {
+    font-size: 12px;
+    color: var(--ox-muted);
+    width: 100%;
+  }
+
+  @media (min-width: 640px) {
+    .ox-cp-sticky-note {
+      width: auto;
+    }
+  }
+
+  .ox-cp-footer {
+    position: relative;
+    z-index: 2;
+    border-top: 1px solid var(--ox-border);
+    padding: 24px 0;
+  }
+
+  .ox-cp-footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--ox-muted);
+  }
+
+  .ox-cp-footer-inner nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .ox-cp-footer-inner a:hover {
+    color: var(--ox-fg);
+  }
+
+  @media (min-width: 1024px) {
+    body.ox {
+      --ox-pad: 48px;
+    }
+  }
+</style>

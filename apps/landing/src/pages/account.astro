@@ -18,7 +18,7 @@ const supabase = createClient({
 
 const { data: subscription, error: subError } = await supabase
   .from("subscriptions")
-  .select("status, recurring_interval, current_period_end, trial_end")
+  .select("status, recurring_interval, current_period_end, trial_end, cancel_at_period_end")
   .eq("user_id", user.id)
   .in("status", ["active", "trialing", "past_due"])
   .order("created_at", { ascending: false })
@@ -28,6 +28,7 @@ if (subError) console.error("[account] subscription fetch error", subError.messa
 
 const isPro = !!subscription;
 const showWelcome = Astro.url.searchParams.get("welcome") === "1";
+const billingStatus = Astro.url.searchParams.get("billing");
 const year = new Date().getFullYear();
 
 function formatDate(iso: string | null | undefined): string {
@@ -115,6 +116,37 @@ const signInMethod = rawProvider === "google" ? "Google" : "Email & password";
           }
 
           {
+            billingStatus === "unavailable" && (
+              <div class="ox-ac-banner ox-ac-banner-warn" role="status">
+                <p class="ox-ac-banner-title">Billing portal unavailable</p>
+                <p class="ox-ac-banner-body">
+                  No billing profile yet. If you subscribed recently, try again in
+                  a few minutes or email{" "}
+                  <a href="mailto:hello@firstcrackiscoming.com">
+                    hello@firstcrackiscoming.com
+                  </a>
+                  .
+                </p>
+              </div>
+            )
+          }
+
+          {
+            billingStatus === "error" && (
+              <div class="ox-ac-banner ox-ac-banner-warn" role="alert">
+                <p class="ox-ac-banner-title">Could not open billing portal</p>
+                <p class="ox-ac-banner-body">
+                  Please try again or email{" "}
+                  <a href="mailto:hello@firstcrackiscoming.com">
+                    hello@firstcrackiscoming.com
+                  </a>
+                  .
+                </p>
+              </div>
+            )
+          }
+
+          {
             isPastDue && (
               <div class="ox-ac-banner ox-ac-banner-warn" role="alert">
                 <p class="ox-ac-banner-title">Payment issue</p>
@@ -162,6 +194,25 @@ const signInMethod = rawProvider === "google" ? "Google" : "Email & password";
                               </dd>
                             </div>
                           </dl>
+                          {subscription?.cancel_at_period_end && (
+                            <p class="ox-ac-plan-cancel">
+                              Cancels at end of current period.
+                            </p>
+                          )}
+                          <div class="ox-ac-card-actions">
+                            <a
+                              href="/manage-billing"
+                              class="ox-btn ox-btn-outline ox-btn-sm"
+                            >
+                              Manage billing
+                            </a>
+                            <a
+                              href="/compare-plans"
+                              class="ox-btn ox-btn-outline ox-btn-sm"
+                            >
+                              Compare plans
+                            </a>
+                          </div>
                         </>
                       ) : (
                         <>
@@ -171,12 +222,12 @@ const signInMethod = rawProvider === "google" ? "Google" : "Email & password";
                           </p>
                           <div class="ox-ac-card-actions">
                             <a
-                              href="/start-pro?plan=monthly"
+                              href="/compare-plans"
                               class="ox-btn ox-btn-solid ox-btn-sm"
                             >
                               Start 14-day trial
                             </a>
-                            <a href="/#pricing" class="ox-btn ox-btn-outline ox-btn-sm">
+                            <a href="/compare-plans" class="ox-btn ox-btn-outline ox-btn-sm">
                               Compare plans
                             </a>
                           </div>
@@ -622,6 +673,12 @@ const signInMethod = rawProvider === "google" ? "Google" : "Email & password";
     margin: 0 0 12px;
     font-size: 15px;
     line-height: 1.55;
+    color: var(--ox-muted);
+  }
+
+  .ox-ac-plan-cancel {
+    margin: 0 0 12px;
+    font-size: 13px;
     color: var(--ox-muted);
   }
 

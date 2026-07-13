@@ -1,41 +1,24 @@
 ---
 import { requireLogin } from "../lib/auth";
+import { normalizeCheckoutPlan, polarApiBase, polarPriceId } from "../lib/polarPlans";
 
 const userOrRedirect = await requireLogin(Astro, Astro.request.url);
 if (userOrRedirect instanceof Response) return userOrRedirect;
 const user = userOrRedirect;
 
-const rawPlan = Astro.url.searchParams.get("plan");
-const VALID_PLANS = ["monthly", "yearly", "enterprise-monthly", "enterprise-yearly"] as const;
-type Plan = typeof VALID_PLANS[number];
-const plan: Plan = (VALID_PLANS as readonly string[]).includes(rawPlan ?? "")
-  ? (rawPlan as Plan)
-  : "monthly";
-
-const isSandbox = import.meta.env.POLAR_SERVER === "sandbox";
-const apiBase = isSandbox
-  ? "https://sandbox-api.polar.sh"
-  : "https://api.polar.sh";
-
-const priceIds: Record<Plan, string | undefined> = {
-  monthly:              isSandbox ? import.meta.env.POLAR_PRICE_MONTHLY_SBX              : import.meta.env.POLAR_PRICE_MONTHLY_PROD,
-  yearly:               isSandbox ? import.meta.env.POLAR_PRICE_YEARLY_SBX               : import.meta.env.POLAR_PRICE_YEARLY_PROD,
-  "enterprise-monthly": isSandbox ? import.meta.env.POLAR_PRICE_ENTERPRISE_MONTHLY_SBX   : import.meta.env.POLAR_PRICE_ENTERPRISE_MONTHLY_PROD,
-  "enterprise-yearly":  isSandbox ? import.meta.env.POLAR_PRICE_ENTERPRISE_YEARLY_SBX    : import.meta.env.POLAR_PRICE_ENTERPRISE_YEARLY_PROD,
-};
-
-const priceId = priceIds[plan];
+const plan = normalizeCheckoutPlan(Astro.url.searchParams.get("plan"));
+const priceId = polarPriceId(plan, import.meta.env);
 
 if (!priceId) {
-  console.error(`[Polar] price ID not configured — plan: ${plan}, sandbox: ${isSandbox}`);
-  return Astro.redirect("/?error=checkout_failed");
+  console.error(`[Polar] price ID not configured — plan: ${plan}, sandbox: ${import.meta.env.POLAR_SERVER === "sandbox"}`);
+  return Astro.redirect("/compare-plans?error=checkout_failed");
 }
 
 const ip =
   Astro.request.headers.get("cf-connecting-ip") ||
   Astro.request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
 
-const res = await fetch(`${apiBase}/v1/checkouts/`, {
+const res = await fetch(`${polarApiBase(import.meta.env)}/v1/checkouts/`, {
   method: "POST",
   headers: {
     Authorization: `Bearer ${import.meta.env.POLAR_ACCESS_TOKEN}`,
@@ -52,7 +35,7 @@ const res = await fetch(`${apiBase}/v1/checkouts/`, {
 
 if (!res.ok) {
   console.error(`[Polar] checkout creation failed (${res.status}):`, await res.text());
-  return Astro.redirect("/?error=checkout_failed");
+  return Astro.redirect("/compare-plans?error=checkout_failed");
 }
 
 let checkout: { url: string };
@@ -60,7 +43,7 @@ try {
   checkout = await res.json();
 } catch {
   console.error("[Polar] invalid JSON in checkout response");
-  return Astro.redirect("/?error=checkout_failed");
+  return Astro.redirect("/compare-plans?error=checkout_failed");
 }
 
 console.log(`[Polar] ${plan} checkout created for ${user.email}`);
