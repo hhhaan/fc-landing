@@ -1,7 +1,8 @@
-// src/lib/auth.ts
 import { createClient } from './supabase';
+import { safeRedirectPath } from './safeRedirect';
 
-export async function requireLogin(Astro: any, redirectTo: string = '/') {
+/** Redirect unauthenticated users to /login, then back to a same-site path only. */
+export async function requireLogin(Astro: any, redirectTo?: string) {
     const supabase = createClient({
         request: Astro.request,
         cookies: Astro.cookies,
@@ -12,10 +13,11 @@ export async function requireLogin(Astro: any, redirectTo: string = '/') {
     } = await supabase.auth.getUser();
 
     if (!user) {
+        const returnPath = redirectTo ?? `${Astro.url.pathname}${Astro.url.search}`;
         const loginUrl = new URL('/login', Astro.url.origin);
-        loginUrl.searchParams.set('next', redirectTo);
+        loginUrl.searchParams.set('next', safeRedirectPath(returnPath));
         return Astro.redirect(loginUrl.toString());
     }
 
-    return user; // 로그인 되어 있으면 user 객체 반환
+    return user;
 }

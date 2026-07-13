@@ -2,19 +2,20 @@
 import "../styles/global.css";
 import Favicon from "../components/ui/Favicon.astro";
 import { createClient } from "../lib/supabase";
+import { safeRedirectPath } from "../lib/safeRedirect";
 
 const supabaseServer = createClient({
   request: Astro.request,
   cookies: Astro.cookies,
 });
 
+const next = safeRedirectPath(Astro.url.searchParams.get("next"));
+
 const { data: { user } } = await supabaseServer.auth.getUser();
 
 if (user) {
-  return Astro.redirect("/");
+  return Astro.redirect(next);
 }
-
-const next = Astro.url.searchParams.get("next") ?? "/";
 const signupHref =
   next !== "/"
     ? `/signup?next=${encodeURIComponent(next)}`
@@ -127,6 +128,7 @@ const signupHref =
 
     <script>
       import { createBrowserClient } from "@supabase/ssr";
+      import { safeRedirectPath } from "../lib/safeRedirect";
 
       const supabase = createBrowserClient(
         import.meta.env.PUBLIC_SUPABASE_URL!,
@@ -134,7 +136,7 @@ const signupHref =
       );
 
       const urlParams = new URLSearchParams(window.location.search);
-      const nextUrl = urlParams.get("next") || "/";
+      const nextUrl = safeRedirectPath(urlParams.get("next"));
 
       document.getElementById("google-btn")?.addEventListener("click", async () => {
         const { error } = await supabase.auth.signInWithOAuth({
