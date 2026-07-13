@@ -16,6 +16,10 @@
  * Desktop OAuth should stay in the app (`firstcrack://` via Supabase redirectTo
  * in fc-desktop). The landing site must only ever send users to same-site paths.
  *
+ * If OAuth still opens the desktop app, check Supabase Dashboard → Authentication
+ * → URL Configuration: Site URL must be the HTTPS landing URL (not firstcrack://),
+ * and every web callback origin must be listed under Redirect URLs.
+ *
  * ## Rules
  *
  * - Allow: `/`, `/account`, `/start-pro?plan=monthly`, …

@@ -3,6 +3,7 @@ import "../styles/global.css";
 import Favicon from "../components/ui/Favicon.astro";
 import { createClient } from "../lib/supabase";
 import { safeRedirectPath } from "../lib/safeRedirect";
+import { buildWebAuthCallbackUrl } from "../lib/siteUrl";
 
 const supabaseServer = createClient({
   request: Astro.request,
@@ -16,6 +17,7 @@ if (user) {
 }
 
 const next = safeRedirectPath(Astro.url.searchParams.get("next"));
+const oauthRedirectTo = buildWebAuthCallbackUrl(next, Astro.url.origin);
 const loginHref =
   next !== "/"
     ? `/login?next=${encodeURIComponent(next)}`
@@ -135,9 +137,10 @@ const loginHref =
       </div>
     </main>
 
-    <script>
+    <script define:vars={{ oauthRedirectTo }}>
       import { createBrowserClient } from "@supabase/ssr";
       import { safeRedirectPath } from "../lib/safeRedirect";
+      import { buildWebAuthCallbackUrl } from "../lib/siteUrl";
 
       const supabase = createBrowserClient(
         import.meta.env.PUBLIC_SUPABASE_URL!,
@@ -146,12 +149,15 @@ const loginHref =
 
       const urlParams = new URLSearchParams(window.location.search);
       const nextUrl = safeRedirectPath(urlParams.get("next"));
+      const redirectTo =
+        oauthRedirectTo ||
+        buildWebAuthCallbackUrl(nextUrl, window.location.origin);
 
       document.getElementById("google-btn")?.addEventListener("click", async () => {
         const { error } = await supabase.auth.signInWithOAuth({
           provider: "google",
           options: {
-            redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextUrl)}`,
+            redirectTo,
           },
         });
 
@@ -173,7 +179,7 @@ const loginHref =
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextUrl)}`,
+            emailRedirectTo: redirectTo,
           },
         });
 

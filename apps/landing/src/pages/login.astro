@@ -10,6 +10,7 @@ const supabaseServer = createClient({
 });
 
 const next = safeRedirectPath(Astro.url.searchParams.get("next"));
+const oauthRedirectTo = buildWebAuthCallbackUrl(next, Astro.url.origin);
 
 const { data: { user } } = await supabaseServer.auth.getUser();
 
@@ -126,9 +127,10 @@ const signupHref =
       </div>
     </main>
 
-    <script>
+    <script define:vars={{ oauthRedirectTo }}>
       import { createBrowserClient } from "@supabase/ssr";
       import { safeRedirectPath } from "../lib/safeRedirect";
+      import { buildWebAuthCallbackUrl } from "../lib/siteUrl";
 
       const supabase = createBrowserClient(
         import.meta.env.PUBLIC_SUPABASE_URL!,
@@ -137,12 +139,17 @@ const signupHref =
 
       const urlParams = new URLSearchParams(window.location.search);
       const nextUrl = safeRedirectPath(urlParams.get("next"));
+      // Prefer tab origin so redirectTo matches the domain the user is on;
+      // must be listed in Supabase Redirect URLs (Site URL must stay HTTPS).
+      const redirectTo =
+        oauthRedirectTo ||
+        buildWebAuthCallbackUrl(nextUrl, window.location.origin);
 
       document.getElementById("google-btn")?.addEventListener("click", async () => {
         const { error } = await supabase.auth.signInWithOAuth({
           provider: "google",
           options: {
-            redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextUrl)}`,
+            redirectTo,
           },
         });
 

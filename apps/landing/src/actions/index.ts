@@ -1,6 +1,7 @@
 import { defineAction } from 'astro:actions';
 import { z } from 'astro/zod';
 import { createClient } from '../lib/supabase';
+import { buildWebAuthCallbackUrl } from '../lib/siteUrl';
 
 export const server = {
     // 회원가입
@@ -22,7 +23,7 @@ export const server = {
                     email: input.email,
                     password: input.password,
                     options: {
-                        emailRedirectTo: `${origin}/auth/callback`,
+                        emailRedirectTo: buildWebAuthCallbackUrl('/', origin),
                     },
                 });
 
