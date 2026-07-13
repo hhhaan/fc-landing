@@ -1,0 +1,27 @@
+---
+import type { User } from "@supabase/supabase-js";
+
+interface Props {
+  user: User | null;
+}
+
+const { user } = Astro.props;
+const isLoggedIn = !!user;
+---
+
+{
+  isLoggedIn ? (
+    <a href="/account" class="ox-btn ox-btn-solid ox-btn-lg">
+      Account
+    </a>
+  ) : (
+    <>
+      <a href="/login" class="ox-btn ox-btn-outline ox-btn-lg">
+        Log in
+      </a>
+      <a href="/signup" class="ox-btn ox-btn-solid ox-btn-lg">
+        Start trial
+      </a>
+    </>
+  )
+}

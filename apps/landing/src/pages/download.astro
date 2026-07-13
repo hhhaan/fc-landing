@@ -1,16 +1,10 @@
 ---
 import "../styles/global.css";
 import Favicon from "../components/ui/Favicon.astro";
-import { createClient } from "../lib/supabase";
+import OxNavAuth from "../components/ui/OxNavAuth.astro";
+import { getViewer } from "../lib/authState";
 
-const supabase = createClient({
-  request: Astro.request,
-  cookies: Astro.cookies,
-});
-
-const { data: { user } } = await supabase.auth.getUser();
-const isLoggedIn = !!user;
-const userEmail = user?.email;
+const user = await getViewer(Astro);
 const year = new Date().getFullYear();
 
 const DOWNLOAD_LINKS = {
@@ -50,23 +44,7 @@ const DOWNLOAD_LINKS = {
             <span class="ox-brand-name">First Crack</span>
           </a>
           <div class="ox-auth-nav-end">
-            {
-              isLoggedIn ? (
-                <>
-                  <span class="ox-auth-email">{userEmail}</span>
-                  <a href="/account" class="ox-btn ox-btn-solid ox-btn-sm">
-                    Account
-                  </a>
-                </>
-              ) : (
-                <>
-                  <a href="/login" class="ox-nav-signin">Log in</a>
-                  <a href="/signup" class="ox-btn ox-btn-solid ox-btn-sm">
-                    Start trial
-                  </a>
-                </>
-              )
-            }
+            <OxNavAuth user={user} variant="auth" />
           </div>
         </nav>
       </header>

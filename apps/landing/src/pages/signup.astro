@@ -137,8 +137,7 @@ const loginHref =
 
     <script>
       import { createBrowserClient } from "@supabase/ssr";
-      import { safeRedirectPath } from "../lib/safeRedirect";
-      import { buildWebAuthCallbackUrl } from "../lib/siteUrl";
+      import { safeRedirectPath, webAuthCallbackUrl } from "../lib/safeRedirect";
 
       const supabase = createBrowserClient(
         import.meta.env.PUBLIC_SUPABASE_URL!,
@@ -147,10 +146,7 @@ const loginHref =
 
       const urlParams = new URLSearchParams(window.location.search);
       const nextUrl = safeRedirectPath(urlParams.get("next"));
-      const redirectTo = buildWebAuthCallbackUrl(
-        nextUrl,
-        window.location.origin,
-      );
+      const redirectTo = webAuthCallbackUrl(window.location.origin, nextUrl);
 
       document.getElementById("google-btn")?.addEventListener("click", async () => {
         clearMessages();

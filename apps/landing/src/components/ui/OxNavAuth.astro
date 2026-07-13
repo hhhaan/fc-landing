@@ -1,0 +1,36 @@
+---
+import type { User } from "@supabase/supabase-js";
+
+interface Props {
+  user: User | null;
+  signupHref?: string;
+  /** marketing = fixed header; auth = login/signup/download chrome */
+  variant?: "marketing" | "auth";
+}
+
+const { user, signupHref = "/signup", variant = "marketing" } = Astro.props;
+const isLoggedIn = !!user;
+const email = user?.email;
+const signinClass = variant === "marketing" ? "ox-nav-signin" : "ox-nav-signin";
+const emailClass = variant === "marketing" ? "ox-nav-email" : "ox-auth-email";
+---
+
+{
+  isLoggedIn ? (
+    <>
+      {email && <span class={emailClass}>{email}</span>}
+      <a href="/account" class="ox-btn ox-btn-solid ox-btn-sm">
+        Account
+      </a>
+    </>
+  ) : (
+    <>
+      <a href="/login" class={signinClass}>
+        Log in
+      </a>
+      <a href={signupHref} class="ox-btn ox-btn-solid ox-btn-sm">
+        Start trial
+      </a>
+    </>
+  )
+}

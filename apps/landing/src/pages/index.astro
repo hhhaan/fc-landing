@@ -1,18 +1,12 @@
 ---
 import "../styles/global.css";
 import Favicon from "../components/ui/Favicon.astro";
-import { createClient } from "../lib/supabase";
+import OxNavAuth from "../components/ui/OxNavAuth.astro";
+import OxNavAuthMobile from "../components/ui/OxNavAuthMobile.astro";
+import { getViewer } from "../lib/authState";
 
-const supabase = createClient({
-  request: Astro.request,
-  cookies: Astro.cookies,
-});
-
-const {
-  data: { user },
-} = await supabase.auth.getUser();
+const user = await getViewer(Astro);
 const isLoggedIn = !!user;
-const userEmail = user?.email;
 const year = new Date().getFullYear();
 
 const capabilities = [
@@ -115,23 +109,7 @@ const marqueeItems = [
           </div>
 
           <div class="ox-nav-end">
-            {
-              isLoggedIn ? (
-                <>
-                  <span class="ox-nav-email">{userEmail}</span>
-                  <a href="/account" class="ox-btn ox-btn-solid ox-btn-sm">
-                    Account
-                  </a>
-                </>
-              ) : (
-                <>
-                  <a href="/login" class="ox-nav-signin">Log in</a>
-                  <a href="/signup" class="ox-btn ox-btn-solid ox-btn-sm">
-                    Start trial
-                  </a>
-                </>
-              )
-            }
+            <OxNavAuth user={user} variant="marketing" />
             <button
               type="button"
               class="ox-burger"
@@ -158,22 +136,7 @@ const marqueeItems = [
               <a href="/download">Download app</a>
             </div>
             <div class="ox-mobile-cta">
-              {
-                isLoggedIn ? (
-                  <a href="/account" class="ox-btn ox-btn-solid ox-btn-lg">
-                                        Account
-                  </a>
-                ) : (
-                  <>
-                    <a href="/login" class="ox-btn ox-btn-outline ox-btn-lg">
-                      Log in
-                    </a>
-                    <a href="/signup" class="ox-btn ox-btn-solid ox-btn-lg">
-                      Start trial
-                    </a>
-                  </>
-                )
-              }
+              <OxNavAuthMobile user={user} />
             </div>
           </div>
         </div>
@@ -572,9 +535,21 @@ const marqueeItems = [
               </div>
               <div>
                 <h4>Account</h4>
-                <a href="/login">Log in</a>
-                <a href="/signup">Sign up</a>
-                <a href="/account">Account</a>
+                {
+                  isLoggedIn ? (
+                    <>
+                      <a href="/account">Account</a>
+                      <form action="/auth/signout" method="POST" class="ox-footer-signout">
+                        <button type="submit">Sign out</button>
+                      </form>
+                    </>
+                  ) : (
+                    <>
+                      <a href="/login">Log in</a>
+                      <a href="/signup">Sign up</a>
+                    </>
+                  )
+                }
               </div>
               <div>
                 <h4>Legal</h4>
@@ -879,7 +854,7 @@ const marqueeItems = [
               ctx!.clearRect(0, 0, W, H);
 
               const cx = W / 2;
-              const cy = H * 0.42;
+              const cy = H * 0.48;
               const scaleR = Math.min(W, H) * 0.4;
               const drawn = segments.map((seg) => {
                 const pa = project(rotate(seg.a, angleX, angleY), cx, cy, scaleR);
@@ -1402,14 +1377,14 @@ const marqueeItems = [
       justify-self: end;
       align-self: start;
       margin-inline: 0;
-      margin-top: -48px;
+      margin-top: -16px;
     }
   }
 
   @media (max-width: 639px) {
     .ox-hero-visual {
       height: 220px;
-      margin-top: -20px;
+      margin-top: -4px;
       opacity: 0.45;
     }
   }
@@ -2199,6 +2174,27 @@ const marqueeItems = [
     transition: color 0.2s ease;
   }
   .ox-footer-cols a:hover { color: var(--ox-fg); }
+
+  .ox-footer-signout {
+    margin: 0;
+    padding: 0;
+  }
+
+  .ox-footer-signout button {
+    display: block;
+    padding: 5px 0;
+    border: 0;
+    background: none;
+    font-family: inherit;
+    font-size: 14px;
+    color: rgba(8, 5, 3, 0.7);
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .ox-footer-signout button:hover {
+    color: var(--ox-fg);
+  }
 
   .ox-footer-bottom {
     display: flex;

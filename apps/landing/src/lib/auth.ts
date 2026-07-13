@@ -1,7 +1,6 @@
 import { createClient } from './supabase';
 import { safeRedirectPath } from './safeRedirect';
 
-/** Redirect unauthenticated users to /login, then back to a same-site path only. */
 export async function requireLogin(Astro: any, redirectTo?: string) {
     const supabase = createClient({
         request: Astro.request,
