@@ -1,7 +1,10 @@
 ---
 import Favicon from "../components/ui/Favicon.astro";
 import { requireLogin } from "../lib/auth";
-import { polarPriceId } from "../lib/polarPlans";
+import {
+  isCheckoutPlanReady,
+  resolveBillingMarket,
+} from "../lib/polarPlans";
 
 const userOrRedirect = await requireLogin(
   Astro,
@@ -12,11 +15,15 @@ const user = userOrRedirect;
 
 const checkoutError = Astro.url.searchParams.get("error") === "checkout_failed";
 const year = new Date().getFullYear();
+const billingMarket = resolveBillingMarket(Astro.request, Astro.cookies);
 const env = import.meta.env;
 
-const proPlusCheckoutReady = !!(
-  polarPriceId("pro-plus-monthly", env) && polarPriceId("pro-plus-yearly", env)
-);
+const proPlusCheckoutReady =
+  isCheckoutPlanReady("pro-plus-monthly", billingMarket, env) &&
+  isCheckoutPlanReady("pro-plus-yearly", billingMarket, env);
+const proCheckoutReady =
+  isCheckoutPlanReady("pro-monthly", billingMarket, env) &&
+  isCheckoutPlanReady("pro-yearly", billingMarket, env);
 const defaultTier = proPlusCheckoutReady ? "pro_plus" : "pro";
 ---
 
@@ -130,15 +137,27 @@ const defaultTier = proPlusCheckoutReady ? "pro_plus" : "pro";
                 <li>1 seat</li>
                 <li>Desktop app (macOS &amp; Windows)</li>
               </ul>
-              <a
-                href="/start-pro?plan=pro-yearly"
-                class="ox-btn ox-btn-outline ox-btn-block ox-cp-checkout"
-                data-tier="pro"
-                data-href-monthly="/start-pro?plan=pro-monthly"
-                data-href-yearly="/start-pro?plan=pro-yearly"
-              >
-                Start 14-day trial
-              </a>
+              {
+                proCheckoutReady ? (
+                  <a
+                    href="/start-pro?plan=pro-yearly"
+                    class="ox-btn ox-btn-outline ox-btn-block ox-cp-checkout"
+                    data-tier="pro"
+                    data-href-monthly="/start-pro?plan=pro-monthly"
+                    data-href-yearly="/start-pro?plan=pro-yearly"
+                  >
+                    Continue to checkout
+                  </a>
+                ) : (
+                  <p class="ox-cp-unavailable ox-cp-unavailable-light">
+                    Pro checkout unavailable — email{" "}
+                    <a href="mailto:hello@firstcrackiscoming.com">
+                      hello@firstcrackiscoming.com
+                    </a>
+                    .
+                  </p>
+                )
+              }
             </article>
 
             <article
@@ -184,7 +203,7 @@ const defaultTier = proPlusCheckoutReady ? "pro_plus" : "pro";
                     data-href-monthly="/start-pro?plan=pro-plus-monthly"
                     data-href-yearly="/start-pro?plan=pro-plus-yearly"
                   >
-                    Start 14-day trial
+                    Continue to checkout
                   </a>
                 ) : (
                   <p class="ox-cp-unavailable">
@@ -914,6 +933,10 @@ const defaultTier = proPlusCheckoutReady ? "pro_plus" : "pro";
   .ox-cp-unavailable a {
     text-decoration: underline;
     text-underline-offset: 3px;
+  }
+
+  .ox-cp-unavailable-light {
+    color: var(--ox-muted);
   }
 
   .ox-cp-table-wrap {

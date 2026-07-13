@@ -1,16 +1,24 @@
 ---
 import { requireLogin } from "../lib/auth";
-import { normalizeCheckoutPlan, polarApiBase, polarPriceId } from "../lib/polarPlans";
+import {
+  normalizeCheckoutPlan,
+  polarApiBase,
+  polarProductId,
+  resolveBillingMarket,
+} from "../lib/polarPlans";
 
 const userOrRedirect = await requireLogin(Astro, Astro.request.url);
 if (userOrRedirect instanceof Response) return userOrRedirect;
 const user = userOrRedirect;
 
 const plan = normalizeCheckoutPlan(Astro.url.searchParams.get("plan"));
-const priceId = polarPriceId(plan, import.meta.env);
+const market = resolveBillingMarket(Astro.request, Astro.cookies);
+const productId = polarProductId(plan, market, import.meta.env);
 
-if (!priceId) {
-  console.error(`[Polar] price ID not configured — plan: ${plan}, sandbox: ${import.meta.env.POLAR_SERVER === "sandbox"}`);
+if (!productId) {
+  console.error(
+    `[Polar] product ID not configured — plan: ${plan}, market: ${market}, server: ${import.meta.env.POLAR_SERVER}`,
+  );
   return Astro.redirect("/compare-plans?error=checkout_failed");
 }
 
@@ -25,9 +33,10 @@ const res = await fetch(`${polarApiBase(import.meta.env)}/v1/checkouts/`, {
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    product_price_id: priceId,
+    products: [productId],
+    external_customer_id: user.id,
     customer_email: user.email,
-    metadata: { user_id: user.id, plan },
+    metadata: { user_id: user.id, plan, market },
     success_url: import.meta.env.POLAR_SUCCESS_URL,
     ...(ip ? { customer_ip_address: ip } : {}),
   }),
@@ -46,6 +55,6 @@ try {
   return Astro.redirect("/compare-plans?error=checkout_failed");
 }
 
-console.log(`[Polar] ${plan} checkout created for ${user.email}`);
+console.log(`[Polar] ${plan} (${market}) checkout created for ${user.email}`);
 return Astro.redirect(checkout.url);
 ---
