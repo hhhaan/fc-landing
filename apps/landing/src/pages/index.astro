@@ -3,7 +3,7 @@ import "../styles/global.css";
 import Favicon from "../components/ui/Favicon.astro";
 import OxNavAuth from "../components/ui/OxNavAuth.astro";
 import OxNavAuthMobile from "../components/ui/OxNavAuthMobile.astro";
-import OxRoastChart from "../components/ui/OxRoastChart.astro";
+import OxWorkflowPanel from "../components/ui/OxWorkflowPanel.astro";
 import { getViewer } from "../lib/authState";
 import { resolveTrialCta } from "../lib/trialCta";
 
@@ -90,7 +90,7 @@ const marqueeItems = [
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -281,16 +281,7 @@ const marqueeItems = [
               }
             </div>
 
-            <div class="ox-code-panel reveal">
-              <div class="ox-code-tabs">
-                <span class="is-active">Active roast</span>
-                <span>Profile</span>
-                <span>History</span>
-              </div>
-              <div class="ox-code-body">
-                <OxRoastChart theme="dark" />
-              </div>
-            </div>
+            <OxWorkflowPanel />
           </div>
         </div>
       </section>
@@ -439,7 +430,7 @@ const marqueeItems = [
                 <li>Priority onboarding</li>
                 <li>Contract &amp; invoice options</li>
               </ul>
-              <a href="mailto:sales@firstcrackiscoming.com?subject=Enterprise%20inquiry" class="ox-btn ox-btn-outline ox-btn-block">
+              <a href="mailto:contact@firstcrackiscoming.com?subject=Enterprise%20inquiry" class="ox-btn ox-btn-outline ox-btn-block">
                 Contact sales
               </a>
             </article>
@@ -494,7 +485,7 @@ const marqueeItems = [
                 <h4>Company</h4>
                 <a href="/about">About</a>
                 <a href="/careers">Careers</a>
-                <a href="mailto:hello@firstcrackiscoming.com">Contact</a>
+                <a href="mailto:contact@firstcrackiscoming.com">Contact</a>
               </div>
               <div>
                 <h4>Account</h4>
@@ -1683,41 +1674,6 @@ const marqueeItems = [
   }
   .ox-step.is-active .ox-step-body {
     color: rgba(250, 250, 249, 0.65);
-  }
-
-  .ox-code-panel {
-    border: 1px solid rgba(250, 250, 249, 0.12);
-    background: rgba(250, 250, 249, 0.02);
-  }
-  .ox-code-tabs {
-    display: flex;
-    border-bottom: 1px solid rgba(250, 250, 249, 0.1);
-  }
-  .ox-code-tabs span {
-    padding: 14px 20px;
-    font-family: var(--ox-mono);
-    font-size: 12px;
-    color: rgba(250, 250, 249, 0.4);
-    position: relative;
-  }
-  .ox-code-tabs span.is-active {
-    color: var(--ox-bg);
-  }
-  .ox-code-tabs span.is-active::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 1px;
-    background: var(--ox-bg);
-  }
-  .ox-code-body {
-    padding: 0;
-  }
-  .ox-code-body :global(.ox-roast-chart) {
-    border: 0;
-    background: transparent;
   }
 
   /* Platform */

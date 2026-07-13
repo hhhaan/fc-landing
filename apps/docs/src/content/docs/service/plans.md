@@ -31,7 +31,7 @@ Pro 전체 + **무제한 배치**, Shopify 등 커머스 연동(로드맵 항목
 
 ## Enterprise
 
-다수 시트, 맞춤 기능, FDE(현장 기술 지원), 계약·인보이스 결제. **$300/월 이상 + 시트당 $19** 부터 — [sales@firstcrackiscoming.com](mailto:sales@firstcrackiscoming.com)
+다수 시트, 맞춤 기능, FDE(현장 기술 지원), 계약·인보이스 결제. **$300/월 이상 + 시트당 $19** 부터 — [contact@firstcrackiscoming.com](mailto:contact@firstcrackiscoming.com)
 
 ## 무료 티어
 

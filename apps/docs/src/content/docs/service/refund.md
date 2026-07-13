@@ -21,7 +21,7 @@ First Crack 환불 정책은 [이용약관](https://firstcrackiscoming.com/terms
 
 ## 전액 환불 요청 (예외)
 
-아래에 해당하면 [hello@firstcrackiscoming.com](mailto:hello@firstcrackiscoming.com) 으로 **결제일·계정 이메일·사유**를 보내 전액 환불을 요청할 수 있습니다. 개별 심사 후 처리합니다.
+아래에 해당하면 [support@firstcrackiscoming.com](mailto:support@firstcrackiscoming.com) 으로 **결제일·계정 이메일·사유**를 보내 전액 환불을 요청할 수 있습니다. 개별 심사 후 처리합니다.
 
 | 상황 | 권장 요청 기한 |
 |------|----------------|
@@ -39,7 +39,7 @@ First Crack 환불 정책은 [이용약관](https://firstcrackiscoming.com/terms
 
 ## 환불 절차
 
-1. 이메일: [hello@firstcrackiscoming.com](mailto:hello@firstcrackiscoming.com)
+1. 이메일: [support@firstcrackiscoming.com](mailto:support@firstcrackiscoming.com)
 2. 포함 정보: 가입 이메일, 결제일, 플랜(월간/연간), 요청 사유
 3. 확인 후 Polar를 통해 카드 환불 또는 계좌 환급 안내
 4. 환불 처리 후 구독은 즉시 또는 환불 정책에 따라 종료될 수 있습니다.
@@ -54,7 +54,7 @@ First Crack 환불 정책은 [이용약관](https://firstcrackiscoming.com/terms
 
 ## 문의
 
-환불·청구 관련: [hello@firstcrackiscoming.com](mailto:hello@firstcrackiscoming.com)  
-Enterprise 계약: [sales@firstcrackiscoming.com](mailto:sales@firstcrackiscoming.com)
+환불·청구 관련: [support@firstcrackiscoming.com](mailto:support@firstcrackiscoming.com)  
+Enterprise 계약: [contact@firstcrackiscoming.com](mailto:contact@firstcrackiscoming.com)
 
 전체 약관: [firstcrackiscoming.com/terms](https://firstcrackiscoming.com/terms)

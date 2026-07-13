@@ -22,8 +22,15 @@ export type RoastPoint = {
   refEt: number;
 };
 
-const TOTAL_SEC = 780;
-const SAMPLE_HZ = 2;
+export const ROAST_TOTAL_SEC = 780;
+export const ROAST_SAMPLE_HZ = 4;
+export const TEMP_Y_MIN_C = 50;
+export const TEMP_Y_MAX_C = 250;
+export const ROR_Y_MIN = -5;
+export const ROR_Y_MAX = 20;
+
+const TOTAL_SEC = ROAST_TOTAL_SEC;
+const SAMPLE_HZ = ROAST_SAMPLE_HZ;
 
 function smoothstep(edge0: number, edge1: number, x: number) {
   const t = Math.max(0, Math.min(1, (x - edge0) / (edge1 - edge0)));
@@ -67,17 +74,26 @@ function refEtCurve(t: number) {
 }
 
 export const ROAST_EVENTS: RoastEvent[] = [
-  { id: "charge", label: "CH", time: 0, bt: 198 },
+  { id: "charge", label: "Charge", time: 0, bt: 198 },
   { id: "tp", label: "TP", time: 88, bt: 91 },
-  { id: "dry", label: "DE", time: 252, bt: 151 },
-  { id: "fc", label: "FC", time: 572, bt: 196.2 },
+  { id: "yellow", label: "Yellow", time: 252, bt: 151 },
+  { id: "fc", label: "FC Start", time: 572, bt: 196.2 },
 ];
 
-export const ROAST_PHASES: RoastPhase[] = [
-  { id: "drying", label: "Drying", start: 88, end: 252, color: "59,130,246" },
-  { id: "maillard", label: "Maillard", start: 252, end: 572, color: "251,146,60" },
-  { id: "development", label: "Development", start: 572, end: TOTAL_SEC, color: "34,197,94" },
+export const ROAST_PHASES_LIGHT: RoastPhase[] = [
+  { id: "drying", label: "Drying", start: 88, end: 252, color: "212,160,23" },
+  { id: "maillard", label: "Maillard", start: 252, end: 572, color: "25,118,210" },
+  { id: "development", label: "Development", start: 572, end: TOTAL_SEC, color: "92,79,212" },
 ];
+
+export const ROAST_PHASES_DARK: RoastPhase[] = [
+  { id: "drying", label: "Drying", start: 88, end: 252, color: "255,255,84" },
+  { id: "maillard", label: "Maillard", start: 252, end: 572, color: "68,191,252" },
+  { id: "development", label: "Development", start: 572, end: TOTAL_SEC, color: "117,106,252" },
+];
+
+/** @deprecated Use ROAST_PHASES_LIGHT or theme-specific phases in chart renderer */
+export const ROAST_PHASES = ROAST_PHASES_LIGHT;
 
 export function generateRoastProfile(): RoastPoint[] {
   const raw: { t: number; bt: number }[] = [];
@@ -91,7 +107,7 @@ export function generateRoastProfile(): RoastPoint[] {
     t: p.t,
     bt: p.bt,
     et: etCurve(p.t),
-    ror: Math.max(0, rorFromBt(raw, i)),
+    ror: rorFromBt(raw, i),
     refBt: refBtCurve(p.t),
     refEt: refEtCurve(p.t),
   }));

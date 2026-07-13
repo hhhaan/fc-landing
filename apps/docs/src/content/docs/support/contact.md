@@ -7,8 +7,8 @@ description: First Crack 기술 지원·결제·머신 연동 문의
 
 | 목적 | 주소 |
 |------|------|
-| 일반·기술 지원 | [hello@firstcrackiscoming.com](mailto:hello@firstcrackiscoming.com) |
-| Enterprise·영업 | [sales@firstcrackiscoming.com](mailto:sales@firstcrackiscoming.com) |
+| 일반·기술 지원 | [support@firstcrackiscoming.com](mailto:support@firstcrackiscoming.com) |
+| Enterprise·영업 | [contact@firstcrackiscoming.com](mailto:contact@firstcrackiscoming.com) |
 
 응답은 영업일 기준 **1–2일** 이내를 목표로 합니다.
 

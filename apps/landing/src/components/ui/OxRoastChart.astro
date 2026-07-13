@@ -3,18 +3,32 @@ interface Props {
   theme?: "dark" | "light";
   animate?: boolean;
   loopEnd?: number;
+  startTime?: number;
+  windowSec?: number;
+  embedded?: boolean;
 }
 
-const { theme = "dark", animate = true, loopEnd = 582 } = Astro.props;
+const {
+  theme = "dark",
+  animate = true,
+  loopEnd = 582,
+  startTime = 400,
+  windowSec = 300,
+  embedded = false,
+} = Astro.props;
 ---
 
 <div
-  class="ox-roast-chart"
+  class:list={["ox-roast-chart", embedded && "ox-roast-chart-embedded"]}
   data-theme={theme}
   data-animate={animate ? "true" : "false"}
   data-loop-end={loopEnd}
+  data-start-time={startTime}
+  data-window-sec={windowSec}
+  data-embedded={embedded ? "true" : "false"}
   aria-hidden="true"
 >
+  {!embedded && (
   <div class="ox-roast-chart-head">
     <div class="ox-roast-chart-meta">
       <span class="ox-roast-chart-batch">Ethiopia Guji · Washed · #2847</span>
@@ -25,35 +39,27 @@ const { theme = "dark", animate = true, loopEnd = 582 } = Astro.props;
       <span data-status-label>Live roast</span>
     </div>
   </div>
+  )}
 
   <div class="ox-roast-chart-canvas-wrap">
     <canvas class="ox-roast-chart-canvas"></canvas>
   </div>
 
+  {!embedded && (
   <div class="ox-roast-chart-legend">
     <span><i class="ox-roast-swatch ox-roast-swatch-bt"></i>BT</span>
     <span><i class="ox-roast-swatch ox-roast-swatch-et"></i>ET</span>
-    <span><i class="ox-roast-swatch ox-roast-swatch-ref"></i>Reference</span>
+    <span><i class="ox-roast-swatch ox-roast-swatch-ref"></i>Target</span>
     <span><i class="ox-roast-swatch ox-roast-swatch-ror"></i>RoR</span>
   </div>
+  )}
 
-  <div class="ox-roast-chart-metrics">
-    <div>
-      <label>BT</label>
-      <b data-metric-bt>—</b>
-    </div>
-    <div>
-      <label>ET</label>
-      <b data-metric-et>—</b>
-    </div>
-    <div>
-      <label>RoR</label>
-      <b data-metric-ror>—</b>
-    </div>
-    <div>
-      <label>Time</label>
-      <b data-metric-time>00:00</b>
-    </div>
+  <div class="ox-roast-chart-metrics" class:list={embedded && "ox-roast-chart-metrics-sr"}>
+    <b data-metric-bt hidden>—</b>
+    <b data-metric-et hidden>—</b>
+    <b data-metric-ror hidden>—</b>
+    <b data-metric-time hidden>00:00</b>
+    <b data-metric-phase hidden>Development</b>
   </div>
 </div>
 
@@ -184,33 +190,56 @@ const { theme = "dark", animate = true, loopEnd = 582 } = Astro.props;
   }
 
   .ox-roast-swatch-bt {
-    background: #fafaf9;
+    background: #4be08c;
     height: 3px;
   }
 
   .ox-roast-chart[data-theme="light"] .ox-roast-swatch-bt {
-    background: #080503;
+    background: #22a85a;
   }
 
   .ox-roast-swatch-et {
-    background: rgba(250, 250, 249, 0.42);
+    background: #beacf8;
   }
 
   .ox-roast-chart[data-theme="light"] .ox-roast-swatch-et {
-    background: rgba(8, 5, 3, 0.28);
+    background: #4a85c5;
   }
 
   .ox-roast-swatch-ref {
     background: repeating-linear-gradient(
       90deg,
-      rgba(251, 191, 36, 0.9) 0 4px,
+      rgba(75, 224, 140, 0.75) 0 4px,
       transparent 4px 7px
     );
     height: 2px;
   }
 
   .ox-roast-swatch-ror {
-    background: rgba(34, 197, 94, 0.75);
+    background: #ffff54;
+  }
+
+  .ox-roast-chart-embedded {
+    border: 0;
+    background: transparent;
+  }
+
+  .ox-roast-chart-embedded .ox-roast-chart-canvas-wrap {
+    min-height: 240px;
+    aspect-ratio: auto;
+    height: 280px;
+  }
+
+  .ox-roast-chart-embedded[data-theme="light"] {
+    --rc-border: #e5e5e5;
+  }
+
+  .ox-roast-chart-metrics-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
   }
 
   .ox-roast-chart-metrics {
@@ -255,7 +284,13 @@ const { theme = "dark", animate = true, loopEnd = 582 } = Astro.props;
 <script>
   import {
     ROAST_EVENTS,
-    ROAST_PHASES,
+    ROAST_PHASES_DARK,
+    ROAST_PHASES_LIGHT,
+    ROAST_TOTAL_SEC,
+    ROR_Y_MAX,
+    ROR_Y_MIN,
+    TEMP_Y_MAX_C,
+    TEMP_Y_MIN_C,
     generateRoastProfile,
     formatRoastTime,
     formatTemp,
@@ -265,38 +300,57 @@ const { theme = "dark", animate = true, loopEnd = 582 } = Astro.props;
 
   type Theme = "dark" | "light";
 
-  const PALETTE = {
+  const EVENT_COLORS = {
     dark: {
-      bg: "rgba(4, 3, 2, 0.55)",
-      grid: "rgba(250, 250, 249, 0.07)",
-      gridStrong: "rgba(250, 250, 249, 0.12)",
-      text: "rgba(250, 250, 249, 0.55)",
-      textStrong: "rgba(250, 250, 249, 0.82)",
-      bt: "#fafaf9",
-      et: "rgba(250, 250, 249, 0.38)",
-      ref: "rgba(251, 191, 36, 0.72)",
-      ror: "rgba(34, 197, 94, 0.78)",
-      rorFill: "rgba(34, 197, 94, 0.12)",
-      cursor: "#fafaf9",
-      cursorGlow: "rgba(250, 250, 249, 0.18)",
-      event: "rgba(250, 250, 249, 0.22)",
-      eventLabel: "rgba(250, 250, 249, 0.62)",
+      charge: "#fb923c",
+      tp: "#81fba5",
+      yellow: "#ffff54",
+      fc: "#44bffc",
     },
     light: {
-      bg: "#f7f6f3",
-      grid: "rgba(8, 5, 3, 0.06)",
-      gridStrong: "rgba(8, 5, 3, 0.1)",
-      text: "rgba(94, 83, 74, 0.75)",
-      textStrong: "rgba(8, 5, 3, 0.82)",
-      bt: "#080503",
-      et: "rgba(8, 5, 3, 0.28)",
-      ref: "rgba(217, 119, 6, 0.72)",
-      ror: "rgba(22, 163, 74, 0.78)",
-      rorFill: "rgba(22, 163, 74, 0.1)",
-      cursor: "#080503",
-      cursorGlow: "rgba(8, 5, 3, 0.08)",
-      event: "rgba(8, 5, 3, 0.14)",
-      eventLabel: "rgba(94, 83, 74, 0.85)",
+      charge: "#ea580c",
+      tp: "#059669",
+      yellow: "#d97706",
+      fc: "#2563eb",
+    },
+  } as const;
+
+  const PALETTE = {
+    dark: {
+      bg: "#181d21",
+      grid: "rgba(255, 255, 255, 0.1)",
+      gridStrong: "rgba(255, 255, 255, 0.12)",
+      text: "#888888",
+      textStrong: "#bbbbbb",
+      bt: "#4be08c",
+      et: "#beacf8",
+      ref: "rgba(75, 224, 140, 0.65)",
+      ror: "#ffff54",
+      rorFill: "rgba(255, 255, 84, 0.12)",
+      cursor: "rgba(255, 255, 255, 0.45)",
+      cursorGlow: "rgba(129, 251, 165, 0.2)",
+      event: "rgba(255, 255, 255, 0.08)",
+      eventLabel: "#bbbbbb",
+      phaseFill: 0.18,
+      phases: ROAST_PHASES_DARK,
+    },
+    light: {
+      bg: "#ffffff",
+      grid: "rgba(0, 0, 0, 0.08)",
+      gridStrong: "rgba(0, 0, 0, 0.1)",
+      text: "#666666",
+      textStrong: "#444444",
+      bt: "#22a85a",
+      et: "#4a85c5",
+      ref: "rgba(40, 180, 130, 0.65)",
+      ror: "#f1c21b",
+      rorFill: "rgba(241, 194, 27, 0.15)",
+      cursor: "rgba(0, 0, 0, 0.45)",
+      cursorGlow: "rgba(34, 168, 90, 0.15)",
+      event: "rgba(0, 0, 0, 0.07)",
+      eventLabel: "#555555",
+      phaseFill: 0.22,
+      phases: ROAST_PHASES_LIGHT,
     },
   } as const;
 
@@ -309,19 +363,26 @@ const { theme = "dark", animate = true, loopEnd = 582 } = Astro.props;
     private data: RoastPoint[];
     private loopEnd: number;
     private animate: boolean;
-    private playhead = 0;
+    private running = false;
+    private playheadTime = 0;
     private raf = 0;
     private lastTs = 0;
     private pauseUntil = 0;
+    private pulsePhase = 0;
     private dpr = 1;
     private width = 0;
     private height = 0;
     private margin = { top: 22, right: 44, bottom: 30, left: 44 };
     private rorSplit = 0.28;
-    private tempMin = 80;
-    private tempMax = 250;
-    private rorMax = 28;
-    private timeMax = 780;
+    private tempMin = TEMP_Y_MIN_C;
+    private tempMax = TEMP_Y_MAX_C;
+    private rorMin = ROR_Y_MIN;
+    private rorMax = ROR_Y_MAX;
+    private timeStart = 0;
+    private timeEnd = ROAST_TOTAL_SEC;
+    private windowSec = ROAST_TOTAL_SEC;
+    private startTime = 0;
+    private useSlidingWindow = false;
     private resizeObserver?: ResizeObserver;
 
     constructor(root: HTMLElement) {
@@ -336,6 +397,10 @@ const { theme = "dark", animate = true, loopEnd = 582 } = Astro.props;
       this.palette = PALETTE[this.theme];
       this.data = generateRoastProfile();
       this.loopEnd = Number(root.dataset.loopEnd || 582);
+      this.startTime = Number(root.dataset.startTime || 0);
+      this.windowSec = Number(root.dataset.windowSec || ROAST_TOTAL_SEC);
+      this.useSlidingWindow = this.windowSec < ROAST_TOTAL_SEC - 1;
+      this.playheadTime = this.startTime;
       this.animate = root.dataset.animate !== "false";
       this.setup();
     }
@@ -346,14 +411,41 @@ const { theme = "dark", animate = true, loopEnd = 582 } = Astro.props;
       this.resizeObserver.observe(this.root);
       window.addEventListener("resize", this.onResize, { passive: true });
 
-      if (this.animate && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        this.lastTs = performance.now();
-        this.tick(this.lastTs);
+      this.root.addEventListener("ox-roast-chart-pause", ((e: CustomEvent<{ paused: boolean }>) => {
+        if (e.detail.paused) this.pause();
+        else this.resume();
+      }) as EventListener);
+
+      this.updateTimeWindow(this.playheadTime);
+      if (this.animate && this.isVisible() && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        this.resume();
       } else {
-        this.playhead = this.indexAtTime(this.loopEnd);
+        this.playheadTime = this.loopEnd;
+        this.updateTimeWindow(this.playheadTime);
         this.render();
-        this.updateMetrics(this.data[this.playhead]);
+        this.updateMetrics(this.sampleAtTime(this.playheadTime), false);
       }
+    }
+
+    private isVisible() {
+      const view = this.root.closest<HTMLElement>("[data-step-view]");
+      return !view?.hidden;
+    }
+
+    pause() {
+      this.running = false;
+      cancelAnimationFrame(this.raf);
+      this.raf = 0;
+    }
+
+    resume() {
+      if (!this.isVisible()) return;
+      if (!this.animate || this.running) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      this.resize();
+      this.running = true;
+      this.lastTs = performance.now();
+      this.raf = requestAnimationFrame(this.tick);
     }
 
     private onResize = () => this.resize();
@@ -386,7 +478,8 @@ const { theme = "dark", animate = true, loopEnd = 582 } = Astro.props;
     }
 
     private xAt(t: number, x0: number, x1: number) {
-      return x0 + (t / this.timeMax) * (x1 - x0);
+      const span = Math.max(1, this.timeEnd - this.timeStart);
+      return x0 + ((t - this.timeStart) / span) * (x1 - x0);
     }
 
     private yTemp(v: number, y0: number, y1: number) {
@@ -395,8 +488,77 @@ const { theme = "dark", animate = true, loopEnd = 582 } = Astro.props;
     }
 
     private yRor(v: number, y0: number, y1: number) {
-      const p = Math.min(1, v / this.rorMax);
+      const p = (v - this.rorMin) / (this.rorMax - this.rorMin);
       return y1 - p * (y1 - y0);
+    }
+
+    private updateTimeWindow(currentT: number) {
+      if (!this.useSlidingWindow) {
+        this.timeStart = 0;
+        this.timeEnd = ROAST_TOTAL_SEC;
+        return;
+      }
+
+      this.timeStart = Math.max(0, currentT - this.windowSec * 0.88);
+      this.timeEnd = this.timeStart + this.windowSec;
+      if (this.timeEnd > ROAST_TOTAL_SEC) {
+        this.timeEnd = ROAST_TOTAL_SEC;
+        this.timeStart = Math.max(0, this.timeEnd - this.windowSec);
+      }
+    }
+
+    private sampleAtTime(t: number): RoastPoint {
+      const clamped = Math.max(0, Math.min(ROAST_TOTAL_SEC, t));
+      let lo = 0;
+      let hi = this.data.length - 1;
+      while (lo < hi) {
+        const mid = Math.floor((lo + hi) / 2);
+        if (this.data[mid].t < clamped) lo = mid + 1;
+        else hi = mid;
+      }
+      const i = Math.max(0, lo - 1);
+      const a = this.data[i];
+      const b = this.data[Math.min(i + 1, this.data.length - 1)];
+      if (b.t <= a.t) return { ...a, t: clamped };
+      const f = (clamped - a.t) / (b.t - a.t);
+      const lerp = (x: number, y: number) => x + (y - x) * f;
+      return {
+        t: clamped,
+        bt: lerp(a.bt, b.bt),
+        et: lerp(a.et, b.et),
+        ror: lerp(a.ror, b.ror),
+        refBt: lerp(a.refBt, b.refBt),
+        refEt: lerp(a.refEt, b.refEt),
+      };
+    }
+
+    private sensorJitter(t: number) {
+      const wobble = (seed: number, amp: number) =>
+        Math.sin(t * 2.7 + seed) * amp + Math.sin(t * 5.3 + seed * 1.7) * amp * 0.35;
+      return {
+        bt: wobble(0.4, 0.12),
+        et: wobble(1.8, 0.1),
+        ror: wobble(2.6, 0.06),
+      };
+    }
+
+    private pointsUntil(until: number) {
+      const from = Math.max(this.timeStart, 0);
+      const to = until;
+      if (to < from) return [] as RoastPoint[];
+
+      const points: RoastPoint[] = [];
+      const startIdx = this.indexAtTime(from);
+      const endIdx = this.indexAtTime(to);
+
+      if (this.data[startIdx].t < from) points.push(this.sampleAtTime(from));
+      for (let i = startIdx; i <= endIdx; i++) {
+        const p = this.data[i];
+        if (p.t >= from && p.t <= to) points.push(p);
+      }
+      const tail = this.sampleAtTime(to);
+      if (!points.length || points[points.length - 1].t < to - 1e-6) points.push(tail);
+      return points;
     }
 
     private indexAtTime(t: number) {
@@ -431,9 +593,17 @@ const { theme = "dark", animate = true, loopEnd = 582 } = Astro.props;
       ctx.restore();
     }
 
+    private timeAxisTicks() {
+      const ticks: number[] = [];
+      const first = Math.ceil(this.timeStart / 60) * 60;
+      for (let t = first; t <= this.timeEnd; t += 60) ticks.push(t);
+      if (!ticks.length || ticks[0] > this.timeStart) ticks.unshift(Math.round(this.timeStart));
+      return ticks;
+    }
+
     private drawTimeAxis(x0: number, x1: number, y: number) {
       const { ctx, palette } = this;
-      const ticks = [0, 180, 360, 540, 720];
+      const ticks = this.timeAxisTicks();
       ctx.save();
       ctx.strokeStyle = palette.gridStrong;
       ctx.fillStyle = palette.text;
@@ -458,10 +628,11 @@ const { theme = "dark", animate = true, loopEnd = 582 } = Astro.props;
 
     private drawPhases(x0: number, x1: number, y0: number, y1: number) {
       const { ctx } = this;
-      for (const phase of ROAST_PHASES) {
-        const xA = this.xAt(phase.start, x0, x1);
-        const xB = this.xAt(phase.end, x0, x1);
-        ctx.fillStyle = `rgba(${phase.color}, 0.08)`;
+      for (const phase of this.palette.phases) {
+        if (phase.end < this.timeStart || phase.start > this.timeEnd) continue;
+        const xA = this.xAt(Math.max(phase.start, this.timeStart), x0, x1);
+        const xB = this.xAt(Math.min(phase.end, this.timeEnd), x0, x1);
+        ctx.fillStyle = `rgba(${phase.color}, ${this.palette.phaseFill})`;
         ctx.fillRect(xA, y0, xB - xA, y1 - y0);
         ctx.fillStyle = `rgba(${phase.color}, 0.55)`;
         ctx.font = '500 9px "JetBrains Mono", ui-monospace, monospace';
@@ -483,21 +654,23 @@ const { theme = "dark", animate = true, loopEnd = 582 } = Astro.props;
       ctx.textAlign = "left";
       ctx.textBaseline = "top";
 
+      const eventColors = EVENT_COLORS[this.theme];
       for (const ev of ROAST_EVENTS) {
-        if (ev.time > until) continue;
+        if (ev.time > until || ev.time < this.timeStart || ev.time > this.timeEnd) continue;
         const x = this.xAt(ev.time, x0, x1);
-        const label = ev.id === "fc" ? "FC · 1st crack" : ev.label;
+        ctx.strokeStyle = eventColors[ev.id as keyof typeof eventColors] ?? palette.event;
         ctx.beginPath();
         ctx.moveTo(x + 0.5, y0);
         ctx.lineTo(x + 0.5, y1);
         ctx.stroke();
-        ctx.fillText(label, x + 4, y0 + 4);
+        ctx.strokeStyle = palette.event;
+        ctx.fillStyle = eventColors[ev.id as keyof typeof eventColors] ?? palette.eventLabel;
+        ctx.fillText(ev.label, x + 4, y0 + 4);
       }
       ctx.restore();
     }
 
     private drawSeries(
-      points: RoastPoint[],
       until: number,
       key: "bt" | "et" | "refBt" | "refEt" | "ror",
       color: string,
@@ -510,8 +683,8 @@ const { theme = "dark", animate = true, loopEnd = 582 } = Astro.props;
       dashed = false,
     ) {
       const { ctx } = this;
-      const end = this.indexAtTime(until);
-      if (end <= 0) return;
+      const slice = this.pointsUntil(until);
+      if (slice.length < 2) return;
 
       ctx.save();
       ctx.strokeStyle = color;
@@ -521,34 +694,34 @@ const { theme = "dark", animate = true, loopEnd = 582 } = Astro.props;
       if (dashed) ctx.setLineDash([5, 4]);
 
       ctx.beginPath();
-      for (let i = 0; i <= end; i++) {
-        const p = points[i];
+      slice.forEach((p, i) => {
         const x = this.xAt(p.t, x0, x1);
         const y = mapY(p[key]);
         if (i === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
-      }
+      });
       ctx.stroke();
       ctx.restore();
     }
 
-    private drawRorFill(points: RoastPoint[], until: number, x0: number, x1: number, y0: number, y1: number, mapY: (v: number) => number) {
+    private drawRorFill(until: number, x0: number, x1: number, y0: number, y1: number, mapY: (v: number) => number) {
       const { ctx, palette } = this;
-      const end = this.indexAtTime(until);
-      if (end <= 0) return;
+      const slice = this.pointsUntil(until);
+      if (slice.length < 2) return;
 
+      const zeroY = mapY(0);
       ctx.save();
       ctx.beginPath();
-      for (let i = 0; i <= end; i++) {
-        const p = points[i];
+      slice.forEach((p, i) => {
         const x = this.xAt(p.t, x0, x1);
         const y = mapY(p.ror);
         if (i === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
-      }
-      const last = points[end];
-      ctx.lineTo(this.xAt(last.t, x0, x1), y1);
-      ctx.lineTo(x0, y1);
+      });
+      const last = slice[slice.length - 1];
+      const first = slice[0];
+      ctx.lineTo(this.xAt(last.t, x0, x1), zeroY);
+      ctx.lineTo(this.xAt(first.t, x0, x1), zeroY);
       ctx.closePath();
       ctx.fillStyle = palette.rorFill;
       ctx.fill();
@@ -559,10 +732,11 @@ const { theme = "dark", animate = true, loopEnd = 582 } = Astro.props;
       const { ctx, palette } = this;
       const x = this.xAt(point.t, x0, x1);
       const yBt = this.yTemp(point.bt, mainY0, mainY1);
+      const pulse = 0.55 + 0.45 * Math.sin(this.pulsePhase);
 
       ctx.save();
       ctx.strokeStyle = palette.cursorGlow;
-      ctx.lineWidth = 8;
+      ctx.lineWidth = 6 + pulse * 3;
       ctx.beginPath();
       ctx.moveTo(x + 0.5, mainY0);
       ctx.lineTo(x + 0.5, rorY1);
@@ -579,19 +753,25 @@ const { theme = "dark", animate = true, loopEnd = 582 } = Astro.props;
 
       ctx.fillStyle = palette.cursorGlow;
       ctx.beginPath();
-      ctx.arc(x, yBt, 7, 0, Math.PI * 2);
+      ctx.arc(x, yBt, 5 + pulse * 4, 0, Math.PI * 2);
       ctx.fill();
 
       ctx.fillStyle = palette.bt;
       ctx.beginPath();
       ctx.arc(x, yBt, 3.5, 0, Math.PI * 2);
       ctx.fill();
+
+      ctx.fillStyle = palette.textStrong;
+      ctx.font = '600 8px "JetBrains Mono", ui-monospace, monospace';
+      ctx.textAlign = "center";
+      ctx.textBaseline = "bottom";
+      ctx.fillText("NOW", x, mainY0 - 4);
       ctx.restore();
     }
 
     private render() {
-      const { ctx, palette, data } = this;
-      const current = data[this.playhead] ?? data[data.length - 1];
+      const { ctx, palette } = this;
+      const current = this.sampleAtTime(this.playheadTime);
       const until = current.t;
       const plot = this.plot();
 
@@ -603,26 +783,33 @@ const { theme = "dark", animate = true, loopEnd = 582 } = Astro.props;
       const mapRor = (v: number) => this.yRor(v, plot.rorY0, plot.rorY1);
 
       this.drawPhases(plot.x0, plot.x1, plot.mainY0, plot.mainY1);
-      this.drawGrid(plot.x0, plot.x1, plot.mainY0, plot.mainY1, [100, 150, 200, 250], mapTemp, "°");
-      this.drawGrid(plot.x0, plot.x1, plot.rorY0, plot.rorY1, [10, 20], mapRor, "");
+      this.drawGrid(plot.x0, plot.x1, plot.mainY0, plot.mainY1, [50, 100, 150, 200, 250], mapTemp, "°");
+      this.drawGrid(plot.x0, plot.x1, plot.rorY0, plot.rorY1, [-5, 0, 10, 20], mapRor, "");
 
       ctx.save();
-      ctx.strokeStyle = palette.gridStrong;
+      ctx.strokeStyle = palette.grid;
       ctx.lineWidth = 1;
+      const zeroY = mapRor(0);
+      ctx.beginPath();
+      ctx.moveTo(plot.x0, zeroY + 0.5);
+      ctx.lineTo(plot.x1, zeroY + 0.5);
+      ctx.stroke();
+
+      ctx.strokeStyle = palette.gridStrong;
       ctx.strokeRect(plot.x0 + 0.5, plot.mainY0 + 0.5, plot.x1 - plot.x0 - 1, plot.mainY1 - plot.mainY0 - 1);
       ctx.strokeRect(plot.x0 + 0.5, plot.rorY0 + 0.5, plot.x1 - plot.x0 - 1, plot.rorY1 - plot.rorY0 - 1);
       ctx.restore();
 
-      this.drawSeries(data, until, "refBt", palette.ref, 1.5, plot.x0, plot.x1, plot.mainY0, plot.mainY1, mapTemp, true);
-      this.drawSeries(data, until, "refEt", palette.ref, 1, plot.x0, plot.x1, plot.mainY0, plot.mainY1, mapTemp, true);
-      this.drawRorFill(data, until, plot.x0, plot.x1, plot.rorY0, plot.rorY1, mapRor);
-      this.drawSeries(data, until, "et", palette.et, 1.5, plot.x0, plot.x1, plot.mainY0, plot.mainY1, mapTemp);
-      this.drawSeries(data, until, "bt", palette.bt, 2.25, plot.x0, plot.x1, plot.mainY0, plot.mainY1, mapTemp);
-      this.drawSeries(data, until, "ror", palette.ror, 1.75, plot.x0, plot.x1, plot.rorY0, plot.rorY1, mapRor);
+      this.drawSeries(until, "refBt", palette.ref, 1.5, plot.x0, plot.x1, plot.mainY0, plot.mainY1, mapTemp, true);
+      this.drawSeries(until, "refEt", palette.ref, 1, plot.x0, plot.x1, plot.mainY0, plot.mainY1, mapTemp, true);
+      this.drawRorFill(until, plot.x0, plot.x1, plot.rorY0, plot.rorY1, mapRor);
+      this.drawSeries(until, "et", palette.et, 1.5, plot.x0, plot.x1, plot.mainY0, plot.mainY1, mapTemp);
+      this.drawSeries(until, "bt", palette.bt, 2.25, plot.x0, plot.x1, plot.mainY0, plot.mainY1, mapTemp);
+      this.drawSeries(until, "ror", palette.ror, 1.75, plot.x0, plot.x1, plot.rorY0, plot.rorY1, mapRor);
 
       this.drawEvents(plot.x0, plot.x1, plot.mainY0, plot.rorY1, until);
       this.drawTimeAxis(plot.x0, plot.x1, plot.rorY1 + 2);
-      this.drawCursor(current, plot.x0, plot.x1, plot.mainY0, plot.mainY1, plot.rorY0, plot.rorY1);
+      if (this.animate && this.running) this.drawCursor(current, plot.x0, plot.x1, plot.mainY0, plot.mainY1, plot.rorY0, plot.rorY1);
 
       ctx.save();
       ctx.fillStyle = palette.textStrong;
@@ -634,47 +821,93 @@ const { theme = "dark", animate = true, loopEnd = 582 } = Astro.props;
       ctx.fillText("°/m", plot.x1, plot.rorY0 - 4);
       ctx.restore();
 
-      this.updateMetrics(current);
+      this.updateMetrics(current, this.animate && this.running);
     }
 
-    private updateMetrics(point: RoastPoint) {
+    private phaseName(t: number) {
+      if (t < 88) return "Ready";
+      if (t < 252) return "Drying";
+      if (t < 572) return "Maillard";
+      return "Development";
+    }
+
+    private phaseColor(name: string) {
+      const map =
+        this.theme === "light"
+          ? {
+              Ready: "#22a85a",
+              Drying: "#d4a017",
+              Maillard: "#1976d2",
+              Development: "#5c4fd4",
+            }
+          : {
+              Ready: "#81fba5",
+              Drying: "#ffff54",
+              Maillard: "#44bffc",
+              Development: "#756afc",
+            };
+      return map[name as keyof typeof map] ?? map.Development;
+    }
+
+    private updateMetrics(point: RoastPoint, live = true) {
       const bt = this.root.querySelector("[data-metric-bt]");
       const et = this.root.querySelector("[data-metric-et]");
       const ror = this.root.querySelector("[data-metric-ror]");
       const time = this.root.querySelector("[data-metric-time]");
-      if (bt) bt.textContent = formatTemp(point.bt);
-      if (et) et.textContent = formatTemp(point.et);
-      if (ror) ror.textContent = formatRor(point.ror);
+      const phase = this.root.querySelector("[data-metric-phase]");
+      const phaseName = this.phaseName(point.t);
+      const jitter = live ? this.sensorJitter(point.t) : { bt: 0, et: 0, ror: 0 };
+      const btVal = point.bt + jitter.bt;
+      const etVal = point.et + jitter.et;
+      const rorVal = point.ror + jitter.ror;
+      if (bt) bt.textContent = formatTemp(btVal);
+      if (et) et.textContent = formatTemp(etVal);
+      if (ror) ror.textContent = formatRor(rorVal);
       if (time) time.textContent = formatRoastTime(point.t);
+      if (phase) phase.textContent = phaseName;
+      this.root.dispatchEvent(
+        new CustomEvent("ox-roast-metrics", {
+          detail: {
+            bt: formatTemp(btVal),
+            et: formatTemp(etVal),
+            ror: formatRor(rorVal),
+            time: formatRoastTime(point.t),
+            phase: phaseName,
+            phaseColor: this.phaseColor(phaseName),
+          },
+        }),
+      );
     }
 
     private tick = (ts: number) => {
-      if (ts < this.pauseUntil) {
-        this.raf = requestAnimationFrame(this.tick);
-        return;
-      }
+      const paused = this.pauseUntil > 0 && ts < this.pauseUntil;
 
-      const dt = Math.min(48, ts - this.lastTs);
-      this.lastTs = ts;
-      const speed = 38;
-      const nextT = this.data[this.playhead].t + (dt / 1000) * speed;
+      if (!paused) {
+        if (this.pauseUntil > 0 && ts >= this.pauseUntil) {
+          this.playheadTime = this.startTime;
+          this.pauseUntil = 0;
+          this.lastTs = ts;
+        }
 
-      if (nextT >= this.loopEnd) {
-        this.playhead = this.indexAtTime(this.loopEnd);
-        this.render();
-        this.pauseUntil = ts + 1800;
-        this.playhead = 0;
+        const dt = Math.min(48, ts - this.lastTs);
         this.lastTs = ts;
-      } else {
-        this.playhead = this.indexAtTime(nextT);
-        this.render();
+        this.playheadTime = Math.min(this.loopEnd, this.playheadTime + dt / 1000);
+
+        if (this.playheadTime >= this.loopEnd) {
+          this.playheadTime = this.loopEnd;
+          this.pauseUntil = ts + 2000;
+        }
+
+        this.updateTimeWindow(this.playheadTime);
       }
 
+      this.pulsePhase += 0.14;
+      this.render();
       this.raf = requestAnimationFrame(this.tick);
     };
 
     destroy() {
-      cancelAnimationFrame(this.raf);
+      this.pause();
       this.resizeObserver?.disconnect();
       window.removeEventListener("resize", this.onResize);
     }

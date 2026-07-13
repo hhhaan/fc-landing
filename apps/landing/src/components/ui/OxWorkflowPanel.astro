@@ -1,0 +1,1203 @@
+---
+import OxRoastChart from "./OxRoastChart.astro";
+import { FC_EVENT_COLORS, FC_LEVEL_BADGE } from "../../lib/fcDesktopTokens";
+
+const machines = [
+  {
+    id: "giesen-w6a",
+    name: "Giesen W6A",
+    displayName: "Giesen · Modbus TCP",
+    brand: "Giesen",
+    protocol: "MODBUS",
+    connected: true,
+    capabilities: ["heater", "fan", "drum"],
+    params: { host: "192.168.1.42", port: "502", unit_id: "1" },
+    bt: "24.1°C",
+    et: "28.6°C",
+  },
+  {
+    id: "sample",
+    name: "Sample Roaster",
+    displayName: "Virtual · Simulator",
+    brand: "First Crack",
+    protocol: "VIRTUAL",
+    connected: false,
+    capabilities: ["bt", "et"],
+    params: {},
+    bt: "—",
+    et: "—",
+  },
+];
+
+const historyRows = [
+  {
+    date: "Jul 12",
+    bean: "Ethiopia Guji",
+    profile: "Guji Washed v3",
+    weight: "12400g",
+    drop: "208.1°C",
+    duration: "09:38",
+    level: "Medium-Light",
+    reference: true,
+  },
+  {
+    date: "Jul 11",
+    bean: "Ethiopia Guji",
+    profile: "Guji Washed v3",
+    weight: "12350g",
+    drop: "206.4°C",
+    duration: "09:52",
+    level: "Medium-Light",
+    reference: false,
+  },
+  {
+    date: "Jul 9",
+    bean: "Colombia Huila",
+    profile: "Huila Natural",
+    weight: "11800g",
+    drop: "207.8°C",
+    duration: "10:14",
+    level: "Medium",
+    reference: false,
+  },
+  {
+    date: "Jul 7",
+    bean: "Kenya Kiambu",
+    profile: "Kiambu AA",
+    weight: "12100g",
+    drop: "209.3°C",
+    duration: "09:46",
+    level: "Light",
+    reference: false,
+  },
+];
+
+const roastEvents = [
+  { time: "00:00", event: "Charge", temp: "198.0°C", note: "12.4 kg in" },
+  { time: "01:28", event: "TP", temp: "91.2°C", note: "" },
+  { time: "04:12", event: "Yellow", temp: "151.0°C", note: "" },
+  { time: "09:32", event: "FC Start", temp: "196.2°C", note: "", current: true },
+];
+---
+
+<div class="fc-workflow reveal" data-workflow-panel>
+  <div class="fc-wf-chrome">
+    <div>
+      <span class="fc-wf-chrome-eyebrow" data-wf-eyebrow>Machines</span>
+      <span class="fc-wf-chrome-title" data-wf-title>Pair sensors and controllers</span>
+    </div>
+    <span class="fc-wf-chrome-step" data-wf-step>Step I</span>
+  </div>
+
+  <!-- Step I — Machines (fc-desktop Machines view) -->
+  <section class="fc-workflow-view is-active" data-step-view="0" aria-hidden="false">
+    <div class="fc-wf-machines">
+      <div class="fc-wf-machine-list">
+        {
+          machines.map((m, i) => (
+            <button
+              type="button"
+              class:list={["fc-wf-machine-card", i === 0 && "is-selected", m.connected && "is-connected"]}
+              data-machine-index={i}
+            >
+              <div class="fc-wf-machine-card-top">
+                <div>
+                  <div class="fc-wf-machine-name">{m.name}</div>
+                  <div class="fc-wf-machine-sub">{m.displayName}</div>
+                </div>
+                <span class:list={["fc-wf-badge", m.connected ? "fc-wf-badge-live" : "fc-wf-badge-off"]}>
+                  {m.connected ? "Live" : "Offline"}
+                </span>
+              </div>
+              <div class="fc-wf-machine-meta">
+                <span>{m.protocol}</span>
+                <span>{m.brand}</span>
+              </div>
+            </button>
+          ))
+        }
+      </div>
+
+      <div class="fc-wf-machine-panels">
+        {
+          machines.map((m, i) => (
+            <div
+              class:list={["fc-wf-machine-detail", i === 0 && "is-active"]}
+              data-machine-panel={i}
+            >
+              <div class="fc-wf-detail-head">
+                <div>
+                  <h3 class="fc-wf-detail-title">{m.name}</h3>
+                  <div class="fc-wf-tags">
+                    <span>{m.brand}</span>
+                    <span>{m.protocol}</span>
+                    {m.capabilities.map((c) => (
+                      <span>{c}</span>
+                    ))}
+                  </div>
+                </div>
+                <span
+                  class:list={["fc-wf-status-dot", !m.connected && "is-offline"]}
+                  aria-hidden="true"
+                ></span>
+              </div>
+
+              <div class="fc-wf-temp-grid">
+                <div class="fc-wf-temp-card">
+                  <span class="fc-wf-temp-label">Bean temperature</span>
+                  <span class="fc-wf-temp-value fc-wf-sensor-bt">{m.bt}</span>
+                  <span class="fc-wf-temp-sub">BT</span>
+                </div>
+                <div class="fc-wf-temp-card">
+                  <span class="fc-wf-temp-label">Environment temperature</span>
+                  <span class="fc-wf-temp-value fc-wf-sensor-et">{m.et}</span>
+                  <span class="fc-wf-temp-sub">ET</span>
+                </div>
+              </div>
+
+              {Object.keys(m.params).length > 0 ? (
+                <div class="fc-wf-conn-block">
+                  <div class="fc-wf-conn-title">Connection</div>
+                  <div class="fc-wf-conn-grid">
+                    {Object.entries(m.params).map(([k, v]) => (
+                      <div class="fc-wf-conn-item">
+                        <span>{k}</span>
+                        <strong>{v}</strong>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <p class="fc-wf-empty-note">No active connection. Add a machine to pair probes and controllers.</p>
+              )}
+
+              <div class="fc-wf-toolbar">
+                <span
+                  class:list={["fc-wf-toolbar-dot", !m.connected && "is-offline"]}
+                  aria-hidden="true"
+                ></span>
+                <span>
+                  {m.connected
+                    ? `${m.name} connected · sidecar polling 4 Hz`
+                    : `${m.name} offline · waiting for sidecar`}
+                </span>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Step II — Active roast (fc-desktop chart + side panel) -->
+  <section class="fc-workflow-view" data-step-view="1" aria-hidden="true" hidden>
+    <div class="fc-wf-roast">
+      <div class="fc-wf-roast-header">
+        <h3 class="fc-wf-bean-title">Ethiopia Guji</h3>
+        <p class="fc-wf-bean-sub">
+          Adado · Heirloom / Washed · <span>Target:</span> Guji Washed v3
+        </p>
+      </div>
+
+      <div class="fc-wf-roast-stage">
+        <div class="fc-wf-chart-main">
+          <div class="fc-wf-chart-legend" aria-hidden="true">
+            <span><i class="fc-wf-legend-bt"></i>BT</span>
+            <span><i class="fc-wf-legend-et"></i>ET</span>
+            <span><i class="fc-wf-legend-target"></i>Target</span>
+            <span><i class="fc-wf-legend-ror"></i>RoR</span>
+          </div>
+          <OxRoastChart theme="light" embedded />
+        </div>
+
+        <aside class="fc-wf-roast-side" aria-label="Live readings">
+          <div class="fc-wf-side-block fc-wf-side-block-right">
+            <span class="fc-wf-side-label">ET</span>
+            <b class="fc-wf-side-value fc-wf-sensor-et" data-reading-et>—</b>
+          </div>
+          <div class="fc-wf-side-row">
+            <span class="fc-wf-side-label">ΔET (30s)</span>
+            <b class="fc-wf-side-delta fc-wf-sensor-et">+1.8°</b>
+          </div>
+
+          <div class="fc-wf-side-divider"></div>
+
+          <div class="fc-wf-side-block fc-wf-side-block-right">
+            <span class="fc-wf-side-label">BT</span>
+            <b class="fc-wf-side-value fc-wf-sensor-bt" data-reading-bt>—</b>
+          </div>
+          <div class="fc-wf-side-row">
+            <span class="fc-wf-side-label">ΔBT (30s)</span>
+            <b class="fc-wf-side-delta fc-wf-sensor-bt">+2.1°</b>
+          </div>
+
+          <div class="fc-wf-side-divider"></div>
+
+          <div class="fc-wf-side-block fc-wf-side-block-right">
+            <span class="fc-wf-side-label">RoR</span>
+            <b class="fc-wf-side-value fc-wf-sensor-ror" data-reading-ror>—</b>
+          </div>
+
+          <div class="fc-wf-side-divider"></div>
+
+          <div class="fc-wf-side-block fc-wf-side-block-right">
+            <span class="fc-wf-side-label">Time</span>
+            <b class="fc-wf-side-value fc-wf-side-time" data-reading-time>00:00</b>
+          </div>
+
+          <div class="fc-wf-side-row">
+            <span class="fc-wf-side-label">Phase</span>
+            <b class="fc-wf-side-phase" data-reading-phase>—</b>
+          </div>
+          <div class="fc-wf-side-row">
+            <span class="fc-wf-side-label">DTR</span>
+            <b class="fc-wf-side-meta fc-wf-phase-dev">18.4%</b>
+          </div>
+          <div class="fc-wf-side-row">
+            <span class="fc-wf-side-label">Dev</span>
+            <b class="fc-wf-side-meta fc-wf-phase-dev">03:10</b>
+          </div>
+
+          <div class="fc-wf-side-divider"></div>
+
+          <div class="fc-wf-side-log">
+            {
+              roastEvents.map((e) => (
+                <div class:list={["fc-wf-side-log-item", e.current && "is-current"]}>
+                  <span class="fc-wf-mono">{e.time}</span>
+                  <span
+                    class="fc-wf-log-dot"
+                    style={`background:${FC_EVENT_COLORS[e.event] ?? "#e5e5e5"}`}
+                    aria-hidden="true"
+                  ></span>
+                  <span class="fc-wf-side-log-event">{e.event}</span>
+                </div>
+              ))
+            }
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step III — History (fc-desktop History view) -->
+  <section class="fc-workflow-view" data-step-view="2" aria-hidden="true" hidden>
+    <div class="fc-wf-history">
+      <div class="fc-wf-history-head">
+        <div>
+          <h3 class="fc-wf-history-title">Roast history</h3>
+          <p>4 sessions · Ethiopia Guji · last 7 days</p>
+        </div>
+        <span class="fc-wf-badge fc-wf-badge-neutral">Completed</span>
+      </div>
+
+      <div class="fc-wf-history-table-wrap">
+        <table class="fc-wf-history-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Bean</th>
+              <th>Profile</th>
+              <th>Weight</th>
+              <th>Drop</th>
+              <th>Duration</th>
+              <th>Level</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              historyRows.map((row) => {
+                const badge = FC_LEVEL_BADGE[row.level] ?? {
+                  color: "#777169",
+                  bg: "rgba(0,0,0,0.05)",
+                };
+                return (
+                  <tr class:list={row.reference && "is-reference"}>
+                    <td class="fc-wf-mono">{row.date}</td>
+                    <td class="fc-wf-bean-cell">
+                      <span>{row.bean}</span>
+                      {row.reference && <span class="fc-wf-ref-tag">Reference</span>}
+                    </td>
+                    <td>{row.profile}</td>
+                    <td class="fc-wf-mono">{row.weight}</td>
+                    <td class="fc-wf-mono">{row.drop}</td>
+                    <td class="fc-wf-mono">{row.duration}</td>
+                    <td>
+                      <span
+                        class="fc-wf-level-badge"
+                        style={`color:${badge.color};background:${badge.bg}`}
+                      >
+                        {row.level}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="fc-wf-promote">
+        <div>
+          <span class="fc-wf-mono">Jul 12 · Ethiopia Guji</span>
+          <strong>Promote #2847 as reference profile</strong>
+          <p>Drop 208.1°C · Dev 18.4% · syncs to every machine on the floor.</p>
+        </div>
+        <button type="button" class="fc-wf-promote-btn">Set as reference</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<style>
+  .fc-workflow {
+    --fc-bg: #ffffff;
+    --fc-surface: #efeff0;
+    --fc-surface-warm: #f5f2ef;
+    --fc-primary: #171717;
+    --fc-secondary: #4e4e4e;
+    --fc-muted: #777169;
+    --fc-border: #e5e5e5;
+    --fc-border-subtle: rgba(0, 0, 0, 0.05);
+    --fc-sensor-bt: #22a85a;
+    --fc-sensor-et: #4a85c5;
+    --fc-sensor-ror: #f1c21b;
+    --fc-phase-ready: #22a85a;
+    --fc-phase-drying: #d4a017;
+    --fc-phase-maillard: #1976d2;
+    --fc-phase-dev: #5c4fd4;
+    --fc-control-heat: #d97706;
+    --fc-control-fan: #2563eb;
+    --fc-control-drum: #059669;
+    font-family: Inter, system-ui, -apple-system, sans-serif;
+    border: 1px solid var(--fc-border);
+    background: var(--fc-bg);
+    border-radius: 0;
+    overflow: hidden;
+    color: var(--fc-primary);
+  }
+
+  .fc-wf-chrome {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--fc-border);
+    background: var(--fc-bg);
+  }
+
+  .fc-wf-chrome-eyebrow {
+    display: block;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fc-muted);
+    margin-bottom: 4px;
+  }
+
+  .fc-wf-chrome-title {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--fc-primary);
+  }
+
+  .fc-wf-chrome-step {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--fc-muted);
+    flex-shrink: 0;
+  }
+
+  .fc-wf-sensor-bt { color: var(--fc-sensor-bt); }
+  .fc-wf-sensor-et { color: var(--fc-sensor-et); }
+  .fc-wf-sensor-ror { color: var(--fc-sensor-ror); }
+  .fc-wf-phase-dev { color: var(--fc-phase-dev); }
+  .fc-wf-control-heat { color: var(--fc-control-heat); }
+  .fc-wf-control-fan { color: var(--fc-control-fan); }
+  .fc-wf-control-drum { color: var(--fc-control-drum); }
+
+  .fc-wf-legend-bt { background: var(--fc-sensor-bt); }
+  .fc-wf-legend-et { background: var(--fc-sensor-et); }
+  .fc-wf-legend-ror { background: var(--fc-sensor-ror); }
+  .fc-wf-legend-target {
+    background: repeating-linear-gradient(
+      to right,
+      rgba(40, 180, 130, 0.75) 0 4px,
+      transparent 4px 7px
+    );
+    opacity: 0.65;
+  }
+
+  .fc-workflow-view {
+    display: none;
+    padding: 20px 20px 22px;
+  }
+
+  .fc-workflow-view.is-active {
+    display: block;
+    animation: fc-wf-in 0.28s ease;
+  }
+
+  @keyframes fc-wf-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .fc-wf-mono {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Machines */
+  .fc-wf-machines {
+    display: grid;
+    gap: 14px;
+  }
+
+  @media (min-width: 768px) {
+    .fc-wf-machines {
+      grid-template-columns: minmax(200px, 240px) 1fr;
+      gap: 16px;
+    }
+  }
+
+  .fc-wf-machine-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .fc-wf-machine-card {
+    width: 100%;
+    text-align: left;
+    padding: 12px 12px 11px;
+    border: 1px solid var(--fc-border);
+    border-left: 2px solid transparent;
+    border-radius: 0;
+    background: var(--fc-bg);
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  .fc-wf-machine-card:hover {
+    background: rgba(245, 242, 239, 0.5);
+  }
+
+  .fc-wf-machine-card.is-selected {
+    background: rgba(245, 242, 239, 0.85);
+    border-left-color: var(--fc-phase-ready);
+  }
+
+  .fc-wf-machine-panels {
+    min-width: 0;
+  }
+
+  .fc-wf-machine-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .fc-wf-machine-card-top > div {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .fc-wf-machine-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--fc-primary);
+    margin-bottom: 2px;
+    line-height: 1.25;
+  }
+
+  .fc-wf-machine-sub {
+    font-size: 12px;
+    color: var(--fc-muted);
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .fc-wf-machine-meta {
+    display: flex;
+    gap: 10px;
+    font-size: 11px;
+    color: var(--fc-muted);
+  }
+
+  .fc-wf-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 1px 5px;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: 0;
+    margin-top: 1px;
+  }
+
+  .fc-wf-badge-live {
+    color: var(--fc-phase-ready);
+    background: rgba(34, 168, 90, 0.1);
+  }
+
+  .fc-wf-badge-off {
+    color: var(--fc-muted);
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  .fc-wf-badge-neutral {
+    color: var(--fc-secondary);
+    border: 1px solid var(--fc-border);
+    background: transparent;
+  }
+
+  .fc-wf-machine-detail {
+    padding: 22px 24px;
+    border: 1px solid var(--fc-border);
+    border-radius: 0;
+    background: var(--fc-bg);
+  }
+
+  .fc-wf-machine-detail:not(.is-active) {
+    display: none;
+  }
+
+  .fc-wf-empty-note {
+    margin: 0 0 16px;
+    padding: 14px 16px;
+    border: 1px solid var(--fc-border-subtle);
+    background: var(--fc-surface-warm);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--fc-muted);
+  }
+
+  .fc-wf-detail-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 22px;
+  }
+
+  .fc-wf-detail-title {
+    margin: 0 0 8px;
+    font-size: 26px;
+    font-weight: 300;
+    letter-spacing: -0.3px;
+    line-height: 1.2;
+  }
+
+  .fc-wf-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--fc-secondary);
+  }
+
+  .fc-wf-tags span {
+    padding: 3px 9px;
+    border-radius: 0;
+    background: var(--fc-surface);
+    text-transform: capitalize;
+  }
+
+  .fc-wf-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 0;
+    background: var(--fc-phase-ready);
+  }
+
+  .fc-wf-status-dot.is-offline,
+  .fc-wf-toolbar-dot.is-offline {
+    background: var(--fc-border);
+  }
+
+  .fc-wf-temp-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+
+  .fc-wf-temp-card {
+    padding: 14px 16px;
+    border-radius: 0;
+    background: var(--fc-surface);
+  }
+
+  .fc-wf-temp-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--fc-muted);
+    margin-bottom: 6px;
+  }
+
+  .fc-wf-temp-value {
+    display: block;
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: -0.3px;
+    line-height: 1.1;
+  }
+
+  .fc-wf-temp-sub {
+    display: block;
+    margin-top: 4px;
+    font-size: 11px;
+    color: var(--fc-muted);
+  }
+
+  .fc-wf-conn-block {
+    padding: 18px;
+    border-radius: 0;
+    background: var(--fc-surface-warm);
+    margin-bottom: 16px;
+  }
+
+  .fc-wf-conn-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--fc-secondary);
+    margin-bottom: 10px;
+  }
+
+  .fc-wf-conn-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .fc-wf-conn-item {
+    padding: 8px 10px;
+    border: 1px solid var(--fc-border-subtle);
+    border-radius: 0;
+    background: rgba(255, 255, 255, 0.82);
+  }
+
+  .fc-wf-conn-item span {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--fc-muted);
+    margin-bottom: 4px;
+  }
+
+  .fc-wf-conn-item strong {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fc-primary);
+  }
+
+  .fc-wf-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid var(--fc-border-subtle);
+    font-size: 12px;
+    color: var(--fc-secondary);
+    letter-spacing: 0.14px;
+  }
+
+  .fc-wf-toolbar-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 0;
+    background: var(--fc-phase-ready);
+  }
+
+  /* Active roast */
+  .fc-wf-roast {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .fc-wf-roast-header {
+    padding-bottom: 2px;
+  }
+
+  .fc-wf-bean-title {
+    margin: 0;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 500;
+    letter-spacing: -0.4px;
+    line-height: 1.13;
+  }
+
+  .fc-wf-bean-sub {
+    margin: 6px 0 0;
+    font-size: 13px;
+    color: var(--fc-muted);
+    letter-spacing: 0.14px;
+  }
+
+  .fc-wf-bean-sub span {
+    color: var(--fc-secondary);
+  }
+
+  .fc-wf-roast-stage {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--fc-border);
+    background: var(--fc-bg);
+    min-height: 320px;
+  }
+
+  @media (min-width: 768px) {
+    .fc-wf-roast-stage {
+      flex-direction: row;
+      align-items: stretch;
+    }
+  }
+
+  .fc-wf-chart-main {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    padding: 24px 8px 10px;
+  }
+
+  .fc-wf-chart-main :global(.ox-roast-chart-embedded) {
+    border: 0;
+  }
+
+  .fc-wf-chart-main :global(.ox-roast-chart-embedded .ox-roast-chart-canvas-wrap) {
+    min-height: 260px;
+    height: 300px;
+  }
+
+  .fc-wf-chart-legend {
+    position: absolute;
+    top: 10px;
+    right: 16px;
+    z-index: 2;
+    display: flex;
+    gap: 14px;
+    font-size: 11px;
+    color: var(--fc-muted);
+    letter-spacing: 0.14px;
+  }
+
+  .fc-wf-chart-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .fc-wf-chart-legend i {
+    display: inline-block;
+    width: 16px;
+    height: 2px;
+  }
+
+  .fc-wf-roast-side {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px 12px 16px;
+    border-top: 1px solid var(--fc-border-subtle);
+    background: var(--fc-bg);
+  }
+
+  @media (min-width: 768px) {
+    .fc-wf-roast-side {
+      width: 168px;
+      flex-shrink: 0;
+      border-top: 0;
+      border-left: 1px solid var(--fc-border-subtle);
+    }
+  }
+
+  .fc-wf-side-block-right {
+    text-align: right;
+  }
+
+  .fc-wf-side-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--fc-muted);
+    margin-bottom: 4px;
+  }
+
+  .fc-wf-side-block-right .fc-wf-side-label {
+    margin-bottom: 2px;
+  }
+
+  .fc-wf-side-value {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 1.75rem;
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+  }
+
+  .fc-wf-side-time {
+    color: var(--fc-primary);
+  }
+
+  .fc-wf-side-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .fc-wf-side-row .fc-wf-side-label {
+    margin: 0;
+    font-size: 11px;
+  }
+
+  .fc-wf-side-delta {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .fc-wf-side-phase {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .fc-wf-side-meta {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .fc-wf-side-divider {
+    height: 1px;
+    background: var(--fc-border-subtle);
+    margin: 2px 0;
+  }
+
+  .fc-wf-side-log {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .fc-wf-side-log-item {
+    display: grid;
+    grid-template-columns: 34px 8px 1fr;
+    gap: 6px;
+    align-items: center;
+    font-size: 11px;
+    color: var(--fc-muted);
+  }
+
+  .fc-wf-side-log-item.is-current .fc-wf-side-log-event {
+    color: var(--fc-primary);
+    font-weight: 500;
+  }
+
+  .fc-wf-side-log-event {
+    letter-spacing: 0.02em;
+  }
+
+  .fc-wf-log-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 0;
+    background: var(--fc-border);
+  }
+
+  /* History */
+  .fc-wf-history-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+
+  .fc-wf-history-title {
+    margin: 0 0 4px;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.2px;
+  }
+
+  .fc-wf-history-head p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--fc-muted);
+  }
+
+  .fc-wf-history-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--fc-border);
+    border-radius: 0;
+    background: var(--fc-bg);
+    margin-bottom: 14px;
+  }
+
+  .fc-wf-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 640px;
+  }
+
+  .fc-wf-history-table th {
+    padding: 12px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--fc-muted);
+    border-bottom: 1px solid var(--fc-border);
+    white-space: nowrap;
+  }
+
+  .fc-wf-history-table td {
+    padding: 12px;
+    font-size: 13px;
+    color: var(--fc-secondary);
+    letter-spacing: 0.14px;
+    border-bottom: 1px solid var(--fc-border-subtle);
+    white-space: nowrap;
+  }
+
+  .fc-wf-history-table tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .fc-wf-history-table tr:hover td {
+    background: rgba(245, 242, 239, 0.45);
+  }
+
+  .fc-wf-history-table tr.is-reference td {
+    background: rgba(34, 168, 90, 0.08);
+  }
+
+  .fc-wf-bean-cell {
+    font-weight: 500;
+    color: var(--fc-primary) !important;
+  }
+
+  .fc-wf-bean-cell span {
+    display: inline-block;
+    margin-right: 8px;
+  }
+
+  .fc-wf-ref-tag {
+    display: inline-block;
+    padding: 2px 6px;
+    border: 1px solid rgba(34, 168, 90, 0.25);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--fc-phase-ready);
+    vertical-align: middle;
+  }
+
+  .fc-wf-level-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 0;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .fc-wf-promote {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 18px;
+    border: 1px solid var(--fc-border);
+    border-radius: 0;
+    background: var(--fc-surface);
+  }
+
+  .fc-wf-promote .fc-wf-mono {
+    display: block;
+    font-size: 11px;
+    color: var(--fc-muted);
+    margin-bottom: 4px;
+  }
+
+  .fc-wf-promote strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--fc-primary);
+    margin-bottom: 4px;
+  }
+
+  .fc-wf-promote p {
+    margin: 0;
+    font-size: 12px;
+    color: var(--fc-muted);
+    line-height: 1.5;
+  }
+
+  .fc-wf-promote-btn {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 0;
+    background: var(--fc-primary);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .fc-wf-promote-btn:hover {
+    background: #000;
+  }
+
+  .fc-wf-machine-card:focus-visible,
+  .fc-wf-promote-btn:focus-visible {
+    outline: 2px solid var(--fc-phase-maillard);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 767px) {
+    .fc-wf-side-value {
+      font-size: 1.5rem;
+    }
+
+    .fc-wf-chart-main :global(.ox-roast-chart-embedded .ox-roast-chart-canvas-wrap) {
+      height: 240px;
+      min-height: 220px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fc-workflow-view.is-active {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const WF_CHROME: Record<number, { step: string; eyebrow: string; title: string }> = {
+    0: { step: "Step I", eyebrow: "Machines", title: "Pair sensors and controllers" },
+    1: { step: "Step II", eyebrow: "Active roast", title: "Ride the curve with live readings" },
+    2: { step: "Step III", eyebrow: "History", title: "Archive sessions and promote winners" },
+  };
+
+  function initWorkflowPanel() {
+    const panel = document.querySelector<HTMLElement>("[data-workflow-panel]");
+    if (!panel || panel.dataset.ready === "true") return;
+    panel.dataset.ready = "true";
+
+    const views = panel.querySelectorAll<HTMLElement>("[data-step-view]");
+    const steps = document.querySelectorAll<HTMLElement>(".ox-step[data-step]");
+    const machineCards = panel.querySelectorAll<HTMLButtonElement>("[data-machine-index]");
+    const machinePanels = panel.querySelectorAll<HTMLElement>("[data-machine-panel]");
+
+    const chromeEyebrow = panel.querySelector<HTMLElement>("[data-wf-eyebrow]");
+    const chromeTitle = panel.querySelector<HTMLElement>("[data-wf-title]");
+    const chromeStep = panel.querySelector<HTMLElement>("[data-wf-step]");
+
+    const readingBt = panel.querySelector<HTMLElement>("[data-reading-bt]");
+    const readingEt = panel.querySelector<HTMLElement>("[data-reading-et]");
+    const readingRor = panel.querySelector<HTMLElement>("[data-reading-ror]");
+    const readingPhase = panel.querySelector<HTMLElement>("[data-reading-phase]");
+    const readingTime = panel.querySelector<HTMLElement>("[data-reading-time]");
+
+    function setMachine(index: number) {
+      machineCards.forEach((card) => {
+        card.classList.toggle("is-selected", Number(card.dataset.machineIndex) === index);
+      });
+      machinePanels.forEach((detail) => {
+        detail.classList.toggle("is-active", Number(detail.dataset.machinePanel) === index);
+      });
+    }
+
+    machineCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        setMachine(Number(card.dataset.machineIndex ?? 0));
+      });
+    });
+
+    panel.addEventListener("ox-roast-metrics", ((e: CustomEvent) => {
+      const { bt, et, ror, phase, phaseColor, time } = e.detail;
+      if (readingBt) readingBt.textContent = bt;
+      if (readingEt) readingEt.textContent = et;
+      if (readingRor) readingRor.textContent = ror;
+      if (readingTime && time) readingTime.textContent = time;
+      if (readingPhase) {
+        readingPhase.textContent = phase;
+        readingPhase.className = "fc-wf-side-phase";
+        if (phaseColor) readingPhase.style.color = phaseColor;
+      }
+    }) as EventListener);
+
+    function setStep(step: number) {
+      const chrome = WF_CHROME[step] ?? WF_CHROME[0];
+      if (chromeEyebrow) chromeEyebrow.textContent = chrome.eyebrow;
+      if (chromeTitle) chromeTitle.textContent = chrome.title;
+      if (chromeStep) chromeStep.textContent = chrome.step;
+
+      views.forEach((view) => {
+        const active = Number(view.dataset.stepView) === step;
+        view.classList.toggle("is-active", active);
+        view.hidden = !active;
+        view.setAttribute("aria-hidden", String(!active));
+      });
+
+      if (step === 1) {
+        requestAnimationFrame(() => {
+          panel.querySelector<HTMLElement>(".ox-roast-chart")?.dispatchEvent(
+            new CustomEvent("ox-roast-chart-pause", { detail: { paused: false } }),
+          );
+        });
+      } else {
+        panel.querySelector<HTMLElement>(".ox-roast-chart")?.dispatchEvent(
+          new CustomEvent("ox-roast-chart-pause", { detail: { paused: true } }),
+        );
+      }
+    }
+
+    steps.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        setStep(Number(btn.dataset.step ?? 0));
+      });
+    });
+
+    setMachine(0);
+    setStep(0);
+  }
+
+  initWorkflowPanel();
+  document.addEventListener("astro:page-load", initWorkflowPanel);
+</script>
