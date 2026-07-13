@@ -38,12 +38,15 @@ Follow these rules when adding new code:
 ```
 apps/
 ├── landing/   # Main marketing + auth site (@fc/landing)
+│   ├── ARCHITECTURE.md            # Routes, UI shells, CSS strategy (read for landing work)
+│   ├── DESIGN_RULES.md            # ox design system (source of truth for UI)
 │   ├── src/
 │   │   ├── actions/index.ts       # Astro Actions: signUp, signIn, signOut
+│   │   ├── components/ui/         # Favicon, OxLegalShell, OxJobShell
 │   │   ├── lib/supabase.ts        # SSR Supabase client factory
 │   │   ├── lib/auth.ts            # requireLogin() guard helper
-│   │   ├── pages/                 # File-based routing
-│   │   └── styles/global.css      # Design tokens (CSS custom properties)
+│   │   ├── pages/                 # File-based routing (ox pages are self-contained)
+│   │   └── styles/global.css      # Legacy tokens — account.astro only; do not extend
 │   └── astro.config.mjs           # output: 'server', Cloudflare adapter, Tailwind v4
 └── docs/      # Starlight documentation site (@fc/docs, mostly scaffold)
 ```
@@ -72,15 +75,15 @@ Switch between sandbox and production by toggling the `POLAR_SERVER` env var and
 
 ## Design System
 
-Design tokens live in `src/styles/global.css` as CSS custom properties. The visual language is based on ElevenLabs' aesthetic (see `apps/landing/DESIGN.md` for the full spec):
+**Use the `ox` design system for all landing UI.** Full rules: [`apps/landing/DESIGN_RULES.md`](apps/landing/DESIGN_RULES.md) (also linked from [`AGENTS.md`](AGENTS.md)).
 
-- **Font**: Pretendard Variable (served from `public/fonts/`) for display + body; Geist Mono for code
-- **Color**: near-achromatic with warm undertones — `#f5f5f5` secondary surface, `#777169` muted/warm gray
-- **Shadows**: multi-layer stacks at sub-0.1 opacity; inset half-pixel borders (`0px 0px 0px 0.5px inset`)
-- **Radius**: pill (9999px) for buttons, 16–24px for cards
-- **Spacing**: 8px base scale via `--space-*` tokens
+- **Tokens:** `--ox-bg`, `--ox-fg`, `--ox-muted`, etc. on `body.ox`
+- **Fonts:** Instrument Sans (UI/display), JetBrains Mono (labels) — see `DESIGN_RULES.md` for Google Fonts snippet
+- **Style:** warm stone palette, sharp corners, border-defined cards — not legacy pill buttons from `global.css`
+- **Reference pages:** see `DESIGN_RULES.md` §15 and `ARCHITECTURE.md` page inventory
+- **Shared shells:** `OxLegalShell.astro` (privacy/terms), `OxJobShell.astro` (careers/*)
 
-Use CSS custom properties (e.g., `var(--color-fg-secondary)`, `var(--space-24)`) rather than Tailwind utility classes for design-system values. Tailwind v4 is available for layout utilities.
+`apps/landing/DESIGN.md` and `src/styles/global.css` describe an older ElevenLabs/Pretendard spec; do not use for new work. Tailwind v4 is available for layout utilities only. **`account.astro` is the only remaining legacy UI page.**
 
 ## Cloudflare Deployment
 

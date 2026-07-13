@@ -1,6 +1,8 @@
 ---
 import "../styles/global.css";
 import Favicon from "../components/ui/Favicon.astro";
+
+const year = new Date().getFullYear();
 ---
 
 <html lang="en">
@@ -8,41 +10,54 @@ import Favicon from "../components/ui/Favicon.astro";
     <meta charset="UTF-8" />
     <Favicon />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="First Crack careers — join the team building roasting software for specialty coffee." />
+    <meta
+      name="description"
+      content="Careers at First Crack — join the team building roasting software for specialty coffee."
+    />
     <title>Careers — First Crack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body class="cr">
+  <body class="ox">
+    <main class="ox-careers noise-overlay">
+      <div class="ox-grid-bg" aria-hidden="true"></div>
 
-    <header class="cr-nav">
-      <div class="cr-nav-inner">
-        <a href="/" class="cr-nav-brand">First Crack</a>
-        <nav class="cr-nav-links">
-          <a href="/" class="cr-nav-link">Home</a>
-          <a href="/about" class="cr-nav-link">About</a>
-          <a href="/careers" class="cr-nav-link is-active">Careers</a>
+      <header class="ox-auth-header">
+        <nav class="ox-auth-nav">
+          <a href="/" class="ox-brand">
+            <span class="ox-brand-name">First Crack</span>
+          </a>
+          <div class="ox-auth-nav-end">
+            <a href="/" class="ox-utility-link">Home</a>
+            <a href="/about" class="ox-utility-link">About</a>
+            <a href="/careers" class="ox-utility-link is-active">Careers</a>
+          </div>
         </nav>
-      </div>
-    </header>
+      </header>
 
-    <main>
-      <!-- Hero -->
-      <section class="cr-hero">
-        <div class="cr-container cr-container-narrow">
-          <h1 class="cr-hero-title">Build the future of coffee roasting</h1>
-          <p class="cr-hero-lead">
+      <section class="ox-careers-hero">
+        <div class="ox-shell ox-careers-hero-inner">
+          <div class="ox-eyebrow">
+            <span class="ox-line"></span>
+            Careers
+          </div>
+          <h1 class="ox-careers-title">Build the future of coffee roasting</h1>
+          <p class="ox-careers-lead">
             We're a small team shipping desktop software that specialty roasters rely on every day. Remote-first, craft-obsessed, and moving fast.
           </p>
         </div>
       </section>
 
-      <!-- Job Listings -->
-      <section class="cr-jobs">
-        <div class="cr-container">
-          <!-- Filters -->
-          <div class="cr-filters">
-            <div class="cr-filter">
-              <label class="cr-filter-label">Department</label>
-              <select id="filter-dept" class="cr-filter-select">
+      <section class="ox-careers-jobs">
+        <div class="ox-shell">
+          <div class="ox-careers-filters">
+            <div class="ox-field ox-field-inline">
+              <label for="filter-dept">Department</label>
+              <select id="filter-dept" class="ox-select">
                 <option value="">All</option>
                 <option value="engineering">Engineering</option>
                 <option value="design">Design</option>
@@ -50,115 +65,114 @@ import Favicon from "../components/ui/Favicon.astro";
                 <option value="product">Product</option>
               </select>
             </div>
-            <div class="cr-filter">
-              <label class="cr-filter-label">Location</label>
-              <select id="filter-loc" class="cr-filter-select">
+            <div class="ox-field ox-field-inline">
+              <label for="filter-loc">Location</label>
+              <select id="filter-loc" class="ox-select">
                 <option value="">All</option>
                 <option value="apac">APAC</option>
                 <option value="emea">EMEA</option>
                 <option value="americas">Americas</option>
               </select>
             </div>
-            <div class="cr-filter cr-filter-search">
-              <label class="cr-filter-label">Search</label>
-              <input type="text" id="filter-search" class="cr-filter-input" placeholder="Search roles..." />
+            <div class="ox-field ox-field-inline ox-field-grow">
+              <label for="filter-search">Search</label>
+              <input type="text" id="filter-search" class="ox-input" placeholder="Search roles…" />
             </div>
           </div>
 
-          <!-- Table header -->
-          <div class="cr-table-head">
-            <div class="cr-col cr-col-title">Position Title</div>
-            <div class="cr-col cr-col-dept">Department</div>
-            <div class="cr-col cr-col-loc">Location</div>
+          <div class="ox-jobs-head" aria-hidden="true">
+            <div class="ox-jobs-col ox-jobs-col-title">Position</div>
+            <div class="ox-jobs-col ox-jobs-col-dept">Department</div>
+            <div class="ox-jobs-col ox-jobs-col-loc">Location</div>
           </div>
 
-          <!-- Job rows -->
-          <div class="cr-table-body" id="job-list">
-            <a href="/careers/desktop-engineer" class="cr-row" data-dept="engineering" data-loc="apac americas">
-              <div class="cr-col cr-col-title">Desktop Engineer</div>
-              <div class="cr-col cr-col-dept">Engineering</div>
-              <div class="cr-col cr-col-loc">Remote — APAC / Americas</div>
+          <div class="ox-jobs-list" id="job-list">
+            <a href="/careers/desktop-engineer" class="ox-jobs-row" data-dept="engineering" data-loc="apac americas">
+              <div class="ox-jobs-col ox-jobs-col-title">Desktop Engineer</div>
+              <div class="ox-jobs-col ox-jobs-col-dept">Engineering</div>
+              <div class="ox-jobs-col ox-jobs-col-loc">Remote — APAC / Americas</div>
             </a>
-            <a href="/careers/backend-engineer" class="cr-row" data-dept="engineering" data-loc="apac emea">
-              <div class="cr-col cr-col-title">Backend Engineer</div>
-              <div class="cr-col cr-col-dept">Engineering</div>
-              <div class="cr-col cr-col-loc">Remote — APAC / EMEA</div>
+            <a href="/careers/backend-engineer" class="ox-jobs-row" data-dept="engineering" data-loc="apac emea">
+              <div class="ox-jobs-col ox-jobs-col-title">Backend Engineer</div>
+              <div class="ox-jobs-col ox-jobs-col-dept">Engineering</div>
+              <div class="ox-jobs-col ox-jobs-col-loc">Remote — APAC / EMEA</div>
             </a>
-            <a href="/careers/product-designer" class="cr-row" data-dept="design" data-loc="apac emea">
-              <div class="cr-col cr-col-title">Product Designer</div>
-              <div class="cr-col cr-col-dept">Design</div>
-              <div class="cr-col cr-col-loc">Remote — APAC / EMEA</div>
+            <a href="/careers/product-designer" class="ox-jobs-row" data-dept="design" data-loc="apac emea">
+              <div class="ox-jobs-col ox-jobs-col-title">Product Designer</div>
+              <div class="ox-jobs-col ox-jobs-col-dept">Design</div>
+              <div class="ox-jobs-col ox-jobs-col-loc">Remote — APAC / EMEA</div>
             </a>
-            <a href="/careers/forward-deployed-engineer" class="cr-row" data-dept="engineering sales" data-loc="apac emea">
-              <div class="cr-col cr-col-title">Forward Deployed Engineer</div>
-              <div class="cr-col cr-col-dept">Engineering · Sales</div>
-              <div class="cr-col cr-col-loc">Remote — APAC / EMEA</div>
+            <a href="/careers/forward-deployed-engineer" class="ox-jobs-row" data-dept="engineering sales" data-loc="apac emea">
+              <div class="ox-jobs-col ox-jobs-col-title">Forward Deployed Engineer</div>
+              <div class="ox-jobs-col ox-jobs-col-dept">Engineering · Sales</div>
+              <div class="ox-jobs-col ox-jobs-col-loc">Remote — APAC / EMEA</div>
             </a>
-            <a href="/careers/sales-lead" class="cr-row" data-dept="sales" data-loc="apac">
-              <div class="cr-col cr-col-title">Sales Lead</div>
-              <div class="cr-col cr-col-dept">Sales</div>
-              <div class="cr-col cr-col-loc">Remote — APAC</div>
+            <a href="/careers/sales-lead" class="ox-jobs-row" data-dept="sales" data-loc="apac">
+              <div class="ox-jobs-col ox-jobs-col-title">Sales Lead</div>
+              <div class="ox-jobs-col ox-jobs-col-dept">Sales</div>
+              <div class="ox-jobs-col ox-jobs-col-loc">Remote — APAC</div>
             </a>
           </div>
 
-          <div class="cr-jobs-count" id="jobs-count">Showing 5 of 5 roles</div>
+          <p class="ox-jobs-count" id="jobs-count">Showing 5 of 5 roles</p>
         </div>
       </section>
 
-      <!-- Why work here -->
-      <section class="cr-section cr-section-alt">
-        <div class="cr-container cr-container-narrow">
-          <h2 class="cr-section-title">Why First Crack</h2>
-          <div class="cr-why">
-            <div class="cr-why-item">
-              <h4>Remote-first</h4>
+      <section class="ox-careers-why">
+        <div class="ox-shell ox-careers-why-inner">
+          <h2 class="ox-h2">Why First Crack</h2>
+          <div class="ox-why-grid">
+            <article class="ox-why-card">
+              <h3>Remote-first</h3>
               <p>Work from wherever your coffee tastes best. We overlap a few core hours but trust you to manage your time.</p>
-            </div>
-            <div class="cr-why-item">
-              <h4>Ship every week</h4>
+            </article>
+            <article class="ox-why-card">
+              <h3>Ship every week</h3>
               <p>No six-month roadmaps. Your work goes from commit to roast floor in days.</p>
-            </div>
-            <div class="cr-why-item">
-              <h4>Craft matters</h4>
+            </article>
+            <article class="ox-why-card">
+              <h3>Craft matters</h3>
               <p>Every hire learns to roast. You build tools for a craft you've practiced yourself.</p>
-            </div>
-            <div class="cr-why-item">
-              <h4>Competitive pay &amp; equity</h4>
+            </article>
+            <article class="ox-why-card">
+              <h3>Competitive pay &amp; equity</h3>
               <p>Salary that reflects your experience, meaningful equity, and a coffee budget — obviously.</p>
-            </div>
+            </article>
           </div>
         </div>
       </section>
 
-      <!-- CTA -->
-      <section class="cr-cta">
-        <div class="cr-container cr-container-narrow">
-          <h2 class="cr-cta-title">Don't see your role?</h2>
-          <p class="cr-cta-lead">We create roles for the right people. Tell us why you'd make First Crack better.</p>
-          <a href="mailto:careers@firstcrackiscoming.com" class="cr-btn">Apply now</a>
+      <section class="ox-careers-cta">
+        <div class="ox-shell ox-careers-cta-inner">
+          <h2 class="ox-h2 ox-h2-on-dark">Don't see your role?</h2>
+          <p class="ox-careers-cta-lead">
+            We create roles for the right people. Tell us why you'd make First Crack better.
+          </p>
+          <a href="mailto:careers@firstcrackiscoming.com" class="ox-btn ox-btn-solid ox-btn-lg ox-btn-inverted">
+            Apply now
+          </a>
         </div>
       </section>
-    </main>
 
-    <footer class="cr-footer">
-      <div class="cr-container">
-        <div class="cr-footer-inner">
-          <span class="cr-footer-logo">First Crack &copy; 2026</span>
-          <nav class="cr-footer-links">
+      <footer class="ox-utility-footer">
+        <div class="ox-shell ox-utility-footer-inner">
+          <span>© {year} First Crack</span>
+          <nav aria-label="Footer">
             <a href="/about">About</a>
             <a href="/careers">Careers</a>
+            <a href="/privacy">Privacy</a>
             <a href="mailto:hello@firstcrackiscoming.com">Contact</a>
           </nav>
         </div>
-      </div>
-    </footer>
+      </footer>
+    </main>
 
     <script>
-      const dept = document.getElementById('filter-dept') as HTMLSelectElement;
-      const loc = document.getElementById('filter-loc') as HTMLSelectElement;
-      const search = document.getElementById('filter-search') as HTMLInputElement;
-      const rows = document.querySelectorAll('.cr-row') as NodeListOf<HTMLElement>;
-      const count = document.getElementById('jobs-count')!;
+      const dept = document.getElementById("filter-dept") as HTMLSelectElement;
+      const loc = document.getElementById("filter-loc") as HTMLSelectElement;
+      const search = document.getElementById("filter-search") as HTMLInputElement;
+      const rows = document.querySelectorAll(".ox-jobs-row") as NodeListOf<HTMLElement>;
+      const count = document.getElementById("jobs-count")!;
 
       function filter() {
         const d = dept.value;
@@ -166,125 +180,470 @@ import Favicon from "../components/ui/Favicon.astro";
         const q = search.value.toLowerCase();
         let visible = 0;
         rows.forEach((row) => {
-          const rd = row.dataset.dept || '';
-          const rl = row.dataset.loc || '';
-          const title = row.querySelector('.cr-col-title')?.textContent?.toLowerCase() || '';
-          const deptText = row.querySelector('.cr-col-dept')?.textContent?.toLowerCase() || '';
+          const rd = row.dataset.dept || "";
+          const rl = row.dataset.loc || "";
+          const title = row.querySelector(".ox-jobs-col-title")?.textContent?.toLowerCase() || "";
+          const deptText = row.querySelector(".ox-jobs-col-dept")?.textContent?.toLowerCase() || "";
           const show =
             (!d || rd.includes(d)) &&
             (!l || rl.includes(l)) &&
             (!q || title.includes(q) || deptText.includes(q));
-          row.style.display = show ? '' : 'none';
+          row.style.display = show ? "" : "none";
           if (show) visible++;
         });
         count.textContent = `Showing ${visible} of ${rows.length} roles`;
       }
 
-      dept.addEventListener('change', filter);
-      loc.addEventListener('change', filter);
-      search.addEventListener('input', filter);
+      dept.addEventListener("change", filter);
+      loc.addEventListener("change", filter);
+      search.addEventListener("input", filter);
     </script>
   </body>
 </html>
 
 <style is:global>
-  :root {
-    --cr-mint: #81fba5;
-    --cr-mint-dim: rgba(129, 251, 165, 0.12);
-    --cr-dark: #0b0b0b;
-    --cr-fg: #0b0b0b;
-    --cr-fg-secondary: #4a4a4a;
-    --cr-fg-muted: #767676;
-    --cr-bg: #ffffff;
-    --cr-bg-alt: #f9fafb;
-    --cr-border: rgba(0, 0, 0, 0.05);
-    --cr-border-strong: rgba(0, 0, 0, 0.1);
-    --cr-sans: 'Pretendard Variable', 'Pretendard', system-ui, -apple-system, sans-serif;
-    --cr-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    --cr-max: 1280px;
+  body.ox {
+    --ox-bg: #fafaf9;
+    --ox-fg: #080503;
+    --ox-muted: #5e534a;
+    --ox-muted-bg: #ecebe7;
+    --ox-border: rgba(8, 5, 3, 0.06);
+    --ox-border-strong: rgba(8, 5, 3, 0.12);
+    --ox-sans: "Instrument Sans", system-ui, -apple-system, sans-serif;
+    --ox-mono: "JetBrains Mono", ui-monospace, monospace;
+    --ox-max: 1400px;
+    --ox-pad: 24px;
+
+    margin: 0;
+    background: var(--ox-bg);
+    color: var(--ox-fg);
+    font-family: var(--ox-sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  .cr { margin: 0; font-family: var(--cr-sans); font-size: 16px; line-height: 1.5; color: var(--cr-fg); background: var(--cr-bg); -webkit-font-smoothing: antialiased; }
-  .cr *, .cr *::before, .cr *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  .cr a { color: inherit; text-decoration: none; }
+  body.ox *,
+  body.ox *::before,
+  body.ox *::after {
+    box-sizing: border-box;
+  }
 
-  .cr-container { max-width: var(--cr-max); margin-inline: auto; padding-inline: 24px; }
-  .cr-container-narrow { max-width: 900px; }
+  body.ox a {
+    color: inherit;
+    text-decoration: none;
+  }
 
-  /* Nav */
-  .cr-nav { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); border-bottom: 1px solid var(--cr-border); }
-  .cr-nav-inner { display: flex; align-items: center; justify-content: space-between; max-width: var(--cr-max); margin: 0 auto; padding: 0 24px; height: 56px; }
-  .cr-nav-brand { font-family: var(--cr-sans); font-size: 1.125rem; font-weight: 700; letter-spacing: -0.02em; color: var(--cr-fg); text-decoration: none; }
-  .cr-nav-links { display: flex; gap: 4px; }
-  .cr-nav-link { padding: 8px 14px; font-size: 0.9375rem; font-weight: 500; color: var(--cr-fg-secondary); border-radius: 0; transition: background 0.15s; }
-  .cr-nav-link:hover { background: rgba(0,0,0,0.04); }
-  .cr-nav-link.is-active { color: var(--cr-fg); background: rgba(0,0,0,0.05); }
+  body.ox button {
+    font-family: inherit;
+    cursor: pointer;
+  }
 
-  /* Hero */
-  .cr-hero { padding: 72px 0 48px; }
-  .cr-hero-title { font-family: var(--cr-sans); font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 16px; }
-  .cr-hero-lead { font-size: 1.125rem; line-height: 1.7; color: var(--cr-fg-secondary); max-width: 36rem; }
+  .ox-shell {
+    max-width: var(--ox-max);
+    margin-inline: auto;
+    padding-inline: var(--ox-pad);
+  }
 
-  /* Filters */
-  .cr-jobs { padding: 0 0 64px; }
-  .cr-filters { display: flex; gap: 16px; padding: 24px 0; border-bottom: 1px solid var(--cr-border); flex-wrap: wrap; }
-  .cr-filter { display: flex; flex-direction: column; gap: 4px; }
-  .cr-filter-label { font-family: var(--cr-mono); font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cr-fg-muted); }
-  .cr-filter-select { height: 40px; padding: 0 32px 0 12px; font-family: var(--cr-sans); font-size: 0.9375rem; border: 1px solid var(--cr-border-strong); border-radius: 0; background: var(--cr-bg); color: var(--cr-fg); cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 5L6 8L9 5' stroke='%23767676' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; }
-  .cr-filter-select:focus { outline: 2px solid var(--cr-mint); outline-offset: 1px; border-color: transparent; }
-  .cr-filter-search { flex: 1; min-width: 200px; }
-  .cr-filter-input { height: 40px; padding: 0 12px; font-family: var(--cr-sans); font-size: 0.9375rem; border: 1px solid var(--cr-border-strong); border-radius: 0; background: var(--cr-bg); color: var(--cr-fg); }
-  .cr-filter-input:focus { outline: 2px solid var(--cr-mint); outline-offset: 1px; border-color: transparent; }
-  .cr-filter-input::placeholder { color: var(--cr-fg-muted); }
+  .ox-brand-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
 
-  /* Table */
-  .cr-table-head { display: grid; grid-template-columns: 2fr 1.2fr 1.5fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--cr-border); }
-  .cr-table-head .cr-col { font-family: var(--cr-mono); font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cr-fg-muted); }
+  .ox-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--ox-mono);
+    font-size: 13px;
+    color: var(--ox-muted);
+    margin-bottom: 20px;
+  }
 
-  .cr-row { display: grid; grid-template-columns: 2fr 1.2fr 1.5fr; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--cr-border); color: var(--cr-fg); text-decoration: none; transition: background 0.15s; }
-  .cr-row:hover { background: rgba(0,0,0,0.02); }
+  .ox-line {
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: rgba(8, 5, 3, 0.3);
+    flex-shrink: 0;
+  }
 
-  .cr-col-title { font-weight: 600; font-size: 0.9375rem; }
-  .cr-col-dept { font-size: 0.875rem; color: var(--cr-fg-secondary); }
-  .cr-col-loc { font-size: 0.875rem; color: var(--cr-fg-muted); }
+  .ox-h2 {
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    line-height: 1.1;
+    margin: 0 0 40px;
+  }
 
-  .cr-jobs-count { padding: 16px 0; font-size: 0.8125rem; color: var(--cr-fg-muted); }
+  .ox-h2-on-dark {
+    color: var(--ox-bg);
+  }
 
-  /* Section */
-  .cr-section { padding: 80px 0; }
-  .cr-section-alt { background: var(--cr-bg-alt); border-top: 1px solid var(--cr-border); border-bottom: 1px solid var(--cr-border); }
-  .cr-section-title { font-family: var(--cr-sans); font-size: clamp(1.75rem, 4vw, 2.25rem); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 40px; }
+  .ox-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 0;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: -0.01em;
+    border: 1px solid transparent;
+    transition: opacity 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap;
+  }
 
-  .cr-why { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-  @media (max-width: 639px) { .cr-why { grid-template-columns: 1fr; } }
-  .cr-why-item { padding: 24px; border: 1px solid var(--cr-border); border-radius: 0; }
-  .cr-why-item h4 { font-size: 1rem; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 6px; }
-  .cr-why-item p { font-size: 0.875rem; line-height: 1.6; color: var(--cr-fg-secondary); }
+  .ox-btn-lg {
+    height: 48px;
+    padding: 0 28px;
+    font-size: 15px;
+  }
 
-  /* CTA */
-  .cr-cta { padding: 96px 0; background: var(--cr-dark); color: #fff; }
-  .cr-cta-title { font-family: var(--cr-sans); font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 12px; }
-  .cr-cta-lead { font-size: 1.125rem; line-height: 1.7; color: rgba(255,255,255,0.5); max-width: 30rem; margin-bottom: 24px; }
+  body.ox a.ox-btn-solid,
+  body.ox .ox-btn-solid {
+    background: var(--ox-fg);
+    color: #fff;
+    border-color: var(--ox-fg);
+  }
 
-  /* Button */
-  .cr-btn { display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 24px; font-family: var(--cr-sans); font-size: 0.9375rem; font-weight: 600; border-radius: 0; background: var(--cr-mint); color: var(--cr-dark); text-decoration: none; transition: opacity 0.15s; cursor: pointer; border: none; }
-  .cr-btn:hover { opacity: 0.85; }
+  body.ox a.ox-btn-solid:hover,
+  body.ox .ox-btn-solid:hover {
+    opacity: 0.9;
+  }
 
-  /* Footer */
-  .cr-footer { background: var(--cr-dark); border-top: 1px solid rgba(255,255,255,0.08); padding: 32px 0; }
-  .cr-footer-inner { display: flex; align-items: center; justify-content: space-between; }
-  .cr-footer-logo { font-family: var(--cr-sans); font-size: 0.8125rem; color: rgba(255,255,255,0.4); }
-  .cr-footer-links { display: flex; gap: 24px; }
-  .cr-footer-links a { font-size: 0.8125rem; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.15s; }
-  .cr-footer-links a:hover { color: rgba(255,255,255,0.8); }
+  .ox-btn-inverted {
+    background: var(--ox-bg) !important;
+    color: var(--ox-fg) !important;
+    border-color: var(--ox-bg) !important;
+  }
+
+  .noise-overlay::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .ox-grid-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.3;
+    background-image:
+      linear-gradient(var(--ox-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--ox-border) 1px, transparent 1px);
+    background-size: 12.5% 12.5%;
+  }
+
+  .ox-auth-header {
+    position: relative;
+    z-index: 2;
+    border-bottom: 1px solid var(--ox-border);
+    background: rgba(250, 250, 249, 0.85);
+    backdrop-filter: blur(16px);
+  }
+
+  .ox-auth-nav {
+    max-width: var(--ox-max);
+    margin: 0 auto;
+    padding: 0 var(--ox-pad);
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .ox-auth-nav-end {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .ox-utility-link {
+    font-size: 14px;
+    color: rgba(8, 5, 3, 0.7);
+    transition: color 0.2s ease;
+  }
+
+  .ox-utility-link:hover,
+  .ox-utility-link.is-active {
+    color: var(--ox-fg);
+  }
+
+  .ox-utility-link.is-active {
+    font-weight: 500;
+  }
+
+  .ox-careers {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .ox-careers-hero {
+    position: relative;
+    z-index: 2;
+    padding: 56px 0 40px;
+    border-bottom: 1px solid var(--ox-border);
+  }
+
+  .ox-careers-hero-inner {
+    max-width: 40rem;
+  }
+
+  .ox-careers-title {
+    margin: 0 0 16px;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  .ox-careers-lead {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ox-muted);
+  }
+
+  .ox-careers-jobs {
+    position: relative;
+    z-index: 2;
+    padding: 40px 0 64px;
+  }
+
+  .ox-careers-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--ox-border);
+  }
+
+  .ox-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ox-field-inline {
+    min-width: 160px;
+  }
+
+  .ox-field-grow {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .ox-field label {
+    font-family: var(--ox-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ox-muted);
+  }
+
+  .ox-input,
+  .ox-select {
+    height: 44px;
+    padding: 0 14px;
+    border: 1px solid var(--ox-border-strong);
+    border-radius: 0;
+    background: #fff;
+    color: var(--ox-fg);
+    font-family: var(--ox-sans);
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+  }
+
+  .ox-select {
+    padding-right: 36px;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 5L6 8L9 5' stroke='%235e534a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+  }
+
+  .ox-input:focus,
+  .ox-select:focus {
+    outline: none;
+    border-color: var(--ox-fg);
+  }
+
+  .ox-input::placeholder {
+    color: rgba(94, 83, 74, 0.55);
+  }
+
+  .ox-jobs-head {
+    display: grid;
+    grid-template-columns: 2fr 1.2fr 1.5fr;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--ox-border);
+  }
+
+  .ox-jobs-head .ox-jobs-col {
+    font-family: var(--ox-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ox-muted);
+  }
+
+  .ox-jobs-row {
+    display: grid;
+    grid-template-columns: 2fr 1.2fr 1.5fr;
+    gap: 16px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--ox-border);
+    transition: background 0.15s ease;
+  }
+
+  .ox-jobs-row:hover {
+    background: rgba(8, 5, 3, 0.02);
+  }
+
+  .ox-jobs-col-title {
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .ox-jobs-col-dept {
+    font-size: 14px;
+    color: var(--ox-muted);
+  }
+
+  .ox-jobs-col-loc {
+    font-size: 14px;
+    color: rgba(94, 83, 74, 0.75);
+  }
+
+  .ox-jobs-count {
+    margin: 16px 0 0;
+    font-family: var(--ox-mono);
+    font-size: 12px;
+    color: var(--ox-muted);
+  }
+
+  .ox-careers-why {
+    position: relative;
+    z-index: 2;
+    padding: 80px 0;
+    border-top: 1px solid var(--ox-border);
+    background: #fff;
+  }
+
+  .ox-why-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .ox-why-card {
+    padding: 28px;
+    border: 1px solid var(--ox-border);
+    background: var(--ox-bg);
+  }
+
+  .ox-why-card h3 {
+    margin: 0 0 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .ox-why-card p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--ox-muted);
+  }
+
+  .ox-careers-cta {
+    position: relative;
+    z-index: 2;
+    padding: 80px 0;
+    background: var(--ox-fg);
+    color: var(--ox-bg);
+  }
+
+  .ox-careers-cta-inner {
+    max-width: 36rem;
+  }
+
+  .ox-careers-cta-lead {
+    margin: 0 0 28px;
+    font-size: 17px;
+    line-height: 1.65;
+    color: rgba(250, 250, 249, 0.55);
+  }
+
+  .ox-utility-footer {
+    position: relative;
+    z-index: 2;
+    border-top: 1px solid var(--ox-border);
+    padding: 24px 0;
+  }
+
+  .ox-utility-footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--ox-muted);
+  }
+
+  .ox-utility-footer-inner nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .ox-utility-footer-inner a:hover {
+    color: var(--ox-fg);
+  }
 
   @media (max-width: 767px) {
-    .cr-hero { padding: 48px 0 32px; }
-    .cr-table-head { display: none; }
-    .cr-row { grid-template-columns: 1fr; gap: 4px; padding: 16px 0; }
-    .cr-col-dept, .cr-col-loc { font-size: 0.8125rem; }
-    .cr-filters { flex-direction: column; }
-    .cr-cta { padding: 64px 0; }
-    .cr-footer-inner { flex-direction: column; gap: 14px; }
+    .ox-jobs-head {
+      display: none;
+    }
+
+    .ox-jobs-row {
+      grid-template-columns: 1fr;
+      gap: 4px;
+      padding: 16px 0;
+    }
+
+    .ox-careers-filters {
+      flex-direction: column;
+    }
+
+    .ox-why-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .ox-careers-cta {
+      padding: 64px 0;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    body.ox {
+      --ox-pad: 48px;
+    }
   }
 </style>

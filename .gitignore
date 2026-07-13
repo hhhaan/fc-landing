@@ -16,6 +16,10 @@ dist/
 
 # astro
 .astro/
+.wrangler/
+
+# agent tooling
+.commandcode/
 
 # OS
 .DS_Store

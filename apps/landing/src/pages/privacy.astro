@@ -1,317 +1,89 @@
 ---
-import "../styles/global.css";
-import Favicon from "../components/ui/Favicon.astro";
+import OxLegalShell from "../components/ui/OxLegalShell.astro";
 ---
 
-<html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <Favicon />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="First Crack 개인정보처리방침 — 사용자 정보 수집, 이용, 보호 및 파기에 관한 안내." />
-    <title>Privacy Policy — First Crack</title>
-  </head>
-  <body>
+<OxLegalShell
+  title="Privacy Policy — First Crack"
+  description="First Crack Privacy Policy — how we collect, use, protect, and delete your data."
+  heading="Privacy Policy"
+  updated="July 9, 2026"
+>
+  <section>
+    <h2>1. Information We Collect</h2>
+    <p>When you sign up for First Crack, we collect the following information from your Google account or registration form:</p>
+    <ul>
+      <li><strong>Email address</strong> — used as your account identifier and for service-related communications.</li>
+      <li><strong>Name</strong> — used to personalize your account and profile.</li>
+      <li><strong>Profile picture</strong> (if provided) — used for account display.</li>
+      <li><strong>Roast session data</strong> — temperature curves, batch notes, and profile metadata that you voluntarily upload through the First Crack application.</li>
+    </ul>
+  </section>
 
-    <!-- NAV -->
-    <header class="nav">
-      <div class="nav-inner">
-        <a href="/" class="nav-logo">
-          <span class="nav-logo-text">First Crack</span>
-        </a>
-        <nav class="nav-links" aria-label="Main menu">
-          <a href="/" class="nav-link">Home</a>
-          <a href="/login" class="nav-link">Log in</a>
-        </nav>
-      </div>
-    </header>
+  <section>
+    <h2>2. How We Use Your Information</h2>
+    <p>We use the collected information solely for:</p>
+    <ul>
+      <li>Providing, maintaining, and improving the First Crack roasting platform.</li>
+      <li>Authenticating your identity and securing your account.</li>
+      <li>Communicating service updates, billing information, and support responses.</li>
+      <li>Aggregating anonymized roast data for platform improvements.</li>
+    </ul>
+    <p>We do <strong>not</strong> sell your personal information to third parties. We do <strong>not</strong> use your roast data for advertising.</p>
+  </section>
 
-    <main class="legal-page">
-      <div class="container container-narrow">
-        <div class="legal-meta">
-          <div>
-            <h1 class="legal-title">Privacy Policy</h1>
-            <p class="legal-date">Last updated: July 9, 2026</p>
-          </div>
-          <p class="legal-url"><span class="legal-url-label">Service</span> firstcrackiscoming.com</p>
-        </div>
+  <section>
+    <h2>3. Data Storage & Protection</h2>
+    <p>Your data is stored securely using industry-standard encryption:</p>
+    <ul>
+      <li>Data in transit is encrypted via TLS 1.3.</li>
+      <li>Data at rest is encrypted using AES-256.</li>
+      <li>Authentication is handled through Supabase Auth, which follows SOC 2 compliance standards.</li>
+      <li>We enforce least-privilege access controls — only essential infrastructure can read user data.</li>
+    </ul>
+  </section>
 
-        <section class="legal-section">
-          <h2 class="legal-h2">1. Information We Collect</h2>
-          <p>When you sign up for First Crack, we collect the following information from your Google account or registration form:</p>
-          <ul class="legal-ul">
-            <li><strong>Email address</strong> — used as your account identifier and for service-related communications.</li>
-            <li><strong>Name</strong> — used to personalize your account and profile.</li>
-            <li><strong>Profile picture</strong> (if provided) — used for account display.</li>
-            <li><strong>Roast session data</strong> — temperature curves, batch notes, and profile metadata that you voluntarily upload through the First Crack application.</li>
-          </ul>
-        </section>
+  <section>
+    <h2>4. Data Retention & Deletion</h2>
+    <p>We retain your personal information for as long as your account is active. If you delete your account:</p>
+    <ul>
+      <li>Your profile information (name, email, avatar) is permanently deleted within 30 days.</li>
+      <li>Your roast session data is permanently deleted within 90 days.</li>
+      <li>Anonymized aggregates (statistics that cannot identify you) may be retained for platform analytics.</li>
+    </ul>
+    <p>To request account deletion, contact <a href="mailto:hello@firstcrackiscoming.com">hello@firstcrackiscoming.com</a> or use the account settings page.</p>
+  </section>
 
-        <section class="legal-section">
-          <h2 class="legal-h2">2. How We Use Your Information</h2>
-          <p>We use the collected information solely for:</p>
-          <ul class="legal-ul">
-            <li>Providing, maintaining, and improving the First Crack roasting platform.</li>
-            <li>Authenticating your identity and securing your account.</li>
-            <li>Communicating service updates, billing information, and support responses.</li>
-            <li>Aggregating anonymized roast data for platform improvements.</li>
-          </ul>
-          <p>We do <strong>not</strong> sell your personal information to third parties. We do <strong>not</strong> use your roast data for advertising.</p>
-        </section>
+  <section>
+    <h2>5. Third-Party Services</h2>
+    <p>First Crack uses the following third-party services:</p>
+    <ul>
+      <li><strong>Supabase</strong> — authentication and database (PostgreSQL).</li>
+      <li><strong>Polar</strong> — payment processing. We do not store credit card information; payments are handled entirely by Polar.</li>
+      <li><strong>Cloudflare</strong> — CDN and edge hosting.</li>
+    </ul>
+    <p>Each service provider has its own privacy policy governing data handling. We select providers that offer adequate data protection guarantees.</p>
+  </section>
 
-        <section class="legal-section">
-          <h2 class="legal-h2">3. Data Storage & Protection</h2>
-          <p>Your data is stored securely using industry-standard encryption:</p>
-          <ul class="legal-ul">
-            <li>Data in transit is encrypted via TLS 1.3.</li>
-            <li>Data at rest is encrypted using AES-256.</li>
-            <li>Authentication is handled through Supabase Auth, which follows SOC 2 compliance standards.</li>
-            <li>We enforce least-privilege access controls — only essential infrastructure can read user data.</li>
-          </ul>
-        </section>
+  <section>
+    <h2>6. Your Rights</h2>
+    <p>Depending on your jurisdiction, you may have the right to:</p>
+    <ul>
+      <li>Access the personal data we hold about you.</li>
+      <li>Request correction of inaccurate data.</li>
+      <li>Request deletion of your data (subject to legal retention obligations).</li>
+      <li>Data portability — receive your data in a structured, machine-readable format.</li>
+      <li>Withdraw consent at any time where processing is based on consent.</li>
+    </ul>
+    <p>To exercise any of these rights, contact <a href="mailto:hello@firstcrackiscoming.com">hello@firstcrackiscoming.com</a>.</p>
+  </section>
 
-        <section class="legal-section">
-          <h2 class="legal-h2">4. Data Retention & Deletion</h2>
-          <p>We retain your personal information for as long as your account is active. If you delete your account:</p>
-          <ul class="legal-ul">
-            <li>Your profile information (name, email, avatar) is permanently deleted within 30 days.</li>
-            <li>Your roast session data is permanently deleted within 90 days.</li>
-            <li>Anonymized aggregates (statistics that cannot identify you) may be retained for platform analytics.</li>
-          </ul>
-          <p>To request account deletion, contact <a href="mailto:hello@firstcrackiscoming.com" class="legal-link">hello@firstcrackiscoming.com</a> or use the account settings page.</p>
-        </section>
+  <section>
+    <h2>7. Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time. Material changes will be notified via email or through the application. Continued use of First Crack after changes constitutes acceptance of the updated policy.</p>
+  </section>
 
-        <section class="legal-section">
-          <h2 class="legal-h2">5. Third-Party Services</h2>
-          <p>First Crack uses the following third-party services:</p>
-          <ul class="legal-ul">
-            <li><strong>Supabase</strong> — authentication and database (PostgreSQL).</li>
-            <li><strong>Polar</strong> — payment processing. We do not store credit card information; payments are handled entirely by Polar.</li>
-            <li><strong>Cloudflare</strong> — CDN and edge hosting.</li>
-          </ul>
-          <p>Each service provider has its own privacy policy governing data handling. We select providers that offer adequate data protection guarantees.</p>
-        </section>
-
-        <section class="legal-section">
-          <h2 class="legal-h2">6. Your Rights</h2>
-          <p>Depending on your jurisdiction, you may have the right to:</p>
-          <ul class="legal-ul">
-            <li>Access the personal data we hold about you.</li>
-            <li>Request correction of inaccurate data.</li>
-            <li>Request deletion of your data (subject to legal retention obligations).</li>
-            <li>Data portability — receive your data in a structured, machine-readable format.</li>
-            <li>Withdraw consent at any time where processing is based on consent.</li>
-          </ul>
-          <p>To exercise any of these rights, contact <a href="mailto:hello@firstcrackiscoming.com" class="legal-link">hello@firstcrackiscoming.com</a>.</p>
-        </section>
-
-        <section class="legal-section">
-          <h2 class="legal-h2">7. Changes to This Policy</h2>
-          <p>We may update this Privacy Policy from time to time. Material changes will be notified via email or through the application. Continued use of First Crack after changes constitutes acceptance of the updated policy.</p>
-        </section>
-
-        <section class="legal-section">
-          <h2 class="legal-h2">8. Contact</h2>
-          <p>If you have questions about this Privacy Policy or our data practices, please contact us at <a href="mailto:hello@firstcrackiscoming.com" class="legal-link">hello@firstcrackiscoming.com</a>.</p>
-        </section>
-      </div>
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <div class="footer-brand">
-          <span class="footer-logo">First Crack</span>
-          <span class="footer-copy">© 2026</span>
-        </div>
-        <nav class="footer-links" aria-label="Footer menu">
-          <a href="/privacy" class="footer-link">Privacy</a>
-          <a href="/terms" class="footer-link">Terms</a>
-          <a href="/docs" class="footer-link">Docs</a>
-          <a href="mailto:hello@firstcrackiscoming.com" class="footer-link">Contact</a>
-        </nav>
-      </div>
-    </footer>
-
-  </body>
-</html>
-
-<style>
-  /* ── Legal page layout ── */
-  .legal-page {
-    padding-block: var(--space-80);
-    background: var(--color-bg);
-    min-height: calc(100vh - 56px - 80px);
-  }
-  .legal-title {
-    font-family: var(--font-display);
-    font-size: 2.25rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.2;
-    margin-bottom: var(--space-8);
-    color: var(--color-fg);
-  }
-  .legal-date {
-    font-size: var(--text-sm);
-    color: var(--color-fg-muted);
-    margin-bottom: var(--space-48);
-  }
-  .legal-section {
-    margin-bottom: var(--space-40);
-  }
-  .legal-h2 {
-    font-family: var(--font-display);
-    font-size: var(--text-card);
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    margin-bottom: var(--space-16);
-    color: var(--color-fg);
-  }
-  .legal-section p {
-    font-size: var(--text-base);
-    line-height: 1.75;
-    color: var(--color-fg-secondary);
-    margin-bottom: var(--space-12);
-  }
-  .legal-ul {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 var(--space-16) 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-8);
-  }
-  .legal-ul li {
-    font-size: var(--text-base);
-    line-height: 1.65;
-    color: var(--color-fg-secondary);
-    padding-left: var(--space-20);
-    position: relative;
-  }
-  .legal-ul li::before {
-    content: "—";
-    position: absolute;
-    left: 0;
-    color: var(--color-mint);
-    font-weight: 600;
-  }
-  .legal-link {
-    color: var(--color-fg);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    text-decoration-color: var(--color-mint);
-    transition: opacity var(--motion-fast) ease;
-  }
-  .legal-link:hover {
-    opacity: 0.6;
-  }
-
-  /* ── Service URL header ── */
-  .legal-meta {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: var(--space-24);
-    margin-bottom: var(--space-48);
-    flex-wrap: wrap;
-  }
-  .legal-url {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    color: var(--color-fg-secondary);
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
-    border-radius: 0;
-    padding: var(--space-8) var(--space-16);
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    gap: var(--space-8);
-  }
-  .legal-url-label {
-    font-size: var(--text-micro);
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--color-fg-muted);
-  }
-
-  /* ── Nav (same as index) ── */
-  .nav {
-    background-color: var(--color-bg);
-    color: var(--color-fg);
-    border-bottom: 1px solid var(--color-border);
-  }
-  .nav-logo-text {
-    font-family: var(--font-display);
-    font-size: var(--text-nav);
-    font-weight: 700;
-    letter-spacing: -0.01em;
-  }
-  .nav-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 var(--space-24);
-    height: 56px;
-  }
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: var(--space-4);
-  }
-  .nav .nav-link {
-    color: var(--color-fg-secondary);
-    padding: var(--space-8) var(--space-12);
-    border-radius: 0;
-    transition: color var(--motion-fast) ease;
-    font-size: var(--text-nav);
-    font-weight: 500;
-    text-decoration: none;
-  }
-  .nav .nav-link:hover { color: var(--color-fg); }
-  .nav-logo { text-decoration: none; color: var(--color-fg); }
-
-  /* ── Footer (same as index) ── */
-  .site-footer {
-    background: var(--color-dark);
-    border-top: 1px solid rgba(255,255,255,0.08);
-    padding-block: var(--space-32);
-  }
-  .footer-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .footer-brand {
-    display: flex;
-    align-items: center;
-    gap: var(--space-12);
-  }
-  .footer-logo {
-    font-family: var(--font-display);
-    font-size: var(--text-nav);
-    font-weight: 700;
-    color: #FFFFFF;
-  }
-  .footer-copy {
-    font-size: var(--text-sm);
-    color: rgba(255,255,255,0.4);
-  }
-  .footer-links { display: flex; gap: var(--space-24); }
-  .footer-link {
-    font-size: var(--text-sm);
-    color: rgba(255,255,255,0.4);
-    transition: color var(--motion-fast) ease;
-    text-decoration: none;
-  }
-  .footer-link:hover { color: rgba(255,255,255,0.8); }
-
-  @media (max-width: 1023px) {
-    .footer-inner { flex-direction: column; gap: var(--space-20); }
-    .legal-title { font-size: 1.75rem; }
-  }
-</style>
+  <section>
+    <h2>8. Contact</h2>
+    <p>If you have questions about this Privacy Policy or our data practices, please contact us at <a href="mailto:hello@firstcrackiscoming.com">hello@firstcrackiscoming.com</a>.</p>
+  </section>
+</OxLegalShell>

@@ -101,16 +101,17 @@ const marqueeItems = [
     <main class="ox-main noise-overlay">
       <!-- ── Header ───────────────────────────────────────── -->
       <header class="ox-header" id="ox-header">
+        <div class="ox-scroll-progress" id="ox-scroll-progress" aria-hidden="true"></div>
         <nav class="ox-nav">
           <a href="/" class="ox-brand">
             <span class="ox-brand-name">First Crack</span>
           </a>
 
           <div class="ox-nav-links">
-            <a href="#features" class="ox-nav-link">Product</a>
-            <a href="#how-it-works" class="ox-nav-link">How it works</a>
-            <a href="#platform" class="ox-nav-link">Platform</a>
-            <a href="#pricing" class="ox-nav-link">Pricing</a>
+            <a href="#features" class="ox-nav-link" data-section="features">Product</a>
+            <a href="#how-it-works" class="ox-nav-link" data-section="how-it-works">How it works</a>
+            <a href="#platform" class="ox-nav-link" data-section="platform">Platform</a>
+            <a href="#pricing" class="ox-nav-link" data-section="pricing">Pricing</a>
           </div>
 
           <div class="ox-nav-end">
@@ -138,22 +139,22 @@ const marqueeItems = [
               aria-expanded="false"
               aria-controls="ox-mobile"
             >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                <line x1="4" y1="6" x2="20" y2="6"></line>
-                <line x1="4" y1="12" x2="20" y2="12"></line>
-                <line x1="4" y1="18" x2="20" y2="18"></line>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                <line class="ox-burger-line" x1="4" y1="6" x2="20" y2="6"></line>
+                <line class="ox-burger-line" x1="4" y1="12" x2="20" y2="12"></line>
+                <line class="ox-burger-line" x1="4" y1="18" x2="20" y2="18"></line>
               </svg>
             </button>
           </div>
         </nav>
 
-        <div id="ox-mobile" class="ox-mobile" hidden>
+        <div id="ox-mobile" class="ox-mobile">
           <div class="ox-mobile-inner">
             <div class="ox-mobile-links">
-              <a href="#features">Product</a>
-              <a href="#how-it-works">How it works</a>
-              <a href="#platform">Platform</a>
-              <a href="#pricing">Pricing</a>
+              <a href="#features" class="ox-nav-link" data-section="features">Product</a>
+              <a href="#how-it-works" class="ox-nav-link" data-section="how-it-works">How it works</a>
+              <a href="#platform" class="ox-nav-link" data-section="platform">Platform</a>
+              <a href="#pricing" class="ox-nav-link" data-section="pricing">Pricing</a>
               <a href="/download">Download app</a>
             </div>
             <div class="ox-mobile-cta">
@@ -179,7 +180,7 @@ const marqueeItems = [
       </header>
 
       <!-- ── Hero ─────────────────────────────────────────── -->
-      <section class="ox-hero">
+      <section class="ox-hero ox-pane">
         <div class="ox-grid-bg" aria-hidden="true"></div>
         <div class="ox-hero-glow" aria-hidden="true"></div>
         <canvas id="ox-globe" aria-hidden="true"></canvas>
@@ -229,7 +230,7 @@ const marqueeItems = [
       </section>
 
       <!-- ── Capabilities ─────────────────────────────────── -->
-      <section class="ox-section" id="features">
+      <section class="ox-section ox-pane" id="features">
         <div class="ox-shell">
           <div class="ox-section-head">
             <div class="ox-eyebrow reveal">
@@ -270,7 +271,7 @@ const marqueeItems = [
       </section>
 
       <!-- ── Process (inverted) ───────────────────────────── -->
-      <section class="ox-process" id="how-it-works">
+      <section class="ox-process ox-pane" id="how-it-works">
         <div class="ox-shell">
           <div class="ox-section-head">
             <div class="ox-eyebrow ox-eyebrow-on-dark reveal">
@@ -358,7 +359,7 @@ const marqueeItems = [
       </section>
 
       <!-- ── Platform ─────────────────────────────────────── -->
-      <section class="ox-section" id="platform">
+      <section class="ox-section ox-pane" id="platform">
         <div class="ox-shell ox-platform">
           <div class="ox-platform-copy">
             <div class="ox-eyebrow reveal">
@@ -409,7 +410,7 @@ const marqueeItems = [
       </section>
 
       <!-- ── Pricing ──────────────────────────────────────── -->
-      <section class="ox-section ox-pricing" id="pricing">
+      <section class="ox-section ox-pricing ox-pane" id="pricing">
         <div class="ox-shell">
           <div class="ox-section-head ox-section-head-center">
             <div class="ox-eyebrow reveal" style="justify-content:center">
@@ -580,29 +581,141 @@ const marqueeItems = [
     </main>
 
     <script>
-      // Header scroll state
+      // Header: scroll progress, compact, hide/show, section spy
       const header = document.getElementById("ox-header");
+      const progress = document.getElementById("ox-scroll-progress");
+      const navLinks = document.querySelectorAll<HTMLAnchorElement>(
+        ".ox-nav-link[data-section]",
+      );
+      const sections = ["features", "how-it-works", "platform", "pricing"]
+        .map((id) => document.getElementById(id))
+        .filter((el): el is HTMLElement => el !== null);
+
+      let lastScrollY = window.scrollY;
+      const hideThreshold = 40;
+
+      const setActiveSection = (id: string | null) => {
+        navLinks.forEach((link) => {
+          link.classList.toggle("is-active", link.dataset.section === id);
+        });
+      };
+
+      const scrollToSection = (id: string) => {
+        const section = document.getElementById(id);
+        if (!section) return;
+
+        closeMobile();
+        document.body.classList.add("is-pane-nav");
+        header?.classList.add("is-hidden");
+        setActiveSection(id);
+
+        const top = section.offsetTop;
+        lastScrollY = window.scrollY;
+        window.scrollTo({ top, behavior: "smooth" });
+      };
+
+      navLinks.forEach((link) => {
+        link.addEventListener("click", (e) => {
+          const id = link.dataset.section;
+          if (!id) return;
+          e.preventDefault();
+          scrollToSection(id);
+        });
+      });
+
       const onScroll = () => {
-        header?.classList.toggle("is-scrolled", window.scrollY > 20);
+        const y = window.scrollY;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+
+        header?.classList.toggle("is-scrolled", y > 20);
+        header?.classList.toggle("is-compact", y > 80);
+
+        if (progress && maxScroll > 0) {
+          progress.style.transform = `scaleX(${Math.min(1, y / maxScroll)})`;
+        }
+
+        if (y <= hideThreshold) {
+          document.body.classList.remove("is-pane-nav");
+          header?.classList.remove("is-hidden");
+        } else if (document.body.classList.contains("is-pane-nav")) {
+          header?.classList.add("is-hidden");
+        } else {
+          header?.classList.toggle("is-hidden", y > lastScrollY);
+        }
+
+        lastScrollY = y;
       };
       onScroll();
       window.addEventListener("scroll", onScroll, { passive: true });
 
+      if ("IntersectionObserver" in window && sections.length) {
+        const visible = new Map<string, number>();
+        const spy = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                visible.set(entry.target.id, entry.intersectionRatio);
+              } else {
+                visible.delete(entry.target.id);
+              }
+            });
+
+            if (visible.size === 0) return;
+
+            let bestId: string | null = null;
+            let bestRatio = 0;
+            visible.forEach((ratio, id) => {
+              if (ratio > bestRatio) {
+                bestRatio = ratio;
+                bestId = id;
+              }
+            });
+            setActiveSection(bestId);
+          },
+          { rootMargin: "-45% 0px -45% 0px", threshold: [0, 0.5, 1] },
+        );
+        sections.forEach((section) => spy.observe(section));
+      }
+
       // Mobile menu
       const burger = document.querySelector(".ox-burger") as HTMLButtonElement | null;
       const mobile = document.getElementById("ox-mobile");
+
+      const closeMobile = () => {
+        burger?.setAttribute("aria-expanded", "false");
+        mobile?.classList.remove("is-open");
+        header?.classList.remove("is-menu-open");
+        document.body.classList.remove("ox-menu-open");
+      };
+
+      const openMobile = () => {
+        mobile?.classList.add("is-open");
+        burger?.setAttribute("aria-expanded", "true");
+        header?.classList.add("is-menu-open");
+        header?.classList.remove("is-hidden");
+        document.body.classList.add("ox-menu-open");
+      };
+
       burger?.addEventListener("click", () => {
-        const open = burger.getAttribute("aria-expanded") === "true";
-        burger.setAttribute("aria-expanded", String(!open));
-        if (mobile) mobile.hidden = open;
-        document.body.classList.toggle("ox-menu-open", !open);
+        const isOpen = burger.getAttribute("aria-expanded") === "true";
+        if (isOpen) closeMobile();
+        else openMobile();
       });
-      mobile?.querySelectorAll("a").forEach((a) => {
-        a.addEventListener("click", () => {
-          burger?.setAttribute("aria-expanded", "false");
-          if (mobile) mobile.hidden = true;
-          document.body.classList.remove("ox-menu-open");
-        });
+
+      mobile?.querySelectorAll("a:not([data-section])").forEach((a) => {
+        a.addEventListener("click", closeMobile);
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && burger?.getAttribute("aria-expanded") === "true") {
+          closeMobile();
+        }
+      });
+
+      window.addEventListener("resize", () => {
+        if (window.innerWidth >= 768 && burger?.getAttribute("aria-expanded") === "true") {
+          closeMobile();
+        }
       });
 
       // Process step highlight
@@ -789,6 +902,16 @@ const marqueeItems = [
      Colors aligned to project: warm near-black / stone
      ═══════════════════════════════════════════════════════════ */
 
+  html {
+    scroll-behavior: smooth;
+    --ox-scroll-pad: 80px;
+    scroll-padding-top: var(--ox-scroll-pad);
+  }
+
+  body.ox.is-pane-nav {
+    --ox-scroll-pad: 0px;
+  }
+
   body.ox {
     --ox-bg: #fafaf9;
     --ox-fg: #080503;
@@ -811,6 +934,7 @@ const marqueeItems = [
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    scroll-snap-type: y proximity;
 
     /* Override global.css Pretendard tokens on this page */
     --font-display: var(--ox-sans);
@@ -880,6 +1004,27 @@ const marqueeItems = [
     padding-inline: var(--ox-pad);
   }
 
+  /* Full-viewport panes (hero + nav sections) */
+  .ox-pane {
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+  }
+  .ox-pane > .ox-shell {
+    width: 100%;
+  }
+  .ox-hero.ox-pane {
+    justify-content: center;
+  }
+  .ox-section.ox-pane,
+  .ox-process.ox-pane {
+    justify-content: flex-start;
+    padding-block: clamp(32px, 5vh, 56px);
+  }
+
   @media (min-width: 1024px) {
     body.ox {
       --ox-pad: 48px;
@@ -925,11 +1070,13 @@ const marqueeItems = [
   .ox-btn-lg { height: 48px; padding: 0 28px; font-size: 15px; }
   .ox-btn-block { width: 100%; height: 48px; }
 
-  .ox-btn-solid {
+  body.ox a.ox-btn-solid,
+  body.ox .ox-btn-solid {
     background: var(--ox-fg);
-    color: var(--ox-bg);
+    color: #ffffff;
   }
-  .ox-btn-solid:hover {
+  body.ox a.ox-btn-solid:hover,
+  body.ox .ox-btn-solid:hover {
     opacity: 0.9;
   }
 
@@ -950,13 +1097,37 @@ const marqueeItems = [
     top: 0;
     left: 0;
     right: 0;
-    transition: background 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease;
+    transition:
+      background 0.4s ease,
+      border-color 0.4s ease,
+      backdrop-filter 0.4s ease,
+      transform 0.35s ease;
     border-bottom: 1px solid transparent;
   }
   .ox-header.is-scrolled {
     background: rgba(250, 250, 249, 0.85);
     backdrop-filter: blur(16px);
     border-bottom-color: var(--ox-border);
+  }
+  .ox-header.is-hidden {
+    transform: translateY(-100%);
+  }
+  .ox-header.is-menu-open {
+    transform: none;
+  }
+
+  .ox-scroll-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--ox-fg);
+    transform: scaleX(0);
+    transform-origin: left center;
+    opacity: 0.85;
+    pointer-events: none;
+    z-index: 1;
   }
 
   .ox-nav {
@@ -968,6 +1139,10 @@ const marqueeItems = [
     align-items: center;
     justify-content: space-between;
     gap: 24px;
+    transition: height 0.35s ease;
+  }
+  .ox-header.is-compact .ox-nav {
+    height: 64px;
   }
 
   .ox-brand {
@@ -981,6 +1156,10 @@ const marqueeItems = [
     font-weight: 600;
     letter-spacing: -0.03em;
     line-height: 1;
+    transition: font-size 0.35s ease;
+  }
+  .ox-header.is-compact .ox-brand-name {
+    font-size: 1.125rem;
   }
 
   .ox-nav-links {
@@ -996,23 +1175,37 @@ const marqueeItems = [
     position: relative;
     font-size: 14px;
     color: rgba(8, 5, 3, 0.7);
-    transition: color 0.25s ease;
+    transition: color 0.25s ease, background 0.25s ease;
+  }
+  .ox-nav-links .ox-nav-link {
+    padding: 6px 12px;
+    border-radius: 9999px;
   }
   .ox-nav-link::after {
     content: "";
     position: absolute;
-    left: 0;
-    bottom: -4px;
-    width: 0;
+    left: 12px;
+    right: 12px;
+    bottom: 4px;
+    width: auto;
     height: 1px;
     background: var(--ox-fg);
-    transition: width 0.3s ease;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.3s ease;
   }
   .ox-nav-link:hover {
     color: var(--ox-fg);
   }
   .ox-nav-link:hover::after {
-    width: 100%;
+    transform: scaleX(1);
+  }
+  .ox-nav-link.is-active {
+    color: var(--ox-fg);
+    background: var(--ox-muted-bg);
+  }
+  .ox-nav-link.is-active::after {
+    transform: scaleX(1);
   }
 
   .ox-nav-end {
@@ -1049,6 +1242,20 @@ const marqueeItems = [
     display: flex;
     padding: 8px;
   }
+  .ox-burger-line {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform-origin: center;
+  }
+  .ox-burger[aria-expanded="true"] .ox-burger-line:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+  .ox-burger[aria-expanded="true"] .ox-burger-line:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  .ox-burger[aria-expanded="true"] .ox-burger-line:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
   @media (min-width: 768px) {
     .ox-burger { display: none; }
   }
@@ -1058,8 +1265,18 @@ const marqueeItems = [
     inset: 0;
     z-index: 40;
     background: var(--ox-bg);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: visibility 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
   }
-  .ox-mobile[hidden] { display: none; }
+  .ox-mobile.is-open {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
   .ox-mobile-inner {
     display: flex;
     flex-direction: column;
@@ -1081,6 +1298,13 @@ const marqueeItems = [
     line-height: 1.1;
     transition: color 0.25s ease;
   }
+  .ox-mobile-links a::after {
+    display: none;
+  }
+  .ox-mobile-links .ox-nav-link.is-active {
+    background: transparent;
+    color: var(--ox-muted);
+  }
   .ox-mobile-links a:hover {
     color: var(--ox-muted);
   }
@@ -1099,10 +1323,6 @@ const marqueeItems = [
   /* Hero */
   .ox-hero {
     position: relative;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     overflow: hidden;
     padding-top: 80px;
   }
@@ -1589,6 +1809,35 @@ const marqueeItems = [
   .ox-pricing .ox-section-head {
     margin-bottom: 40px;
   }
+  .ox-pricing.ox-pane .ox-section-head {
+    margin-bottom: 32px;
+  }
+  .ox-pricing.ox-pane .ox-bill {
+    margin-bottom: 28px;
+  }
+
+  /* Features: fit one viewport on desktop */
+  @media (min-width: 1024px) {
+    #features.ox-pane .ox-section-head {
+      margin-bottom: 40px;
+    }
+    #features .ox-cap-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 48px;
+      row-gap: 0;
+    }
+    #features .ox-cap {
+      padding: 24px 0;
+      border-bottom: none;
+      grid-template-columns: 48px 1fr;
+      gap: 16px 24px;
+      align-items: start;
+    }
+    #features .ox-cap-media {
+      display: none;
+    }
+  }
 
   .ox-bill {
     display: flex;
@@ -1625,7 +1874,7 @@ const marqueeItems = [
   }
   .ox-bill-toggle button.is-active {
     background: var(--ox-fg);
-    color: var(--ox-bg);
+    color: #ffffff;
   }
   .ox-bill-toggle button.is-active em {
     background: rgba(250, 250, 249, 0.15);
@@ -1887,6 +2136,15 @@ const marqueeItems = [
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .ox-header,
+    .ox-nav,
+    .ox-brand-name,
+    .ox-nav-link,
+    .ox-nav-link::after,
+    .ox-burger-line,
+    .ox-mobile {
+      transition: none;
+    }
     .reveal {
       opacity: 1;
       transform: none;

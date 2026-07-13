@@ -11,495 +11,528 @@ const supabase = createClient({
 const { data: { user } } = await supabase.auth.getUser();
 const isLoggedIn = !!user;
 const userEmail = user?.email;
+const year = new Date().getFullYear();
 
 const DOWNLOAD_LINKS = {
   macos: {
     arm: "https://pub-32f64eaa15504eeba9203bcbbced439d.r2.dev/releases/latest/First-Crack-arm64.dmg",
     intel: "https://pub-32f64eaa15504eeba9203bcbbced439d.r2.dev/releases/latest/First-Crack-x64.dmg",
   },
-  windows: "https://pub-32f64eaa15504eeba9203bcbbced439d.r2.dev/releases/latest/First-Crack-Windows.msi",
+  windows:
+    "https://pub-32f64eaa15504eeba9203bcbbced439d.r2.dev/releases/latest/First-Crack-Windows.msi",
 };
 ---
 
-<html lang="ko">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <Favicon />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="First Crack — 로스터를 위한 스마트 로스팅 플랫폼. 데스크탑 앱 다운로드." />
+    <meta
+      name="description"
+      content="Download First Crack for macOS and Windows — desktop roasting software for specialty coffee roasteries."
+    />
     <title>Download — First Crack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body>
+  <body class="ox">
+    <main class="ox-dl noise-overlay">
+      <div class="ox-grid-bg" aria-hidden="true"></div>
 
-    <!-- ============================================================
-         NAV
-         ============================================================ -->
-    <header class="nav">
-      <div class="nav-inner">
-        <!-- Logo -->
-        <a href="/" class="nav-logo">
-          <span class="nav-logo-text">First Crack</span>
-        </a>
-
-        <!-- Center links -->
-        <nav class="nav-links" aria-label="주요 메뉴">
-          <a href="/#product" class="nav-link">Product</a>
-          <a href="/#pricing" class="nav-link">Pricing</a>
-          <a href="/#docs" class="nav-link">Docs</a>
-          <a href="/#about" class="nav-link">About</a>
-          <a href="/#machines" class="nav-link">Machines</a>
-          <a href="/download" class="nav-link">Download</a>
+      <header class="ox-auth-header">
+        <nav class="ox-auth-nav">
+          <a href="/" class="ox-brand">
+            <span class="ox-brand-name">First Crack</span>
+          </a>
+          <div class="ox-auth-nav-end">
+            {
+              isLoggedIn ? (
+                <>
+                  <span class="ox-auth-email">{userEmail}</span>
+                  <a href="/account" class="ox-btn ox-btn-solid ox-btn-sm">
+                    Account
+                  </a>
+                </>
+              ) : (
+                <>
+                  <a href="/login" class="ox-nav-signin">Log in</a>
+                  <a href="/signup" class="ox-btn ox-btn-solid ox-btn-sm">
+                    Start trial
+                  </a>
+                </>
+              )
+            }
+          </div>
         </nav>
+      </header>
 
-        <!-- Right CTAs -->
-        <div class="nav-actions">
-          {isLoggedIn ? (
-            <div class="flex items-center gap-4">
-              <span class="text-sm text-fg-secondary hidden md:inline">
-                {userEmail}
-              </span>
-              <a href="/dashboard" class="btn btn-nav-signup">Dashboard</a>
-              <form action="/auth/signout" method="POST" class="inline">
-                <button type="submit" class="btn btn-nav-signup">
-                  Log out
-                </button>
-              </form>
+      <div class="ox-dl-main">
+        <div class="ox-shell ox-dl-inner">
+          <div class="ox-dl-head">
+            <div class="ox-eyebrow">
+              <span class="ox-line"></span>
+              Desktop app
             </div>
-          ) : (
-            <div class="flex items-center gap-3">
-              <a href="/login" class="btn btn-nav-ghost">Log in</a>
-              <a href="/signup" class="btn btn-nav-signup">Sign up</a>
-            </div>
-          )}
-        </div>
-        <!-- Mobile hamburger -->
-        <button class="nav-hamburger" aria-label="메뉴 열기" aria-expanded="false">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-      </div>
-    </header>
-
-    <main>
-      <!-- ============================================================
-           DOWNLOAD HERO
-           ============================================================ -->
-      <section class="download-hero">
-        <div class="container hero-inner">
-          <div class="hero-eyebrow">
-            <span class="badge">Desktop Application</span>
+            <h1 class="ox-dl-title">Download First Crack</h1>
+            <p class="ox-dl-lead">
+              Native macOS and Windows installers — live BT/ET/RoR on the roast floor,
+              with cloud sync when you are back at the desk.
+            </p>
           </div>
 
-          <h1 class="text-display-hero hero-headline">
-            어디서든 완벽한<br />로스팅을 위해
-          </h1>
+          <div class="ox-dl-grid">
+            <article class="ox-dl-card" id="download-macos">
+              <span class="ox-dl-badge" id="badge-macos" hidden>Recommended</span>
+              <div class="ox-dl-card-top">
+                <span class="ox-dl-tag">Platform</span>
+                <h2>macOS</h2>
+                <p>Apple Silicon and Intel. macOS 12.0 or later.</p>
+              </div>
+              <div class="ox-dl-actions">
+                <a
+                  href={DOWNLOAD_LINKS.macos.arm}
+                  class="ox-btn ox-btn-solid ox-btn-block"
+                >
+                  Apple Silicon (.dmg)
+                </a>
+                <a
+                  href={DOWNLOAD_LINKS.macos.intel}
+                  class="ox-btn ox-btn-outline ox-btn-block"
+                >
+                  Intel Mac (.dmg)
+                </a>
+                <p class="ox-dl-note">Latest stable build</p>
+              </div>
+            </article>
 
-          <p class="text-body-lg hero-subtitle">
-            First Crack 데스크탑 앱은 로스터기와 직접 연결되어 실시간 데이터를 수집합니다.<br class="br-desktop" />
-            안정적인 연결과 오프라인 동기화로 중단 없는 로스팅을 경험하세요.
+            <article class="ox-dl-card" id="download-windows">
+              <span class="ox-dl-badge" id="badge-windows" hidden>Recommended</span>
+              <div class="ox-dl-card-top">
+                <span class="ox-dl-tag">Platform</span>
+                <h2>Windows</h2>
+                <p>Windows 10 and 11. 64-bit x86.</p>
+              </div>
+              <div class="ox-dl-actions">
+                <a
+                  href={DOWNLOAD_LINKS.windows}
+                  class="ox-btn ox-btn-solid ox-btn-block"
+                >
+                  Download (.msi)
+                </a>
+                <p class="ox-dl-note">Latest stable build</p>
+              </div>
+            </article>
+          </div>
+
+          <p class="ox-dl-fine">
+            New here?
+            <a href="/signup">Start a 14-day trial</a>
+            — 20 batches, no credit card.
           </p>
         </div>
-      </section>
-
-      <!-- ============================================================
-           DOWNLOAD OPTIONS
-           ============================================================ -->
-      <section class="download-options">
-        <div class="container">
-          <div class="download-grid">
-            
-            <!-- macOS -->
-            <div class="download-card card" id="download-macos">
-              <div class="download-card-inner">
-                <div class="recommended-badge" id="badge-macos" hidden>추천</div>
-                <div class="platform-icon">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 20.94c1.88 0 3.05-1.07 3.05-2.61 0-1.46-.86-2.29-2.22-2.58l-1.63-.34c-.81-.17-1.16-.54-1.16-1.01 0-.61.54-1.03 1.34-1.03.88 0 1.45.41 1.54 1.13h1.99c-.1-1.62-1.39-2.85-3.53-2.85-2.08 0-3.37 1.11-3.37 2.76 0 1.33.81 2.14 2.13 2.42l1.63.35c.96.2 1.31.62 1.31 1.14 0 .64-.59 1.12-1.48 1.12-1.04 0-1.68-.53-1.8-1.35H7.33c.1 1.76 1.49 3.05 4.67 3.05z"/>
-                    <path d="M12 3a6 6 0 0 0-6 6c0 4.27 3.33 7.6 6 12 2.67-4.4 6-7.73 6-12a6 6 0 0 0-6-6z"/>
-                  </svg>
-                </div>
-                <h3 class="text-display-card platform-title">macOS</h3>
-                <p class="text-body platform-desc">
-                  Apple Silicon 및 Intel Mac 지원.<br />macOS 12.0 이상 권장.
-                </p>
-                <div class="download-actions">
-                  <div class="flex flex-col gap-2">
-                    <a href={DOWNLOAD_LINKS.macos.arm} class="btn btn-primary w-full">Apple Silicon (.dmg)</a>
-                    <a href={DOWNLOAD_LINKS.macos.intel} class="btn btn-secondary w-full">Intel Chip (.dmg)</a>
-                  </div>
-                  <p class="text-caption text-center">최신 안정 버전</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Windows -->
-            <div class="download-card card" id="download-windows">
-              <div class="download-card-inner">
-                <div class="recommended-badge" id="badge-windows" hidden>추천</div>
-                <div class="platform-icon">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="2" y="3" width="20" height="18" rx="2" ry="2"/>
-                    <line x1="12" y1="3" x2="12" y2="21"/>
-                    <line x1="2" y1="12" x2="22" y2="12"/>
-                  </svg>
-                </div>
-                <h3 class="text-display-card platform-title">Windows</h3>
-                <p class="text-body platform-desc">
-                  Windows 10, 11 지원.<br />64비트 아키텍처 지원.
-                </p>
-                <div class="download-actions">
-                  <a href={DOWNLOAD_LINKS.windows} class="btn btn-primary w-full">Windows (.msi) 다운로드</a>
-                  <p class="text-caption text-center">최신 안정 버전</p>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      <!-- ============================================================
-           MOBILE APP CTA
-           ============================================================ -->
-      <section class="mobile-app-section">
-        <div class="container">
-          <div class="mobile-app-card card-lg">
-            <div class="mobile-app-content">
-              <h2 class="text-display-section">이동 중에도 완벽하게</h2>
-              <p class="text-body-lg">
-                First Crack Mobile로 어디서든 실시간 로스팅 현황을 확인하고 프로파일을 관리하세요.
-              </p>
-              <div class="app-store-buttons">
-                <a href="#" class="store-btn">
-                  <span class="text-micro">Download on the</span>
-                  <span class="text-body-medium">App Store</span>
-                </a>
-                <a href="#" class="store-btn">
-                  <span class="text-micro">GET IT ON</span>
-                  <span class="text-body-medium">Google Play</span>
-                </a>
-              </div>
-            </div>
-            <div class="mobile-app-visual">
-              <div class="phone-mockup">
-                <!-- Phone visual placeholder -->
-                <div class="phone-screen">
-                   <div class="roast-chart-mini">
-                    <svg viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M0,90 C20,85 40,70 60,50 C80,30 100,15 130,10 C150,5 180,2 200,0" stroke="#000" stroke-width="2"/>
-                    </svg>
-                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- ============================================================
-         FOOTER
-         ============================================================ -->
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <div class="footer-brand">
-          <span class="nav-logo-mark" style="color: var(--color-fg-muted);">FC</span>
-          <span class="text-caption" style="color: var(--color-fg-muted);">First Crack © 2025</span>
-        </div>
-        <nav class="footer-links" aria-label="푸터 메뉴">
-          <a href="/privacy" class="footer-link text-caption">Privacy</a>
-          <a href="/terms" class="footer-link text-caption">Terms</a>
-          <a href="/docs" class="footer-link text-caption">Docs</a>
-          <a href="mailto:hello@firstcrackiscoming.com" class="footer-link text-caption">Contact</a>
-        </nav>
       </div>
-    </footer>
+
+      <footer class="ox-dl-footer">
+        <div class="ox-shell ox-dl-footer-inner">
+          <span>© {year} First Crack</span>
+          <nav aria-label="Footer">
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
+            <a href="mailto:hello@firstcrackiscoming.com">Contact</a>
+          </nav>
+        </div>
+      </footer>
+    </main>
 
     <script>
       function detectOS() {
         const platform = window.navigator.platform.toLowerCase();
         const userAgent = window.navigator.userAgent.toLowerCase();
 
-        let os = null;
+        let os: string | null = null;
 
-        if (platform.includes('mac') || userAgent.includes('mac')) {
-          os = 'macos';
-        } else if (platform.includes('win') || userAgent.includes('win')) {
-          os = 'windows';
+        if (platform.includes("mac") || userAgent.includes("mac")) {
+          os = "macos";
+        } else if (platform.includes("win") || userAgent.includes("win")) {
+          os = "windows";
         }
 
         if (os) {
           const card = document.getElementById(`download-${os}`);
           const badge = document.getElementById(`badge-${os}`);
-          if (card) card.classList.add('download-card-recommended');
+          card?.classList.add("is-recommended");
           if (badge) badge.hidden = false;
         }
       }
 
-      // Run on load
       detectOS();
     </script>
-
   </body>
 </html>
 
-<style>
-  /* --- Radius 0: sharp corners everywhere --- */
-  :global(.card) { border-radius: 0 !important; }
-  :global(.card-lg) { border-radius: 0 !important; }
-  :global(.btn-primary) { border-radius: 0 !important; }
+<style is:global>
+  body.ox {
+    --ox-bg: #fafaf9;
+    --ox-fg: #080503;
+    --ox-muted: #5e534a;
+    --ox-muted-bg: #ecebe7;
+    --ox-border: rgba(8, 5, 3, 0.06);
+    --ox-border-strong: rgba(8, 5, 3, 0.12);
+    --ox-sans: "Instrument Sans", system-ui, -apple-system, sans-serif;
+    --ox-mono: "JetBrains Mono", ui-monospace, monospace;
+    --ox-max: 1400px;
+    --ox-pad: 24px;
 
-  /* --- Recommended Highlight --- */
-  .download-card-recommended {
-    border: 1px solid var(--color-fg) !important;
-    transform: scale(1.02);
-    box-shadow: var(--shadow-warm-lift), var(--shadow-card) !important;
-    position: relative;
-    z-index: 1;
-  }
-  .recommended-badge {
-    position: absolute;
-    top: var(--space-16);
-    right: var(--space-16);
-    background: var(--color-fg);
-    color: var(--color-bg);
-    padding: var(--space-4) var(--space-12);
-    border-radius: 0;
-    font-size: var(--text-micro);
-    font-weight: 600;
+    margin: 0;
+    background: var(--ox-bg);
+    color: var(--ox-fg);
+    font-family: var(--ox-sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* --- Nav overrides --- */
-  .nav {
-    background-color: var(--color-bg);
-    color: var(--color-fg);
+  body.ox *,
+  body.ox *::before,
+  body.ox *::after {
+    box-sizing: border-box;
   }
-  .nav-logo {
-    display: flex;
-    align-items: center;
-    gap: var(--space-8);
+
+  body.ox a {
+    color: inherit;
     text-decoration: none;
-    color: var(--color-fg);
-  }
-  .nav-logo-text {
-    font-family: var(--font-body);
-    font-size: var(--text-nav);
-    font-weight: 600;
-    letter-spacing: 0.01em;
-  }
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: var(--space-4);
-  }
-  .nav .nav-link {
-    color: var(--color-fg-secondary);
-    padding: var(--space-8) var(--space-12);
-    border-radius: 0;
-    transition: color var(--motion-fast) ease, background-color var(--motion-fast) ease;
-  }
-  .nav .nav-link:hover {
-    color: var(--color-fg);
-    background-color: rgba(0,0,0,0.08);
-  }
-  .nav-actions {
-    display: flex;
-    align-items: center;
-    gap: var(--space-8);
-  }
-  .btn-nav-ghost {
-    background: transparent;
-    color: var(--color-fg-secondary);
-    border-radius: 0;
-    padding: var(--space-8) var(--space-16);
-    font-size: var(--text-nav);
-    font-weight: 500;
-    transition: color var(--motion-fast) ease;
-  }
-  .btn-nav-ghost:hover { color: var(--color-fg); }
-  .btn-nav-signup {
-    background: var(--color-fg);
-    color: var(--color-bg);
-    border-radius: 0;
-    padding: var(--space-8) var(--space-16);
-    font-size: var(--text-nav);
-    font-weight: 500;
-    box-shadow: var(--shadow-button);
-    transition: opacity var(--motion-fast) ease;
-  }
-  .btn-nav-signup:hover { opacity: 0.88; }
-
-  .nav-hamburger {
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: var(--space-8);
-  }
-  .nav-hamburger span {
-    display: block;
-    width: 20px;
-    height: 1.5px;
-    background: var(--color-fg-muted);
   }
 
-  /* --- Badge --- */
-  .badge {
+  .ox-shell {
+    max-width: var(--ox-max);
+    margin-inline: auto;
+    padding-inline: var(--ox-pad);
+  }
+
+  .ox-btn {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-4);
-    font-size: var(--text-sm);
+    justify-content: center;
+    gap: 8px;
+    border-radius: 0;
     font-weight: 500;
-    padding: var(--space-4) var(--space-12);
-    border-radius: 0;
-    background: var(--color-bg-secondary);
-    color: var(--color-fg-secondary);
-    box-shadow: var(--shadow-inset-border);
+    font-size: 14px;
+    letter-spacing: -0.01em;
+    border: 1px solid transparent;
+    transition:
+      background 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease,
+      opacity 0.2s ease;
+    white-space: nowrap;
   }
 
-  /* --- Download Hero --- */
-  .download-hero {
-    padding-top: 100px;
-    padding-bottom: 60px;
-    background: var(--color-bg);
+  .ox-btn-sm {
+    height: 32px;
+    padding: 0 20px;
+    font-size: 13px;
   }
-  .hero-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-  .hero-eyebrow { margin-bottom: var(--space-24); }
-  .hero-headline { max-width: 800px; margin-bottom: var(--space-24); }
-  .hero-subtitle { max-width: 640px; }
 
-  /* --- Download Options --- */
-  .download-options {
-    padding-bottom: 100px;
-  }
-  .download-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-24);
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  .download-card-inner {
-    padding: var(--space-40);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: var(--space-20);
-    height: 100%;
-    position: relative;
-  }
-  .platform-icon {
-    width: 64px;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-bg-secondary);
-    border-radius: 0;
-    color: var(--color-fg);
-  }
-  .platform-title { font-size: 1.5rem; }
-  .platform-desc { color: var(--color-fg-secondary); flex: 1; }
-  .download-actions { width: 100%; display: flex; flex-direction: column; gap: var(--space-12); }
-  .w-full { width: 100%; }
-
-  /* --- Mobile App Section --- */
-  .mobile-app-section {
-    padding-bottom: 120px;
-  }
-  .mobile-app-card {
-    background: var(--color-bg-warm-80);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    align-items: center;
-    padding: 60px;
-    overflow: hidden;
-  }
-  .mobile-app-content {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-24);
-  }
-  .app-store-buttons {
-    display: flex;
-    gap: var(--space-12);
-  }
-  .store-btn {
-    display: flex;
-    flex-direction: column;
-    background: var(--color-fg);
-    color: var(--color-bg);
-    padding: var(--space-8) var(--space-20);
-    border-radius: 0;
-    min-width: 140px;
-  }
-  .mobile-app-visual {
-    display: flex;
-    justify-content: center;
-  }
-  .phone-mockup {
-    width: 240px;
-    height: 480px;
-    background: var(--color-bg);
-    border: 8px solid var(--color-fg);
-    border-radius: 0;
-    padding: 12px;
-    position: relative;
-    box-shadow: var(--shadow-card);
-  }
-  .phone-screen {
+  .ox-btn-block {
     width: 100%;
-    height: 100%;
-    background: var(--color-bg-secondary);
-    border-radius: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .roast-chart-mini {
-    width: 80%;
+    height: 48px;
+    font-size: 15px;
   }
 
-  /* --- Footer --- */
-  .site-footer {
-    padding-block: var(--space-32);
-    border-top: 1px solid var(--color-border);
-    background: var(--color-bg);
+  body.ox a.ox-btn-solid,
+  body.ox .ox-btn-solid {
+    background: var(--ox-fg);
+    color: #fff;
+    border-color: var(--ox-fg);
   }
-  .footer-inner {
+
+  body.ox a.ox-btn-solid:hover,
+  body.ox .ox-btn-solid:hover {
+    opacity: 0.9;
+  }
+
+  .ox-btn-outline {
+    background: transparent;
+    color: var(--ox-fg);
+    border-color: var(--ox-border-strong);
+  }
+
+  .ox-btn-outline:hover {
+    background: rgba(8, 5, 3, 0.03);
+    border-color: rgba(8, 5, 3, 0.28);
+  }
+
+  .ox-brand-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .ox-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--ox-mono);
+    font-size: 13px;
+    color: var(--ox-muted);
+    margin-bottom: 20px;
+  }
+
+  .ox-line {
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: rgba(8, 5, 3, 0.3);
+    flex-shrink: 0;
+  }
+
+  .noise-overlay::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .ox-grid-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.3;
+    background-image:
+      linear-gradient(var(--ox-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--ox-border) 1px, transparent 1px);
+    background-size: 12.5% 12.5%;
+  }
+
+  .ox-auth-header {
+    position: relative;
+    z-index: 2;
+    border-bottom: 1px solid var(--ox-border);
+    background: rgba(250, 250, 249, 0.85);
+    backdrop-filter: blur(16px);
+  }
+
+  .ox-auth-nav {
+    max-width: var(--ox-max);
+    margin: 0 auto;
+    padding: 0 var(--ox-pad);
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-  .footer-brand {
-    display: flex;
-    align-items: center;
-    gap: var(--space-8);
-  }
-  .footer-links {
-    display: flex;
-    gap: var(--space-24);
-  }
-  .footer-link {
-    color: var(--color-fg-muted);
+    gap: 24px;
   }
 
-  /* Responsive */
-  @media (max-width: 1023px) {
-    .nav-links { display: none; }
-    .download-grid { grid-template-columns: 1fr; }
-    .mobile-app-card { grid-template-columns: 1fr; padding: var(--space-32); }
-    .app-store-buttons { flex-direction: column; }
-    .br-desktop { display: none; }
+  .ox-auth-nav-end {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .ox-nav-signin {
+    display: none;
+    font-size: 14px;
+    color: rgba(8, 5, 3, 0.7);
+    transition: color 0.25s ease;
+  }
+
+  .ox-nav-signin:hover {
+    color: var(--ox-fg);
+  }
+
+  .ox-auth-email {
+    display: none;
+    font-size: 12px;
+    color: var(--ox-muted);
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @media (min-width: 640px) {
+    .ox-nav-signin,
+    .ox-auth-email {
+      display: inline;
+    }
+  }
+
+  .ox-dl {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .ox-dl-main {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 48px 0 64px;
+  }
+
+  .ox-dl-inner {
+    width: 100%;
+  }
+
+  .ox-dl-head {
+    max-width: 36rem;
+    margin-bottom: 48px;
+  }
+
+  .ox-dl-title {
+    margin: 0 0 16px;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+  }
+
+  .ox-dl-lead {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ox-muted);
+  }
+
+  .ox-dl-grid {
+    display: grid;
+    gap: 16px;
+    max-width: 880px;
+  }
+
+  @media (min-width: 768px) {
+    .ox-dl-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+  }
+
+  .ox-dl-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding: 32px 28px;
+    border: 1px solid var(--ox-border);
+    background: #fff;
+    transition: border-color 0.2s ease;
+  }
+
+  .ox-dl-card.is-recommended {
+    border-color: var(--ox-fg);
+  }
+
+  .ox-dl-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-family: var(--ox-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--ox-fg);
+    color: #fff;
+    padding: 4px 10px;
+  }
+
+  .ox-dl-tag {
+    display: block;
+    font-family: var(--ox-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ox-muted);
+    margin-bottom: 12px;
+  }
+
+  .ox-dl-card-top h2 {
+    margin: 0 0 8px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  .ox-dl-card-top p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ox-muted);
+  }
+
+  .ox-dl-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: auto;
+  }
+
+  .ox-dl-note {
+    margin: 4px 0 0;
+    text-align: center;
+    font-family: var(--ox-mono);
+    font-size: 11px;
+    color: var(--ox-muted);
+  }
+
+  .ox-dl-fine {
+    margin: 32px 0 0;
+    font-size: 14px;
+    color: var(--ox-muted);
+  }
+
+  .ox-dl-fine a {
+    color: var(--ox-fg);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .ox-dl-fine a:hover {
+    opacity: 0.75;
+  }
+
+  .ox-dl-footer {
+    position: relative;
+    z-index: 2;
+    border-top: 1px solid var(--ox-border);
+    padding: 24px 0;
+  }
+
+  .ox-dl-footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--ox-muted);
+  }
+
+  .ox-dl-footer-inner nav {
+    display: flex;
+    gap: 20px;
+  }
+
+  .ox-dl-footer-inner a:hover {
+    color: var(--ox-fg);
+  }
+
+  @media (min-width: 1024px) {
+    body.ox {
+      --ox-pad: 48px;
+    }
   }
 </style>

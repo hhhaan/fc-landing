@@ -1,0 +1,366 @@
+---
+import "../../styles/global.css";
+import Favicon from "./Favicon.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  heading: string;
+  updated: string;
+}
+
+const { title, description, heading, updated } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <Favicon />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="ox">
+    <main class="ox-legal noise-overlay">
+      <div class="ox-grid-bg" aria-hidden="true"></div>
+
+      <header class="ox-auth-header">
+        <nav class="ox-auth-nav">
+          <a href="/" class="ox-brand">
+            <span class="ox-brand-name">First Crack</span>
+          </a>
+          <div class="ox-auth-nav-end">
+            <a href="/" class="ox-utility-link">Home</a>
+            <a href="/login" class="ox-utility-link">Log in</a>
+          </div>
+        </nav>
+      </header>
+
+      <article class="ox-legal-main">
+        <div class="ox-shell ox-legal-inner">
+          <header class="ox-legal-meta">
+            <div>
+              <div class="ox-eyebrow">
+                <span class="ox-line"></span>
+                Legal
+              </div>
+              <h1 class="ox-legal-title">{heading}</h1>
+              <p class="ox-legal-date">Last updated: {updated}</p>
+            </div>
+            <p class="ox-legal-url">
+              <span class="ox-legal-url-label">Service</span>
+              firstcrackiscoming.com
+            </p>
+          </header>
+
+          <div class="ox-legal-body">
+            <slot />
+          </div>
+        </div>
+      </article>
+
+      <footer class="ox-utility-footer">
+        <div class="ox-shell ox-utility-footer-inner">
+          <span>© {year} First Crack</span>
+          <nav aria-label="Footer">
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
+            <a href="/careers">Careers</a>
+            <a href="mailto:hello@firstcrackiscoming.com">Contact</a>
+          </nav>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  body.ox {
+    --ox-bg: #fafaf9;
+    --ox-fg: #080503;
+    --ox-muted: #5e534a;
+    --ox-muted-bg: #ecebe7;
+    --ox-border: rgba(8, 5, 3, 0.06);
+    --ox-border-strong: rgba(8, 5, 3, 0.12);
+    --ox-sans: "Instrument Sans", system-ui, -apple-system, sans-serif;
+    --ox-mono: "JetBrains Mono", ui-monospace, monospace;
+    --ox-max: 1400px;
+    --ox-pad: 24px;
+
+    margin: 0;
+    background: var(--ox-bg);
+    color: var(--ox-fg);
+    font-family: var(--ox-sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body.ox *,
+  body.ox *::before,
+  body.ox *::after {
+    box-sizing: border-box;
+  }
+
+  body.ox a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .ox-shell {
+    max-width: var(--ox-max);
+    margin-inline: auto;
+    padding-inline: var(--ox-pad);
+  }
+
+  .ox-brand-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .ox-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--ox-mono);
+    font-size: 13px;
+    color: var(--ox-muted);
+    margin-bottom: 20px;
+  }
+
+  .ox-line {
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: rgba(8, 5, 3, 0.3);
+    flex-shrink: 0;
+  }
+
+  .noise-overlay::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .ox-grid-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.3;
+    background-image:
+      linear-gradient(var(--ox-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--ox-border) 1px, transparent 1px);
+    background-size: 12.5% 12.5%;
+  }
+
+  .ox-auth-header {
+    position: relative;
+    z-index: 2;
+    border-bottom: 1px solid var(--ox-border);
+    background: rgba(250, 250, 249, 0.85);
+    backdrop-filter: blur(16px);
+  }
+
+  .ox-auth-nav {
+    max-width: var(--ox-max);
+    margin: 0 auto;
+    padding: 0 var(--ox-pad);
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .ox-auth-nav-end {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .ox-utility-link {
+    font-size: 14px;
+    color: rgba(8, 5, 3, 0.7);
+    transition: color 0.2s ease;
+  }
+
+  .ox-utility-link:hover {
+    color: var(--ox-fg);
+  }
+
+  .ox-legal {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .ox-legal-main {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    padding: 48px 0 80px;
+  }
+
+  .ox-legal-inner {
+    max-width: 720px;
+  }
+
+  .ox-legal-meta {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+
+  .ox-legal-title {
+    margin: 0 0 8px;
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+  }
+
+  .ox-legal-date {
+    margin: 0;
+    font-family: var(--ox-mono);
+    font-size: 12px;
+    color: var(--ox-muted);
+  }
+
+  .ox-legal-url {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 8px 14px;
+    font-family: var(--ox-mono);
+    font-size: 12px;
+    color: var(--ox-muted);
+    border: 1px solid var(--ox-border);
+    background: #fff;
+    white-space: nowrap;
+  }
+
+  .ox-legal-url-label {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(94, 83, 74, 0.75);
+  }
+
+  .ox-legal-body section {
+    margin-bottom: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--ox-border);
+  }
+
+  .ox-legal-body section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .ox-legal-body h2 {
+    margin: 0 0 16px;
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .ox-legal-body p {
+    margin: 0 0 12px;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--ox-muted);
+  }
+
+  .ox-legal-body ul {
+    margin: 0 0 16px;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .ox-legal-body li {
+    position: relative;
+    padding-left: 16px;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--ox-muted);
+  }
+
+  .ox-legal-body li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.45;
+  }
+
+  .ox-legal-body a {
+    color: var(--ox-fg);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .ox-legal-body a:hover {
+    opacity: 0.75;
+  }
+
+  .ox-utility-footer {
+    position: relative;
+    z-index: 2;
+    border-top: 1px solid var(--ox-border);
+    padding: 24px 0;
+  }
+
+  .ox-utility-footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--ox-muted);
+  }
+
+  .ox-utility-footer-inner nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .ox-utility-footer-inner a:hover {
+    color: var(--ox-fg);
+  }
+
+  @media (min-width: 1024px) {
+    body.ox {
+      --ox-pad: 48px;
+    }
+  }
+</style>
