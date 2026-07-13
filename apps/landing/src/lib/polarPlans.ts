@@ -1,4 +1,5 @@
 import type { AstroCookies } from "astro";
+import { POLAR_PRODUCT_IDS, type PolarProductEnvKey } from "./polarProducts";
 
 export const CHECKOUT_PLANS = [
   "pro-monthly",
@@ -46,9 +47,10 @@ export function resolveBillingMarket(
 
 type PolarEnv = ImportMetaEnv & Record<string, string | undefined>;
 
-function envProduct(env: PolarEnv, key: string): string | undefined {
-  const value = env[key];
-  return value && value.length > 0 ? value : undefined;
+function envProduct(env: PolarEnv, key: PolarProductEnvKey): string | undefined {
+  const fromEnv = env[key];
+  if (fromEnv && fromEnv.length > 0) return fromEnv;
+  return POLAR_PRODUCT_IDS[key];
 }
 
 /** Polar product UUID for plan × market (not legacy price_id). */
@@ -70,7 +72,8 @@ export function polarProductId(
 
   const planKey = proPlus ? "PRO_PLUS" : "PRO";
   const intervalKey = yearly ? "_YEARLY" : "";
-  const envKey = `POLAR_${planKey}_PRODUCT_ID_${market}${intervalKey}`;
+  const envKey =
+    `POLAR_${planKey}_PRODUCT_ID_${market}${intervalKey}` as PolarProductEnvKey;
   return envProduct(env, envKey);
 }
 
@@ -82,8 +85,12 @@ export function isCheckoutPlanReady(
   return !!polarProductId(plan, market, env);
 }
 
+export function polarServer(env: ImportMetaEnv): "sandbox" | "production" {
+  return env.POLAR_SERVER === "sandbox" ? "sandbox" : "production";
+}
+
 export function polarApiBase(env: ImportMetaEnv): string {
-  return env.POLAR_SERVER === "sandbox"
+  return polarServer(env) === "sandbox"
     ? "https://sandbox-api.polar.sh"
     : "https://api.polar.sh";
 }
