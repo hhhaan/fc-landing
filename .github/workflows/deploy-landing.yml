@@ -40,6 +40,10 @@ jobs:
 
       - name: Build
         run: pnpm build:landing
+        env:
+          PUBLIC_SUPABASE_URL: https://vjdgdolfxvnxushxrmff.supabase.co
+          PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqZGdkb2xmeHZueHVzaHhybWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5MzMyNjMsImV4cCI6MjA5MjUwOTI2M30.4NR4k6sz72AEa_-oFc8vGk_gfZlztNoBtUlDbz4SjA8
+          PUBLIC_SITE_URL: https://firstcrackiscoming.com
 
       - name: Deploy to Cloudflare Pages
         run: npx wrangler pages deploy apps/landing/dist --project-name fc-landing --branch ${{ github.ref_name }}
