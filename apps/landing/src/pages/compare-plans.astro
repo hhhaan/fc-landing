@@ -1,10 +1,8 @@
 ---
 import Favicon from "../components/ui/Favicon.astro";
 import { requireLogin } from "../lib/auth";
-import {
-  isCheckoutPlanReady,
-  resolveBillingMarket,
-} from "../lib/polarPlans";
+import { getMarketPricing, resolveBillingMarket } from "../lib/market";
+import { isCheckoutPlanReady } from "../lib/polarPlans";
 
 const userOrRedirect = await requireLogin(
   Astro,
@@ -15,7 +13,8 @@ const user = userOrRedirect;
 
 const checkoutError = Astro.url.searchParams.get("error") === "checkout_failed";
 const year = new Date().getFullYear();
-const billingMarket = resolveBillingMarket(Astro.request, Astro.cookies);
+const billingMarket = resolveBillingMarket(Astro.request);
+const pricing = getMarketPricing(billingMarket);
 const env = import.meta.env;
 
 const proPlusCheckoutReady =
@@ -116,14 +115,22 @@ const defaultTier = proPlusCheckoutReady ? "pro_plus" : "pro";
                 <p>Core floor ops — roast, inventory, schedule</p>
               </div>
               <div class="ox-price-amt">
+                {
+                  pricing.pro.monthlyAnchor && (
+                    <span class="ox-price-anchor" aria-hidden="true">
+                      <s>{pricing.pro.monthlyAnchor}</s>
+                    </span>
+                  )
+                }
                 <span
                   class="ox-price-num"
-                  data-monthly="$49"
-                  data-yearly="$39">$39</span
+                  data-monthly={pricing.pro.monthly}
+                  data-yearly={pricing.pro.yearlyEffective}
+                  data-yearly-note={pricing.pro.yearlyTotal}>{pricing.pro.yearlyEffective}</span
                 >
                 <span class="ox-price-per">/mo</span>
               </div>
-              <p class="ox-price-note">Billed $468 / year</p>
+              <p class="ox-price-note">{pricing.pro.yearlyTotal}</p>
               <ul>
                 <li>200 batches / billing month</li>
                 <li>Live roast + history + profiles</li>
@@ -158,14 +165,22 @@ const defaultTier = proPlusCheckoutReady ? "pro_plus" : "pro";
                 <p>Unlimited batches + commerce integrations</p>
               </div>
               <div class="ox-price-amt">
+                {
+                  pricing.proPlus.monthlyAnchor && (
+                    <span class="ox-price-anchor" aria-hidden="true">
+                      <s>{pricing.proPlus.monthlyAnchor}</s>
+                    </span>
+                  )
+                }
                 <span
                   class="ox-price-num"
-                  data-monthly="$79"
-                  data-yearly="$63">$63</span
+                  data-monthly={pricing.proPlus.monthly}
+                  data-yearly={pricing.proPlus.yearlyEffective}
+                  data-yearly-note={pricing.proPlus.yearlyTotal}>{pricing.proPlus.yearlyEffective}</span
                 >
                 <span class="ox-price-per">/mo</span>
               </div>
-              <p class="ox-price-note">Billed $756 / year</p>
+              <p class="ox-price-note">{pricing.proPlus.yearlyTotal}</p>
               <ul>
                 <li>Unlimited batches</li>
                 <li>Everything in Pro</li>
@@ -277,12 +292,14 @@ const defaultTier = proPlusCheckoutReady ? "pro_plus" : "pro";
               {defaultTier === "pro_plus" ? "Pro+ · Annual" : "Pro · Annual"}
             </span>
             <span class="ox-cp-sticky-price" id="sticky-price">
-              {defaultTier === "pro_plus" ? "$63/mo" : "$39/mo"}
+              {defaultTier === "pro_plus"
+                ? `${pricing.proPlus.yearlyEffective}/mo`
+                : `${pricing.pro.yearlyEffective}/mo`}
             </span>
             <span class="ox-cp-sticky-note" id="sticky-note">
               {defaultTier === "pro_plus"
-                ? "Billed $756 / year"
-                : "Billed $468 / year"}
+                ? pricing.proPlus.yearlyTotal
+                : pricing.pro.yearlyTotal}
             </span>
           </div>
           <a
@@ -309,7 +326,13 @@ const defaultTier = proPlusCheckoutReady ? "pro_plus" : "pro";
 
     <script
       is:inline
-      define:vars={{ defaultTier }}
+      define:vars={{
+        defaultTier,
+        planYearlyNotes: {
+          pro: pricing.pro.yearlyTotal,
+          pro_plus: pricing.proPlus.yearlyTotal,
+        },
+      }}
     >
       (function () {
         const PLAN_LABELS = { pro: "Pro", pro_plus: "Pro+" };
@@ -317,10 +340,7 @@ const defaultTier = proPlusCheckoutReady ? "pro_plus" : "pro";
           pro: { monthly: "pro-monthly", yearly: "pro-yearly" },
           pro_plus: { monthly: "pro-plus-monthly", yearly: "pro-plus-yearly" },
         };
-        const PLAN_YEARLY_NOTE = {
-          pro: "Billed $468 / year",
-          pro_plus: "Billed $756 / year",
-        };
+        const PLAN_YEARLY_NOTE = planYearlyNotes;
 
         let billingYearly = true;
         let selectedTier = defaultTier;
@@ -345,6 +365,8 @@ const defaultTier = proPlusCheckoutReady ? "pro_plus" : "pro";
                 : num.dataset.monthly || "";
             }
             if (note) note.hidden = !billingYearly;
+            const anchor = card.querySelector(".ox-price-anchor");
+            if (anchor) anchor.hidden = billingYearly;
           });
         }
 
@@ -372,8 +394,12 @@ const defaultTier = proPlusCheckoutReady ? "pro_plus" : "pro";
           }
           if (stickyPrice) stickyPrice.textContent = price + "/mo";
           if (stickyNote) {
+            const yearlyNote =
+              (num && num.dataset.yearlyNote) ||
+              PLAN_YEARLY_NOTE[selectedTier] ||
+              "";
             stickyNote.textContent = billingYearly
-              ? PLAN_YEARLY_NOTE[selectedTier] || ""
+              ? yearlyNote
               : "Billed monthly";
             stickyNote.hidden = false;
           }
@@ -803,6 +829,16 @@ const defaultTier = proPlusCheckoutReady ? "pro_plus" : "pro";
     flex-wrap: wrap;
     align-items: baseline;
     gap: 4px 8px;
+  }
+
+  .ox-price-anchor {
+    font-size: 14px;
+    color: var(--ox-muted);
+    margin-right: 4px;
+  }
+
+  .ox-price-anchor s {
+    text-decoration-thickness: 1px;
   }
 
   .ox-price-num {

@@ -5,7 +5,11 @@ import OxNavAuth from "../components/ui/OxNavAuth.astro";
 import OxNavAuthMobile from "../components/ui/OxNavAuthMobile.astro";
 import OxWorkflowPanel from "../components/ui/OxWorkflowPanel.astro";
 import { getViewer } from "../lib/authState";
+import { getMarketPricing, resolveBillingMarket } from "../lib/market";
 import { resolveTrialCta } from "../lib/trialCta";
+
+const billingMarket = resolveBillingMarket(Astro.request);
+const pricing = getMarketPricing(billingMarket);
 
 const user = await getViewer(Astro);
 const isLoggedIn = !!user;
@@ -31,7 +35,7 @@ const capabilities = [
   {
     n: "04",
     title: "Clear pricing",
-    body: "Pro at $49/mo (200 batches). Pro+ for unlimited + commerce. Enterprise when you need a team and FDE.",
+    body: `Pro at ${pricing.heroProMonthly}/mo (200 batches). Pro+ for unlimited + commerce. Enterprise when you need a team and FDE.`,
   },
 ];
 
@@ -83,9 +87,6 @@ const marqueeItems = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="First Crack — roast profiling and production software for specialty coffee roasteries. Desktop-native. $49/mo Pro." />
     <title>First Crack — Roasting software for specialty coffee</title>
-    <link rel="alternate" hreflang="ko" href="/kr" />
-    <link rel="alternate" hreflang="en-US" href="/us" />
-    <link rel="alternate" hreflang="ja" href="/jp" />
     <link rel="alternate" hreflang="x-default" href="/" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -166,7 +167,7 @@ const marqueeItems = [
             </p>
 
             <div class="ox-hero-trust reveal reveal-d2">
-              <span><strong>$49</strong>/mo Pro</span>
+              <span><strong>{pricing.heroProMonthly}</strong>/mo Pro</span>
               <span>14-day trial</span>
               <span>No credit card</span>
             </div>
@@ -374,10 +375,22 @@ const marqueeItems = [
                 <p>Core floor ops — roast, inventory, schedule</p>
               </div>
               <div class="ox-price-amt">
-                <span class="ox-price-num" id="pro-price" data-monthly="$49" data-yearly="$39">$49</span>
+                {
+                  pricing.pro.monthlyAnchor && (
+                    <span class="ox-price-anchor" aria-hidden="true">
+                      <s>{pricing.pro.monthlyAnchor}</s>
+                    </span>
+                  )
+                }
+                <span
+                  class="ox-price-num"
+                  id="pro-price"
+                  data-monthly={pricing.pro.monthly}
+                  data-yearly={pricing.pro.yearlyEffective}>{pricing.pro.monthly}</span
+                >
                 <span class="ox-price-per" id="pro-period" data-monthly="/mo" data-yearly="/mo">/mo</span>
               </div>
-              <p class="ox-price-note" id="pro-yearly-note" hidden>Billed $468 / year</p>
+              <p class="ox-price-note" id="pro-yearly-note" hidden>{pricing.pro.yearlyTotal}</p>
               <ul>
                 <li>200 batches / billing month</li>
                 <li>Live roast + history + profiles</li>
@@ -398,10 +411,22 @@ const marqueeItems = [
                 <p>Unlimited batches + commerce integrations</p>
               </div>
               <div class="ox-price-amt">
-                <span class="ox-price-num" id="proplus-price" data-monthly="$79" data-yearly="$63">$79</span>
+                {
+                  pricing.proPlus.monthlyAnchor && (
+                    <span class="ox-price-anchor" aria-hidden="true">
+                      <s>{pricing.proPlus.monthlyAnchor}</s>
+                    </span>
+                  )
+                }
+                <span
+                  class="ox-price-num"
+                  id="proplus-price"
+                  data-monthly={pricing.proPlus.monthly}
+                  data-yearly={pricing.proPlus.yearlyEffective}>{pricing.proPlus.monthly}</span
+                >
                 <span class="ox-price-per" id="proplus-period" data-monthly="/mo" data-yearly="/mo">/mo</span>
               </div>
-              <p class="ox-price-note" id="proplus-yearly-note" hidden>Billed $756 / year</p>
+              <p class="ox-price-note" id="proplus-yearly-note" hidden>{pricing.proPlus.yearlyTotal}</p>
               <ul>
                 <li>Unlimited batches</li>
                 <li>Everything in Pro</li>
@@ -445,7 +470,7 @@ const marqueeItems = [
             <h2 class="ox-h2 ox-final-title reveal">
               Ready when the
               <br />
-              green coffee is.
+              green coffee is
             </h2>
             <p class="ox-lead reveal">
               Install First Crack, connect your machine, and put a reference profile under your next batch.
@@ -695,6 +720,8 @@ const marqueeItems = [
               : (per.dataset.monthly ?? "");
           }
           if (note) note.hidden = !isYearly;
+          const anchor = card.querySelector<HTMLElement>(".ox-price-anchor");
+          if (anchor) anchor.hidden = isYearly;
           if (cta) {
             cta.href = isYearly
               ? (cta.dataset.hrefYearly ?? cta.href)
@@ -1888,6 +1915,14 @@ const marqueeItems = [
     flex-wrap: wrap;
     align-items: baseline;
     gap: 4px 8px;
+  }
+  .ox-price-anchor {
+    font-size: 14px;
+    color: var(--ox-muted);
+    margin-right: 4px;
+  }
+  .ox-price-anchor s {
+    text-decoration-thickness: 1px;
   }
   .ox-price-list {
     width: 100%;

@@ -1,5 +1,10 @@
-import type { AstroCookies } from "astro";
 import { POLAR_PRODUCT_IDS, type PolarProductEnvKey } from "./polarProducts";
+import {
+  resolveBillingMarket,
+  type BillingMarket,
+} from "./market";
+
+export { resolveBillingMarket, type BillingMarket };
 
 export const CHECKOUT_PLANS = [
   "pro-monthly",
@@ -13,14 +18,11 @@ export const CHECKOUT_PLANS = [
 ] as const;
 
 export type CheckoutPlan = (typeof CHECKOUT_PLANS)[number];
-export type BillingMarket = "US" | "KR" | "JP";
 
 const LEGACY_PLAN: Record<string, CheckoutPlan> = {
   monthly: "pro-monthly",
   yearly: "pro-yearly",
 };
-
-const MARKET_COOKIE = "fc_market";
 
 export function normalizeCheckoutPlan(raw: string | null | undefined): CheckoutPlan {
   if (raw && LEGACY_PLAN[raw]) return LEGACY_PLAN[raw];
@@ -28,21 +30,6 @@ export function normalizeCheckoutPlan(raw: string | null | undefined): CheckoutP
     return raw as CheckoutPlan;
   }
   return "pro-monthly";
-}
-
-/** Billing market for Polar product routing (SSOT: fc-desktop/docs/pricing/04-geo-pricing.md). */
-export function resolveBillingMarket(
-  request: Request,
-  cookies: AstroCookies,
-): BillingMarket {
-  const query = new URL(request.url).searchParams.get("market")?.toLowerCase();
-  const cookie = cookies.get(MARKET_COOKIE)?.value?.toLowerCase();
-  const country = request.headers.get("CF-IPCountry")?.toUpperCase();
-
-  const raw = query ?? cookie ?? country ?? "US";
-  if (raw === "kr" || raw === "KR") return "KR";
-  if (raw === "jp" || raw === "JP") return "JP";
-  return "US";
 }
 
 type PolarEnv = ImportMetaEnv & Record<string, string | undefined>;

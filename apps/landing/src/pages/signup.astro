@@ -3,21 +3,19 @@ import "../styles/global.css";
 import Favicon from "../components/ui/Favicon.astro";
 import { createClient } from "../lib/supabase";
 import { safeRedirectPath } from "../lib/safeRedirect";
-import { resolveTrialCta } from "../lib/trialCta";
 
 const supabaseServer = createClient({
   request: Astro.request,
   cookies: Astro.cookies,
 });
 
+const next = safeRedirectPath(Astro.url.searchParams.get("next"));
+
 const { data: { user } } = await supabaseServer.auth.getUser();
 
 if (user) {
-  const trialCta = await resolveTrialCta(Astro);
-  return Astro.redirect(trialCta.href);
+  return Astro.redirect(next);
 }
-
-const next = safeRedirectPath(Astro.url.searchParams.get("next"));
 const loginHref =
   next !== "/"
     ? `/login?next=${encodeURIComponent(next)}`

@@ -7,14 +7,16 @@ export type TrialCta = {
   label: string;
 };
 
-/** Primary trial CTA: signup → compare-plans → download by auth + subscription. */
+const DEFAULT_CHECKOUT_HREF = "/start-pro?plan=pro-plus-monthly";
+
+/** Primary trial CTA: Polar checkout via /start-pro, or download when subscribed. */
 export async function resolveTrialCta(context: {
   request: Request;
   cookies: AstroCookies;
   user: User | null;
 }): Promise<TrialCta> {
   if (!context.user) {
-    return { href: "/signup", label: "Start 14-day trial" };
+    return { href: DEFAULT_CHECKOUT_HREF, label: "Start 14-day trial" };
   }
 
   const supabase = createClient({
@@ -35,5 +37,5 @@ export async function resolveTrialCta(context: {
     return { href: "/download", label: "Download app" };
   }
 
-  return { href: "/compare-plans", label: "Start 14-day trial" };
+  return { href: DEFAULT_CHECKOUT_HREF, label: "Start 14-day trial" };
 }

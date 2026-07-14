@@ -12,7 +12,7 @@ if (userOrRedirect instanceof Response) return userOrRedirect;
 const user = userOrRedirect;
 
 const plan = normalizeCheckoutPlan(Astro.url.searchParams.get("plan"));
-const market = resolveBillingMarket(Astro.request, Astro.cookies);
+const market = resolveBillingMarket(Astro.request);
 const productId = polarProductId(plan, market, import.meta.env);
 
 if (!productId) {

@@ -1,5 +1,12 @@
 import type { APIRoute } from 'astro';
 import { createClient } from '@supabase/supabase-js';
+import type { BillingMarket } from '../../../lib/market';
+import {
+  normalizeMarketFromMetadata,
+  normalizePlanFromMetadata,
+  resolvePolarProduct,
+  type PolarPlan,
+} from '../../../lib/polarProductCatalog';
 
 const TIMESTAMP_TOLERANCE_SECONDS = 5 * 60;
 
@@ -36,12 +43,37 @@ async function verifySignature(
   return msgSignature.split(' ').some((s) => s.split(',')[1] === computed);
 }
 
-// service-role 클라이언트 — RLS 우회, 쿠키 없는 서버사이드 전용
 function getSupabase() {
   return createClient(
     import.meta.env.PUBLIC_SUPABASE_URL,
     import.meta.env.SUPABASE_SERVICE_ROLE_KEY
   );
+}
+
+function resolveProfileFromSubscription(
+  data: Record<string, unknown>,
+  meta: Record<string, string> | undefined,
+): { plan: PolarPlan; countryCode: BillingMarket | null } {
+  const productId = data.product_id as string | undefined;
+  const resolved = resolvePolarProduct(productId, import.meta.env);
+
+  const plan =
+    resolved?.plan ??
+    normalizePlanFromMetadata(meta?.plan) ??
+    'pro';
+
+  const countryCode =
+    resolved?.market ??
+    normalizeMarketFromMetadata(meta?.market) ??
+    null;
+
+  if (!resolved && productId) {
+    console.warn(
+      `[Polar webhook] unknown product_id ${productId} — fallback plan=${plan} market=${countryCode ?? 'null'}`,
+    );
+  }
+
+  return { plan, countryCode };
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -71,14 +103,15 @@ export const POST: APIRoute = async ({ request }) => {
 
   try {
     switch (type) {
-      // created fires once on checkout; active fires when a trial converts to paid.
-      // both events mean the subscription is now billable → grant pro access.
       case 'subscription.created':
       case 'subscription.active': {
         if (!userId) {
           console.error(`[Polar webhook] ${type}: user_id missing in metadata`);
           break;
         }
+
+        const { plan, countryCode } = resolveProfileFromSubscription(data, meta);
+        console.log(`[Polar webhook] grant plan=${plan} country_code=${countryCode ?? 'null'}`);
 
         const [subResult, profileResult] = await Promise.all([
           supabase.from('subscriptions').upsert(
@@ -102,7 +135,12 @@ export const POST: APIRoute = async ({ request }) => {
           ),
           supabase
             .from('profiles')
-            .update({ plan: 'pro', polar_customer_id: data.customer_id as string, updated_at: now })
+            .update({
+              plan,
+              country_code: countryCode,
+              polar_customer_id: data.customer_id as string,
+              updated_at: now,
+            })
             .eq('id', userId),
         ]);
 
@@ -112,19 +150,38 @@ export const POST: APIRoute = async ({ request }) => {
       }
 
       case 'subscription.updated': {
-        const { error } = await supabase
+        const productId = data.product_id as string | undefined;
+        const { plan, countryCode } = resolveProfileFromSubscription(data, meta);
+
+        const subUpdate: Record<string, unknown> = {
+          status: data.status as string,
+          cancel_at_period_end: (data.cancel_at_period_end ?? false) as boolean,
+          current_period_start: data.current_period_start as string | null,
+          current_period_end: data.current_period_end as string | null,
+          ends_at: data.ends_at as string | null,
+          updated_at: now,
+        };
+        if (productId) subUpdate.polar_product_id = productId;
+
+        const { error: subError } = await supabase
           .from('subscriptions')
-          .update({
-            status: data.status as string,
-            cancel_at_period_end: (data.cancel_at_period_end ?? false) as boolean,
-            current_period_start: data.current_period_start as string | null,
-            current_period_end: data.current_period_end as string | null,
-            ends_at: data.ends_at as string | null,
-            updated_at: now,
-          })
+          .update(subUpdate)
           .eq('polar_subscription_id', data.id as string);
 
-        if (error) throw new Error(`subscriptions update failed: ${error.message}`);
+        if (subError) throw new Error(`subscriptions update failed: ${subError.message}`);
+
+        if (userId && productId && (data.status === 'active' || data.status === 'trialing')) {
+          const { error: profileError } = await supabase
+            .from('profiles')
+            .update({
+              plan,
+              country_code: countryCode,
+              updated_at: now,
+            })
+            .eq('id', userId);
+
+          if (profileError) throw new Error(`profiles update failed: ${profileError.message}`);
+        }
         break;
       }
 
@@ -145,7 +202,6 @@ export const POST: APIRoute = async ({ request }) => {
       }
 
       case 'subscription.revoked': {
-        // update + select in one round-trip to avoid a separate SELECT for the fallback userId
         const { data: updated, error: subError } = await supabase
           .from('subscriptions')
           .update({ status: 'canceled', canceled_at: now, ends_at: data.ends_at as string | null, updated_at: now })
