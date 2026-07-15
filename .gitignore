@@ -8,6 +8,8 @@ dist/
 .output/
 .vercel/
 .netlify/
+.next/
+out/
 
 # env files
 .env
@@ -37,3 +39,4 @@ scripts/polar-products.out.env
 .omo
 DESIGN.md
 docs/superpowers/*
+apps/admin/.env.local

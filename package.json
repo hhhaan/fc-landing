@@ -5,8 +5,12 @@
     "scripts": {
         "dev:landing": "pnpm --filter @fc/landing dev",
         "dev:docs": "pnpm --filter @fc/docs dev",
+        "dev:cupping": "pnpm --filter @fc/cupping dev",
+        "dev:admin": "pnpm --filter @fc/admin dev",
         "build:landing": "pnpm --filter @fc/landing build",
         "build:docs": "pnpm --filter @fc/docs build",
+        "build:cupping": "pnpm --filter @fc/cupping build",
+        "build:admin": "pnpm --filter @fc/admin build",
         "dev": "pnpm dev:landing & pnpm dev:docs"
     },
     "dependencies": {

@@ -9,15 +9,19 @@ Run from the **monorepo root**:
 ```bash
 pnpm dev:landing        # localhost:4321
 pnpm dev:docs
+pnpm dev:cupping        # localhost:5174 — QR cupping form `/c/:token`
+pnpm dev:admin          # localhost:3000 — ops console (Next.js)
 pnpm build:landing
 pnpm build:docs
+pnpm build:cupping
+pnpm build:admin
 ```
 
 No test runner is configured yet.
 
 ## Architecture (short)
 
-- **Monorepo:** `apps/landing` (marketing + auth), `apps/docs` (Starlight scaffold)
+- **Monorepo:** `apps/landing` (marketing + auth), `apps/docs` (Starlight), `apps/cupping` (QR form), `apps/admin` (ops console, Next.js)
 - **Landing detail:** [`apps/landing/ARCHITECTURE.md`](apps/landing/ARCHITECTURE.md) — routes, shells, CSS strategy, migration status
 - **Stack:** Astro 6, server output, Cloudflare adapter, Tailwind v4 available
 - **Interactivity:** inline `<script>` in `.astro` files by default — no React in the current landing codebase

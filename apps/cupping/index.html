@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>First Crack Cupping</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #fafaf9;
+        --fg: #080503;
+        --muted: #6b635c;
+        --card: #ffffff;
+        --border: #e7e5e4;
+        --primary: #080503;
+        --danger: #b42318;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0c0a09;
+          --fg: #fafaf9;
+          --muted: #a8a29e;
+          --card: #1c1917;
+          --border: #44403c;
+          --primary: #fafaf9;
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Instrument Sans", Inter, system-ui, -apple-system, sans-serif;
+        background: var(--bg);
+        color: var(--fg);
+      }
+      #root { min-height: 100dvh; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

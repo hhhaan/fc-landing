@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #07090b;
+  --sidebar: #0a0d10;
+  --panel: #0e1114;
+  --surface: #151a1f;
+  --border: rgba(255, 255, 255, 0.08);
+  --fg: #e8eaed;
+  --muted: #8b929a;
+  --faint: #5c646e;
+  --accent: #81fba5;
+  --cyan: #44bffc;
+  --warn: #ffff54;
+  --bad: #ff6b6b;
+  --good: #81fba5;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--fg);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums lining-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* dense selection */
+::selection {
+  background: rgba(129, 251, 165, 0.25);
+  color: #fff;
+}
+
+/* maplibre chrome to match dark ops theme */
+.maplibregl-ctrl-group {
+  background: #0e1114 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.maplibregl-ctrl-group button {
+  background-color: #0e1114 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.maplibregl-ctrl-group button + button {
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.maplibregl-ctrl button.maplibregl-ctrl-zoom-in .maplibregl-ctrl-icon,
+.maplibregl-ctrl button.maplibregl-ctrl-zoom-out .maplibregl-ctrl-icon {
+  filter: invert(1) brightness(0.85);
+}
+
+.maplibregl-popup-content {
+  background: #0e1114 !important;
+  color: #e8eaed !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 0 !important;
+  padding: 8px 10px !important;
+  box-shadow: none !important;
+}
+
+.maplibregl-popup-tip {
+  border-top-color: #0e1114 !important;
+}
+
+.maplibregl-ctrl-attrib {
+  background: rgba(10, 13, 16, 0.8) !important;
+  color: #5c646e !important;
+  font-size: 10px !important;
+}
+
+.maplibregl-ctrl-attrib a {
+  color: #8b929a !important;
+}
+
+/* scrollbars */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+}

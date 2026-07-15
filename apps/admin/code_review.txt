@@ -1,0 +1,1712 @@
+[ocr] 48 file(s) changed, reviewing 36 in /Users/hanseungheon/han/first-crack-proj/fc-admin
+[ocr] Skipping README.md — filtered by path/extension rules
+[ocr] Skipping public/file.svg — filtered by path/extension rules
+[ocr] Skipping public/globe.svg — filtered by path/extension rules
+[ocr] Skipping public/next.svg — filtered by path/extension rules
+[ocr] Skipping public/vercel.svg — filtered by path/extension rules
+[ocr] Skipping public/window.svg — filtered by path/extension rules
+[ocr] Skipping .commandcode/taste/taste.md — filtered by path/extension rules
+[ocr] Skipping code_review.txt — filtered by path/extension rules
+[ocr] Skipping docs/superpowers/plans/2026-07-10-admin-dashboard.md — filtered by path/extension rules
+[ocr] Skipping docs/superpowers/specs/2026-07-10-admin-dashboard-design.md — filtered by path/extension rules
+[ocr] Skipping public/ops-check.png — filtered by path/extension rules
+[ocr] Filtered 11 file(s) by include/exclude rules
+[ocr] Skipping plan phase for package.json (9 lines < threshold 50)
+[ocr] Skipping plan phase for app/layout.tsx (10 lines < threshold 50)
+[ocr] Skipping plan phase for app/(dashboard)/billing/page.tsx (8 lines < threshold 50)
+[ocr] Skipping plan phase for app/(dashboard)/layout.tsx (9 lines < threshold 50)
+[ocr]   ▶ file_read file_path=app/globals.css
+[ocr]   ✔ file_read (2ms)
+[ocr]   ▶ file_read file_path=package.json
+[ocr]   ✔ file_read (0s)
+[ocr]   ▶ file_read file_path=components/shell/DashboardShell.tsx
+[ocr]   ✔ file_read (1ms)
+[ocr]   ▶ code_comment "app/layout.tsx"
+[ocr]   ✔ code_comment (0s)
+[ocr]   ▶ file_find query_name=revenue/page.tsx
+[ocr]   ✔ file_find (26ms)
+[ocr]   ▶ code_search search_text=revenue file_patterns=[app/(dashboard)/revenue/page.tsx]
+[ocr]   ✔ code_search (29ms)
+[ocr] Plan completed for package-lock.json
+[ocr] Skipping plan phase for app/api/auth/login/route.ts (29 lines < threshold 50)
+[ocr]   ▶ code_search file_patterns=[package-lock.json] use_perl_regexp=true
+[ocr]   ✔ code_search (30ms)
+[ocr]   ▶ file_read_diff path_array=[package.json package-lock.json]
+[ocr]   ✔ file_read_diff (0s)
+[ocr] Skipping plan phase for app/api/auth/logout/route.ts (12 lines < threshold 50)
+[ocr]   ▶ file_read file_path=lib/auth/session.ts
+[ocr]   ✔ file_read (2ms)
+[ocr]   ▶ file_read file_path=app/api/auth/login/route.ts
+[ocr]   ✔ file_read (1ms)
+[ocr]   ▶ file_read file_path=lib/auth/session.ts
+[ocr]   ✔ file_read (1ms)
+[ocr] Plan completed for app/(dashboard)/map/page.tsx
+[ocr]   ▶ file_read_diff path_array=[lib/data/geo.ts lib/format.ts]
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ file_read_diff path_array=[app/(dashboard)/layout.tsx]
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ file_read_diff path_array=[components/map/WorldMap.tsx]
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ code_search search_text=getSession|requireAuth|getUser
+[ocr]   ✔ code_search (27ms)
+[ocr]   ▶ code_comment "app/api/auth/logout/route.ts"
+[ocr]   ✔ code_comment (2ms)
+[ocr] Plan completed for app/globals.css
+[ocr]   ▶ file_read_diff
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ code_search
+[ocr]   ✔ code_search (31ms)
+[ocr]   ▶ file_find query_name=middleware
+[ocr]   ✔ file_find (22ms)
+[ocr] Plan completed for app/(dashboard)/users/page.tsx
+[ocr]   ▶ file_read_diff path_array=[lib/auth/session.ts]
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ code_search search_text=redirect|notFound|signOut|getSession|getUser
+[ocr]   ✔ code_search (37ms)
+[ocr]   ▶ code_comment "app/api/auth/login/route.ts"
+[ocr]   ✔ code_comment (0s)
+[ocr]   ▶ file_read_diff path_array=[proxy.ts]
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ file_read file_path=middleware.ts start_line=1 end_line=5
+[ocr]   ▶ file_read_diff path_array=[app/(dashboard)/layout.tsx]
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ code_search file_patterns=[lib/auth/session.ts] search_text=getSession|requireAuth|requireUser|requireAdmin
+[ocr]   ✔ code_search (19ms)
+[ocr]   ▶ code_search search_text=export async function getUsers file_patterns=[lib/data/users.ts]
+[ocr]   ✔ code_search (21ms)
+[ocr]   ▶ code_search search_text=export function fmtRel|export const fmtRel file_patterns=[lib/format.ts]
+[ocr]   ✔ code_search (18ms)
+[ocr]   ▶ file_read file_path=components/shell/DashboardShell.tsx
+[ocr]   ✔ file_read (0s)
+[ocr]   ▶ file_read file_path=lib/auth/session.ts
+[ocr]   ✔ file_read (0s)
+[ocr]   ▶ file_read file_path=lib/data/users.ts
+[ocr]   ✔ file_read (0s)
+[ocr]   ▶ file_read file_path=lib/format.ts
+[ocr]   ✔ file_read (0s)
+[ocr] Skipping plan phase for app/error.tsx (32 lines < threshold 50)
+[ocr]   ▶ code_search search_text=#0e1114|#0a0d10|#151a1f|#07090b file_patterns=[app/globals.css]
+[ocr]   ✔ code_search (27ms)
+[ocr]   ▶ code_search search_text=scrollbar-width|scrollbar-color file_patterns=[app/globals.css]
+[ocr]   ✔ code_search (18ms)
+[ocr]   ▶ code_search search_text=--font-sans|--font-mono file_patterns=[app/globals.css]
+[ocr]   ✔ code_search (16ms)
+[ocr]   ▶ file_read file_path=app/globals.css
+[ocr]   ✔ file_read (1ms)
+[ocr] Plan completed for app/(dashboard)/page.tsx
+[ocr]   ▶ file_read_diff
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ code_search search_text=routes file_patterns=[*.ts *.tsx]
+[ocr]   ✔ code_search (34ms)
+[ocr] Review filter removed 1 comment(s) for app/api/auth/login/route.ts
+[ocr]   ▶ file_read file_path=proxy.ts
+[ocr]   ✔ file_read (0s)
+[ocr]   ▶ code_search file_patterns=[*.ts *.tsx middleware.*]
+[ocr]   ✔ code_search (20ms)
+[ocr]   ▶ code_search
+[ocr]   ✔ code_search (21ms)
+[ocr] Plan completed for app/(dashboard)/system/page.tsx
+[ocr]   ▶ file_find query_name=middleware
+[ocr]   ✔ file_find (22ms)
+[ocr]   ▶ code_search search_text=import.*proxy|from.*proxy file_patterns=[*.ts *.tsx]
+[ocr]   ✔ code_search (18ms)
+[ocr]   ▶ file_read_diff
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ code_search use_perl_regexp=true
+[ocr]   ✔ code_search (31ms)
+[ocr] Plan completed for app/(dashboard)/revenue/page.tsx
+[ocr]   ▶ file_read file_path=components/shell/DashboardShell.tsx
+[ocr]   ✔ file_read (0s)
+[ocr]   ▶ code_search search_text=middleware file_patterns=[*.ts *.tsx]
+[ocr]   ✔ code_search (21ms)
+[ocr]   ▶ file_read_diff
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ code_search search_text=pipelineBadge file_patterns=[app/(dashboard)/revenue/page.tsx]
+[ocr]   ✔ code_search (16ms)
+[ocr]   ▶ code_comment "app/(dashboard)/map/page.tsx"
+[ocr]   ✔ code_comment (0s)
+[ocr]   ▶ code_search search_text=isAuthenticated file_patterns=[*.ts *.tsx]
+[ocr]   ✔ code_search (24ms)
+[ocr]   ▶ file_read file_path=app/error.tsx
+[ocr]   ✔ file_read (2ms)
+[ocr]   ▶ code_comment "app/(dashboard)/users/page.tsx"
+[ocr]   ✔ code_comment (0s)
+[ocr]   ▶ code_comment "app/globals.css"
+[ocr]   ✔ code_comment (0s)
+[ocr] Plan completed for app/login/page.tsx
+[ocr]   ▶ file_read_diff path_array=[app/api/auth/login/route.ts lib/auth/session.ts]
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ code_search search_text=next file_patterns=[app/api/auth/login/route.ts lib/auth/session.ts]
+[ocr]   ✔ code_search (39ms)
+[ocr] Plan completed for components/charts/SimpleCharts.tsx
+[ocr]   ▶ code_comment "app/(dashboard)/system/page.tsx"
+[ocr]   ✔ code_comment (0s)
+[ocr]   ▶ file_read_diff path_array=[components/revenue/RevenueCharts.tsx]
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ file_read_diff path_array=[app/globals.css]
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ file_read_diff path_array=[lib/format.ts]
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ code_search search_text=CartesianGrid stroke="rgba(255,255,255,0.06)" file_patterns=[*.tsx]
+[ocr]   ✔ code_search (24ms)
+[ocr]   ▶ code_search file_patterns=[*.tsx *.css] use_perl_regexp=true
+[ocr]   ✔ code_search (15ms)
+[ocr]   ▶ code_search search_text=toFixed\(2\)|\$\"|formatUsd|formatCurrency file_patterns=[*.tsx *.ts] use_perl_regexp=true
+[ocr]   ✔ code_search (16ms)
+[ocr]   ▶ code_comment "app/login/page.tsx"
+[ocr]   ✔ code_comment (0s)
+[ocr]   ▶ code_comment "app/(dashboard)/page.tsx"
+[ocr]   ✔ code_comment (0s)
+[ocr] Skipping plan phase for components/shell/TopBar.tsx (48 lines < threshold 50)
+[ocr] Plan completed for components/map/WorldMap.tsx
+[ocr]   ▶ code_comment "app/(dashboard)/revenue/page.tsx"
+[ocr]   ✔ code_comment (1ms)
+[ocr]   ▶ file_read file_path=lib/data/geo.ts
+[ocr]   ✔ file_read (1ms)
+[ocr]   ▶ code_search search_text=setHTML|innerHTML file_patterns=[*.tsx *.ts]
+[ocr]   ✔ code_search (19ms)
+[ocr]   ▶ code_search search_text=process.env|NEXT_PUBLIC file_patterns=[*.ts *.tsx]
+[ocr]   ✔ code_search (14ms)
+[ocr]   ▶ file_read file_path=components/ui/Panel.tsx
+[ocr]   ✔ file_read (3ms)
+[ocr]   ▶ file_read file_path=lib/format.ts
+[ocr]   ✔ file_read (1ms)
+[ocr] Plan completed for components/shell/DashboardShell.tsx
+[ocr]   ▶ code_search search_text=fc-admin-sidebar-collapsed use_perl_regexp=false
+[ocr]   ✔ code_search (26ms)
+[ocr]   ▶ file_read_diff
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ code_search search_text=setCollapsed|toggle use_perl_regexp=true
+[ocr]   ✔ code_search (18ms)
+[ocr] Plan completed for components/shell/Sidebar.tsx
+[ocr]   ▶ file_read_diff
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ code_search search_text=billing file_patterns=[app/(dashboard)/* components/**]
+[ocr]   ✔ code_search (34ms)
+[ocr]   ▶ code_search search_text=vjdgdolfx|PROD use_perl_regexp=true
+[ocr]   ✔ code_search (24ms)
+[ocr]   ▶ code_comment "components/shell/TopBar.tsx"
+[ocr]   ✔ code_comment (0s)
+[ocr]   ▶ code_comment "components/charts/SimpleCharts.tsx"
+[ocr]   ✔ code_comment (1ms)
+[ocr]   ▶ code_comment "components/shell/DashboardShell.tsx"
+[ocr]   ✔ code_comment (0s)
+[ocr] Plan completed for components/revenue/RevenueCharts.tsx
+[ocr]   ▶ code_search file_patterns=[*.tsx *.ts] use_perl_regexp=true
+[ocr]   ✔ code_search (40ms)
+[ocr]   ▶ file_read_diff path_array=[components/charts/SimpleCharts.tsx]
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ code_search file_patterns=[app/globals.css] use_perl_regexp=true
+[ocr]   ✔ code_search (17ms)
+[ocr]   ▶ file_read file_path=app/(dashboard)/revenue/page.tsx
+[ocr]   ✔ file_read (0s)
+[ocr]   ▶ code_search search_text=free|pro|enterprise|plan file_patterns=[lib/pricing.ts lib/data/users.ts] use_perl_regexp=true
+[ocr]   ✔ code_search (14ms)
+[ocr]   ▶ code_comment "components/map/WorldMap.tsx"
+[ocr]   ✔ code_comment (1ms)
+[ocr]   ▶ code_comment "components/shell/Sidebar.tsx"
+[ocr]   ✔ code_comment (0s)
+[ocr] Plan completed for lib/auth/session.ts
+[ocr] Plan completed for components/ui/Panel.tsx
+[ocr]   ▶ code_search search_text=ADMIN_SESSION_SECRET|ADMIN_PASSWORD use_perl_regexp=true
+[ocr]   ✔ code_search (34ms)
+[ocr]   ▶ file_read_diff
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ code_search use_perl_regexp=false search_text=checkPassword
+[ocr]   ✔ code_search (20ms)
+[ocr]   ▶ code_search search_text=sessionCookieName|isAuthenticated use_perl_regexp=true
+[ocr]   ✔ code_search (20ms)
+[ocr]   ▶ code_search file_patterns=[*.tsx *.ts] use_perl_regexp=true
+[ocr]   ✔ code_search (25ms)
+[ocr]   ▶ code_search search_text=mrrTimeline|signupSeries|planMix|funnel file_patterns=[lib/data/revenue.ts] use_perl_regexp=false
+[ocr]   ✔ code_search (18ms)
+[ocr]   ▶ file_read_diff path_array=[lib/format.ts]
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ file_read file_path=lib/data/revenue.ts
+[ocr]   ✔ file_read (1ms)
+[ocr]   ▶ code_search search_text=tone === "accent" file_patterns=[components/**/*.tsx] use_perl_regexp=false
+[ocr]   ✔ code_search (17ms)
+[ocr]   ▶ code_comment "lib/auth/session.ts"
+[ocr]   ✔ code_comment (1ms)
+[ocr] Review filter removed 1 comment(s) for components/charts/SimpleCharts.tsx
+[ocr] Plan completed for lib/data/billing.ts
+[ocr]   ▶ file_read_diff
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ code_search search_text=admin_user_roster file_patterns=[lib/] case_sensitive=false
+[ocr]   ✔ code_search (23ms)
+[ocr]   ▶ code_search search_text=.limit( file_patterns=[lib/data/] case_sensitive=false
+[ocr]   ✔ code_search (18ms)
+[ocr]   ▶ code_search search_text=canceled|cancelled|revoked file_patterns=[lib/ supabase/] use_perl_regexp=true case_sensitive=false
+[ocr]   ✔ code_search (14ms)
+[ocr]   ▶ code_comment "components/ui/Panel.tsx"
+[ocr]   ✔ code_comment (0s)
+[ocr]   ▶ code_comment "components/revenue/RevenueCharts.tsx"
+[ocr]   ✔ code_comment (0s)
+[ocr] Plan completed for lib/data/geo.ts
+[ocr]   ▶ file_read_diff
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ code_search search_text=process.env|NEXT_PUBLIC_|API_URL|BASE_URL use_perl_regexp=true
+[ocr]   ✔ code_search (36ms)
+[ocr]   ▶ code_search search_text=getGeoData
+[ocr]   ✔ code_search (31ms)
+[ocr]   ▶ code_search search_text=zod|parse|validate|as any file_patterns=[lib/data/*.ts]
+[ocr]   ✔ code_search (15ms)
+[ocr] Review filter removed 1 comment(s) for lib/auth/session.ts
+[ocr] Skipping plan phase for lib/data/users.ts (32 lines < threshold 50)
+[ocr]   ▶ code_search use_perl_regexp=true
+[ocr]   ✔ code_search (25ms)
+[ocr]   ▶ file_read file_path=app/(dashboard)/map/page.tsx
+[ocr]   ✔ file_read (0s)
+[ocr]   ▶ code_search search_text=admin_user_roster use_perl_regexp=true
+[ocr]   ✔ code_search (30ms)
+[ocr]   ▶ file_read file_path=lib/database.types.ts
+[ocr]   ✔ file_read (0s)
+[ocr]   ▶ file_read file_path=lib/database.types.ts start_line=930 end_line=1010
+[ocr]   ✔ file_read (1ms)
+[ocr]   ▶ file_read start_line=25 end_line=75
+[ocr]   ✔ file_read (0s)
+[ocr] Plan completed for lib/data/kpis.ts
+[ocr]   ▶ code_comment "lib/data/billing.ts"
+[ocr]   ✔ code_comment (0s)
+[ocr]   ▶ code_search search_text=lib/data/kpis file_patterns=[*.ts *.tsx :(exclude)lib/data/kpis.ts]
+[ocr]   ✔ code_search (30ms)
+[ocr]   ▶ file_read_diff path_array=[lib/supabase/admin.ts]
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ file_read_diff path_array=[lib/pricing.ts]
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ file_read_diff path_array=[lib/database.types.ts]
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ file_read_diff
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ file_read_diff
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ code_search search_text=admin_user_roster use_perl_regexp=false
+[ocr]   ✔ code_search (23ms)
+[ocr]   ▶ code_search search_text=roast_count|session_count use_perl_regexp=true
+[ocr]   ✔ code_search (24ms)
+[ocr]   ▶ code_search search_text=\* 29 use_perl_regexp=true
+[ocr]   ✔ code_search (18ms)
+[ocr]   ▶ code_comment "lib/data/geo.ts"
+[ocr]   ✔ code_comment (0s)
+[ocr] Plan completed for lib/format.ts
+[ocr] Plan completed for lib/data/revenue.ts
+[ocr] Plan completed for lib/data/system.ts
+[ocr]   ▶ code_search search_text=fmtDate|fmtRel file_patterns=[app/**/*.tsx components/**/*.tsx]
+[ocr]   ✔ code_search (31ms)
+[ocr]   ▶ code_search search_text=fmtPct file_patterns=[app/**/*.tsx components/**/*.tsx lib/**/*.ts]
+[ocr]   ✔ code_search (24ms)
+[ocr]   ▶ code_search search_text=== null|!= null use_perl_regexp=true
+[ocr]   ✔ code_search (20ms)
+[ocr]   ▶ code_search search_text=formatInTimeZone|toZonedTime|timeZone file_patterns=[lib/**/*.ts app/**/*.tsx]
+[ocr]   ✔ code_search (17ms)
+[ocr]   ▶ code_search search_text=admin_user_roster use_perl_regexp=false
+[ocr]   ✔ code_search (27ms)
+[ocr]   ▶ file_read file_path=lib/pricing.ts
+[ocr]   ✔ file_read (0s)
+[ocr]   ▶ file_read file_path=lib/supabase/admin.ts
+[ocr]   ✔ file_read (0s)
+[ocr]   ▶ file_read file_path=lib/database.types.ts
+[ocr]   ✔ file_read (0s)
+[ocr]   ▶ file_read file_path=app/(dashboard)/page.tsx
+[ocr]   ✔ file_read (0s)
+[ocr]   ▶ code_comment "lib/data/users.ts"
+[ocr]   ✔ code_comment (1ms)
+[ocr]   ▶ file_read start_line=29 end_line=73
+[ocr]   ✔ file_read (0s)
+[ocr]   ▶ file_read file_path=lib/database.types.ts start_line=930 end_line=975
+[ocr]   ✔ file_read (0s)
+[ocr]   ▶ file_read file_path=lib/data/billing.ts start_line=90 end_line=115
+[ocr]   ✔ file_read (0s)
+[ocr]   ▶ code_search search_text=\.limit\(1000\) use_perl_regexp=true
+[ocr]   ▶ file_read_diff
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ code_search search_text=\? "\w+" : .*\? file_patterns=[lib/] use_perl_regexp=true
+[ocr]   ✔ code_search (24ms)
+[ocr]   ✔ code_search (16ms)
+[ocr]   ▶ file_read_diff path_array=[lib/data/billing.ts lib/data/users.ts]
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ code_search use_perl_regexp=true search_text=864e5|86400000
+[ocr]   ✔ code_search (20ms)
+[ocr]   ▶ code_search search_text=fmtDate file_patterns=[app/**/*.tsx components/**/*.tsx]
+[ocr]   ✔ code_search (35ms)
+[ocr]   ▶ code_search search_text=fmtRel file_patterns=[app/**/*.tsx components/**/*.tsx]
+[ocr]   ✔ code_search (23ms)
+[ocr]   ▶ code_search search_text=use client file_patterns=[app/(dashboard)/**.tsx components/**/*.tsx]
+[ocr]   ✔ code_search (14ms)
+[ocr] Skipping plan phase for lib/supabase/admin.ts (26 lines < threshold 50)
+[ocr] Plan completed for lib/database.types.ts
+[ocr]   ▶ file_read file_path=components/shell/TopBar.tsx start_line=1 end_line=60
+[ocr]   ✔ file_read (1ms)
+[ocr]   ▶ file_read_diff
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ code_search file_patterns=[lib/supabase/admin.ts] search_text=admin_auth_session_ips|admin_user_roster
+[ocr]   ✔ code_search (24ms)
+[ocr]   ▶ file_read file_path=package.json
+[ocr]   ✔ file_read (0s)
+[ocr]   ▶ code_search use_perl_regexp=true search_text=CREATE TYPE|::[a-z_]+ file_patterns=[supabase/migrations/*.sql]
+[ocr]   ✔ code_search (19ms)
+[ocr] Plan completed for lib/pricing.ts
+[ocr]   ▶ code_search search_text=server-only
+[ocr]   ✔ code_search (32ms)
+[ocr]   ▶ code_search search_text=getAdminClient
+[ocr]   ✔ code_search (24ms)
+[ocr]   ▶ code_search search_text=from "@/lib/data/
+[ocr]   ✔ code_search (27ms)
+[ocr]   ▶ code_search search_text="use client" file_patterns=[app/** components/**]
+[ocr]   ✔ code_search (17ms)
+[ocr]   ▶ code_comment "lib/data/revenue.ts"
+[ocr]   ✔ code_comment (0s)
+[ocr]   ▶ file_read file_path=app/(dashboard)/page.tsx
+[ocr]   ✔ file_read (0s)
+[ocr]   ▶ file_read file_path=app/(dashboard)/layout.tsx
+[ocr]   ✔ file_read (0s)
+[ocr]   ▶ file_read file_path=package.json
+[ocr]   ✔ file_read (1ms)
+[ocr]   ▶ code_search search_text=server-only file_patterns=[lib/** app/** components/**]
+[ocr]   ✔ code_search (36ms)
+[ocr]   ▶ code_comment "lib/data/system.ts"
+[ocr]   ✔ code_comment (0s)
+[ocr] Plan completed for proxy.ts
+[ocr]   ▶ code_comment "lib/format.ts"
+[ocr]   ✔ code_comment (0s)
+[ocr]   ▶ file_find query_name=middleware
+[ocr]   ✔ file_find (36ms)
+[ocr]   ▶ code_search search_text=proxy|middleware use_perl_regexp=true
+[ocr]   ✔ code_search (24ms)
+[ocr]   ▶ code_search search_text=ADMIN_SESSION_SECRET|ADMIN_PASSWORD use_perl_regexp=true
+[ocr]   ✔ code_search (18ms)
+[ocr]   ▶ file_read_diff
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ code_comment "lib/data/kpis.ts"
+[ocr]   ✔ code_comment (0s)
+[ocr] Skipping plan phase for supabase/migrations/20260710010000_restore_service_role_grants.sql (12 lines < threshold 50)
+[ocr]   ▶ code_comment "lib/supabase/admin.ts"
+[ocr]   ▶ file_read_diff
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ code_search search_text=ENABLE ROW LEVEL SECURITY file_patterns=[supabase/migrations/*.sql]
+[ocr]   ✔ code_search (35ms)
+[ocr]   ▶ code_comment "lib/pricing.ts"
+[ocr]   ✔ code_comment (1ms)
+[ocr] Plan completed for supabase/migrations/20260710000000_admin_auth_session_ips.sql
+[ocr]   ▶ code_search file_patterns=[supabase/migrations/*.sql] use_perl_regexp=true search_text=ROW LEVEL SECURITY|CREATE POLICY|FORCE ROW
+[ocr]   ✔ code_search (37ms)
+[ocr]   ▶ code_search file_patterns=[supabase/migrations/*.sql] search_text=GRANT
+[ocr]   ✔ code_search (23ms)
+[ocr]   ✔ code_comment (30.814s)
+[ocr]   ▶ file_find query_name=migrations
+[ocr]   ✔ file_find (34ms)
+[ocr]   ▶ code_search search_text=CREATE TABLE.*(profiles|roast_sessions)|deleted_at use_perl_regexp=true
+[ocr]   ✔ code_search (25ms)
+[ocr]   ▶ file_read_diff
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ code_search search_text=admin_user_roster|admin_auth_session_ips use_perl_regexp=true
+[ocr]   ✔ code_search (19ms)
+[ocr]   ▶ file_find query_name=20260710000000
+[ocr]   ✔ file_find (14ms)
+[ocr]   ▶ code_search search_text=CREATE TABLE file_patterns=[supabase/] use_perl_regexp=true
+[ocr]   ✔ code_search (27ms)
+[ocr]   ▶ code_search search_text=profiles|roast_sessions file_patterns=[supabase/] use_perl_regexp=true
+[ocr]   ✔ code_search (15ms)
+[ocr]   ▶ file_read_diff
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ▶ code_comment "supabase/migrations/20260710010000_restore_service_role_grants.sql"
+[ocr]   ▶ code_search search_text=profiles|roast_sessions|deleted_at file_patterns=[lib/database.types.ts] use_perl_regexp=true
+[ocr]   ✔ code_search (35ms)
+[ocr]   ▶ code_search search_text=isAuthenticated|checkPassword use_perl_regexp=true
+[ocr]   ✔ code_search (28ms)
+[ocr]   ▶ file_find query_name=.sql
+[ocr]   ✔ file_find (14ms)
+[ocr]   ▶ code_search use_perl_regexp=true search_text=deleted_at|auth.users|sessions|ip file_patterns=[lib/database.types.ts]
+[ocr]   ✔ code_search (18ms)
+[ocr]   ▶ code_search search_text=isAuthenticated use_perl_regexp=true
+[ocr]   ✔ code_search (15ms)
+[ocr]   ▶ file_read_diff path_array=[app/(dashboard)/layout.tsx lib/database.types.ts]
+[ocr]   ✔ file_read_diff (0s)
+[ocr]   ✔ code_comment (25.178s)
+[ocr]   ▶ code_comment "proxy.ts"
+[ocr]   ✔ code_comment (0s)
+[ocr]   ▶ code_search search_text=isAuthenticated|middleware|redirect use_perl_regexp=true
+[ocr]   ✔ code_search (30ms)
+[ocr]   ▶ file_find query_name=middleware
+[ocr]   ✔ file_find (18ms)
+[ocr]   ▶ file_read file_path=components/shell/DashboardShell.tsx
+[ocr]   ✔ file_read (0s)
+[ocr]   ▶ file_read file_path=app/(dashboard)/page.tsx
+[ocr]   ✔ file_read (0s)
+[ocr]   ▶ file_read file_path=app/(dashboard)/users/page.tsx
+[ocr]   ✔ file_read (0s)
+[ocr]   ▶ file_read file_path=app/(dashboard)/map/page.tsx
+[ocr]   ✔ file_read (0s)
+[ocr]   ▶ file_read file_path=app/api/auth/login/route.ts
+[ocr]   ✔ file_read (1ms)
+[ocr]   ▶ code_comment "supabase/migrations/20260710000000_admin_auth_session_ips.sql"
+[ocr]   ✔ code_comment (2ms)
+[ocr]   ▶ code_comment "supabase/migrations/20260710000000_admin_auth_session_ips.sql"
+[ocr]   ✔ code_comment (1ms)
+[ocr] Summary: 37 file(s) reviewed, 91 comment(s), ~1923517 token(s) used (input: ~1564421, output: ~359096), cache(read: ~783840, write: ~0), 16m37s elapsed
+
+[2m─── app/layout.tsx:30-30 ───[0m
+[94m[maintainability · low][0m The Tailwind utility classes `bg-[var(--bg)]`, `text-[var(--fg)]`, and
+`antialiased` on the body duplicate styling already defined in globals.css (lines 37-44:
+`background: var(--bg); color: var(--fg); -webkit-font-smoothing: antialiased;`). This creates two
+sources of truth that can drift apart. Consider relying on the global body rule and only keeping the
+`antialiased` class if you specifically need the `-moz-osx-font-smoothing: grayscale` it adds
+(globals.css body only sets `-webkit-font-smoothing`).
+
+
+
+[2m─── app/api/auth/logout/route.ts:6-10 ───[0m
+[91m[security · high][0m When clearing the session cookie, the `secure` and `sameSite` attributes must
+match those used when the cookie was set (see login route: `secure: process.env.NODE_ENV ===
+"production"`, `sameSite: "lax"`). In production the cookie is set with `secure: true` and
+`sameSite: "lax"`; without these attributes here, the browser will not match/delete the secure
+cookie, leaving the session active after logout. Add the matching attributes.
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m   res.cookies.set(sessionCookieName(), "", {[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m     httpOnly: true,[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     sameSite: "lax",[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     secure: process.env.NODE_ENV === "production",[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m     path: "/",[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m     maxAge: 0,[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m   });[0m[0m
+
+
+[2m─── app/api/auth/login/route.ts:20-20 ───[0m
+[91m[security · high][0m Open redirect: `next` is read directly from user-supplied form data and used to
+build a redirect URL without validating that it is a same-origin path. An attacker can supply
+`next=https://evil.com` or `next=//evil.com`, and `new URL(next, request.url)` will resolve to an
+external/absolute URL, causing the server to redirect the user to an attacker-controlled site after
+login (phishing risk). The same unvalidated `next` is also propagated into the `/login` error URL.
+Validate that `next` is a local path (starts with `/` but not `//`) before using it, e.g. `const
+safeNext = next.startsWith('/') && !next.startsWith('//') ? next : '/';`, and use `safeNext` in both
+redirect URLs.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m   const res = NextResponse.redirect(new URL(next || "/", request.url));[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const safeNext =[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     typeof next === "string" && next.startsWith("/") && !next.startsWith("//")[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m       ? next[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m       : "/";[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const res = NextResponse.redirect(new URL(safeNext, request.url));[0m[0m
+
+
+[2m─── app/(dashboard)/map/page.tsx:10-10 ───[0m
+[93m[bug · medium][0m No error handling around the data fetch. `getGeoData()` throws on any Supabase RPC
+error (see lib/data/geo.ts `if (error) throw error;`). Without a try/catch, an upstream failure
+crashes the whole page and falls back to the global error boundary instead of degrading gracefully.
+Consider wrapping in try/catch and rendering a friendly fallback/empty state so a transient geo-API
+or DB failure doesn't take down the entire page.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m +  const data = await getGeoData();[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m +  let data: GeoData;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m +  try {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m +    data = await getGeoData();[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m +  } catch {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m +    return ([0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m +      <main className="flex-1 p-4">[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m +        <p className="font-mono text-[12px] text-[var(--muted)]">[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m +          Unable to load geo data right now.[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m +        </p>[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m +      </main>[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m +    );[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m +  }[0m[0m
+
+
+[2m─── app/(dashboard)/map/page.tsx:68-70 ───[0m
+[91m[security · high][0m This page surfaces sensitive data — raw user IP addresses, session counts, and
+geolocation inferred from auth.sessions — yet neither this page nor its layout
+(`app/(dashboard)/layout.tsx` → `DashboardShell`) performs any authorization check. Access control
+relies entirely on route-level middleware. Because the exposed data is privacy-sensitive (internal
+user IPs + activity), relying solely on middleware registration is fragile (a misconfigured/missing
+middleware would publicly expose this data). Enforce auth within the page or layout (e.g., redirect
+when `!isAuthenticated()`) as a defense-in-depth guard.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m +                    <div className="font-mono text-[11px] text-[var(--cyan)]">[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m +                      {p.ip}[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m +                    </div>[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m import { isAuthenticated } from "@/lib/auth/session";[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m import { redirect } from "next/navigation";[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m [0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m export default async function MapPage() {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   if (!(await isAuthenticated())) redirect("/login");[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const data = await getGeoData();[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   ...[0m[0m
+
+
+[2m─── app/(dashboard)/users/page.tsx:8-9 ───[0m
+[1;91m[security · critical][0m This page renders sensitive PII (emails, display/business names, Polar
+customer IDs) but performs no authentication/authorization check itself, and the route group is not
+protected either. The dashboard layout (`app/(dashboard)/layout.tsx`) only wraps children in the
+client-side `DashboardShell` (sidebar state only), and there is no `middleware.ts` wired up —
+`proxy.ts` (which contains a session `verify()` guard) is currently dead code (not imported
+anywhere). As a result this route is publicly accessible and will leak user PII. Add a server-side
+guard: either call `isAuthenticated()` in the layout/page and redirect (or `notFound()`) when
+unauthenticated, or wire `proxy.ts` as the Next.js middleware so every dashboard request is gated by
+the `fc_admin_session` cookie.
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m export default async function UsersPage() {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   if (!(await isAuthenticated())) {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     redirect("/login");[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   }[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m   const users = await getUsers();[0m[0m
+
+
+[2m─── app/(dashboard)/users/page.tsx:8-9 ───[0m
+[93m[bug · medium][0m The async call `await getUsers()` can throw (the data layer rethrows on a DB/RPC
+error). With no try/catch here, the whole page errors and falls back only to the global `error.tsx`
+boundary, which may surface raw failure details on a critical admin view. Wrap in try/catch and
+render a graceful empty/fallback state with a user-friendly message.
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m export default async function UsersPage() {[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m   const users = await getUsers();[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   let users: AdminUser[] = [];[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   try {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     users = await getUsers();[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   } catch (err) {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     // surface friendly empty state; log server-side only[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     console.error("Failed to load users", err);[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   }[0m[0m
+
+
+[2m─── app/(dashboard)/users/page.tsx:71-71 ───[0m
+[93m[performance · medium][0m The roster renders the entire `users` array (the data layer's
+`admin_user_roster` RPC returns the full table with no limit/pagination). As the user base grows
+this produces very large HTML payloads, slows server rendering, and can degrade browser performance.
+Add server-side pagination or a row limit (e.g., `range(0, 99)` / cursor) and render a paginated or
+virtualized table.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                 {users.map((u) => ([0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m                 {users.slice(0, PAGE_SIZE).map((u) => ([0m[0m
+
+
+[2m─── app/(dashboard)/users/page.tsx:80-82 ───[0m
+[94m[maintainability · low][0m `email` is typed as `string | null` (see `AdminUser`), but unlike
+`display_name`/`business_name` it is rendered without a `|| "—"` fallback. A null email will render
+as an empty cell, inconsistent with the other nullable fields. Add the same fallback for consistent
+presentation.
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m                       <div className="font-mono text-[10px] text-[var(--faint)]">[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                         {u.email}[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m                         {u.email || "—"}[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m                       </div>[0m[0m
+
+
+[2m─── app/globals.css:53-54 ───[0m
+[93m[maintainability · medium][0m The MapLibre overrides hard-code values (#0e1114, rgba(10,13,16,0.8),
+#e8eaed, #5c646e, #8b929a) that duplicate the CSS custom properties already defined in :root
+(--panel, --sidebar, --fg, --faint, --muted). This spreads magic numbers across the stylesheet, so a
+future theme tweak must be applied in many places and risks visual drift. Prefer referencing the
+variables, e.g. `background: var(--panel) !important;` and `color: var(--fg) !important;`.
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m .maplibregl-ctrl-group {[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m   background: #0e1114 !important;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   background: var(--panel) !important;[0m[0m
+
+
+[2m─── app/globals.css:97-98 ───[0m
+[94m[maintainability · low][0m Custom scrollbar styling relies solely on ::-webkit-scrollbar
+pseudo-elements, which only work in WebKit/Blink browsers (Chrome, Safari, Edge). Firefox ignores
+them and renders default scrollbars, causing inconsistent appearance in the dashboard. Add the
+Firefox-standard `scrollbar-width` and `scrollbar-color` properties for cross-browser parity.
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m /* scrollbars */[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m scrollbar-width: thin;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m scrollbar-color: rgba(255, 255, 255, 0.1) transparent;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m [0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m ::-webkit-scrollbar {[0m[0m
+
+
+[2m─── app/globals.css:37-40 ───[0m
+[93m[maintainability · medium][0m The `prefers-color-scheme: dark` media query was removed and the dark
+palette is now applied unconditionally via :root/body. There is no light-mode fallback or user
+toggle. For an 'ops' dashboard this may be intentional, but it is an accessibility/UX regression for
+users who prefer light themes or have OS-level light settings. Confirm this is intended, or provide
+a light variant / theme toggle.
+
+
+
+[2m─── app/(dashboard)/system/page.tsx:124-130 ───[0m
+[94m[maintainability · low][0m Nested ternary is used to map r.status to a Badge tone, which violates the
+code-quality rule against nested ternaries and makes adding new statuses error-prone. Extract a
+small helper (e.g. runStatusToTone(status)) so the mapping is flat and reusable.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                             tone={[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                               r.status === "success" || r.status === "ok"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                                 ? "good"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                                 : r.status === "error"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                                   ? "warn"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                                   : "default"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                             }[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m                             tone={runStatusToTone(r.status)}[0m[0m
+
+
+[2m─── app/(dashboard)/system/page.tsx:69-71 ───[0m
+[94m[style · low][0m Non-strict equality `==` is used for the null check. The checklist prohibits `==`/`!=`
+and requires strict equality (`===`/`!==`). `machineSummary.failRate` is typed `number | null`, so
+`=== null` is sufficient and type-safe.
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m             value={[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m               ms.failRate == null ? "—" : fmtPct(ms.failRate)[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m               ms.failRate === null ? "—" : fmtPct(ms.failRate)[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m             }[0m[0m
+
+
+[2m─── app/(dashboard)/system/page.tsx:73-75 ───[0m
+[94m[style · low][0m Non-strict equality `!=` is used for the null check. Replace with strict `!== null`
+(failRate is typed `number | null`, so `=== null`/`!== null` is the correct, type-safe check).
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m             tone={[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m               ms.failRate != null && ms.failRate > 20 ? "warn" : "default"[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m               ms.failRate !== null && ms.failRate > 20 ? "warn" : "default"[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m             }[0m[0m
+
+
+[2m─── app/login/page.tsx:13-13 ───[0m
+[93m[security · medium][0m The `next` value is taken directly from user-controlled `searchParams` and
+rendered into the hidden form field without validation. Since `app/api/auth/login/route.ts` later
+does `new URL(next, request.url)` to build the post-login redirect, an attacker can craft
+`/login?next=https://evil.com` and redirect the user to an external malicious site after
+authentication (open-redirect). Validate/allowlist `next` here (and enforce the same check in the
+API route) — only accept relative paths that start with a single `/` and are not protocol-relative
+(e.g., reject `//evil.com`).
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m   const next = params.next || "/";[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const rawNext = params.next || "/";[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   // Only allow same-origin relative paths to prevent open-redirect.[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const next = rawNext.startsWith("/") && !rawNext.startsWith("//")[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     ? rawNext[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     : "/";[0m[0m
+
+
+[2m─── app/(dashboard)/page.tsx:14-19 ───[0m
+[93m[maintainability · medium][0m Nested ternary used to compute `cronTone`. The checklist prohibits nested
+ternary expressions. Prefer a flattened helper (if/else or a lookup map) for readability and to make
+the 'idle'/'warn'/'good' state machine explicit. Note also that the JSX below re-evaluates
+`cronTone` via a redundant nested ternary (`cronTone === 'idle' ? 'idle' : cronTone === 'warn' ?
+'warn' : 'good'`) that just returns `cronTone` — since `cronTone` can only be those three values,
+that expression should simply be `tone={cronTone}`.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m   const cronTone =[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m     !ops.inventoryLastStatus[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m       ? "idle"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m       : ops.inventoryFail7d > 0[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m         ? "warn"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m         : "good";[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m function inventoryCronTone(ops: OverviewData["ops"]): "idle" | "warn" | "good" {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   if (!ops.inventoryLastStatus) return "idle";[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   if (ops.inventoryFail7d > 0) return "warn";[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   return "good";[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m }[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m const cronTone = inventoryCronTone(ops);[0m[0m
+
+
+[2m─── app/(dashboard)/page.tsx:80-80 ───[0m
+[94m[maintainability · low][0m Redundant nested ternary: `cronTone` is already one of 'idle' | 'warn' |
+'good', so this expression just returns `cronTone`. Replace with `tone={cronTone}` to remove
+dead/duplicated logic.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m             <StatusDot tone={cronTone === "idle" ? "idle" : cronTone === "warn" ? "warn" : "good"} />[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m             <StatusDot tone={cronTone} />[0m[0m
+
+
+[2m─── app/(dashboard)/page.tsx:100-106 ───[0m
+[93m[maintainability · medium][0m Nested ternary used for the hardware-connect `tone` prop. This violates
+the rule against nested ternary expressions. Extract a small helper (or inline if/else) so the
+'idle'/'warn'/'good' decision is explicit and reusable.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m               tone={[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                 ops.machineLogs === 0[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                   ? "idle"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                   : (ops.machineFailRate ?? 0) > 20[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                     ? "warn"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                     : "good"[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m function machineTone(logs: number, failRate: number | null): "idle" | "warn" | "good" {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   if (logs === 0) return "idle";[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   if ((failRate ?? 0) > 20) return "warn";[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   return "good";[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m               }[0m[0m
+
+
+[2m─── app/(dashboard)/page.tsx:144-147 ───[0m
+[93m[maintainability · medium][0m Business route paths ('/system', '/revenue', '/users', '/map') are
+hardcoded in Link hrefs. The checklist prohibits hardcoding URL paths because they are error-prone
+and brittle when routes change. Consider a centralized route-constants module (e.g., `routes.ts`
+exporting `ROUTES = { system: '/system', revenue: '/revenue', ... }`) and import it. (No existing
+routes constant was found in the codebase.)
+
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m import { ROUTES } from "@/lib/routes";[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m             <Link[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m               href="/system"[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m               href={ROUTES.system}[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m               className="ml-auto shrink-0 font-mono text-[10px] uppercase tracking-wider text-[var(--accent)] hover:underline"[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m             >[0m[0m
+
+
+[2m─── app/(dashboard)/page.tsx:11-12 ───[0m
+[94m[bug · low][0m `getOverviewData()` can throw (it re-throws DB errors such as `profilesRes.error`) and
+there is no `try/catch` here. While Next.js `error.tsx` may catch it, the checklist requires async
+functions to handle errors with user-friendly messaging / graceful degradation. Wrap the fetch (or
+handle the error) so the page can render a friendly fallback instead of bubbling a raw exception.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m   const data = await getOverviewData();[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   let data: OverviewData;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   try {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     data = await getOverviewData();[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   } catch (err) {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     // render a friendly error state / call notFound() or return an error panel[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     throw err; // or surface a user-facing fallback[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   }[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m   const { kpis, ops } = data;[0m[0m
+
+
+[2m─── app/(dashboard)/page.tsx:202-206 ───[0m
+[91m[security · high][0m This server component renders sensitive PII (user emails, display names,
+last_sign_in_at, plan/polar status) with no authentication guard of its own. Verified that
+`app/(dashboard)/layout.tsx` and `DashboardShell` do NOT call `isAuthenticated()`, and there is no
+Next.js middleware protecting the `(dashboard)` route group (`isAuthenticated` is only used in
+`login/page.tsx` to redirect already-auth users). As a result, the dashboard — and the PII it
+exposes — is reachable by unauthenticated requests. Enforce auth at the route-group layout or via
+middleware (e.g., `if (!(await isAuthenticated())) redirect('/login')`) so this page is never served
+without a valid session.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                   {data.recentUsers.map((u) => ([0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                     <tr[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                       key={u.id}[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                       className="border-b border-[var(--border)]/60 last:border-0"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                     >[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m import { redirect } from "next/navigation";[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m import { isAuthenticated } from "@/lib/auth/session";[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m [0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m export default async function OverviewPage() {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   if (!(await isAuthenticated())) redirect("/login");[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const data = await getOverviewData();[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   // ...rest unchanged[0m[0m
+
+
+[2m─── app/(dashboard)/revenue/page.tsx:170-176 ───[0m
+[93m[maintainability · medium][0m Nested ternary expressions are prohibited by the project style guide.
+Extract this mapping into a lookup object (or a small helper) to improve readability and avoid edit
+errors.
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m             subtitle={[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m               source === "subscriptions"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                 ? "Recognized billable run-rate"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                 : source === "profiles_estimate"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                   ? "Flat estimate from paid plans"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                   : "Awaiting billable subscriptions"[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m               {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m                 subscriptions: "Recognized billable run-rate",[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m                 profiles_estimate: "Flat estimate from paid plans",[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m                 empty: "Awaiting billable subscriptions",[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m               }[source][0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m             }[0m[0m
+
+
+[2m─── app/(dashboard)/revenue/page.tsx:427-437 ───[0m
+[93m[maintainability · medium][0m Nested ternary for the Badge `tone` is prohibited by the style guide.
+Replace with a lookup map keyed by status so future status additions don't require editing a chained
+ternary.
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m                           <Badge[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m                             tone={[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                               s.status === "active"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                                 ? "good"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                                 : s.status === "trialing"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                                   ? "accent"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                                   : s.status === "past_due"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                                     ? "warn"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                                     : "default"[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m                               {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m                                 active: "good",[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m                                 trialing: "accent",[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m                                 past_due: "warn",[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m                               }[s.status ?? ""] ?? "default"[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m                             }[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m                           >[0m[0m
+
+
+[2m─── app/(dashboard)/revenue/page.tsx:251-253 ───[0m
+[93m[maintainability · medium][0m Business pricing values are hardcoded here and will silently drift from
+the canonical catalog. `lib/pricing.ts` already defines `PRICE_CATALOG` (Pro $29/mo, $290/yr,
+Enterprise $59/mo, $590/yr). Build this string from that module/derived `data.catalog` values so
+price changes propagate automatically.
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m             <p className="mt-2 font-mono text-[10px] text-[var(--faint)]">[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m               Free · Pro $29/mo · $290/yr · Ent $59/mo · $590/yr[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m               {pricingSummaryLine(data.catalog)}[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m             </p>[0m[0m
+
+
+[2m─── app/(dashboard)/revenue/page.tsx:104-106 ───[0m
+[93m[maintainability · medium][0m The `$29` figure is hardcoded and duplicates the Pro price defined in
+`lib/pricing.ts` (PRICE_CATALOG monthlyUsd for `pro-monthly`). Centralize the value so a price
+change doesn't require hunting UI strings.
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m             <div className="mt-2 font-mono text-[11px] text-[var(--faint)]">[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m               {kpis.incompleteCheckout} Polar→free × Pro $29[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m               {kpis.incompleteCheckout} Polar→free × Pro ${PRO_MONTHLY_USD}[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m             </div>[0m[0m
+
+
+[2m─── app/(dashboard)/revenue/page.tsx:11-11 ───[0m
+[94m[maintainability · low][0m `clsx` is defined in `lib/format.ts` (a date/number formatting module) and
+imported from there by both this page and `Panel.tsx`. This is unconventional and confuses intent.
+Consider relocating it to a dedicated utils module (e.g., `lib/utils` or `lib/cx`) and re-exporting,
+or documenting the re-export.
+
+
+
+[2m─── app/(dashboard)/revenue/page.tsx:23-23 ───[0m
+[94m[style · low][0m `pipelineBadge` returns JSX yet uses a lowercase name, violating React component
+naming conventions (PascalCase). Rename to `PipelineBadge` for consistency and lint compliance (it
+can remain invoked as a function, or be converted to a component).
+
+
+
+[2m─── app/(dashboard)/revenue/page.tsx:31-31 ───[0m
+[94m[maintainability · low][0m `getRevenueData()` is awaited without try/catch. A thrown DB/Supabase error
+will bubble to the global `app/error.tsx` boundary (friendly 'Something failed while loading' +
+Retry), which is acceptable. For more graceful degradation, wrap this in try/catch to render partial
+KPIs or a scoped message instead of a full-page error.
+
+
+
+[2m─── components/shell/TopBar.tsx:17-19 ───[0m
+[94m[maintainability · low][0m The outer wrapper div uses `flex items-center gap-2` but contains only a
+single child (the inner `min-w-0` div). The `items-center` and `gap-2` utilities are no-ops here,
+and the `flex` is unnecessary since the inner div already provides the flex/truncation context.
+Consider simplifying to just `min-w-0` (which is what actually enables the h1 truncation to work
+within the header's flex layout) to reduce redundant nesting.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m       <div className="flex min-w-0 items-center gap-2">[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m [0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m       <div className="min-w-0">[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m         <div className="min-w-0">[0m[0m
+
+
+[2m─── components/shell/TopBar.tsx:25-25 ───[0m
+[94m[maintainability · low][0m The string `/ first-crack` appears to be a hardcoded project/codename. If
+this is an unintended leftover from a template/skeleton, it should be removed or replaced with a
+proper product name. If it is intentional branding, consider hoisting it to a shared constant so it
+can be consistently managed across the app.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m               / first-crack[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m               / {APP_CODENAME}[0m[0m
+
+
+[2m─── components/charts/SimpleCharts.tsx:45-56 ───[0m
+[93m[maintainability · medium][0m The Tooltip `contentStyle`/`labelStyle`/`itemStyle` block is duplicated
+inline here and again in `MrrAreaChart`, and the same configuration already exists as a
+`tooltipStyle` constant in the sibling `components/revenue/RevenueCharts.tsx`. Extract a shared
+tooltip-style constant (e.g. export `tooltipStyle` from a chart-utils module) and reuse it across
+both files to keep tooltip appearance consistent and easy to change. Also consider extracting the
+repeated `XAxis`/`YAxis`/`CartesianGrid` configuration into a small shared component, since
+`RoastBarChart`/`MrrAreaChart`/`SignupBarChart`/`RevenueMrrChart` repeat nearly identical axis
+setups.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m           <Tooltip[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m             contentStyle={{[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m               background: "#0e1114",[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m               border: "1px solid rgba(255,255,255,0.1)",[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m const tooltipStyle = {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   background: "var(--panel)",[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   border: "1px solid var(--border)",[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m               borderRadius: 0,[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m               fontSize: 12,[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m               fontFamily: "var(--font-mono)",[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m             }}[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m             labelStyle={{ color: "#9ca3af" }}[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m             itemStyle={{ color: "#e5e7eb" }}[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m } as const;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m [0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m // ...[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m           <Tooltip[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m             contentStyle={tooltipStyle}[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m             labelStyle={{ color: "var(--muted)" }}[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m             itemStyle={{ color: "var(--fg)" }}[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m             cursor={{ fill: "rgba(129,251,165,0.08)" }}[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m           />[0m[0m
+
+
+[2m─── components/charts/SimpleCharts.tsx:151-154 ───[0m
+[94m[maintainability · low][0m Currency is formatted inline via `$${Number(value ?? 0).toFixed(2)}`, but
+`lib/format.ts` already provides a centralized `fmtUsd` helper. Inlining bypasses the shared
+locale/currency logic and risks diverging from how revenue/billing pages display money. Use
+`fmtUsd(Number(value ?? 0), { digits: 2 })` (the `digits: 2` option matches the current 2-decimal
+output) so formatting stays consistent across the app.
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m             formatter={(value) => [[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m               `$${Number(value ?? 0).toFixed(2)}`,[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m               fmtUsd(Number(value ?? 0), { digits: 2 }),[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m               "MRR",[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m             ]}[0m[0m
+
+
+[2m─── components/shell/DashboardShell.tsx:42-49 ───[0m
+[94m[maintainability · low][0m The localStorage persistence logic (setItem wrapped in try/catch) is
+duplicated in both `setCollapsed` and `toggle`. Consider extracting a small `persist(v: boolean)`
+helper to avoid drift if one branch is updated but the other is not. Note: `setCollapsed` is
+currently exposed via context but never consumed anywhere (only `toggle` is used in Sidebar), so it
+may be removable or should be documented as a future-use API.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m   const setCollapsed = useCallback((v: boolean) => {[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m     setCollapsedState(v);[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const persist = useCallback((v: boolean) => {[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m     try {[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m       localStorage.setItem(STORAGE_KEY, v ? "1" : "0");[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m     } catch {[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m       /* ignore */[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m     }[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m   }, []);[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m [0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const setCollapsed = useCallback((v: boolean) => {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     setCollapsedState(v);[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     persist(v);[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   }, [persist]);[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m [0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const toggle = useCallback(() => {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     setCollapsedState((prev) => {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m       const next = !prev;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m       persist(next);[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m       return next;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     });[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   }, [persist]);[0m[0m
+
+
+[2m─── components/map/WorldMap.tsx:200-206 ───[0m
+[91m[security · high][0m Stored/reflected XSS risk: `setHTML()` interpolates `props.name` and `props.code`
+directly into HTML without escaping. These values originate from the external `ipwho.is` geo-IP API
+(see lib/data/geo.ts:71-73, `country`/`countryCode`), which is untrusted external data and is never
+sanitized. A malicious or compromised geo-IP response (e.g. a country name like `<img src=x
+onerror=alert(document.cookie)>`) would execute arbitrary JavaScript in the authenticated admin
+dashboard, enabling session hijacking or privileged actions. Escape all interpolated values (or use
+`setDOMContent` with `textContent`). `sessions`/`users` are numbers and safe, but `name`/`code` are
+the injection vectors.
+
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m             // Escape untrusted values from the external geo-IP API before injecting into HTML[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m             const esc = (s: unknown) =>[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m               String(s)[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m                 .replace(/&/g, "&amp;")[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m                 .replace(/</g, "&lt;")[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m                 .replace(/>/g, "&gt;")[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m                 .replace(/"/g, "&quot;")[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m                 .replace(/'/g, "&#39;");[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m             .setHTML([0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m               `<div style="font-family:ui-monospace,monospace;font-size:11px;line-height:1.45">[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m                 <strong>${props.name}</strong> (${props.code})<br/>[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m                 <strong>${esc(props.name)}</strong> (${esc(props.code)})<br/>[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m                 sessions: ${props.sessions}<br/>[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m                 users: ${props.users}[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m               </div>`,[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m             )[0m[0m
+
+
+[2m─── components/map/WorldMap.tsx:79-81 ───[0m
+[94m[maintainability · low][0m The basemap raster tile URL is hardcoded directly in the MapLibre style
+object. While acceptable for a static basemap, extracting it to a named constant (or `NEXT_PUBLIC_*`
+env var) improves configurability and makes future provider/branding changes easier. Note: a
+codebase-wide search found no existing `process.env`/`NEXT_PUBLIC` usage, so confirm the project's
+convention before introducing env vars.
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m               tiles: [[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m                 process.env.NEXT_PUBLIC_MAP_TILE_URL ??[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m                 "https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png",[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m               ],[0m[0m
+
+
+[2m─── components/map/WorldMap.tsx:58-58 ───[0m
+[94m[maintainability · low][0m Mutating `dataRef.current` during the render phase is a side effect in the
+component body. This is a widely-used 'latest value' ref pattern and is generally safe here, but
+under React StrictMode double-invocation or concurrent rendering it can be subtle. For clarity and
+to keep render pure, prefer syncing the ref inside a `useEffect` (or `useLayoutEffect`) keyed on
+`[countries, points]`.
+
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   // Sync latest props into the ref via effect instead of during render[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   useEffect(() => {[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m   dataRef.current = { countries, points };[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   }, [countries, points]);[0m[0m
+
+
+[2m─── components/shell/Sidebar.tsx:76-77 ───[0m
+[94m[maintainability · low][0m Active-link detection uses `pathname.startsWith(href)` without a
+path-segment boundary. With the current route set it's safe, but if a route like `/revenue-forecast`
+or `/user` is added it would falsely highlight the parent link. Prefer a boundary check: `pathname
+=== href || pathname.startsWith(href + "/")`.
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m           const active =[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m             href === "/" ? pathname === "/" : pathname.startsWith(href);[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m             href === "/"[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m               ? pathname === "/"[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m               : pathname === href || pathname.startsWith(href + "/");[0m[0m
+
+
+[2m─── components/shell/Sidebar.tsx:109-109 ───[0m
+[94m[maintainability · low][0m The string `PROD · vjdgdolfx` is hardcoded as an environment/deployment
+status label. This is a business/environment-related hardcoded value that (a) won't reflect
+staging/test environments and (b) leaks an internal deployment identifier (`vjdgdolfx`) into the
+client UI. Source the environment name and a deployment/build identifier from config (e.g.,
+`process.env.NEXT_PUBLIC_ENV`, build metadata) instead of hardcoding.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m             PROD · vjdgdolfx[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m             {`${envLabel} · ${deployRef}`}[0m[0m
+
+
+[2m─── lib/auth/session.ts:7-7 ───[0m
+[91m[security · high][0m The secret() fallback to the hardcoded string "dev" is a critical vulnerability.
+If ADMIN_SESSION_SECRET and ADMIN_PASSWORD are both unset (e.g., a misconfigured production deploy),
+session tokens are signed with a publicly known secret. An attacker can replicate signSessionToken()
+and forge a valid admin session, achieving full authentication bypass since isAuthenticated() only
+verifies the HMAC signature. Additionally, using ADMIN_PASSWORD as a fallback HMAC key couples
+session signing to the login password: rotating the password invalidates all sessions and widens
+blast radius if the password is leaked. Prefer throwing when no secret is configured rather than
+silently downgrading to a predictable value.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m   return process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD || "dev";[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const s = process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   if (!s) {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     throw new Error("ADMIN_SESSION_SECRET (or ADMIN_PASSWORD) must be configured");[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   }[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   return s;[0m[0m
+
+
+[2m─── components/ui/Panel.tsx:56-63 ───[0m
+[93m[maintainability · medium][0m This chained ternary maps `tone` to a CSS class string. The project style
+guide prohibits nested/chained ternary expressions, and the same tone→class mapping pattern is
+duplicated in `StatusDot` and `Badge`. Consider extracting a shared lookup map (e.g. `const
+TONE_TEXT: Record<Tone, string> = {...}`) and indexing it with `TONE_TEXT[tone]`, which improves
+readability and keeps tone styling in one place.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m   const valueColor =[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m     tone === "accent"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m       ? "text-[var(--accent)]"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m       : tone === "warn"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m         ? "text-[var(--warn)]"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m         : tone === "good"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m           ? "text-[var(--good)]"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m           : "text-[var(--fg)]";[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const TONE_TEXT: Record<"default" | "accent" | "warn" | "good", string> = {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     default: "text-[var(--fg)]",[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     accent: "text-[var(--accent)]",[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     warn: "text-[var(--warn)]",[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     good: "text-[var(--good)]",[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   };[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const valueColor = TONE_TEXT[tone];[0m[0m
+
+
+[2m─── components/ui/Panel.tsx:90-97 ───[0m
+[93m[maintainability · medium][0m This chained ternary maps `tone` to a CSS class string. It duplicates the
+tone→class mapping pattern used in `KpiCard` and `Badge` and uses a nested ternary, which the
+project style guide discourages. Prefer a local lookup map (e.g. `const TONE_BG: Record<Tone,
+string> = {...}`) indexed by `tone`.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m   const color =[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m     tone === "good"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m       ? "bg-[var(--good)]"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m       : tone === "warn"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m         ? "bg-[var(--warn)]"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m         : tone === "bad"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m           ? "bg-[var(--bad)]"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m           : "bg-[var(--faint)]";[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const TONE_BG: Record<"good" | "warn" | "bad" | "idle", string> = {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     good: "bg-[var(--good)]",[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     warn: "bg-[var(--warn)]",[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     bad: "bg-[var(--bad)]",[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     idle: "bg-[var(--faint)]",[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   };[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const color = TONE_BG[tone];[0m[0m
+
+
+[2m─── components/ui/Panel.tsx:113-120 ───[0m
+[93m[maintainability · medium][0m This chained ternary maps `tone` to a CSS class string. It repeats the
+tone→class mapping pattern from `KpiCard` and `StatusDot` and uses a nested ternary, which the
+project style guide discourages. Use a local lookup map (e.g. `const TONE_BADGE: Record<Tone,
+string> = {...}`) indexed by `tone`.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m   const styles =[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m     tone === "good"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m       ? "border-[var(--good)]/40 text-[var(--good)]"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m       : tone === "warn"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m         ? "border-[var(--warn)]/40 text-[var(--warn)]"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m         : tone === "accent"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m           ? "border-[var(--accent)]/40 text-[var(--accent)]"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m           : "border-[var(--border)] text-[var(--muted)]";[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const TONE_BADGE: Record<"default" | "good" | "warn" | "accent", string> = {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     default: "border-[var(--border)] text-[var(--muted)]",[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     good: "border-[var(--good)]/40 text-[var(--good)]",[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     warn: "border-[var(--warn)]/40 text-[var(--warn)]",[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     accent: "border-[var(--accent)]/40 text-[var(--accent)]",[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   };[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const styles = TONE_BADGE[tone];[0m[0m
+
+
+[2m─── components/revenue/RevenueCharts.tsx:26-32 ───[0m
+[93m[maintainability · medium][0m This file duplicates chart implementations that already exist in
+components/charts/SimpleCharts.tsx (also added in this change). `RevenueMrrChart` overlaps heavily
+with `MrrAreaChart`, `SignupBarChart` overlaps with `RoastBarChart`, and `FunnelVisual` overlaps
+with `FunnelSteps` — they share the same axis/tooltip/grid config and identical data shapes (`{date,
+mrrUsd, label}`, `{date, count}`, and step arrays). Maintaining two near-identical sets risks
+styling/behavior drift across the dashboard. Consider extracting shared primitives (or reusing the
+existing SimpleCharts components and layering the empty-state overlay on top) so there is a single
+canonical chart implementation. Note: `RevenueMrrChart` adds an `empty` overlay and `FunnelVisual`
+shows `rateFromPrev`, so consolidation should preserve those features.
+
+
+
+[2m─── components/revenue/RevenueCharts.tsx:162-167 ───[0m
+[94m[maintainability · low][0m Plan identifiers and their colors are hardcoded in a local Record. The
+`profile.plan` value is free-form (data layer normalizes to lowercase and defaults unknown plans to
+"unknown"), so any new plan silently falls back to the `#A6B0FF` default without warning, producing
+potentially misleading analytics segmentation. Consider deriving the color map from the canonical
+plan list in lib/pricing.ts (e.g., a shared `PLAN_COLORS` keyed by known catalog plans) or at least
+centralizing it so plan/color additions happen in one place.
+
+
+
+[2m─── lib/data/billing.ts:105-105 ───[0m
+[93m[bug · medium][0m rosterRes.error is silently ignored. If the admin_user_roster RPC fails, rosterById
+becomes empty and every SubscriptionRow / polarProfiles entry gets null email, display_name, and
+plan — silently corrupting user attribution on the billing dashboard. This is also inconsistent with
+the two error checks just above (profilesRes/subsRes). Throw on rosterRes.error too for fail-fast,
+or surface a clear error.
+
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   if (rosterRes.error) throw rosterRes.error;[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m   const roster = rosterRes.data ?? [];[0m[0m
+
+
+[2m─── lib/data/billing.ts:96-97 ───[0m
+[93m[bug · medium][0m The subscriptions query is hard-capped at .limit(500), while the sibling
+getRevenueData() uses 1000. Every KPI (mrrUsd, activeSubs, pastDue, canceling, canceled),
+status/interval distributions, and the 90-day mrrTimeline are computed only from these 500 newest
+rows. Once the platform exceeds 500 subscriptions, MRR/ARR and all distributions are silently
+undercounted. Prefer server-side aggregation (e.g. an RPC that returns the aggregates) or paginate
+through all rows with Promise.all over page offsets instead of a fixed limit.
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m       .order("created_at", { ascending: false })[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m       .limit(500),[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m       // Avoid silent undercounting: paginate all rows or aggregate server-side[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m       .limit(1000),[0m[0m
+
+
+[2m─── lib/data/billing.ts:187-187 ───[0m
+[93m[maintainability · medium][0m Magic number 29 duplicates the Pro monthly price that already lives in
+PRICE_CATALOG (pro-monthly monthlyUsd: 29) imported at the top of this file. If pricing changes in
+the catalog, this estimate stays wrong. Derive the value from the catalog instead (e.g.
+PRICE_CATALOG.find(c => c.key === 'pro-monthly')?.monthlyUsd ?? 29).
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m       estimatedFromProfiles = paidProfiles * 29; // assume Pro monthly[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m       const proMonthlyUsd = PRICE_CATALOG.find((c) => c.key === "pro-monthly")?.monthlyUsd ?? 29;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m       estimatedFromProfiles = paidProfiles * proMonthlyUsd;[0m[0m
+
+
+[2m─── lib/data/billing.ts:260-260 ───[0m
+[93m[maintainability · medium][0m catalogProMonthly returns the bare unit price 29, but the JSDoc above it
+claims 'Theoretical MRR if all free→pro monthly converted (not pipeline)'. Either compute the
+intended total (freeProfiles * proMonthlyUsd) or rename the field to proMonthlyUsd so the shape
+matches its meaning. As written, consumers can't tell whether to multiply by freeProfiles
+themselves.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m       catalogProMonthly: 29,[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m       // Matches the doc comment: theoretical MRR if all free profiles convert to Pro monthly[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m       catalogProMonthly: Math.round(freeProfiles * proMonthlyUsd * 100) / 100,[0m[0m
+
+
+[2m─── lib/data/billing.ts:166-166 ───[0m
+[94m[bug · low][0m Mixed 'canceled' (American) / 'cancelled' (British) / 'revoked' spellings guard against
+unknown Polar status strings, but since subscriptions.status is only typed as string (no enum
+anywhere), a real Polar spelling not in this list would still be undercounted. Consider a shared
+constant (like revenue.ts's ['canceled','cancelled','revoked'].includes(st)) and confirm the exact
+status values Polar emits via webhooks/migrations to avoid silent undercounting.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m     if (st === "canceled" || st === "cancelled" || st === "revoked") {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     if (CANCELED_STATUSES.has(st)) {[0m[0m
+
+
+[2m─── lib/data/geo.ts:53-60 ───[0m
+[93m[security · medium][0m The private/special-use IP guard is incomplete. It only checks '10.',
+'192.168.', '127.', and '::1', but the RPC returns `host(s.ip)` from auth.sessions for any IP. This
+omits 172.16.0.0/12, 169.254.x link-local, and IPv6 unique-local (fc00::/7) / link-local
+(fe80::/10). Reserved/internal IPs will be forwarded to the external geo API, causing needless
+external requests, inaccurate geo points, and leakage of internal network info. Consider a shared
+CIDR/range check (or reuse a library) covering all private ranges.
+
+
+
+[2m─── lib/data/geo.ts:63-63 ───[0m
+[93m[maintainability · medium][0m The external geo-API base URL is hardcoded in source. The rest of the
+codebase sources endpoints from env vars (e.g., NEXT_PUBLIC_SUPABASE_URL, POLAR_PRICE_*). Move this
+to an env var / config constant to support staging vs prod and provider swaps, and to comply with
+the no-hardcoded-URL rule.
+
+
+
+[2m─── lib/data/geo.ts:48-48 ───[0m
+[93m[security · medium][0m Session IP addresses are PII (GDPR/privacy regimes) and are transmitted to a
+third-party geo service without apparent anonymization, consent handling, or documented legal basis.
+The map page also surfaces resolved IPs in the UI. Confirm there is a valid legal basis /
+data-processing agreement, or mask/aggregate IPs before sending.
+
+
+
+[2m─── lib/data/geo.ts:68-68 ───[0m
+[93m[style · medium][0m Uses loose equality `== null`. Project rules require strict equality (`===`/`!==`).
+Replace with `data.latitude === null || data.latitude === undefined` (or `data.latitude == null` is
+disallowed by convention).
+
+
+
+[2m─── lib/data/geo.ts:66-66 ───[0m
+[94m[maintainability · low][0m All non-OK responses (including HTTP 429 rate-limit and 5xx) are silently
+treated as 'no geo data' and pushed to `unresolved` with no logging or retry. Under the free tier's
+rate limiting this silently drops data; the map page only shows 'N IP unresolved' with no operator
+visibility. Consider logging the status and/or a bounded retry for 429/5xx.
+
+
+
+[2m─── lib/data/geo.ts:67-67 ───[0m
+[94m[bug · low][0m The external API response is cast to IpWho without runtime schema validation. If the
+upstream changes its response shape, lat/lon could become undefined/NaN and break the aggregation
+average. Consider lightweight runtime validation (e.g., zod) or explicit field checks, consistent
+with hardening other lib/data modules.
+
+
+
+[2m─── lib/data/users.ts:30-30 ───[0m
+[94m[maintainability · low][0m The `roast_count` field is already typed as `number` by the
+`admin_user_roster` RPC return type (see database.types.ts), so the `Number()` conversion is
+redundant. It's harmless but unnecessary, and could silently coerce unexpected values (e.g.
+`Number(null)` → `0`) instead of surfacing a data issue. You can assign `u.roast_count` directly.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m     roast_count: Number(u.roast_count),[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     roast_count: u.roast_count,[0m[0m
+
+
+[2m─── lib/data/revenue.ts:120-121 ───[0m
+[93m[bug · medium][0m The error from the `admin_user_roster` RPC is never inspected, unlike
+`profilesRes.error` and `subsRes.error` which are thrown. On RPC failure the code silently falls
+back to `roster = []`, dropping email/display_name/last_sign_in_at and the roster-derived plan for
+every customer and subscription — producing a silently incorrect dashboard with no thrown error or
+alert. Add a check for `rosterRes.error` (or surface it via an alert).
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m   if (profilesRes.error) throw profilesRes.error;[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m   if (subsRes.error) throw subsRes.error;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   if (rosterRes.error) throw rosterRes.error;[0m[0m
+
+
+[2m─── lib/data/revenue.ts:97-97 ───[0m
+[93m[maintainability · medium][0m Business pricing (29) is hardcoded here even though `PRICE_CATALOG` from
+`@/lib/pricing` already defines the monthly Pro price. This creates a second source of truth for
+pricing. Derive the default from the catalog so a price change doesn't silently diverge.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m const DEFAULT_PRO_MRR = 29;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m const DEFAULT_PRO_MRR =[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   PRICE_CATALOG.find((c) => c.key === "pro-monthly")?.monthlyUsd ?? 29;[0m[0m
+
+
+[2m─── lib/data/revenue.ts:245-247 ───[0m
+[93m[maintainability · medium][0m Plan MRR contribution is recomputed with hardcoded multipliers (29 / 59)
+that duplicate the catalog prices and only cover monthly plans (ignoring the yearly $24/$49
+equivalents). Reference `PRICE_CATALOG` monthlyUsd values instead so estimates stay consistent with
+the real catalog.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m       if (plan === "pro") mrr = count * 29;[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m       else if (plan === "enterprise") mrr = count * 59;[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m       else if (plan !== "free" && plan !== "unknown") mrr = count * 29;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m       const planMonthly = PRICE_CATALOG[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m         .filter((c) => c.name.toLowerCase() === plan)[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m         .reduce((sum, c) => sum + c.monthlyUsd, 0);[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m       mrr = planMonthly / 2 || count * 29; // fallback to monthly plan if needed[0m[0m
+
+
+[2m─── lib/data/revenue.ts:115-116 ───[0m
+[93m[bug · medium][0m An arbitrary `.limit(1000)` is applied with no pagination or overflow warning. If the
+subscriptions table exceeds 1000 rows, MRR, recognized/at-risk MRR, status/interval mixes, and the
+90-day timeline are silently under-counted, corrupting financial KPIs. Consider cursor pagination or
+at least surfacing an alert when `subscriptions.length === 1000`. Note `lib/data/billing.ts` uses a
+different limit (500) — make these consistent.
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m       .order("created_at", { ascending: false })[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m       .limit(1000),[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m       .limit(1000), // TODO: paginate or warn when full[0m[0m
+
+
+[2m─── lib/data/revenue.ts:220-220 ───[0m
+[93m[bug · medium][0m `totalUsers` mixes two data sources (`profiles.length || roster.length`) while every
+other user metric (freeUsers, paidUsers, planMix, signupSeries) is derived solely from `profiles`.
+If `profiles` is empty but `roster` is populated, the denominator becomes non-zero while all
+downstream metrics are 0, yielding invalid percentages and a funnel where 'Total users' > 0 but
+every step is 0. Use one canonical source for user counts.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m   const totalUsers = profiles.length || roster.length;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const totalUsers = profiles.length;[0m[0m
+
+
+[2m─── lib/data/revenue.ts:249-256 ───[0m
+[94m[performance · low][0m When `source === 'subscriptions'`, this nested `for (const p of profiles)` loop
+inside the per-plan map runs once per plan, giving O(plans × profiles) complexity on every request.
+Precompute a per-plan MRR map once before the `.map()` instead of rescanning all profiles for each
+plan.
+
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m       // precompute once: const mrrByPlan = new Map<string, number>(); for each profile add mrrByUser.get(id)[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m       if (source === "subscriptions" && plan !== "free") {[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m         // approximate: sum mrr of users on this plan[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m         mrr = 0;[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m         for (const p of profiles) {[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m           if ((p.plan ?? "unknown") !== plan) continue;[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m           mrr += mrrByUser.get(p.id) ?? 0;[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m         }[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m         mrr = mrrByPlan.get(plan) ?? 0;[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m       }[0m[0m
+
+
+[2m─── lib/data/system.ts:97-100 ───[0m
+[93m[bug · medium][0m Errors from the second Promise.all block are silently swallowed. Unlike sibling
+modules (e.g. lib/data/billing.ts throws on `profilesRes.error`/`subsRes.error`), this code only
+reads `.data ?? []` for runsRes, logsRes, profilesRes, subsRes, and sessionIpsRes. Supabase resolves
+to `{ data, error }` and does NOT reject, so a failed query/RPC yields `data: null` → empty
+arrays/zeros. On a monitoring dashboard this surfaces misleading '0 sessions' / 'no runs' signals
+instead of flagging the failure. At minimum, check `.error` on each result and either throw
+(consistent with billing.ts) or surface it (e.g. include an error flag in SystemData) so health
+checks reflect real failures.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m +  const alertRuns = runsRes.data ?? [];[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m +  const machineLogs = logsRes.data ?? [];[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m +  const profiles = profilesRes.data ?? [];[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m +  const subs = subsRes.data ?? [];[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const alertRuns = runsRes.data ?? [];[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const machineLogs = logsRes.data ?? [];[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const profiles = profilesRes.data ?? [];[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const subs = subsRes.data ?? [];[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   // Surface, don't swallow, subsystem errors on an ops dashboard:[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const subsystemErrors = [runsRes, logsRes, profilesRes, subsRes, sessionIpsRes][0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     .filter((r) => r.error)[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     .map((r) => r.error!.message);[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   if (subsystemErrors.length) throw new Error(subsystemErrors.join('; '));[0m[0m
+
+
+[2m─── lib/data/system.ts:139-145 ───[0m
+[93m[style · medium][0m The `status`/`detail` fields use deeply nested ternary expressions (e.g. the cron
+and hardware entries chain 3-4 `? :` branches). Per the code-quality rule, nested ternary
+expressions are not allowed — they hurt readability and make threshold/status changes error-prone.
+Extract small helper functions (e.g. `computeCronHealth(lastCron, cronFails7d, cronStale)`) that
+return `{ status, detail }`.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m +      status: !lastCron[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m +        ? "idle"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m +        : cronFails7d > 0[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m +          ? "warn"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m +          : cronStale[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m +            ? "warn"[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m +            : "ok",[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m       status: computeCronStatus(lastCron, cronFails7d, cronStale),[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m       detail: computeCronDetail(lastCron, cronFails7d, cronStale),[0m[0m
+
+
+[2m─── lib/data/system.ts:92-93 ───[0m
+[93m[performance · medium][0m profiles and subscriptions are fetched with unbounded `.select()` (no
+`.limit()` and no count-only mode) and then filtered client-side (polarLinked, paidPlans,
+billableSubs, subscriptionRows). As these tables grow this pulls entire tables into memory on every
+admin page load, adding latency and Supabase load. Prefer server-side aggregation: use
+`.select('...', { count: 'exact', head: true })` with filters, or add a reasonable `.limit()` if
+full rows are genuinely needed. Note lib/data/billing.ts caps subscriptions at `.limit(500)` — apply
+the same cap here.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m +      sb.from("profiles").select("id, plan, polar_customer_id"),[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m +      sb.from("subscriptions").select("id, status"),[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m       sb.from("profiles").select("id, plan, polar_customer_id").limit(1000),[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m       sb.from("subscriptions").select("id, status").limit(1000),[0m[0m
+
+
+[2m─── lib/data/system.ts:126-126 ───[0m
+[94m[maintainability · low][0m Business/time thresholds are hardcoded as magic numbers: `7 * 864e5` (cron
+7-day window), `3 * 864e5` (stale threshold), and `0.3` (hardware fail-rate 'bad' threshold).
+`864e5` is a project-wide convention, but the 3-day stale window and 0.3 fail-rate are monitoring
+thresholds that operators will likely tune. Extract them into named constants (e.g. `CRON_STALE_MS =
+3 * 864e5`, `HARDWARE_FAIL_RATE_BAD = 0.3`) with a brief comment so they are easy to find and
+adjust.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m +    Date.now() - new Date(lastCron.started_at).getTime() > 3 * 864e5;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m const CRON_STALE_MS = 3 * 864e5; // treat last run as stale after 3 days[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     Date.now() - new Date(lastCron.started_at).getTime() > CRON_STALE_MS;[0m[0m
+
+
+[2m─── lib/format.ts:36-40 ───[0m
+[93m[bug · medium][0m fmtDate formats in the runtime's LOCAL timezone via date-fns `format()`. This is used
+inside `TopBar` which is a "use client" component, so the value is computed during SSR (server TZ,
+usually UTC) and again during client hydration (browser TZ). If `iso` is a timezone-aware timestamp
+(e.g. from Supabase timestamptz), the rendered string will differ between server and client, causing
+React hydration mismatches (console warnings / flicker). Prefer a timezone-stable approach, e.g.
+format in UTC (`format(parseISO(iso), 'yyyy-MM-dd HH:mm', { timeZone: 'UTC' })`) or use date-fns-tz
+`formatInTimeZone` to pin a display zone. (Note: fmtRel is unaffected because it computes a duration
+from the absolute instant.)
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m   try {[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m     return format(parseISO(iso), "yyyy-MM-dd HH:mm");[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     return format(parseISO(iso), "yyyy-MM-dd HH:mm", { timeZone: "UTC" });[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m   } catch {[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m     return iso;[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m   }[0m[0m
+
+
+[2m─── lib/format.ts:30-31 ───[0m
+[94m[maintainability · low][0m fmtPct simply appends "%" to the raw number with no rounding or grouping,
+unlike fmtNum/fmtUsd which use Intl.NumberFormat. Some callers compensate manually (e.g.
+users/page.tsx rounds before calling), but the helper is inconsistent and can emit noisy long
+decimals (e.g. fmtPct(12.34567) -> "12.34567%"). Consider rounding internally with an optional
+digits param, consistent with fmtUsd.
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m   if (n == null || Number.isNaN(n)) return "—";[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m   return `${n}%`;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const d = opts?.digits ?? 1;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   return `${(Math.round(n * 10 ** d) / 10 ** d).toFixed(d)}%`;[0m[0m
+
+
+[2m─── lib/format.ts:4-5 ───[0m
+[94m[maintainability · low][0m The "en-US" locale is hardcoded across every Intl.NumberFormat call.
+Acceptable for an internal admin dashboard today, but if the app ever needs localized
+number/currency display it would require touching every call site. Consider hoisting a shared locale
+constant (e.g. `const LOCALE = "en-US"`) or reading from a config/i18n module so it can be changed
+in one place.
+
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m const LOCALE = "en-US";[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m [0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m   if (n == null || Number.isNaN(n)) return "—";[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m   return new Intl.NumberFormat("en-US").format(n);[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   return new Intl.NumberFormat(LOCALE).format(n);[0m[0m
+
+
+[2m─── lib/data/kpis.ts:82-83 ───[0m
+[93m[bug · medium][0m Only rosterRes and profilesRes errors are checked. The other 5 results ignore their
+`.error` and silently fall back to `?? []` / `?? 0`. Because Supabase query promises resolve (not
+reject) and carry an `error` field, a failed `subscriptions`/`machine_connection_logs`/etc. query is
+swallowed: MRR becomes 0 (then silently replaced by the `planPaid * 29` estimate) and ops metrics
+under-report with no surfaced error. This mirrors the pattern in lib/data/revenue.ts which does
+check its errors — please check all 7 results for consistency and fail-fast behavior.
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m   if (rosterRes.error) throw rosterRes.error;[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m   if (profilesRes.error) throw profilesRes.error;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   if (subRowsRes.error) throw subRowsRes.error;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   if (subsCountRes.error) throw subsCountRes.error;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   if (alertRunsRes.error) throw alertRunsRes.error;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   if (machineRes.error) throw machineRes.error;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   if (sessionIpsRes.error) throw sessionIpsRes.error;[0m[0m
+
+
+[2m─── lib/data/kpis.ts:104-104 ───[0m
+[93m[bug · medium][0m Hardcoded price `29` duplicates the Pro price that already exists in lib/pricing.ts
+(PRICE_CATALOG) and as `DEFAULT_PRO_MRR` in lib/data/revenue.ts. It also assumes every paid plan is
+Pro — Enterprise ($59) or yearly plans would be mis-estimated, producing incorrect MRR/ARR.
+Centralize the fallback constant and ideally derive per-user plan pricing rather than assuming Pro.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m   if (mrrUsd === 0 && planPaid > 0) mrrUsd = planPaid * 29;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   if (mrrUsd === 0 && planPaid > 0) mrrUsd = planPaid * DEFAULT_PRO_MRR;[0m[0m
+
+
+[2m─── lib/data/kpis.ts:70-73 ───[0m
+[93m[bug · medium][0m inventory_alert_runs is capped at `.limit(30)` while machine_connection_logs is
+capped at 100. `inventoryFail7d` (and the implicit recent-run window) is then derived from these
+limited rows. If the inventory cron runs more than ~30 times within 7 days, the 7-day failure count
+is undercounted and ops health looks healthier than reality. Either raise the limit well beyond a
+7-day window or compute the 7-day failure count with a server-side time filter (e.g.
+`.gte('started_at', since7)`).
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m       .from("inventory_alert_runs")[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m       .select("id, started_at, status, error_message")[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m       .order("started_at", { ascending: false })[0m[0m
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m       .limit(30),[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m       .gte("started_at", since30),[0m[0m
+
+
+[2m─── lib/pricing.ts:85-87 ───[0m
+[93m[maintainability · medium][0m The doc comment for `amountToUsd` claims it detects amounts already in
+dollars ('< 1000 and not integer cents...') and treats them as dollars, but no such logic exists —
+the function unconditionally returns `amount / 100`. The `if (cur !== "usd" && cur !== "usdc")`
+block is empty (dead code) and `cur` only feeds it. Either implement the documented behavior or
+remove the misleading comment and dead branch to avoid masking incorrect unit assumptions downstream
+(e.g., amounts that are actually already in dollars would be over-divided by 100).
+
+
+
+[2m─── lib/pricing.ts:19-21 ───[0m
+[93m[maintainability · medium][0m Hardcoded fallback Polar price UUIDs violate the hardcoding rule for
+business values and create deployment risk: if the env vars are unset in any environment, the app
+silently uses hardcoded IDs of ambiguous (sandbox vs production) origin, potentially pointing to the
+wrong prices/environment with no error or warning. Prefer failing loudly (throw) or logging a clear
+warning when required env vars are missing, and document these as non-production-only defaults if
+they must remain.
+
+
+
+[2m─── lib/pricing.ts:83-83 ───[0m
+[93m[style · medium][0m Loose equality `== null` violates the project's strict equality rule (use
+`===`/`!==`). Replace with an explicit check, e.g. `amount === null || amount === undefined`. Note
+that `Number.isNaN(amount)` already implies `amount` is a number, so the broad `== null` is the only
+place needing tightening here.
+
+
+
+[2m─── lib/pricing.ts:101-102 ───[0m
+[93m[style · medium][0m Loose equality `== null` violates the project's strict equality rule (use
+`===`/`!==`). Since `amountToUsd` returns `null` for all failure cases (null/undefined/NaN), a
+single `usd === null` check suffices here; otherwise use `usd === null || usd === undefined`.
+
+
+
+[2m─── lib/pricing.ts:98-99 ───[0m
+[94m[maintainability · low][0m MRR derivation is inconsistent between known and unknown products. For a
+known catalog product you return the marketed monthly equivalent (`monthlyUsd`, e.g. pro-yearly = 24
+from periodUsd 290), but for an unknown product with a yearly interval you return `usd / 12`
+(≈24.17). This ~$0.17/mo discrepancy can cause billing reconciliation mismatches when a
+subscription's productId isn't in the catalog. Consider deriving MRR from `periodUsd / 12` (or
+consistently using `usd / 12`) so catalog-matched and amount-derived MRR align.
+
+
+
+[2m─── lib/supabase/admin.ts:1-2 ───[0m
+[93m[security · medium][0m This module instantiates a Supabase client with SUPABASE_SERVICE_ROLE_KEY, which
+bypasses Row Level Security. Although the key is not NEXT_PUBLIC_-prefixed (so Next.js won't inline
+it into client bundles), there is no guard preventing this module from being imported into a client
+component. Add `import "server-only";` as the first import so any accidental client-side import
+fails at build time with a clear error instead of silently throwing at runtime. This is the
+recommended Next.js pattern for modules holding privileged server credentials.
+
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m import "server-only";[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m import { createClient, type SupabaseClient } from "@supabase/supabase-js";[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m import type { Database } from "@/lib/database.types";[0m[0m
+
+
+[2m─── supabase/migrations/20260710010000_restore_service_role_grants.sql:12-12 ───[0m
+[1;91m[security · critical][0m Granting SELECT/INSERT/UPDATE/DELETE to `authenticated` on ALL tables in the
+public schema, while NO Row-Level Security policies exist in any migration, means every logged-in
+user can read and modify every row in every table (profiles, billing, system, etc.). This enables
+cross-tenant data access and arbitrary deletion/modification of other users' records. Either enable
+RLS with per-user policies on each exposed table, or drop this broad `authenticated` CRUD grant and
+rely on the already-bypassing `service_role` (used by the admin dashboard) for server-side access.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO authenticated;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m -- Prefer scoping writes to specific client-facing tables, and rely on RLS.[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m -- Example (only if a browser anon/authenticated client truly needs write access):[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m -- GRANT SELECT, INSERT, UPDATE, DELETE ON public.<specific_table> TO authenticated;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m -- And enable RLS + policies on that table.[0m[0m
+
+
+[2m─── supabase/migrations/20260710010000_restore_service_role_grants.sql:4-4 ───[0m
+[91m[security · high][0m `GRANT SELECT ... TO anon` exposes every table to unauthenticated (public)
+readers. Combined with the absence of RLS, anonymous clients can read all data in the schema. If
+public read is genuinely required, enable RLS so policies constrain visibility; otherwise remove
+`anon` from this grant and the corresponding default-privileges clause.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m GRANT SELECT ON ALL TABLES IN SCHEMA public TO anon, authenticated;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m -- If no unauthenticated access is needed:[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m GRANT SELECT ON ALL TABLES IN SCHEMA public TO authenticated;[0m[0m
+
+
+[2m─── supabase/migrations/20260710010000_restore_service_role_grants.sql:12-12 ───[0m
+[93m[maintainability · medium][0m Inconsistent privilege scoping: the DEFAULT PRIVILEGES block grants
+`anon`/`authenticated` only SELECT on FUTURE tables (lines 9-11), but line 12 grants full CRUD to
+`authenticated` on EXISTING tables. This asymmetry suggests line 12 may be an unintended copy/paste
+that over-privileges current tables. Once the intended access model is finalized, align the
+existing-table grants with the default-privilege grants (or vice-versa).
+
+
+
+[2m─── proxy.ts:25-25 ───[0m
+[1;91m[bug · critical][0m This middleware will not be executed by Next.js. Next.js only auto-runs middleware
+defined in a file named `middleware.ts` (or `.js`) at the project root (or inside `src/`), and it
+must be exported as `middleware` (a named export) or as the default export. A file named `proxy.ts`
+with `export function proxy` is never invoked, so none of the authentication/authorization checks
+below run and all dashboard/API routes are effectively unprotected. Rename the file to
+`middleware.ts` and export the handler as `middleware` (or `export default`). Also note that Node's
+`crypto` (`createHmac`/`timingSafeEqual`) is not guaranteed to be available in the Edge runtime
+where middleware runs — verify availability or switch to the Web Crypto API (`crypto.subtle`).
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m export function proxy(request: NextRequest) {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m export function middleware(request: NextRequest) {[0m[0m
+
+
+[2m─── proxy.ts:9-9 ───[0m
+[91m[security · high][0m Hardcoded `"dev"` fallback secret. If `ADMIN_SESSION_SECRET` and `ADMIN_PASSWORD`
+are both unset (e.g., a missing/misconfigured environment), this falls back to a well-known value,
+allowing an attacker to forge a valid `ok.<exp>.<sig>` token and bypass auth entirely. Fail closed
+instead: require an explicit secret at startup or return false/throw when none is configured.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m     process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD || "dev";[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   const secret = process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   if (!secret) throw new Error("ADMIN_SESSION_SECRET or ADMIN_PASSWORD must be set");[0m[0m
+
+
+[2m─── proxy.ts:6-6 ───[0m
+[93m[maintainability · medium][0m This `verify` function duplicates `verifySessionToken` (and the `COOKIE`
+constant duplicates `sessionCookieName`) already defined in `lib/auth/session.ts`. Duplicating HMAC
+verification logic risks the two implementations drifting apart (e.g., different secret fallback).
+Import and reuse `verifySessionToken` and `sessionCookieName` from `@/lib/auth/session`.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m function verify(token: string | undefined): boolean {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m import { verifySessionToken, sessionCookieName } from "@/lib/auth/session";[0m[0m
+
+
+[2m─── proxy.ts:38-43 ───[0m
+[93m[bug · medium][0m Unauthenticated requests to protected API routes (any `/api/*` except `/api/auth`)
+are answered with a 307 redirect to `/login`. API clients expecting JSON will receive an HTML
+redirect instead of a proper 401/403, breaking programmatic access and leaking login-redirect
+behavior. Return a JSON 401/403 for requests under `/api`.
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m   if (!verify(token)) {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     if (pathname.startsWith("/api")) {[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m       return NextResponse.json({ error: "unauthorized" }, { status: 401 });[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m     }[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m     const url = request.nextUrl.clone();[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m     url.pathname = "/login";[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m     url.searchParams.set("next", pathname);[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m     return NextResponse.redirect(url);[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m   }[0m[0m
+
+
+[2m─── proxy.ts:28-33 ───[0m
+[94m[maintainability · low][0m Route prefixes (`/login`, `/api/auth`, `/_next`, `/favicon.ico`) and the
+cookie name are hardcoded and duplicated across modules. Centralize these as named constants (e.g.,
+reuse `sessionCookieName()` from `lib/auth/session`) to avoid drift if routes or the cookie name
+change.
+
+
+
+[2m─── supabase/migrations/20260710000000_admin_auth_session_ips.sql:20-20 ───[0m
+[93m[bug · medium][0m Result ordering is not guaranteed: the aggregated IP rows have no ORDER BY clause.
+The geo consumer (`lib/data/geo.ts`) renders `points` and `unresolved` in the returned order, so
+output is nondeterministic — this produces flaky tests and inconsistent map/point ordering across
+runs. Add an explicit ORDER BY to make results stable.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m   GROUP BY host(s.ip);[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   GROUP BY host(s.ip)[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   ORDER BY session_count DESC, last_seen DESC;[0m[0m
+
+
+[2m─── supabase/migrations/20260710000000_admin_auth_session_ips.sql:64-64 ───[0m
+[91m[bug · high][0m This depends on `auth.users.deleted_at`, a column owned by Supabase's `auth` schema
+(NOT created by any project migration). If the target Supabase project/version lacks this
+soft-delete column, the migration fails at deploy time. Confirm the column actually exists in the
+target environment's `auth.users` before relying on it (older instances may not have it).
+
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   -- Verify auth.users.deleted_at exists in the target Supabase version before deploy.[0m[0m
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m   WHERE u.deleted_at IS NULL[0m[0m
+
+
+[2m─── supabase/migrations/20260710000000_admin_auth_session_ips.sql:14-14 ───[0m
+[93m[performance · medium][0m `GROUP BY host(s.ip)` over the entire `auth.sessions` table forces a full
+sequential scan with no index support — the expression `host(s.ip)` is not indexable as written. On
+a large sessions table this is an expensive dashboard query run on every map load. Consider bounding
+the scan (e.g. only recent sessions) or a materialized/partial approach.
+
+[2m[48;2;38;38;38m [0m[48;2;38;38;38m     host(s.ip)::text AS ip,[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m   -- consider: WHERE s.ip IS NOT NULL AND s.updated_at > now() - interval '90 days'[0m[0m
+
+
+[2m─── supabase/migrations/20260710000000_admin_auth_session_ips.sql:72-72 ───[0m
+[94m[maintainability · low][0m No down-migration is provided for the two `CREATE OR REPLACE FUNCTION`
+statements. If this change needs to be reverted (or on fresh clones where re-running is fine but
+environments diverge), there is no `DROP FUNCTION` counterpart, leaving orphaned functions/grants.
+Consider adding a sibling down file or documenting reversion.
+
+[91m[48;2;70;0;0m-[0m[48;2;70;0;0m GRANT EXECUTE ON FUNCTION public.admin_user_roster() TO service_role;[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m -- Down migration (e.g. supabase/migrations/..._down.sql):[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m -- DROP FUNCTION IF EXISTS public.admin_auth_session_ips();[0m[0m
+[92m[48;2;0;60;0m+[0m[48;2;0;60;0m -- DROP FUNCTION IF EXISTS public.admin_user_roster();[0m[0m
+
