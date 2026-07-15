@@ -11,6 +11,7 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   Server,
+  Ticket,
   Users,
 } from "lucide-react";
 import { clsx } from "@/shared/lib/format";
@@ -20,6 +21,7 @@ const NAV = [
   { href: "/", label: "Overview", icon: LayoutDashboard },
   { href: "/revenue", label: "Revenue", icon: DollarSign },
   { href: "/users", label: "Users", icon: Users },
+  { href: "/coupons", label: "Coupons", icon: Ticket },
   { href: "/activity", label: "Activity", icon: Activity },
   { href: "/map", label: "Map", icon: Globe2 },
   { href: "/system", label: "Service Ops", icon: Server },

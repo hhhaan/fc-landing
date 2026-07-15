@@ -308,6 +308,75 @@ export type Database = {
         }
         Relationships: []
       }
+      polar_coupons: {
+        Row: {
+          amount_cents: number | null
+          basis_points: number | null
+          batch_id: string | null
+          code: string
+          created_at: string
+          currency: string | null
+          disabled_at: string | null
+          duration: string
+          duration_in_months: number | null
+          id: string
+          issued_at: string | null
+          max_redemptions: number
+          name: string
+          note: string | null
+          polar_discount_id: string
+          redeemed_at: string | null
+          redemptions_count: number
+          status: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          amount_cents?: number | null
+          basis_points?: number | null
+          batch_id?: string | null
+          code: string
+          created_at?: string
+          currency?: string | null
+          disabled_at?: string | null
+          duration: string
+          duration_in_months?: number | null
+          id?: string
+          issued_at?: string | null
+          max_redemptions?: number
+          name: string
+          note?: string | null
+          polar_discount_id: string
+          redeemed_at?: string | null
+          redemptions_count?: number
+          status?: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          amount_cents?: number | null
+          basis_points?: number | null
+          batch_id?: string | null
+          code?: string
+          created_at?: string
+          currency?: string | null
+          disabled_at?: string | null
+          duration?: string
+          duration_in_months?: number | null
+          id?: string
+          issued_at?: string | null
+          max_redemptions?: number
+          name?: string
+          note?: string | null
+          polar_discount_id?: string
+          redeemed_at?: string | null
+          redemptions_count?: number
+          status?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
