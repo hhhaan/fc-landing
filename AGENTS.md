@@ -15,13 +15,25 @@ pnpm build:landing
 pnpm build:docs
 pnpm build:cupping
 pnpm build:admin
+pnpm check              # Biome lint/format
+pnpm check:fix         # Biome auto-fix
 ```
 
-No test runner is configured yet.
+Husky pre-commit runs Biome via lint-staged. CI/CD: see [`docs/ci-cd.md`](docs/ci-cd.md).
 
 ## Architecture (short)
 
 - **Monorepo:** `apps/landing` (marketing + auth), `apps/docs` (Starlight), `apps/cupping` (QR form), `apps/admin` (ops console, Next.js)
+
+**Per-app agent docs** — read the app's doc before working inside it:
+
+| App | Doc |
+|-----|-----|
+| `apps/landing` | [`ARCHITECTURE.md`](apps/landing/ARCHITECTURE.md) + [`DESIGN_RULES.md`](apps/landing/DESIGN_RULES.md) |
+| `apps/admin` | [`AGENTS.md`](apps/admin/AGENTS.md) |
+| `apps/cupping` | [`AGENTS.md`](apps/cupping/AGENTS.md) |
+| `apps/docs` | [`AGENTS.md`](apps/docs/AGENTS.md) |
+
 - **Landing detail:** [`apps/landing/ARCHITECTURE.md`](apps/landing/ARCHITECTURE.md) — routes, shells, CSS strategy, migration status
 - **Stack:** Astro 6, server output, Cloudflare adapter, Tailwind v4 available
 - **Interactivity:** inline `<script>` in `.astro` files by default — no React in the current landing codebase
