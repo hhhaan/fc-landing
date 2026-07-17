@@ -403,13 +403,23 @@ starlight-menu-button button {
 .right-group starlight-lang-select label {
     --sl-label-icon-size: 0.875rem;
     --sl-caret-size: 1rem;
-    --sl-inline-padding: 0.5rem;
+    --sl-inline-padding: 0.75rem;
     height: 32px;
+    padding-inline: 0.75rem;
     border-radius: 0;
     border: 1px solid var(--ox-border-strong);
     background: var(--ox-card);
     color: var(--ox-fg);
     gap: 0;
+    box-sizing: border-box;
+}
+
+.right-group starlight-lang-select .label-icon {
+    inset-inline-start: 0.75rem;
+}
+
+.right-group starlight-lang-select .caret {
+    inset-inline-end: 0.75rem;
 }
 
 .right-group starlight-lang-select select {
@@ -422,9 +432,8 @@ starlight-menu-button button {
     height: 100%;
     margin-inline: 0;
     padding-block: 0;
-    padding-inline: calc(var(--sl-label-icon-size) + var(--sl-inline-padding) + 0.15rem)
-        calc(var(--sl-caret-size) + var(--sl-inline-padding) + 0.15rem);
-    width: calc(var(--sl-select-width, 7em) + var(--sl-label-icon-size) + var(--sl-caret-size) + 1rem);
+    padding-inline: calc(var(--sl-label-icon-size) + 0.35rem) calc(var(--sl-caret-size) + 0.35rem);
+    width: calc(var(--sl-select-width, 7em) + var(--sl-label-icon-size) + var(--sl-caret-size) + 0.7rem);
     min-width: 8.5rem;
 }
 
