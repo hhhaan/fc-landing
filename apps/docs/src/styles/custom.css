@@ -194,13 +194,13 @@ body::before {
     line-height: 1.75;
 }
 
-.sl-markdown-content a {
+.sl-markdown-content a:not(.ox-btn) {
     color: var(--ox-fg);
     text-decoration: underline;
     text-underline-offset: 3px;
 }
 
-.sl-markdown-content a:hover {
+.sl-markdown-content a:not(.ox-btn):hover {
     opacity: 0.75;
 }
 
@@ -451,7 +451,8 @@ starlight-menu-button button {
 }
 
 /* ── Shared ox utilities ──────────────────────────────────────── */
-.ox-btn {
+.ox-btn,
+a.ox-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -469,31 +470,48 @@ starlight-menu-button button {
     white-space: nowrap;
 }
 
-.ox-btn-sm {
+.ox-btn-sm,
+a.ox-btn-sm {
     height: 32px;
     padding: 0 18px;
     font-size: 13px;
 }
 
-.ox-btn-solid {
+/* Solid = black bg + white text (beat .sl-markdown-content a / Starlight link rules) */
+.ox-btn-solid,
+a.ox-btn-solid,
+.sl-markdown-content a.ox-btn-solid {
     background: var(--ox-fg);
     color: #fff;
     border-color: var(--ox-fg);
+    text-decoration: none;
 }
 
-.ox-btn-solid:hover {
+.ox-btn-solid:hover,
+a.ox-btn-solid:hover,
+.sl-markdown-content a.ox-btn-solid:hover {
     opacity: 0.9;
+    color: #fff;
+    text-decoration: none;
 }
 
-.ox-btn-outline {
+.ox-btn-outline,
+a.ox-btn-outline,
+.sl-markdown-content a.ox-btn-outline {
     background: transparent;
     color: var(--ox-fg);
     border-color: var(--ox-border-strong);
+    text-decoration: none;
 }
 
-.ox-btn-outline:hover {
+.ox-btn-outline:hover,
+a.ox-btn-outline:hover,
+.sl-markdown-content a.ox-btn-outline:hover {
     background: rgba(8, 5, 3, 0.03);
     border-color: rgba(8, 5, 3, 0.28);
+    color: var(--ox-fg);
+    text-decoration: none;
+    opacity: 1;
 }
 
 .ox-eyebrow {
