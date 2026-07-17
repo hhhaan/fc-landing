@@ -399,22 +399,46 @@ starlight-menu-button button {
     background: var(--ox-card);
 }
 
-/* Language select (i18n) */
-.right-group starlight-select,
-.right-group .sl-select {
-    min-width: 0;
+/* Language select (i18n) — style the label shell; keep select transparent for icons */
+.right-group starlight-lang-select label {
+    --sl-label-icon-size: 0.875rem;
+    --sl-caret-size: 1rem;
+    --sl-inline-padding: 0.5rem;
+    height: 32px;
+    border-radius: 0;
+    border: 1px solid var(--ox-border-strong);
+    background: var(--ox-card);
+    color: var(--ox-fg);
+    gap: 0;
 }
 
-.right-group select,
-starlight-select select {
+.right-group starlight-lang-select select {
+    border: 0 !important;
     border-radius: 0 !important;
-    border: 1px solid var(--ox-border-strong) !important;
-    background: var(--ox-card) !important;
+    background: transparent !important;
     color: var(--ox-fg) !important;
     font-family: var(--ox-mono);
     font-size: 12px;
-    height: 32px;
-    padding: 0 28px 0 10px;
+    height: 100%;
+    margin-inline: 0;
+    padding-block: 0;
+    padding-inline: calc(var(--sl-label-icon-size) + var(--sl-inline-padding) + 0.15rem)
+        calc(var(--sl-caret-size) + var(--sl-inline-padding) + 0.15rem);
+    width: calc(var(--sl-select-width, 7em) + var(--sl-label-icon-size) + var(--sl-caret-size) + 1rem);
+    min-width: 8.5rem;
+}
+
+.right-group starlight-lang-select .icon {
+    color: var(--ox-muted);
+}
+
+.right-group starlight-lang-select label:hover {
+    color: var(--ox-fg);
+    border-color: var(--ox-fg);
+}
+
+.right-group starlight-lang-select label:hover .icon {
+    color: var(--ox-fg);
 }
 
 /* ── Shared ox utilities ──────────────────────────────────────── */
