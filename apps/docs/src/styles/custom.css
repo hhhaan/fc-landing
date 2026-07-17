@@ -14,10 +14,12 @@
     --sl-color-gray-2: #3d3530;
     --sl-color-gray-3: var(--ox-muted);
     --sl-color-gray-4: #7a6f65;
-    --sl-color-gray-5: rgba(8, 5, 3, 0.18);
-    --sl-color-gray-6: var(--ox-border);
+    /* solid surfaces — do not map to --ox-border (transparent); dialog/kbd use gray-6 */
+    --sl-color-gray-5: var(--ox-border-strong);
+    --sl-color-gray-6: var(--ox-muted-bg);
     --sl-color-gray-7: var(--ox-muted-bg);
     --sl-color-black: var(--ox-bg);
+    --sl-color-backdrop-overlay: rgba(8, 5, 3, 0.4);
 
     --sl-color-accent: var(--ox-fg);
     --sl-color-accent-low: var(--ox-muted-bg);
@@ -311,13 +313,73 @@ body::before {
 }
 
 /* ── Search & pagination ──────────────────────────────────────── */
-site-search button {
+site-search button[data-open-modal] {
     border-radius: 0;
     border: 1px solid var(--ox-border-strong);
     background: var(--ox-card);
     font-family: var(--ox-mono);
     font-size: 12px;
     min-width: 8rem;
+}
+
+/* Search modal — ox: solid surface, sharp corners (gray-6 must stay solid) */
+site-search dialog {
+    border-radius: 0 !important;
+    background-color: var(--ox-card) !important;
+    border: 1px solid var(--ox-border-strong) !important;
+    box-shadow: none !important;
+}
+
+site-search dialog::backdrop {
+    background-color: rgba(8, 5, 3, 0.4);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+}
+
+#starlight__search {
+    --pagefind-ui-primary: var(--ox-fg);
+    --pagefind-ui-text: var(--ox-muted);
+    --pagefind-ui-background: var(--ox-card);
+    --pagefind-ui-border: var(--ox-border-strong);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 0;
+    --pagefind-ui-tag: var(--ox-muted-bg);
+    --pagefind-ui-font: var(--ox-sans);
+}
+
+#starlight__search .pagefind-ui__search-input {
+    border-radius: 0 !important;
+    font-family: var(--ox-sans);
+    font-weight: 500;
+}
+
+#starlight__search .pagefind-ui__result-title:not(:where(.pagefind-ui__result-nested *)),
+#starlight__search .pagefind-ui__result-nested {
+    border-radius: 0 !important;
+    border: 1px solid var(--ox-border);
+    background-color: var(--ox-bg) !important;
+}
+
+#starlight__search .pagefind-ui__result-title:not(:where(.pagefind-ui__result-nested *)):hover,
+#starlight__search .pagefind-ui__result-title:not(:where(.pagefind-ui__result-nested *)):focus-within,
+#starlight__search .pagefind-ui__result-nested:hover,
+#starlight__search .pagefind-ui__result-nested:focus-within {
+    outline: 1px solid var(--ox-fg) !important;
+    background-color: var(--ox-muted-bg) !important;
+}
+
+#starlight__search .pagefind-ui__message {
+    font-family: var(--ox-mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ox-muted);
+    font-weight: 500;
+}
+
+#starlight__search mark {
+    color: var(--ox-fg);
+    font-weight: 600;
 }
 
 .pagination-links a {
