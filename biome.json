@@ -1,0 +1,91 @@
+{
+    "$schema": "https://biomejs.dev/schemas/2.5.0/schema.json",
+    "assist": {
+        "actions": {
+            "source": {
+                "organizeImports": "on"
+            }
+        }
+    },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "recommended": true,
+            "a11y": {
+                "useButtonType": "off",
+                "noLabelWithoutControl": "off",
+                "noStaticElementInteractions": "off",
+                "useKeyWithClickEvents": "off",
+                "noSvgWithoutTitle": "off",
+                "useSemanticElements": "off",
+                "noAutofocus": "off"
+            },
+            "correctness": {
+                "noUnusedVariables": "error",
+                "noUnusedImports": "error",
+                "useExhaustiveDependencies": "warn"
+            },
+            "complexity": {
+                "noForEach": "off",
+                "useLiteralKeys": "error",
+                "noImportantStyles": "off"
+            },
+            "style": {
+                "noDefaultExport": "off",
+                "useConst": "error",
+                "useTemplate": "warn",
+                "useImportType": "error",
+                "noNonNullAssertion": "warn"
+            },
+            "suspicious": {
+                "noConsole": "off",
+                "noDoubleEquals": "error",
+                "noExplicitAny": "warn",
+                "noArrayIndexKey": "off",
+                "noGlobalIsNan": "warn"
+            }
+        }
+    },
+    "formatter": {
+        "enabled": true,
+        "indentStyle": "space",
+        "indentWidth": 4,
+        "lineWidth": 120,
+        "lineEnding": "lf"
+    },
+    "javascript": {
+        "formatter": {
+            "quoteStyle": "single",
+            "semicolons": "always",
+            "trailingCommas": "all",
+            "arrowParentheses": "always"
+        }
+    },
+    "json": {
+        "formatter": {
+            "trailingCommas": "none"
+        }
+    },
+    "css": {
+        "parser": {
+            "tailwindDirectives": true
+        },
+        "formatter": {
+            "enabled": true
+        }
+    },
+    "files": {
+        "includes": [
+            "**",
+            "!**/node_modules",
+            "!**/dist",
+            "!**/.next",
+            "!**/.astro",
+            "!**/.vercel",
+            "!**/.wrangler",
+            "!**/coverage",
+            "!**/pnpm-lock.yaml",
+            "!**/package-lock.json"
+        ]
+    }
+}

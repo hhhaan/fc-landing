@@ -1,12 +1,13 @@
 ---
 title: First Crack 사용 가이드
-description: 설치, 로스팅 머신 연동, 요금제·환불 — First Crack 문서
+description: 설치, 로스팅 머신 연동, 쇼핑몰 주문 연동, 요금제·환불 — First Crack 문서
 ---
 
 import OxCard from '../../components/OxCard.astro';
 
 <div class="ox-docs-lead-actions">
   <a href="/machines" class="ox-btn ox-btn-solid ox-btn-sm">머신 연동</a>
+  <a href="/orders" class="ox-btn ox-btn-outline ox-btn-sm">주문 연동</a>
   <a href="https://firstcrackiscoming.com/download" class="ox-btn ox-btn-outline ox-btn-sm" target="_blank" rel="noopener noreferrer">앱 다운로드</a>
 </div>
 
@@ -19,8 +20,8 @@ import OxCard from '../../components/OxCard.astro';
   <OxCard step="02" title="머신 연결" href="/machines" linkLabel="연동 가이드">
     Modbus, Phidget, Artisan 설정을 따라 로스터를 연결합니다.
   </OxCard>
-  <OxCard step="03" title="첫 배치 기록" href="/machines/troubleshooting" linkLabel="문제 해결">
-    레퍼런스 프로파일을 불러와 첫 로스팅을 기록합니다.
+  <OxCard step="03" title="쇼핑몰 주문" href="/orders" linkLabel="주문 연동">
+    네이버·Shopify·Cafe24 주문을 가져와 로스팅 필요량과 연결합니다.
   </OxCard>
 </div>
 
@@ -30,15 +31,19 @@ import OxCard from '../../components/OxCard.astro';
 |------|------|
 | **시작하기** | 시스템 사양, macOS·Windows 설치 |
 | **로스팅 머신 연동** | Modbus, Phidget, Artisan, 트러블슈팅 |
+| **쇼핑몰 주문 연동** | 네이버, Shopify, Cafe24, SKU 매핑 |
 | **서비스 · 결제** | Pro / Pro+, Polar 결제, 환불 규칙 |
 | **지원** | 이메일 문의, 로그 전달 |
 
-## 지원 프로토콜
+## 지원 연동
 
 <div class="ox-docs-chips">
   <span class="ox-docs-chip">Modbus RTU / TCP</span>
   <span class="ox-docs-chip">Phidget22</span>
   <span class="ox-docs-chip">Artisan-ready</span>
+  <span class="ox-docs-chip">네이버 스마트스토어</span>
+  <span class="ox-docs-chip">Shopify</span>
+  <span class="ox-docs-chip">Cafe24</span>
 </div>
 
 Artisan 또는 Cropster와 연동 가능한 모델이면 First Crack도 대부분 동일한 통신 설정으로 연결할 수 있습니다. 모델을 모르거나 연동이 어려우면 [문의하기](/support/contact/)로 설정 화면 캡처와 함께 연락해 주세요.

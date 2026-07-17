@@ -1,0 +1,7 @@
+# biome check --write on staged files only; lint-staged re-stages auto-fixed files
+pnpm exec lint-staged
+
+# Keep Starlight docs locales (ko root / en / ja) in sync when docs content is staged
+if git diff --cached --name-only --diff-filter=ACM | grep -qE '^apps/docs/src/content/docs/'; then
+	pnpm check:docs-i18n
+fi

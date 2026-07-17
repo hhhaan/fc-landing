@@ -1,0 +1,49 @@
+---
+title: First Crack ユーザーガイド
+description: インストール、焙煎機の接続、EC注文連携、料金・返金 — First Crack ドキュメント
+---
+
+import OxCard from '../../../components/OxCard.astro';
+
+<div class="ox-docs-lead-actions">
+  <a href="/ja/machines" class="ox-btn ox-btn-solid ox-btn-sm">マシン接続</a>
+  <a href="/ja/orders" class="ox-btn ox-btn-outline ox-btn-sm">注文連携</a>
+  <a href="https://firstcrackiscoming.com/download" class="ox-btn ox-btn-outline ox-btn-sm" target="_blank" rel="noopener noreferrer">アプリをダウンロード</a>
+</div>
+
+## クイックスタート
+
+<div class="ox-docs-cards">
+  <OxCard step="01" title="アプリのインストール" href="https://firstcrackiscoming.com/download" linkLabel="ダウンロード">
+    macOS（Apple Silicon / Intel）または Windows 10/11 用のインストーラを入手します。
+  </OxCard>
+  <OxCard step="02" title="焙煎機の接続" href="/ja/machines" linkLabel="接続ガイド">
+    Modbus、Phidget、Artisan の設定に従ってロースターを接続します。
+  </OxCard>
+  <OxCard step="03" title="EC注文" href="/ja/orders" linkLabel="注文連携">
+    Naver・Shopify・Cafe24 の注文を取り込み、焙煎必要量と在庫に接続します。
+  </OxCard>
+</div>
+
+## ドキュメント構成
+
+| セクション | 内容 |
+|------------|------|
+| **はじめに** | システム要件、macOS・Windows インストール |
+| **焙煎機の接続** | Modbus、Phidget、Artisan、トラブルシューティング |
+| **EC注文連携** | Naver、Shopify、Cafe24、SKU マッピング |
+| **サービス・お支払い** | Pro / Pro+、Polar 決済、返金ポリシー |
+| **サポート** | メール問い合わせ、ログ送付 |
+
+## 対応連携
+
+<div class="ox-docs-chips">
+  <span class="ox-docs-chip">Modbus RTU / TCP</span>
+  <span class="ox-docs-chip">Phidget22</span>
+  <span class="ox-docs-chip">Artisan-ready</span>
+  <span class="ox-docs-chip">Naver Smart Store</span>
+  <span class="ox-docs-chip">Shopify</span>
+  <span class="ox-docs-chip">Cafe24</span>
+</div>
+
+Artisan または Cropster と連携できるモデルであれば、First Crack も多くの場合同じ通信設定で接続できます。モデルが不明な場合や接続が難しい場合は、設定画面のスクリーンショットを添えて [お問い合わせ](/ja/support/contact/) ください。

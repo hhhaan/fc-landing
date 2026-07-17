@@ -1,5 +1,6 @@
 ---
 import config from 'virtual:starlight/user-config';
+import LanguageSelect from 'virtual:starlight/components/LanguageSelect';
 import Search from 'virtual:starlight/components/Search';
 import SiteTitle from 'virtual:starlight/components/SiteTitle';
 
@@ -15,6 +16,7 @@ const shouldRenderSearch =
 		{shouldRenderSearch && <Search />}
 	</div>
 	<div class="sl-hidden md:sl-flex print:hidden right-group">
+		{config.isMultilingual && <LanguageSelect />}
 		<a href="https://firstcrackiscoming.com" class="ox-docs-link">Home</a>
 		<a href="https://firstcrackiscoming.com/download" class="ox-btn ox-btn-solid ox-btn-sm">
 			Download

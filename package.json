@@ -11,12 +11,30 @@
         "build:docs": "pnpm --filter @fc/docs build",
         "build:cupping": "pnpm --filter @fc/cupping build",
         "build:admin": "pnpm --filter @fc/admin build",
-        "dev": "pnpm dev:landing & pnpm dev:docs"
+        "dev": "pnpm dev:landing & pnpm dev:docs",
+        "check": "biome check apps scripts",
+        "check:fix": "biome check --write apps scripts",
+        "check:docs-i18n": "node scripts/check-docs-i18n.mjs",
+        "format": "biome format apps scripts",
+        "format:fix": "biome format --write apps scripts",
+        "prepare": "husky"
     },
     "dependencies": {
         "@supabase/ssr": "^0.10.3",
         "@supabase/supabase-js": "^2.105.4",
         "@tailwindcss/vite": "^4.3.0",
         "tailwindcss": "^4.3.0"
-    }
+    },
+    "devDependencies": {
+        "@biomejs/biome": "2.5.0",
+        "husky": "^9.1.7",
+        "lint-staged": "^17.0.5"
+    },
+    "lint-staged": {
+        "apps/**/*.{ts,tsx,js,jsx,mjs,cjs}": "biome check --write --no-errors-on-unmatched",
+        "scripts/**/*.{js,mjs,cjs,ts}": "biome check --write --no-errors-on-unmatched",
+        "apps/**/*.{json,css,md}": "biome check --write --no-errors-on-unmatched",
+        "*.{js,mjs,cjs,json,css,md}": "biome check --write --no-errors-on-unmatched"
+    },
+    "packageManager": "pnpm@9.15.0"
 }

@@ -1,0 +1,49 @@
+---
+title: First Crack user guide
+description: Install, connect roasters, sync shop orders, plans and refunds — First Crack docs
+---
+
+import OxCard from '../../../components/OxCard.astro';
+
+<div class="ox-docs-lead-actions">
+  <a href="/en/machines" class="ox-btn ox-btn-solid ox-btn-sm">Connect machines</a>
+  <a href="/en/orders" class="ox-btn ox-btn-outline ox-btn-sm">Order channels</a>
+  <a href="https://firstcrackiscoming.com/download" class="ox-btn ox-btn-outline ox-btn-sm" target="_blank" rel="noopener noreferrer">Download app</a>
+</div>
+
+## Quick start
+
+<div class="ox-docs-cards">
+  <OxCard step="01" title="Install the app" href="https://firstcrackiscoming.com/download" linkLabel="Download">
+    Get the installer for macOS (Apple Silicon / Intel) or Windows 10/11.
+  </OxCard>
+  <OxCard step="02" title="Connect a roaster" href="/en/machines" linkLabel="Connection guide">
+    Follow Modbus, Phidget, or Artisan settings to link your roaster.
+  </OxCard>
+  <OxCard step="03" title="Shop orders" href="/en/orders" linkLabel="Order sync">
+    Pull Naver, Shopify, and Cafe24 orders into roast demand and inventory.
+  </OxCard>
+</div>
+
+## Doc sections
+
+| Section | Contents |
+|---------|----------|
+| **Getting started** | System requirements, macOS & Windows install |
+| **Roaster connection** | Modbus, Phidget, Artisan, troubleshooting |
+| **Order channels** | Naver, Shopify, Cafe24, SKU mapping |
+| **Billing & plans** | Pro / Pro+, Polar checkout, refunds |
+| **Support** | Email support, sending logs |
+
+## Supported integrations
+
+<div class="ox-docs-chips">
+  <span class="ox-docs-chip">Modbus RTU / TCP</span>
+  <span class="ox-docs-chip">Phidget22</span>
+  <span class="ox-docs-chip">Artisan-ready</span>
+  <span class="ox-docs-chip">Naver Smart Store</span>
+  <span class="ox-docs-chip">Shopify</span>
+  <span class="ox-docs-chip">Cafe24</span>
+</div>
+
+If a model works with Artisan or Cropster, First Crack can usually use the same communication settings. Unknown model or stuck setup? Contact us via [Contact](/en/support/contact/) with screenshots of your settings.
