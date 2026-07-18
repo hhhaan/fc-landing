@@ -15,11 +15,10 @@ const checkoutError = Astro.url.searchParams.get("error") === "checkout_failed";
 const year = new Date().getFullYear();
 const billingMarket = resolveBillingMarket(Astro.request);
 const pricing = getMarketPricing(billingMarket);
-const env = import.meta.env;
 
 const proPlusCheckoutReady =
-  isCheckoutPlanReady("pro-plus-monthly", billingMarket, env) &&
-  isCheckoutPlanReady("pro-plus-yearly", billingMarket, env);
+  isCheckoutPlanReady("pro-plus-monthly", billingMarket) &&
+  isCheckoutPlanReady("pro-plus-yearly", billingMarket);
 const defaultTier = proPlusCheckoutReady ? "pro_plus" : "pro";
 ---
 

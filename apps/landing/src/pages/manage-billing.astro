@@ -1,9 +1,13 @@
 ---
+import { POLAR_ACCESS_TOKEN } from "astro:env/server";
 import { requireLogin } from "../lib/auth";
 import { createClient } from "../lib/supabase";
 import { polarApiBase } from "../lib/polarPlans";
 
-const userOrRedirect = await requireLogin(Astro, Astro.request.url);
+const userOrRedirect = await requireLogin(
+  Astro,
+  `${Astro.url.pathname}${Astro.url.search}`,
+);
 if (userOrRedirect instanceof Response) return userOrRedirect;
 const user = userOrRedirect;
 
@@ -29,10 +33,10 @@ if (!customerId) {
 
 const returnUrl = new URL("/account", Astro.url.origin).href;
 
-const res = await fetch(`${polarApiBase(import.meta.env)}/v1/customer-sessions/`, {
+const res = await fetch(`${polarApiBase()}/v1/customer-sessions/`, {
   method: "POST",
   headers: {
-    Authorization: `Bearer ${import.meta.env.POLAR_ACCESS_TOKEN}`,
+    Authorization: `Bearer ${POLAR_ACCESS_TOKEN}`,
     "Content-Type": "application/json",
   },
   body: JSON.stringify({

@@ -1,4 +1,8 @@
 ---
+import {
+  POLAR_ACCESS_TOKEN,
+  POLAR_SUCCESS_URL,
+} from "astro:env/server";
 import { requireLogin } from "../lib/auth";
 import {
   normalizeCheckoutPlan,
@@ -7,17 +11,21 @@ import {
   resolveBillingMarket,
 } from "../lib/polarPlans";
 
-const userOrRedirect = await requireLogin(Astro, Astro.request.url);
+const userOrRedirect = await requireLogin(
+  Astro,
+  `${Astro.url.pathname}${Astro.url.search}`,
+);
 if (userOrRedirect instanceof Response) return userOrRedirect;
 const user = userOrRedirect;
 
 const plan = normalizeCheckoutPlan(Astro.url.searchParams.get("plan"));
 const market = resolveBillingMarket(Astro.request);
-const productId = polarProductId(plan, market, import.meta.env);
+// Product UUIDs: SSOT in polarProducts.ts (optional CF overrides unused here)
+const productId = polarProductId(plan, market);
 
 if (!productId) {
   console.error(
-    `[Polar] product ID not configured — plan: ${plan}, market: ${market}, server: ${import.meta.env.POLAR_SERVER}`,
+    `[Polar] product ID not configured — plan: ${plan}, market: ${market}`,
   );
   return Astro.redirect("/compare-plans?error=checkout_failed");
 }
@@ -26,10 +34,10 @@ const ip =
   Astro.request.headers.get("cf-connecting-ip") ||
   Astro.request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
 
-const res = await fetch(`${polarApiBase(import.meta.env)}/v1/checkouts/`, {
+const res = await fetch(`${polarApiBase()}/v1/checkouts/`, {
   method: "POST",
   headers: {
-    Authorization: `Bearer ${import.meta.env.POLAR_ACCESS_TOKEN}`,
+    Authorization: `Bearer ${POLAR_ACCESS_TOKEN}`,
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
@@ -37,7 +45,7 @@ const res = await fetch(`${polarApiBase(import.meta.env)}/v1/checkouts/`, {
     external_customer_id: user.id,
     customer_email: user.email,
     metadata: { user_id: user.id, plan, market },
-    success_url: import.meta.env.POLAR_SUCCESS_URL,
+    success_url: POLAR_SUCCESS_URL,
     ...(ip ? { customer_ip_address: ip } : {}),
   }),
 });
