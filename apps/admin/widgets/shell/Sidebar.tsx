@@ -3,6 +3,7 @@
 import {
     Activity,
     Building2,
+    ClipboardList,
     DollarSign,
     Globe2,
     LayoutDashboard,
@@ -14,6 +15,7 @@ import {
     Ticket,
     Users,
 } from 'lucide-react';
+
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { clsx } from '@/shared/lib/format';
@@ -25,6 +27,7 @@ const NAV = [
     { href: '/retention', label: 'Retention', icon: RefreshCw },
     { href: '/users', label: 'Users', icon: Users },
     { href: '/organizations', label: 'Organizations', icon: Building2 },
+    { href: '/compliance', label: 'Compliance', icon: ClipboardList },
     { href: '/coupons', label: 'Coupons', icon: Ticket },
     { href: '/activity', label: 'Activity', icon: Activity },
     { href: '/map', label: 'Map', icon: Globe2 },
