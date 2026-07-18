@@ -20,10 +20,16 @@ const SHRINK_BY_LEVEL: Record<string, number> = {
 const round3 = (n: number) => Math.round(n * 1000) / 1000;
 const gToKg = (g: number) => round3(g / 1000);
 
-function periodBounds(year: number, month: number): { from: string; to: string; fromIso: string; toIso: string } {
-    const from = `${year}-${String(month).padStart(2, '0')}-01`;
-    const lastDay = new Date(Date.UTC(year, month, 0)).getUTCDate();
-    const to = `${year}-${String(month).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+function parsePeriod(from: string, to: string): { from: string; to: string; fromIso: string; toIso: string } {
+    if (!DATE_RE.test(from) || !DATE_RE.test(to)) throw new Error('from/to must be YYYY-MM-DD');
+    if (from > to) throw new Error('from must be ≤ to');
+    // Cap range to ~2 years of ledger data for safety
+    const fromMs = Date.parse(`${from}T00:00:00.000Z`);
+    const toMs = Date.parse(`${to}T00:00:00.000Z`);
+    if (!Number.isFinite(fromMs) || !Number.isFinite(toMs)) throw new Error('invalid from/to date');
+    if (toMs - fromMs > 366 * 2 * 864e5) throw new Error('period max 2 years');
     return {
         from,
         to,
@@ -212,13 +218,12 @@ function buildTransactions(
     return rows.sort((a, b) => a.date.localeCompare(b.date));
 }
 
-export async function getComplianceBundle(userId: string, year: number, month: number): Promise<ComplianceBundle> {
+export async function getComplianceBundle(userId: string, fromDate: string, toDate: string): Promise<ComplianceBundle> {
     if (!userId) throw new Error('userId required');
-    if (!Number.isFinite(year) || month < 1 || month > 12) throw new Error('invalid period');
 
     const sb = getAdminClient();
     const loose = sb as LooseClient;
-    const { from, to, fromIso, toIso } = periodBounds(year, month);
+    const { from, to, fromIso, toIso } = parsePeriod(fromDate, toDate);
 
     const [profileRes, beansRes, eventsRes, sessionsRes, ordersRes, emailRes] = await Promise.all([
         sb
@@ -318,7 +323,7 @@ export async function getComplianceBundle(userId: string, year: number, month: n
             displayName: (p?.display_name as string | null) ?? null,
             bizRegNo: (p?.business_registration_number as string | null) ?? null,
         },
-        period: { year, month, from, to },
+        period: { from, to },
         materialLedger,
         productionLog,
         transactions,

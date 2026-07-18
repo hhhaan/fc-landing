@@ -63,13 +63,13 @@ export function complianceToCsv(bundle: ComplianceBundle, kind: ComplianceDocKin
 }
 
 export function complianceFilename(bundle: ComplianceBundle, kind: ComplianceDocKind): string {
-    const ym = `${bundle.period.year}-${String(bundle.period.month).padStart(2, '0')}`;
+    const range = `${bundle.period.from}_${bundle.period.to}`;
     const who = (bundle.subject.businessName || bundle.subject.email || bundle.subject.userId).replace(
         /[^\w가-힣.-]+/g,
         '_',
     );
     const label = kind === 'material' ? '원료수불부' : kind === 'production' ? '생산작업일지' : '거래기록서';
-    return `${label}_${who}_${ym}.csv`;
+    return `${label}_${who}_${range}.csv`;
 }
 
 export function downloadText(text: string, filename: string, mime = 'text/csv;charset=utf-8;'): void {

@@ -18,7 +18,7 @@ function Header({ bundle, kind }: { bundle: ComplianceBundle; kind: ComplianceDo
         <div className="compliance-doc-header mb-4 text-center">
             <div className="text-[18px] font-bold tracking-[0.2em] text-black">{DOC_TITLE[kind]}</div>
             <div className="mt-1 text-[13px] text-black">
-                {period.year}년 {period.month}월분 ({period.from} ~ {period.to})
+                보고기간 {period.from} ~ {period.to}
             </div>
             <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1 border border-black p-2 text-left text-[12px] text-black">
                 <div>

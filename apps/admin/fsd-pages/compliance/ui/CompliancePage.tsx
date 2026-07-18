@@ -18,21 +18,56 @@ const DOC_TABS: { id: ComplianceDocKind; label: string }[] = [
     { id: 'transaction', label: '거래기록서' },
 ];
 
-function currentYm(): { year: number; month: number } {
+const pad2 = (n: number) => String(n).padStart(2, '0');
+const isoDate = (d: Date) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+
+function monthRange(year: number, month: number): { from: string; to: string } {
+    const from = `${year}-${pad2(month)}-01`;
+    const last = new Date(year, month, 0).getDate();
+    return { from, to: `${year}-${pad2(month)}-${pad2(last)}` };
+}
+
+function defaultRange(): { from: string; to: string } {
     const d = new Date();
-    return { year: d.getFullYear(), month: d.getMonth() + 1 };
+    return monthRange(d.getFullYear(), d.getMonth() + 1);
+}
+
+type PeriodPreset = 'thisMonth' | 'lastMonth' | 'thisQuarter' | 'ytd' | 'custom';
+
+function applyPreset(preset: PeriodPreset): { from: string; to: string } {
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = now.getMonth() + 1;
+    if (preset === 'thisMonth') return monthRange(y, m);
+    if (preset === 'lastMonth') {
+        const d = new Date(y, m - 2, 1);
+        return monthRange(d.getFullYear(), d.getMonth() + 1);
+    }
+    if (preset === 'thisQuarter') {
+        const qStart = Math.floor((m - 1) / 3) * 3 + 1;
+        return { from: `${y}-${pad2(qStart)}-01`, to: isoDate(now) };
+    }
+    if (preset === 'ytd') return { from: `${y}-01-01`, to: isoDate(now) };
+    return defaultRange();
 }
 
 export default function CompliancePage() {
-    const now = currentYm();
+    const initial = defaultRange();
     const [userQuery, setUserQuery] = useState('');
     const [userId, setUserId] = useState<string | null>(null);
-    const [year, setYear] = useState(now.year);
-    const [month, setMonth] = useState(now.month);
+    const [from, setFrom] = useState(initial.from);
+    const [to, setTo] = useState(initial.to);
+    const [preset, setPreset] = useState<PeriodPreset>('thisMonth');
     const [doc, setDoc] = useState<ComplianceDocKind>('material');
 
     const { data: users, isPending: usersLoading, isError: usersError, error: usersErr } = useUsers();
-    const bundleQ = useComplianceBundle(userId, year, month);
+    const bundleQ = useComplianceBundle(userId, from, to);
+
+    const setPeriod = (next: { from: string; to: string }, nextPreset: PeriodPreset) => {
+        setFrom(next.from);
+        setTo(next.to);
+        setPreset(nextPreset);
+    };
 
     const filteredUsers = useMemo(() => {
         if (!users) return [];
@@ -68,68 +103,101 @@ export default function CompliancePage() {
         <>
             <TopBar title="Compliance Docs" subtitle="원료수불부 · 생산작업일지 · 거래기록서 (로스터리 요청 시 추출)" />
             <main className="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden p-4 print:hidden">
-                <Panel title="대상 선택" subtitle="user + 연월 지정 후 문서 추출">
-                    <div className="flex flex-col gap-3 lg:flex-row lg:items-end">
-                        <label className="flex min-w-0 flex-1 flex-col gap-1">
-                            <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--faint)]">
-                                User
-                            </span>
-                            <div className="relative">
-                                <Search
-                                    size={14}
-                                    className="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-[var(--faint)]"
-                                />
+                <Panel title="대상 선택" subtitle="user + 기간 지정 후 문서 추출">
+                    <div className="flex flex-col gap-3">
+                        <div className="flex flex-col gap-3 lg:flex-row lg:items-end">
+                            <label className="flex min-w-0 flex-1 flex-col gap-1">
+                                <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--faint)]">
+                                    User
+                                </span>
+                                <div className="relative">
+                                    <Search
+                                        size={14}
+                                        className="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-[var(--faint)]"
+                                    />
+                                    <input
+                                        value={userQuery}
+                                        onChange={(e) => setUserQuery(e.target.value)}
+                                        placeholder="email / business / name"
+                                        className="w-full border border-[var(--border)] bg-[var(--surface)] py-1.5 pl-8 pr-2 font-mono text-[12px] text-[var(--fg)] outline-none focus:border-[var(--accent)]/40"
+                                    />
+                                </div>
+                                <select
+                                    value={userId ?? ''}
+                                    onChange={(e) => setUserId(e.target.value || null)}
+                                    className="w-full border border-[var(--border)] bg-[var(--surface)] px-2 py-1.5 font-mono text-[12px] text-[var(--fg)] outline-none focus:border-[var(--accent)]/40"
+                                >
+                                    <option value="">Select user…</option>
+                                    {filteredUsers.map((u) => (
+                                        <option key={u.id} value={u.id}>
+                                            {(u.business_name || u.display_name || u.email || u.id.slice(0, 8)) +
+                                                (u.email ? ` · ${u.email}` : '') +
+                                                ` · roasts ${u.roast_count}`}
+                                        </option>
+                                    ))}
+                                </select>
+                            </label>
+                            <label className="flex w-[148px] flex-col gap-1">
+                                <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--faint)]">
+                                    From
+                                </span>
                                 <input
-                                    value={userQuery}
-                                    onChange={(e) => setUserQuery(e.target.value)}
-                                    placeholder="email / business / name"
-                                    className="w-full border border-[var(--border)] bg-[var(--surface)] py-1.5 pl-8 pr-2 font-mono text-[12px] text-[var(--fg)] outline-none focus:border-[var(--accent)]/40"
+                                    type="date"
+                                    value={from}
+                                    max={to}
+                                    onChange={(e) => {
+                                        setFrom(e.target.value);
+                                        setPreset('custom');
+                                    }}
+                                    className="border border-[var(--border)] bg-[var(--surface)] px-2 py-1.5 font-mono text-[12px] text-[var(--fg)] outline-none focus:border-[var(--accent)]/40"
                                 />
-                            </div>
-                            <select
-                                value={userId ?? ''}
-                                onChange={(e) => setUserId(e.target.value || null)}
-                                className="w-full border border-[var(--border)] bg-[var(--surface)] px-2 py-1.5 font-mono text-[12px] text-[var(--fg)] outline-none focus:border-[var(--accent)]/40"
-                            >
-                                <option value="">Select user…</option>
-                                {filteredUsers.map((u) => (
-                                    <option key={u.id} value={u.id}>
-                                        {(u.business_name || u.display_name || u.email || u.id.slice(0, 8)) +
-                                            (u.email ? ` · ${u.email}` : '') +
-                                            ` · roasts ${u.roast_count}`}
-                                    </option>
-                                ))}
-                            </select>
-                        </label>
-                        <label className="flex w-28 flex-col gap-1">
-                            <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--faint)]">
-                                Year
+                            </label>
+                            <label className="flex w-[148px] flex-col gap-1">
+                                <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--faint)]">
+                                    To
+                                </span>
+                                <input
+                                    type="date"
+                                    value={to}
+                                    min={from}
+                                    onChange={(e) => {
+                                        setTo(e.target.value);
+                                        setPreset('custom');
+                                    }}
+                                    className="border border-[var(--border)] bg-[var(--surface)] px-2 py-1.5 font-mono text-[12px] text-[var(--fg)] outline-none focus:border-[var(--accent)]/40"
+                                />
+                            </label>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-1.5">
+                            <span className="mr-1 font-mono text-[10px] uppercase tracking-wider text-[var(--faint)]">
+                                Preset
                             </span>
-                            <input
-                                type="number"
-                                min={2020}
-                                max={2100}
-                                value={year}
-                                onChange={(e) => setYear(Number(e.target.value))}
-                                className="border border-[var(--border)] bg-[var(--surface)] px-2 py-1.5 font-mono text-[12px] text-[var(--fg)] outline-none"
-                            />
-                        </label>
-                        <label className="flex w-24 flex-col gap-1">
-                            <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--faint)]">
-                                Month
-                            </span>
-                            <select
-                                value={month}
-                                onChange={(e) => setMonth(Number(e.target.value))}
-                                className="border border-[var(--border)] bg-[var(--surface)] px-2 py-1.5 font-mono text-[12px] text-[var(--fg)] outline-none"
-                            >
-                                {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
-                                    <option key={m} value={m}>
-                                        {m}
-                                    </option>
-                                ))}
-                            </select>
-                        </label>
+                            {(
+                                [
+                                    ['thisMonth', '이번 달'],
+                                    ['lastMonth', '지난 달'],
+                                    ['thisQuarter', '이번 분기'],
+                                    ['ytd', '올해'],
+                                ] as const
+                            ).map(([id, label]) => (
+                                <button
+                                    key={id}
+                                    type="button"
+                                    onClick={() => setPeriod(applyPreset(id), id)}
+                                    className={clsx(
+                                        'border px-2.5 py-1 font-mono text-[11px] transition-colors',
+                                        preset === id
+                                            ? 'border-[var(--accent)]/40 bg-[var(--accent)]/10 text-[var(--accent)]'
+                                            : 'border-[var(--border)] text-[var(--muted)] hover:text-[var(--fg)]',
+                                    )}
+                                >
+                                    {label}
+                                </button>
+                            ))}
+                            {from && to && from > to && (
+                                <span className="ml-2 font-mono text-[11px] text-[var(--bad)]">from ≤ to 필요</span>
+                            )}
+                        </div>
                     </div>
                     {selected && (
                         <div className="mt-3 font-mono text-[11px] text-[var(--muted)]">
@@ -137,7 +205,7 @@ export default function CompliancePage() {
                             <span className="text-[var(--accent)]">
                                 {selected.business_name || selected.display_name || '—'}
                             </span>{' '}
-                            · {selected.email || selected.id} · plan {selected.plan}
+                            · {selected.email || selected.id} · plan {selected.plan} · {from} ~ {to}
                         </div>
                     )}
                 </Panel>

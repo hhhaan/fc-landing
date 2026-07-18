@@ -9,9 +9,9 @@ export type ComplianceSubject = {
 };
 
 export type CompliancePeriod = {
-    year: number;
-    month: number;
+    /** Inclusive start date YYYY-MM-DD */
     from: string;
+    /** Inclusive end date YYYY-MM-DD */
     to: string;
 };
 

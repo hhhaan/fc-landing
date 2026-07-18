@@ -3,16 +3,18 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchComplianceBundle } from '@/shared/api/compliance/api';
 
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+
 export const complianceKeys = {
     all: ['compliance'] as const,
-    bundle: (userId: string, year: number, month: number) =>
-        [...complianceKeys.all, 'bundle', userId, year, month] as const,
+    bundle: (userId: string, from: string, to: string) => [...complianceKeys.all, 'bundle', userId, from, to] as const,
 };
 
-export function useComplianceBundle(userId: string | null, year: number, month: number) {
+export function useComplianceBundle(userId: string | null, from: string, to: string) {
+    const validRange = DATE_RE.test(from) && DATE_RE.test(to) && from <= to;
     return useQuery({
-        queryKey: complianceKeys.bundle(userId ?? '', year, month),
-        queryFn: () => fetchComplianceBundle(userId!, year, month),
-        enabled: Boolean(userId) && year >= 2020 && month >= 1 && month <= 12,
+        queryKey: complianceKeys.bundle(userId ?? '', from, to),
+        queryFn: () => fetchComplianceBundle(userId!, from, to),
+        enabled: Boolean(userId) && validRange,
     });
 }
