@@ -210,8 +210,9 @@ export default function CompliancePage() {
 
                         <Panel
                             title={DOC_TABS.find((t) => t.id === doc)?.label}
-                            subtitle={`${bundleQ.data.period.from} ~ ${bundleQ.data.period.to}`}
-                            className="min-h-0 flex-1 overflow-auto"
+                            subtitle={`A4 preview · ${bundleQ.data.period.from} ~ ${bundleQ.data.period.to}`}
+                            className="flex min-h-0 flex-1 flex-col"
+                            bodyClassName="min-h-0 flex-1 overflow-auto p-0"
                             action={
                                 <span className="inline-flex items-center gap-1 font-mono text-[10px] text-[var(--faint)]">
                                     <FileSpreadsheet size={12} />
@@ -221,8 +222,11 @@ export default function CompliancePage() {
                                 </span>
                             }
                         >
-                            <div className="overflow-x-auto rounded border border-[var(--border)] bg-white">
-                                <ComplianceDocView bundle={bundleQ.data} kind={doc} />
+                            {/* Desk stage — centers A4 page (210×297mm) like print layout */}
+                            <div className="compliance-a4-stage flex min-h-full justify-center overflow-auto bg-[#1a1e22] p-6">
+                                <div className="compliance-a4-sheet shrink-0 shadow-[0_12px_48px_rgba(0,0,0,0.45)] ring-1 ring-black/40">
+                                    <ComplianceDocView bundle={bundleQ.data} kind={doc} />
+                                </div>
                             </div>
                         </Panel>
                     </>

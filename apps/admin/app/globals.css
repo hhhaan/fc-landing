@@ -110,11 +110,30 @@ html {
     background: rgba(255, 255, 255, 0.1);
 }
 
+/* Compliance — screen preview is A4 (210×297mm); scale down when viewport is narrow */
+.compliance-a4-sheet {
+    width: 210mm;
+    min-height: 297mm;
+    background: #fff;
+}
+
+@media screen and (max-width: 900px) {
+    .compliance-a4-sheet {
+        /* ~210mm ≈ 794px at 96dpi; scale to fit ~92vw */
+        transform: scale(calc(92vw / 210mm));
+        transform-origin: top center;
+        margin-bottom: calc((297mm * (1 - (92vw / 210mm))) * -1);
+    }
+}
+
 /* Compliance docs — print as A4 white form */
 @media print {
     @page {
         size: A4 portrait;
-        margin: 12mm;
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 0;
+        margin-left: 0;
     }
 
     html,
@@ -144,9 +163,13 @@ html {
         color: #000 !important;
     }
 
+    .compliance-a4-sheet,
     .compliance-doc {
         box-shadow: none !important;
-        padding: 0 !important;
+        transform: none !important;
+        margin: 0 !important;
+        width: 210mm !important;
+        min-height: 297mm !important;
     }
 
     .compliance-table {

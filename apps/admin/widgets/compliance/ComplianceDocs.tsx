@@ -201,9 +201,21 @@ function TransactionTable({ rows }: { rows: TransactionRow[] }) {
     );
 }
 
+/** Screen + print: fixed A4 page (210×297mm). */
 export function ComplianceDocView({ bundle, kind }: { bundle: ComplianceBundle; kind: ComplianceDocKind }) {
     return (
-        <div data-compliance-doc="true" className="compliance-doc bg-white p-6 text-black">
+        <div
+            data-compliance-doc="true"
+            className="compliance-doc box-border bg-white text-black"
+            style={{
+                width: '210mm',
+                minHeight: '297mm',
+                padding: '15mm 16mm',
+                fontFamily: '"Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif',
+                fontSize: '13px',
+                lineHeight: 1.4,
+            }}
+        >
             <Header bundle={bundle} kind={kind} />
             {kind === 'material' && <MaterialTable rows={bundle.materialLedger} />}
             {kind === 'production' && <ProductionTable rows={bundle.productionLog} />}
