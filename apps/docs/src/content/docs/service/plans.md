@@ -15,7 +15,6 @@ First Crack은 **데스크톱 앱 + 클라우드 동기화** 기준으로 요금
 | **프로파일·생두·일정** | 기본 | ✓ | ✓ | ✓ |
 | **Shopify 등 커머스** | — | — | ✓ | ✓ |
 | **시트** | 1 | 1 | 1 | 팀 단위 |
-| **가격 (USD 기준)** | $0 | $49/월 또는 $39/월(연간) | $79/월 또는 $63/월(연간) | 문의 |
 
 :::note[체험]
 신규 가입 시 **14일·20배치** Pro 체험이 시작됩니다. 신용카드 없이 [가입](https://firstcrackiscoming.com/signup)할 수 있습니다.
@@ -31,12 +30,8 @@ Pro 전체 + **무제한 배치**, Shopify 등 커머스 연동(로드맵 항목
 
 ## Enterprise
 
-다수 시트, 맞춤 기능, FDE(현장 기술 지원), 계약·인보이스 결제. **$300/월 이상 + 시트당 $19** 부터 — [contact@firstcrackiscoming.com](mailto:contact@firstcrackiscoming.com)
+다수 시트, 맞춤 기능, FDE(현장 기술 지원), 계약·인보이스 결제. 문의 — [contact@firstcrackiscoming.com](mailto:contact@firstcrackiscoming.com)
 
 ## 무료 티어
 
 체험 종료 후에도 **월 20배치**까지 무료로 사용할 수 있습니다. 클라우드·고급 한도가 필요하면 Pro로 업그레이드합니다.
-
-## 지역별 가격
-
-한국·미국·일본 등 방문 지역에 따라 표시 통화가 달라질 수 있습니다 (`/?market=kr` 등). 결제는 Polar 체크아웃에서 처리되며, 청구 통화는 체크아웃 화면을 기준으로 합니다.
