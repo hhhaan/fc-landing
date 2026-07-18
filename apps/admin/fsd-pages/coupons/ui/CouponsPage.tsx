@@ -3,7 +3,13 @@
 import { Copy, Ticket } from 'lucide-react';
 import { useState } from 'react';
 import { useCoupons, useCreateCoupons, useDisableCoupon, useIssueCoupon } from '@/shared/api/coupons/queries';
-import type { CouponDuration, CouponStatus, CouponType, PolarCoupon } from '@/shared/api/coupons/types';
+import type {
+    CouponDuration,
+    CouponProductScope,
+    CouponStatus,
+    CouponType,
+    PolarCoupon,
+} from '@/shared/api/coupons/types';
 import { clsx, fmtRel } from '@/shared/lib/format';
 import { Badge, KpiCard, Panel } from '@/shared/ui/Panel';
 import { QueryError, QueryLoading } from '@/shared/ui/QueryState';
@@ -33,6 +39,12 @@ function durationLabel(c: PolarCoupon): string {
     return c.duration;
 }
 
+function scopeLabel(s: CouponProductScope | undefined): string {
+    if (s === 'yearly') return 'yearly';
+    if (s === 'all') return 'all';
+    return 'monthly';
+}
+
 export default function CouponsPage() {
     const { data, isPending, isError, error } = useCoupons();
     const createMut = useCreateCoupons();
@@ -46,6 +58,7 @@ export default function CouponsPage() {
     const [amountUsd, setAmountUsd] = useState(10);
     const [duration, setDuration] = useState<CouponDuration>('once');
     const [durationMonths, setDurationMonths] = useState(3);
+    const [productScope, setProductScope] = useState<CouponProductScope>('monthly');
     const [note, setNote] = useState('');
     const [lastIssued, setLastIssued] = useState<PolarCoupon | null>(null);
     const [formError, setFormError] = useState<string | null>(null);
@@ -68,6 +81,7 @@ export default function CouponsPage() {
                 amount_cents: type === 'fixed' ? Math.round(amountUsd * 100) : undefined,
                 duration,
                 duration_in_months: duration === 'repeating' ? durationMonths : undefined,
+                product_scope: productScope,
                 note: note || undefined,
             });
         } catch (err) {
@@ -149,7 +163,7 @@ export default function CouponsPage() {
                 )}
 
                 <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 xl:grid-cols-[320px_1fr]">
-                    <Panel title="Create batch" subtitle="1–50 single-use · max_redemptions=1">
+                    <Panel title="Create batch" subtitle="1–50 single-use · Polar products scope">
                         <form onSubmit={onCreate} className="space-y-3">
                             <div>
                                 <label className={labelCls} htmlFor="coupon-name">
@@ -162,6 +176,29 @@ export default function CouponsPage() {
                                     onChange={(e) => setName(e.target.value)}
                                     required
                                 />
+                            </div>
+                            <div>
+                                <label className={labelCls} htmlFor="coupon-scope">
+                                    Product scope
+                                </label>
+                                <select
+                                    id="coupon-scope"
+                                    className={inputCls}
+                                    value={productScope}
+                                    onChange={(e) => setProductScope(e.target.value as CouponProductScope)}
+                                >
+                                    <option value="monthly">Monthly only (Pro / Pro+)</option>
+                                    <option value="yearly">Yearly only (Pro / Pro+)</option>
+                                    <option value="all">All products</option>
+                                </select>
+                                <p className="mt-1 font-mono text-[10px] leading-snug text-[var(--faint)]">
+                                    {productScope === 'monthly' &&
+                                        'Applies to monthly US·KR·JP only — yearly checkout rejects.'}
+                                    {productScope === 'yearly' &&
+                                        'Applies to yearly US·KR·JP only — monthly checkout rejects.'}
+                                    {productScope === 'all' &&
+                                        'No product filter — any Polar product can use the code.'}
+                                </p>
                             </div>
                             <div className="grid grid-cols-2 gap-2">
                                 <div>
@@ -305,6 +342,7 @@ export default function CouponsPage() {
                                         <th className="pb-2 pr-3 font-medium">Name</th>
                                         <th className="pb-2 pr-3 font-medium">Discount</th>
                                         <th className="pb-2 pr-3 font-medium">Dur</th>
+                                        <th className="pb-2 pr-3 font-medium">Scope</th>
                                         <th className="pb-2 pr-3 font-medium">Redeem</th>
                                         <th className="pb-2 pr-3 font-medium">Created</th>
                                         <th className="pb-2 pr-3 font-medium">Issued</th>
@@ -315,7 +353,7 @@ export default function CouponsPage() {
                                     {coupons.length === 0 && (
                                         <tr>
                                             <td
-                                                colSpan={9}
+                                                colSpan={10}
                                                 className="py-8 text-center font-mono text-[12px] text-[var(--faint)]"
                                             >
                                                 No coupons yet — create a batch
@@ -361,6 +399,9 @@ export default function CouponsPage() {
                                             <td className="py-2 pr-3 font-mono tabular-nums">{discountLabel(c)}</td>
                                             <td className="py-2 pr-3 font-mono text-[11px] text-[var(--muted)]">
                                                 {durationLabel(c)}
+                                            </td>
+                                            <td className="py-2 pr-3 font-mono text-[11px] text-[var(--muted)]">
+                                                {scopeLabel(c.product_scope)}
                                             </td>
                                             <td className="py-2 pr-3 font-mono tabular-nums text-[var(--muted)]">
                                                 {c.redemptions_count}/{c.max_redemptions}

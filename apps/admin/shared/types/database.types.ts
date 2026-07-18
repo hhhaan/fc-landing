@@ -398,6 +398,7 @@ export type Database = {
                     name: string;
                     note: string | null;
                     polar_discount_id: string;
+                    product_scope: string;
                     redeemed_at: string | null;
                     redemptions_count: number;
                     status: string;
@@ -420,6 +421,7 @@ export type Database = {
                     name: string;
                     note?: string | null;
                     polar_discount_id: string;
+                    product_scope?: string;
                     redeemed_at?: string | null;
                     redemptions_count?: number;
                     status?: string;
@@ -442,6 +444,7 @@ export type Database = {
                     name?: string;
                     note?: string | null;
                     polar_discount_id?: string;
+                    product_scope?: string;
                     redeemed_at?: string | null;
                     redemptions_count?: number;
                     status?: string;

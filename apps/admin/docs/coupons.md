@@ -89,6 +89,10 @@ v1에 **user_id 할당 없음**. idle 풀에 쌓아 두고 순차 배포.
 - `max_redemptions: 1`
 - `duration`: once (기본 권장 — 첫 청구 1회 할인) / forever / repeating
 - type: percentage (`basis_points`) 또는 fixed (`amounts`)
+- `products`: 생성 시 **product scope** 선택
+  - `monthly` (기본): Pro/Pro+ 월간 × US/KR/JP — 연간 체크아웃 불가
+  - `yearly`: Pro/Pro+ 연간 × US/KR/JP — 월간 체크아웃 불가
+  - `all`: `products` 미설정 — 전 상품 적용
 
 ## 코드 위치 (fc-landing monorepo)
 
@@ -101,6 +105,8 @@ v1에 **user_id 할당 없음**. idle 풀에 쌓아 두고 순차 배포.
 | `apps/admin/app/api/coupons/[id]/` | Disable |
 | `apps/admin/shared/api/coupons/` | types, server, api, queries |
 | `apps/admin/shared/lib/polar/discounts.ts` | Polar HTTP client |
+| `apps/admin/shared/lib/polar/productScope.ts` | monthly / yearly / all → product UUID 목록 |
+| `polar_coupons.product_scope` | DB 기록 (default `monthly`) |
 
 ## 환경 변수
 
