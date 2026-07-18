@@ -8,10 +8,11 @@ on:
       - 'pnpm-workspace.yaml'
       - 'pnpm-lock.yaml'
       - '.github/workflows/deploy-landing.yml'
-  pull_request:
-    branches: [main]
-    paths:
-      - 'apps/landing/**'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-landing-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -26,8 +27,6 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 10
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -41,13 +40,13 @@ jobs:
       - name: Build
         run: pnpm build:landing
         env:
-          PUBLIC_SUPABASE_URL: https://vjdgdolfxvnxushxrmff.supabase.co
-          PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqZGdkb2xmeHZueHVzaHhybWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5MzMyNjMsImV4cCI6MjA5MjUwOTI2M30.4NR4k6sz72AEa_-oFc8vGk_gfZlztNoBtUlDbz4SjA8
-          PUBLIC_SITE_URL: https://firstcrackiscoming.com
+          PUBLIC_SUPABASE_URL: ${{ vars.PUBLIC_SUPABASE_URL || 'https://vjdgdolfxvnxushxrmff.supabase.co' }}
+          PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqZGdkb2xmeHZueHVzaHhybWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5MzMyNjMsImV4cCI6MjA5MjUwOTI2M30.4NR4k6sz72AEa_-oFc8vGk_gfZlztNoBtUlDbz4SjA8' }}
+          PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL || 'https://firstcrackiscoming.com' }}
 
       - name: Deploy to Cloudflare Pages
         working-directory: apps/landing
-        run: npx wrangler pages deploy dist --project-name fc-landing --branch ${{ github.ref_name }}
+        run: npx wrangler pages deploy dist --project-name fc-landing --branch main --commit-dirty=true
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: da47c859f47b9284b03ecca3c349ab87
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID || 'da47c859f47b9284b03ecca3c349ab87' }}
