@@ -233,10 +233,12 @@ export async function getComplianceBundle(userId: string, year: number, month: n
             .eq('user_id', userId)
             .order('created_at', { ascending: true })
             .limit(10000),
+        // Explicit profile FK — two relationships exist (profile_id vs source_session_id).
+        // output_weight_grams may be absent until that desktop migration is applied.
         loose
             .from('roast_sessions')
             .select(
-                'roasted_at, weight_grams, roast_level, notes, status, beans(name), roast_profiles(name), output_weight_grams',
+                'roasted_at, weight_grams, roast_level, notes, status, beans(name), roast_profiles!roast_sessions_profile_id_fkey(name)',
             )
             .eq('user_id', userId)
             .eq('status', 'completed')
@@ -258,6 +260,7 @@ export async function getComplianceBundle(userId: string, year: number, month: n
     if (profileRes.error) throw profileRes.error;
     if (beansRes.error) throw beansRes.error;
     if (eventsRes.error) throw eventsRes.error;
+    if (sessionsRes.error) throw sessionsRes.error;
 
     type SessionRow = {
         roasted_at: string | null;
@@ -269,22 +272,7 @@ export async function getComplianceBundle(userId: string, year: number, month: n
         roast_profiles: { name: string } | null;
     };
 
-    let sessions: SessionRow[] = [];
-    if (sessionsRes.error) {
-        const fallback = await sb
-            .from('roast_sessions')
-            .select('roasted_at, weight_grams, roast_level, notes, status, beans(name), roast_profiles(name)')
-            .eq('user_id', userId)
-            .eq('status', 'completed')
-            .gte('roasted_at', fromIso)
-            .lte('roasted_at', toIso)
-            .order('roasted_at', { ascending: true })
-            .limit(5000);
-        if (fallback.error) throw fallback.error;
-        sessions = (fallback.data ?? []) as unknown as SessionRow[];
-    } else {
-        sessions = (sessionsRes.data ?? []) as unknown as SessionRow[];
-    }
+    const sessions = (sessionsRes.data ?? []) as unknown as SessionRow[];
 
     const orders =
         ordersRes.error || !ordersRes.data
