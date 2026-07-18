@@ -3,11 +3,11 @@ title: Shop order channels
 description: Import Naver Smart Store, Cafe24, and Shopify orders into First Crack for roast demand and inventory
 ---
 
-First Crack **pulls external shop orders** to calculate roast demand and link finished-goods shipments.  
-Platform API keys are stored **only on the server** and are not re-exposed in the desktop app.
+Pull shop orders to calculate roast demand and manage finished-goods stock.  
+API keys stay **on the server only** — the desktop app never re-downloads them.
 
 :::note[Plans]
-Order channels need **Enterprise** (or a plan that includes order sync). If the UI is locked, check Settings → Billing.
+Order channels are available on **Enterprise**. If you see a lock screen, check Settings → Billing.
 :::
 
 ## Supported channels

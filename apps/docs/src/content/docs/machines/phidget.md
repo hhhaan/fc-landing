@@ -40,7 +40,7 @@ Control Panel **Devices** 탭에서 thermocouple 인터페이스(예: TMP1100, 1
 
 ## 4. First Crack 설정
 
-1. 앱 **설정 → 로스팅 머신 → 추가**
+1. 앱 **머신** → **머신 추가**
 2. 별칭, 로스터 모델, 배치 용량 입력
 3. 연동 프리셋 **Phidget** 선택
 4. BT / ET 채널을 Phidget 디바이스·채널 번호에 맞게 매핑

@@ -28,7 +28,7 @@ First Crack は Modbus・Phidget・シリアルなど Artisan と **同系統の
 
 ## First Crack への適用
 
-1. **設定 → 焙煎機 → 追加**
+1. **マシン → 追加**
 2. Artisan と同じプリセットを選択（Modbus RTU/TCP、Phidget など）
 3. ポート・IP・スレーブ・レジスタ・チャンネルを **Artisan と同じく** 入力
 4. 接続後、BT/ET 曲線を Artisan と比較

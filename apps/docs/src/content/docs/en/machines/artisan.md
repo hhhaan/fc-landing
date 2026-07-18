@@ -28,7 +28,7 @@ A **full settings screenshot** helps support build a preset quickly.
 
 ## Apply in First Crack
 
-1. **Settings → Roasting machines → Add**
+1. **Machines → Add**
 2. Choose the same preset as Artisan (Modbus RTU/TCP, Phidget, …)
 3. Enter port, IP, slave, registers, channels **exactly as in Artisan**
 4. Connect and compare BT/ET curves to Artisan

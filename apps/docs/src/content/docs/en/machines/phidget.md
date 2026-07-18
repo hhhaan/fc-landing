@@ -40,7 +40,7 @@ In Control Panel **Devices**, confirm the thermocouple interface (e.g. TMP1100, 
 
 ## 4. First Crack settings
 
-1. **Settings → Roasting machines → Add**
+1. **Machines → Add**
 2. Alias, model, batch size
 3. Preset **Phidget**
 4. Map BT/ET channels to device/channel numbers

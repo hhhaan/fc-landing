@@ -14,7 +14,7 @@ Machine settings are stored **on that PC**. On a new computer:
 
 ## USB serial roasters
 
-1. **Settings → Roasting machines** → select machine → **Connect**
+1. **Machines** → select machine → **Connect**
 2. Confirm **serial port** (COM can change after replug)
 3. Baud, slave ID, register addresses match the manual
 4. Empty port list → [Serial drivers](/en/machines/serial-driver/)

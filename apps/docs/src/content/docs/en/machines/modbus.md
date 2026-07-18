@@ -27,7 +27,7 @@ If the port list is empty, install [serial port drivers](/en/machines/serial-dri
 
 ### 3. App settings
 
-**Settings → Roasting machines → Add**, then:
+**Machines → Add**, then:
 
 | Field | Notes |
 |-------|-------|

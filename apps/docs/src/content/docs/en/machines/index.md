@@ -1,6 +1,6 @@
 ---
-title: Roaster connection overview
-description: How to connect roasting machines in First Crack and which protocols we support
+title: Machine connection overview
+description: How to connect machines in First Crack and which protocols we support
 ---
 
 Connection steps depend on **model and protocol**. First Crack supports three paths:
@@ -18,7 +18,7 @@ If a model works with Artisan or Cropster, First Crack usually works with the sa
 ## Common flow
 
 1. Sign in to the desktop app.
-2. **Settings → Roasting machines → Add machine**.
+2. **Machines → Add Machine**.
 3. Enter alias, batch capacity, and preset (Modbus / Phidget / other).
 4. Set port, IP, slave ID, register map, etc.
 5. Click **Connect** and confirm live BT/ET.

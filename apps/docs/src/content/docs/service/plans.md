@@ -3,7 +3,7 @@ title: 요금제
 description: First Crack Free, Pro, Pro+, Enterprise 플랜 비교
 ---
 
-First Crack은 **데스크톱 앱 + 클라우드 동기화** 기준으로 요금제가 나뉩니다. 가격은 [랜딩 페이지](https://firstcrackiscoming.com/#pricing)에서 지역·환율에 맞게 표시됩니다.
+요금제는 **데스크톱 앱 기능 + 클라우드 동기화**를 기준으로 나뉩니다. 가격은 [랜딩 페이지](https://firstcrackiscoming.com/#pricing)에서 지역·환율에 맞게 표시됩니다.
 
 ## 플랜 비교
 

@@ -16,9 +16,9 @@ Supports Windows 10/11, 64-bit x86.
 2. Launch **First Crack** from the Start menu.
 3. Sign in with your First Crack web account.
 
-## Connect a roaster
+## Connect a machine
 
-After install, add a machine under **Settings → Roasting machines**. USB-serial roasters may need [serial port drivers](/en/machines/serial-driver/) first.
+After install, open **Machines** and choose **Add Machine**. USB-serial roasters may need [serial port drivers](/en/machines/serial-driver/) first.
 
 ## Updates
 

@@ -19,23 +19,23 @@ const year = new Date().getFullYear();
 const capabilities = [
   {
     n: "01",
-    title: "Commercial-grade records",
-    body: "Customers pay for a reproducible roast record. Log BT/ET/RoR and keep every session searchable.",
+    title: "Every batch, documented",
+    body: "Log BT/ET/RoR and keep every roast searchable — so the next shift can hit the same cup.",
   },
   {
     n: "02",
-    title: "Machine-first, not cloud-first",
-    body: "Modbus, Phidget, and Artisan-ready paths. Run on the floor when the network is flaky.",
+    title: "Built for the roast floor",
+    body: "Modbus, Phidget, and Artisan-ready paths. Keep roasting when the network drops.",
   },
   {
     n: "03",
-    title: "Ops beyond the curve",
-    body: "Day plan, green inventory, and production reports — one system from charge to bag.",
+    title: "From charge to bag",
+    body: "Day plan, green inventory, and production reports in one place — not five spreadsheets.",
   },
   {
     n: "04",
-    title: "Clear pricing",
-    body: `Pro at ${pricing.heroProMonthly}/mo (200 batches). Pro+ for unlimited + commerce. Enterprise when you need a team and FDE.`,
+    title: "Pricing that scales",
+    body: `Pro at ${pricing.heroProMonthly}/mo (200 batches). Pro+ for unlimited + commerce. Enterprise for teams and FDE.`,
   },
 ];
 
@@ -43,24 +43,24 @@ const steps = [
   {
     n: "I",
     title: "Connect your machine",
-    body: "Pair sensors and controllers. Modbus, Phidget, and Artisan-ready setups are first-class.",
+    body: "Pair sensors and controllers. Modbus, Phidget, and Artisan-ready setups work out of the box.",
   },
   {
     n: "II",
     title: "Roast with a reference",
-    body: "Load a profile, mark events, and ride the curve with live readings on the floor.",
+    body: "Load a profile, mark events, and follow the curve with live readings on the floor.",
   },
   {
     n: "III",
-    title: "Archive and improve",
+    title: "Save and improve",
     body: "Weights, phases, and notes save automatically. Promote winners for the next shift.",
   },
 ];
 
 const hardware = [
-  { tag: "Protocol", name: "Modbus", desc: "Industrial PLC / controller links" },
+  { tag: "Protocol", name: "Modbus", desc: "PLC and controller links" },
   { tag: "Sensors", name: "Phidget", desc: "Thermocouple & probe interfaces" },
-  { tag: "Ecosystem", name: "Artisan-ready", desc: "Familiar machine configurations" },
+  { tag: "Ecosystem", name: "Artisan-ready", desc: "Reuse familiar machine configs" },
   { tag: "Platform", name: "Desktop-native", desc: "macOS & Windows installers" },
 ];
 
@@ -85,8 +85,8 @@ const marqueeItems = [
     <meta charset="UTF-8" />
     <Favicon />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="First Crack — roast profiling and production software for specialty coffee roasteries. Desktop-native. $49/mo Pro." />
-    <title>First Crack — Roasting software for specialty coffee</title>
+    <meta name="description" content="First Crack — desktop roasting software for specialty coffee. Live BT/ET/RoR, profiles, inventory. Pro from $49/mo." />
+    <title>First Crack — Desktop roasting software</title>
     <link rel="alternate" hreflang="x-default" href="/" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -161,11 +161,11 @@ const marqueeItems = [
 
             <h1 class="ox-hero-title reveal reveal-d1">
               <span class="block">Roast with data.</span>
-              <span class="block ox-hero-title-muted">Reproduce every batch.</span>
+              <span class="block ox-hero-title-muted">Hit the same cup again.</span>
             </h1>
 
             <p class="ox-hero-lead reveal reveal-d2">
-              Live profiles, machine connectivity, and production tools — desktop software for the roast floor, not another browser tab.
+              Live curves, machine connect, and production tools — built for the roast floor, not another browser tab.
             </p>
 
             <div class="ox-hero-trust reveal reveal-d2">
@@ -358,7 +358,7 @@ const marqueeItems = [
               for serious roasters
             </h2>
             <p class="ox-lead ox-lead-center reveal">
-              14-day trial (20 batches). Then Pro, Pro+, or talk to us for Enterprise.
+              14-day free trial (20 batches). Then Pro, Pro+, or Enterprise.
             </p>
           </div>
 
@@ -378,7 +378,7 @@ const marqueeItems = [
               <div class="ox-price-top">
                 <span class="ox-price-n">01</span>
                 <h3>Pro</h3>
-                <p>Core floor ops — roast, inventory, schedule</p>
+                <p>Roast, inventory, and schedule — floor essentials</p>
               </div>
               <div class="ox-price-amt">
                 {
@@ -399,8 +399,8 @@ const marqueeItems = [
               <p class="ox-price-note" id="pro-yearly-note" hidden>{pricing.pro.yearlyTotal}</p>
               <ul>
                 <li>200 batches / billing month</li>
-                <li>Live roast + history + profiles</li>
-                <li>Beans, blends, day plan</li>
+                <li>Active Roast + history + profiles</li>
+                <li>Beans, blends, roast schedule</li>
                 <li>1 seat</li>
                 <li>Desktop app (macOS &amp; Windows)</li>
               </ul>
@@ -414,7 +414,7 @@ const marqueeItems = [
               <div class="ox-price-top">
                 <span class="ox-price-n">02</span>
                 <h3>Pro+</h3>
-                <p>Unlimited batches + commerce integrations</p>
+                <p>Unlimited batches + store connectors</p>
               </div>
               <div class="ox-price-amt">
                 {
@@ -436,8 +436,8 @@ const marqueeItems = [
               <ul>
                 <li>Unlimited batches</li>
                 <li>Everything in Pro</li>
-                <li>Shopify &amp; commerce connectors</li>
-                <li>Payment / store sync (roadmap GA)</li>
+                <li>Shopify &amp; store connectors</li>
+                <li>Order sync (rolling out)</li>
                 <li>1 seat</li>
               </ul>
               <a id="proplus-start-btn" href="/start-pro?plan=pro-plus-monthly" class="ox-btn ox-btn-solid ox-btn-block" data-href-monthly="/start-pro?plan=pro-plus-monthly" data-href-yearly="/start-pro?plan=pro-plus-yearly">
@@ -449,7 +449,7 @@ const marqueeItems = [
               <div class="ox-price-top">
                 <span class="ox-price-n">03</span>
                 <h3>Enterprise</h3>
-                <p>Teams, custom work, dedicated engineer (FDE)</p>
+                <p>Teams, custom work, dedicated engineer</p>
               </div>
               <div class="ox-price-amt">
                 <span class="ox-price-num">Contact</span>
@@ -458,8 +458,8 @@ const marqueeItems = [
                 <li>Unlimited batches + team seats</li>
                 <li>Custom features &amp; FDE support</li>
                 <li>From $300/mo + $19/seat</li>
-                <li>Priority onboarding</li>
-                <li>Contract &amp; invoice options</li>
+                <li>Priority setup help</li>
+                <li>Contract &amp; invoice billing</li>
               </ul>
               <a href="mailto:contact@firstcrackiscoming.com?subject=Enterprise%20inquiry" class="ox-btn ox-btn-outline ox-btn-block">
                 Contact sales
@@ -479,7 +479,7 @@ const marqueeItems = [
               green coffee is
             </h2>
             <p class="ox-lead reveal">
-              Install First Crack, connect your machine, and put a reference profile under your next batch.
+              Install the app, connect your machine, and load a profile before the next charge.
             </p>
             <div class="ox-hero-actions reveal">
               <a href={trialCta.href} class="ox-btn ox-btn-solid ox-btn-lg">
@@ -502,7 +502,7 @@ const marqueeItems = [
               <a href="/" class="ox-brand">
                 <span class="ox-brand-name">First Crack</span>
               </a>
-              <p>Roasting software for specialty coffee.</p>
+              <p>Desktop roasting software for specialty coffee.</p>
             </div>
               <div class="ox-footer-cols">
               <div>
