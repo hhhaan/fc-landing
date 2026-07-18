@@ -3,7 +3,7 @@ import "../styles/global.css";
 import Favicon from "../components/ui/Favicon.astro";
 import OxNavAuth from "../components/ui/OxNavAuth.astro";
 import OxNavAuthMobile from "../components/ui/OxNavAuthMobile.astro";
-import OxWorkflowPanel from "../components/ui/OxWorkflowPanel.astro";
+// import OxWorkflowPanel from "../components/ui/OxWorkflowPanel.astro";
 import { getViewer } from "../lib/authState";
 import { getMarketPricing, resolveBillingMarket } from "../lib/market";
 import { resolveTrialCta } from "../lib/trialCta";
@@ -236,6 +236,7 @@ const marqueeItems = [
                     <h3 class="ox-cap-title">{c.title}</h3>
                     <p class="ox-cap-text">{c.body}</p>
                   </div>
+                  {/* ponytail: screenshot layer disabled for now — text-first. Restore when real screenshots exist.
                   <div
                     class="ox-cap-media"
                     role="img"
@@ -243,6 +244,7 @@ const marqueeItems = [
                   >
                     <span class="ox-ph-label">Screenshot</span>
                   </div>
+                  */}
                 </article>
               ))
             }
@@ -284,7 +286,9 @@ const marqueeItems = [
               }
             </div>
 
+            {/* ponytail: mock-UI panel disabled — text-first workflow. Restore with import when ready.
             <OxWorkflowPanel />
+            */}
           </div>
         </div>
       </section>
