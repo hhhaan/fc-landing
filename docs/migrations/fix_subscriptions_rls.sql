@@ -1,3 +1,4 @@
+-- Applied as fc-desktop migration 20260722000001
 -- Fix: subscriptions table should only be writable by service_role (webhook handler).
 -- Users may SELECT their own rows only.
 
