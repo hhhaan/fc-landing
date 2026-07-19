@@ -1,5 +1,6 @@
 import type { User } from '@supabase/supabase-js';
 import type { AstroCookies } from 'astro';
+import { PLAN_COPY } from '../content/product';
 import { createClient } from './supabase';
 
 export type TrialCta = {
@@ -16,7 +17,7 @@ export async function resolveTrialCta(context: {
     user: User | null;
 }): Promise<TrialCta> {
     if (!context.user) {
-        return { href: DEFAULT_CHECKOUT_HREF, label: 'Start 14-day trial' };
+        return { href: DEFAULT_CHECKOUT_HREF, label: PLAN_COPY.trialCtaLabel };
     }
 
     const supabase = createClient({
@@ -37,5 +38,5 @@ export async function resolveTrialCta(context: {
         return { href: '/download', label: 'Download app' };
     }
 
-    return { href: DEFAULT_CHECKOUT_HREF, label: 'Start 14-day trial' };
+    return { href: DEFAULT_CHECKOUT_HREF, label: PLAN_COPY.trialCtaLabel };
 }

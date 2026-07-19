@@ -1,0 +1,353 @@
+---
+import Favicon from "../components/ui/Favicon.astro";
+import { DOCS, FAQ_ITEMS, PLAN_COPY } from "../content/product";
+
+const year = new Date().getFullYear();
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <Favicon />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="First Crack FAQ — Free vs trial, machine compatibility, plans, offline use, and billing."
+    />
+    <title>FAQ — First Crack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="ox">
+    <main class="ox-faq-page noise-overlay">
+      <div class="ox-grid-bg" aria-hidden="true"></div>
+
+      <header class="ox-auth-header">
+        <nav class="ox-auth-nav">
+          <a href="/" class="ox-brand">
+            <span class="ox-brand-name">First Crack</span>
+          </a>
+          <div class="ox-auth-nav-end">
+            <a href="/" class="ox-utility-link">Home</a>
+            <a href="/about" class="ox-utility-link">About</a>
+            <a href="/faq" class="ox-utility-link is-active">FAQ</a>
+          </div>
+        </nav>
+      </header>
+
+      <section class="ox-faq-hero">
+        <div class="ox-shell ox-faq-hero-inner">
+          <div class="ox-eyebrow">
+            <span class="ox-line"></span>
+            Support
+          </div>
+          <h1 class="ox-faq-title">Frequently asked questions</h1>
+          <p class="ox-faq-lead">
+            {PLAN_COPY.pricingLead}
+          </p>
+        </div>
+      </section>
+
+      <section class="ox-faq-body">
+        <div class="ox-shell">
+          <div class="ox-faq-list">
+            {
+              FAQ_ITEMS.map((item) => (
+                <details class="ox-faq-item" open>
+                  <summary>{item.q}</summary>
+                  <p>{item.a}</p>
+                </details>
+              ))
+            }
+          </div>
+
+          <div class="ox-faq-links">
+            <a href={DOCS.plans} class="ox-btn ox-btn-outline">Plans docs</a>
+            <a href={DOCS.machines} class="ox-btn ox-btn-outline">Machine docs</a>
+            <a href="/download" class="ox-btn ox-btn-solid">Download app</a>
+            <a
+              href="mailto:support@firstcrackiscoming.com"
+              class="ox-btn ox-btn-outline"
+            >
+              Contact support
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <footer class="ox-utility-footer">
+        <div class="ox-shell ox-utility-footer-inner">
+          <span>© {year} First Crack</span>
+          <nav aria-label="Footer">
+            <a href="/about">About</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
+            <a href="mailto:contact@firstcrackiscoming.com">Contact</a>
+          </nav>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  body.ox {
+    --ox-bg: #fafaf9;
+    --ox-fg: #080503;
+    --ox-muted: #5e534a;
+    --ox-muted-bg: #ecebe7;
+    --ox-border: rgba(8, 5, 3, 0.06);
+    --ox-border-strong: rgba(8, 5, 3, 0.12);
+    --ox-sans: "Instrument Sans", system-ui, -apple-system, sans-serif;
+    --ox-mono: "JetBrains Mono", ui-monospace, monospace;
+    --ox-max: 1400px;
+    --ox-pad: 24px;
+
+    margin: 0;
+    background: var(--ox-bg);
+    color: var(--ox-fg);
+    font-family: var(--ox-sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @media (min-width: 1024px) {
+    body.ox {
+      --ox-pad: 48px;
+    }
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  .noise-overlay {
+    position: relative;
+  }
+
+  .ox-grid-bg {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background-image:
+      linear-gradient(var(--ox-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--ox-border) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 20%, transparent 70%);
+  }
+
+  .ox-shell {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: var(--ox-max);
+    margin: 0 auto;
+    padding-left: var(--ox-pad);
+    padding-right: var(--ox-pad);
+  }
+
+  .ox-auth-header {
+    position: relative;
+    z-index: 2;
+    border-bottom: 1px solid var(--ox-border);
+  }
+
+  .ox-auth-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: var(--ox-max);
+    margin: 0 auto;
+    padding: 16px var(--ox-pad);
+  }
+
+  .ox-brand {
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+
+  .ox-auth-nav-end {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ox-utility-link {
+    text-decoration: none;
+    font-size: 14px;
+    color: var(--ox-muted);
+    padding: 8px 12px;
+  }
+
+  .ox-utility-link:hover,
+  .ox-utility-link.is-active {
+    color: var(--ox-fg);
+  }
+
+  .ox-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--ox-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ox-muted);
+    margin-bottom: 16px;
+  }
+
+  .ox-line {
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--ox-fg);
+    opacity: 0.35;
+  }
+
+  .ox-faq-hero {
+    padding: 64px 0 32px;
+  }
+
+  .ox-faq-title {
+    margin: 0 0 16px;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+  }
+
+  .ox-faq-lead {
+    margin: 0;
+    max-width: 40rem;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--ox-muted);
+  }
+
+  .ox-faq-body {
+    padding: 24px 0 96px;
+  }
+
+  .ox-faq-list {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--ox-border-strong);
+  }
+
+  .ox-faq-item {
+    border-bottom: 1px solid var(--ox-border-strong);
+    padding: 0;
+  }
+
+  .ox-faq-item summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 20px 0;
+    font-size: 1.0625rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  .ox-faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .ox-faq-item summary::after {
+    content: "+";
+    float: right;
+    font-family: var(--ox-mono);
+    color: var(--ox-muted);
+  }
+
+  .ox-faq-item[open] summary::after {
+    content: "−";
+  }
+
+  .ox-faq-item p {
+    margin: 0 0 20px;
+    max-width: 42rem;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--ox-muted);
+  }
+
+  .ox-faq-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 40px;
+  }
+
+  .ox-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 18px;
+    font-family: var(--ox-sans);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: 0;
+    cursor: pointer;
+  }
+
+  .ox-btn-solid {
+    background: var(--ox-fg);
+    color: #fff;
+    border-color: var(--ox-fg);
+  }
+
+  .ox-btn-outline {
+    background: transparent;
+    color: var(--ox-fg);
+    border-color: var(--ox-border-strong);
+  }
+
+  .ox-btn-outline:hover {
+    border-color: var(--ox-fg);
+  }
+
+  .ox-utility-footer {
+    border-top: 1px solid var(--ox-border);
+    padding: 24px 0;
+  }
+
+  .ox-utility-footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--ox-muted);
+  }
+
+  .ox-utility-footer nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .ox-utility-footer a {
+    text-decoration: none;
+  }
+
+  .ox-utility-footer a:hover {
+    color: var(--ox-fg);
+  }
+</style>

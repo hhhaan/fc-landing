@@ -4,6 +4,15 @@ import Favicon from "../components/ui/Favicon.astro";
 import OxNavAuth from "../components/ui/OxNavAuth.astro";
 import OxNavAuthMobile from "../components/ui/OxNavAuthMobile.astro";
 // import OxWorkflowPanel from "../components/ui/OxWorkflowPanel.astro";
+import {
+  DOCS,
+  DOCS_BASE,
+  FAQ_ITEMS,
+  HARDWARE,
+  MACHINE_BRANDS,
+  PLAN_COPY,
+  PROOFS,
+} from "../content/product";
 import { getViewer } from "../lib/authState";
 import { getMarketPricing, resolveBillingMarket } from "../lib/market";
 import { resolveTrialCta } from "../lib/trialCta";
@@ -57,12 +66,7 @@ const pains = [
   },
 ];
 
-const proofs = [
-  { label: "Desktop-native", detail: "macOS & Windows" },
-  { label: "Floor-ready", detail: "Modbus · Phidget · Artisan" },
-  { label: "Live curves", detail: "BT · ET · RoR" },
-  { label: "Risk-free try", detail: "14 days · 20 batches" },
-];
+const proofs = PROOFS;
 
 const steps = [
   {
@@ -82,12 +86,7 @@ const steps = [
   },
 ];
 
-const hardware = [
-  { tag: "Protocol", name: "Modbus", desc: "PLC and controller links" },
-  { tag: "Sensors", name: "Phidget", desc: "Thermocouple & probe interfaces" },
-  { tag: "Ecosystem", name: "Artisan-ready", desc: "Reuse familiar machine configs" },
-  { tag: "Platform", name: "Desktop-native", desc: "macOS & Windows installers" },
-];
+const hardware = HARDWARE;
 
 const marqueeItems = [
   "Live BT / ET / RoR",
@@ -96,6 +95,7 @@ const marqueeItems = [
   "Modbus",
   "Phidget",
   "Artisan-ready",
+  "Probat · Giesen · Diedrich",
   "Roast planner",
   "Inventory",
   "Production reports",
@@ -103,6 +103,8 @@ const marqueeItems = [
   "macOS",
   "Windows",
 ];
+
+const metaDescription = `Desktop roasting software for specialty coffee. Live BT/ET/RoR, searchable batches, machine connect. ${PLAN_COPY.trialBadge} · Pro from ${pricing.heroProMonthly}/mo.`;
 ---
 
 <html lang="en">
@@ -110,7 +112,7 @@ const marqueeItems = [
     <meta charset="UTF-8" />
     <Favicon />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Desktop roasting software for specialty coffee. Live BT/ET/RoR, searchable batches, machine connect. 14-day trial · Pro from $49/mo." />
+    <meta name="description" content={metaDescription} />
     <title>First Crack — Desktop roasting software</title>
     <link rel="alternate" hreflang="x-default" href="/" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -196,8 +198,8 @@ const marqueeItems = [
             </p>
 
             <div class="ox-hero-trust reveal reveal-d2">
-              <span>14-day trial · 20 free batches</span>
-              <span>then Pro from <strong>{pricing.heroProMonthly}</strong>/mo</span>
+              <span>{PLAN_COPY.trialHeroTrust}</span>
+              <span>Pro from <strong>{pricing.heroProMonthly}</strong>/mo · Free {PLAN_COPY.freeFeatureBatches}</span>
             </div>
 
             <div class="ox-hero-actions reveal reveal-d3">
@@ -385,6 +387,9 @@ const marqueeItems = [
               sync when you’re back in the office. Connect the gear you already
               own.
             </p>
+            <p class="ox-platform-brands reveal">
+              Common setups: {MACHINE_BRANDS}.
+            </p>
             <div class="ox-stats reveal">
               <div>
                 <div class="ox-stat-num">macOS</div>
@@ -399,9 +404,14 @@ const marqueeItems = [
                 <div class="ox-stat-label">sync included</div>
               </div>
             </div>
-            <a href="/download" class="ox-btn ox-btn-solid ox-btn-lg reveal">
-              Download desktop app
-            </a>
+            <div class="ox-platform-actions reveal">
+              <a href="/download" class="ox-btn ox-btn-solid ox-btn-lg">
+                Download desktop app
+              </a>
+              <a href={DOCS.machines} class="ox-btn ox-btn-outline ox-btn-lg">
+                Machine setup docs
+              </a>
+            </div>
           </div>
 
           <ul class="ox-hw-list reveal">
@@ -432,8 +442,7 @@ const marqueeItems = [
               for serious roasters
             </h2>
             <p class="ox-lead ox-lead-center reveal">
-              Start with a 14-day trial (20 batches). Cancel anytime before renewal.
-              Need more seats? Enterprise covers teams.
+              {PLAN_COPY.pricingLead} Need more seats? Enterprise covers teams.
             </p>
           </div>
 
@@ -473,14 +482,14 @@ const marqueeItems = [
               </div>
               <p class="ox-price-note" id="pro-yearly-note" hidden>{pricing.pro.yearlyTotal}</p>
               <ul>
-                <li>200 batches / billing month</li>
+                <li>{PLAN_COPY.proFeatureBatches}</li>
                 <li>Active Roast + history + profiles</li>
                 <li>Beans, blends, roast schedule</li>
                 <li>1 seat</li>
                 <li>Desktop app (macOS &amp; Windows)</li>
               </ul>
               <a id="pro-start-btn" href="/start-pro?plan=pro-monthly" class="ox-btn ox-btn-outline ox-btn-block" data-href-monthly="/start-pro?plan=pro-monthly" data-href-yearly="/start-pro?plan=pro-yearly">
-                Start 14-day trial
+                {PLAN_COPY.trialCtaLabel}
               </a>
             </article>
 
@@ -509,14 +518,14 @@ const marqueeItems = [
               </div>
               <p class="ox-price-note" id="proplus-yearly-note" hidden>{pricing.proPlus.yearlyTotal}</p>
               <ul>
-                <li>Unlimited batches</li>
+                <li>{PLAN_COPY.proPlusFeatureBatches}</li>
                 <li>Everything in Pro</li>
                 <li>Shopify &amp; store connectors</li>
                 <li>Order sync (Naver, Cafe24, Shopify)</li>
                 <li>1 seat</li>
               </ul>
               <a id="proplus-start-btn" href="/start-pro?plan=pro-plus-monthly" class="ox-btn ox-btn-solid ox-btn-block" data-href-monthly="/start-pro?plan=pro-plus-monthly" data-href-yearly="/start-pro?plan=pro-plus-yearly">
-                Start 14-day trial
+                {PLAN_COPY.trialCtaLabel}
               </a>
             </article>
 
@@ -541,6 +550,45 @@ const marqueeItems = [
               </a>
             </article>
           </div>
+
+          <p class="ox-price-footnote reveal">
+            {PLAN_COPY.freeShort} after trial if you don’t continue paid. Full matrix on{" "}
+            <a href="/faq">FAQ</a> and{" "}
+            <a href={DOCS.plans}>plans docs</a>.
+          </p>
+        </div>
+      </section>
+
+      <!-- ── FAQ ──────────────────────────────────────────── -->
+      <section class="ox-section ox-faq ox-pane" id="faq">
+        <div class="ox-shell">
+          <div class="ox-section-head">
+            <div class="ox-eyebrow reveal">
+              <span class="ox-line"></span>
+              FAQ
+            </div>
+            <h2 class="ox-h2 reveal">
+              Straight answers
+              <br />
+              <span class="ox-muted">before the first charge.</span>
+            </h2>
+          </div>
+          <div class="ox-faq-list">
+            {
+              FAQ_ITEMS.map((item, i) => (
+                <details class="ox-faq-item reveal" style={`--d: ${i * 40}ms`}>
+                  <summary>{item.q}</summary>
+                  <p>{item.a}</p>
+                </details>
+              ))
+            }
+          </div>
+          <p class="ox-faq-more reveal">
+            More detail in{" "}
+            <a href="/faq">all FAQs</a>,{" "}
+            <a href={DOCS.machines}>machine docs</a>, or{" "}
+            <a href="mailto:contact@firstcrackiscoming.com">email us</a>.
+          </p>
         </div>
       </section>
 
@@ -566,7 +614,7 @@ const marqueeItems = [
               </a>
             </div>
             <p class="ox-hero-fine reveal">
-              14-day trial · 20 free batches · Cancel anytime before renewal
+              {PLAN_COPY.trialFine}
             </p>
           </div>
         </div>
@@ -588,13 +636,15 @@ const marqueeItems = [
                 <a href="#features">Features</a>
                 <a href="#how-it-works">Workflow</a>
                 <a href="#pricing">Pricing</a>
+                <a href="#faq">FAQ</a>
                 <a href="/download">Download</a>
-                <a href="https://docs.firstcrackiscoming.com">Docs</a>
+                <a href={DOCS_BASE}>Docs</a>
               </div>
               <div>
                 <h4>Company</h4>
                 <a href="/about">About</a>
                 <a href="/careers">Careers</a>
+                <a href="/faq">FAQ</a>
                 <a href="mailto:contact@firstcrackiscoming.com">Contact</a>
               </div>
               <div>
@@ -1904,6 +1954,21 @@ const marqueeItems = [
     }
   }
 
+  .ox-platform-brands {
+    margin: 0 0 28px;
+    max-width: 36rem;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ox-muted);
+  }
+
+  .ox-platform-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
   .ox-stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -2182,6 +2247,68 @@ const marqueeItems = [
   }
   .ox-price-card.is-featured .ox-btn-solid:hover {
     opacity: 0.92;
+  }
+
+  .ox-price-footnote {
+    margin: 32px 0 0;
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ox-muted);
+  }
+  .ox-price-footnote a {
+    color: var(--ox-fg);
+    text-underline-offset: 2px;
+  }
+
+  /* FAQ */
+  .ox-faq {
+    border-top: 1px solid var(--ox-border);
+  }
+  .ox-faq-list {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--ox-border-strong);
+    max-width: 48rem;
+  }
+  .ox-faq-item {
+    border-bottom: 1px solid var(--ox-border-strong);
+  }
+  .ox-faq-item summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 20px 0;
+    font-size: 1.0625rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+  .ox-faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .ox-faq-item summary::after {
+    content: "+";
+    float: right;
+    font-family: var(--ox-mono);
+    color: var(--ox-muted);
+  }
+  .ox-faq-item[open] summary::after {
+    content: "−";
+  }
+  .ox-faq-item p {
+    margin: 0 0 20px;
+    max-width: 42rem;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--ox-muted);
+  }
+  .ox-faq-more {
+    margin: 28px 0 0;
+    font-size: 14px;
+    color: var(--ox-muted);
+  }
+  .ox-faq-more a {
+    color: var(--ox-fg);
+    text-underline-offset: 2px;
   }
 
   /* Final CTA */

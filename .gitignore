@@ -40,3 +40,4 @@ scripts/polar-products.out.env
 DESIGN.md
 docs/superpowers/*
 apps/admin/.env.local
+.vercel

@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import Favicon from "../components/ui/Favicon.astro";
 import OxNavAuth from "../components/ui/OxNavAuth.astro";
+import { DOCS, PLAN_COPY } from "../content/product";
 import { getViewer } from "../lib/authState";
 import { resolveTrialCta } from "../lib/trialCta";
 
@@ -17,6 +18,12 @@ const DOWNLOAD_LINKS = {
   windows:
     "https://pub-32f64eaa15504eeba9203bcbbced439d.r2.dev/releases/latest/First-Crack-Windows.msi",
 };
+
+const nextSteps = [
+  { n: "01", title: "Install", body: "Run the macOS .dmg or Windows .msi for your machine." },
+  { n: "02", title: "Sign in", body: "Use the same account you created on the web." },
+  { n: "03", title: "Connect", body: "Add your roaster (Modbus / Phidget / Artisan-ready) and run a trial batch." },
+];
 ---
 
 <html lang="en">
@@ -86,7 +93,10 @@ const DOWNLOAD_LINKS = {
                 >
                   Intel Mac (.dmg)
                 </a>
-                <p class="ox-dl-note">Latest stable build</p>
+                <p class="ox-dl-note">
+                  Latest stable ·{" "}
+                  <a href={DOCS.installMac}>Install guide</a>
+                </p>
               </div>
             </article>
 
@@ -104,10 +114,35 @@ const DOWNLOAD_LINKS = {
                 >
                   Download (.msi)
                 </a>
-                <p class="ox-dl-note">Latest stable build</p>
+                <p class="ox-dl-note">
+                  Latest stable ·{" "}
+                  <a href={DOCS.installWindows}>Install guide</a>
+                </p>
               </div>
             </article>
           </div>
+
+          <ol class="ox-dl-steps">
+            {
+              nextSteps.map((s) => (
+                <li>
+                  <span class="ox-dl-step-n">{s.n}</span>
+                  <div>
+                    <strong>{s.title}</strong>
+                    <p>{s.body}</p>
+                  </div>
+                </li>
+              ))
+            }
+          </ol>
+
+          <p class="ox-dl-docs">
+            <a href={DOCS.systemRequirements}>System requirements</a>
+            <span aria-hidden="true">·</span>
+            <a href={DOCS.machines}>Machine setup</a>
+            <span aria-hidden="true">·</span>
+            <a href="/faq">FAQ</a>
+          </p>
 
           <p class="ox-dl-fine">
             {
@@ -120,7 +155,8 @@ const DOWNLOAD_LINKS = {
                 <>
                   New here?{" "}
                   <a href={trialCta.href}>{trialCta.label}</a>
-                  — 14-day trial, 20 batches.
+                  {" — "}
+                  {PLAN_COPY.downloadTrialNote}.
                 </>
               )
             }
@@ -132,6 +168,7 @@ const DOWNLOAD_LINKS = {
         <div class="ox-shell ox-dl-footer-inner">
           <span>© {year} First Crack</span>
           <nav aria-label="Footer">
+            <a href="/faq">FAQ</a>
             <a href="/privacy">Privacy</a>
             <a href="/terms">Terms</a>
             <a href="mailto:contact@firstcrackiscoming.com">Contact</a>
@@ -471,6 +508,62 @@ const DOWNLOAD_LINKS = {
     margin-top: auto;
   }
 
+  .ox-dl-steps {
+    list-style: none;
+    margin: 40px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 16px;
+  }
+  @media (min-width: 768px) {
+    .ox-dl-steps {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+  }
+  .ox-dl-steps li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    padding: 16px 0;
+    border-top: 1px solid var(--ox-border-strong);
+  }
+  .ox-dl-step-n {
+    font-family: var(--ox-mono);
+    font-size: 12px;
+    color: var(--ox-muted);
+    padding-top: 2px;
+  }
+  .ox-dl-steps strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+  .ox-dl-steps p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ox-muted);
+  }
+  .ox-dl-docs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin: 28px 0 0;
+    font-size: 13px;
+    color: var(--ox-muted);
+  }
+  .ox-dl-docs a {
+    color: var(--ox-fg);
+    text-underline-offset: 2px;
+  }
+  .ox-dl-note a {
+    color: var(--ox-fg);
+    text-underline-offset: 2px;
+  }
   .ox-dl-note {
     margin: 4px 0 0;
     text-align: center;

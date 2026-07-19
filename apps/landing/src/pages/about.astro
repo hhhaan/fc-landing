@@ -1,45 +1,18 @@
 ---
 import "../styles/global.css";
 import Favicon from "../components/ui/Favicon.astro";
+import {
+  ABOUT,
+  DOCS,
+  HARDWARE,
+  MACHINE_BRANDS,
+  PLAN_COPY,
+} from "../content/product";
 
 const year = new Date().getFullYear();
-
-const stats = [
-  { label: "Team", value: "Remote-first" },
-  { label: "Cadence", value: "Ship weekly" },
-  { label: "Platforms", value: "macOS & Windows" },
-  { label: "Trial", value: "14 days · 20 batches" },
-];
-
-const values = [
-  {
-    n: "01",
-    title: "Floor-first",
-    body: "Desktop-native, low-latency, offline-capable — built for the machine room, not a browser tab.",
-  },
-  {
-    n: "02",
-    title: "Reproducible",
-    body: "Every batch logged, searchable, and comparable. Consistency is the product.",
-  },
-  {
-    n: "03",
-    title: "Ship weekly",
-    body: "Small team, short loops. Features reach roasters in days, not quarters.",
-  },
-  {
-    n: "04",
-    title: "Craft matters",
-    body: "Every hire learns to roast. You build tools for a craft you've practiced yourself.",
-  },
-];
-
-const hardware = [
-  { tag: "Protocol", name: "Modbus", desc: "Industrial PLC / controller links" },
-  { tag: "Sensors", name: "Phidget", desc: "Thermocouple & probe interfaces" },
-  { tag: "Ecosystem", name: "Artisan-ready", desc: "Familiar machine configurations" },
-  { tag: "Platform", name: "Desktop-native", desc: "macOS & Windows installers" },
-];
+const stats = ABOUT.stats;
+const values = ABOUT.values;
+const hardware = HARDWARE;
 ---
 
 <html lang="en">
@@ -49,7 +22,7 @@ const hardware = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="About First Crack — roasting software built for specialty coffee roasteries."
+      content="About First Crack — Seoul-based team building desktop roasting software for specialty coffee. Floor-first, Modbus/Phidget, macOS & Windows."
     />
     <title>About — First Crack</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -86,7 +59,9 @@ const hardware = [
             We make tools for roasters
           </h1>
           <p class="ox-about-lead reveal reveal-d2">
-            First Crack was built because roasting software should feel like an extension of the roast floor — not a spreadsheet with extra steps.
+            First Crack is desktop roasting software for specialty coffee —
+            built so profiles, live curves, and the next shift live in one place,
+            not in a spreadsheet, a browser tab, or someone’s head.
           </p>
           <dl class="ox-about-stats reveal reveal-d3">
             {
@@ -106,13 +81,18 @@ const hardware = [
           <div class="ox-about-story-copy reveal">
             <h2 class="ox-h2">What we do</h2>
             <p>
-              First Crack is a native desktop application for specialty coffee roasters.
-              It connects directly to roasting machines via Modbus and Phidget, displays live temperature curves,
-              and manages everything from batch history to production scheduling.
+              First Crack is a native desktop application for specialty coffee roasteries.
+              It connects to machines via Modbus and Phidget, shows live BT/ET/RoR,
+              and covers batch history, profiles, greens, and day planning — so the floor and the office share the same record.
             </p>
             <p>
-              We ship on macOS and Windows, with cloud sync for teams. Our users range from home roasters
-              to multi-machine production floors — same software, tuned for each scale.
+              HQ is in Seoul; the team is remote-first and ships weekly on macOS and Windows,
+              with cloud sync when you’re off the floor. We focus on production roasteries that can’t afford a drifting cup —
+              not generic SaaS dashboards bolted onto USB.
+            </p>
+            <p>
+              Supported paths include {MACHINE_BRANDS}. Setup guides live in our{" "}
+              <a href={DOCS.machines}>machine docs</a>.
             </p>
           </div>
           <div class="ox-about-panel reveal reveal-d1" aria-hidden="true">
@@ -182,10 +162,9 @@ const hardware = [
             The best roasting software comes from understanding the craft itself — not from copying generic SaaS patterns.
           </blockquote>
           <p class="ox-about-work-body">
-            We're a small, remote team spread across time zones. We ship weekly, talk to users daily,
-            and believe software should earn its place on the roast floor.
-            Every new team member gets a roasting workshop — because you can't build tools for
-            something you haven't done.
+            We’re a small team based around Seoul and remote collaborators across time zones.
+            We ship weekly, talk to users on the floor, and expect every hire to learn to roast —
+            because software should earn its place next to the machine, not above it.
           </p>
         </div>
       </section>
@@ -214,7 +193,11 @@ const hardware = [
         <div class="ox-shell ox-about-hw-inner">
           <div class="ox-about-hw-head reveal">
             <h2 class="ox-h2">Built for real machines</h2>
-            <p>Industrial protocols and desktop installers — not a web dashboard with a USB adapter.</p>
+            <p>
+              Industrial protocols and desktop installers — not a web dashboard with a USB adapter.
+              {" "}
+              <a href={DOCS.machines}>See setup docs</a>.
+            </p>
           </div>
           <ul class="ox-about-hw-list reveal reveal-d1">
             {
@@ -236,11 +219,12 @@ const hardware = [
         <div class="ox-shell ox-about-product-inner reveal">
           <h2 class="ox-h2 ox-h2-on-dark">Try it on your floor</h2>
           <p class="ox-about-product-lead">
-            Download the desktop app or start a trial — 14 days, 20 batches.
+            Download the desktop app or start a {PLAN_COPY.trialBadge.toLowerCase()}.
+            After trial: {PLAN_COPY.freeShort} or continue paid.
           </p>
           <div class="ox-about-product-actions">
             <a href="/download" class="ox-btn ox-btn-solid ox-btn-lg ox-btn-inverted">Download app</a>
-            <a href="/signup" class="ox-btn ox-btn-outline ox-btn-lg ox-btn-on-dark">Start trial</a>
+            <a href="/signup" class="ox-btn ox-btn-outline ox-btn-lg ox-btn-on-dark">{PLAN_COPY.trialCtaLabel}</a>
           </div>
         </div>
       </section>
@@ -266,6 +250,7 @@ const hardware = [
           <nav aria-label="Footer">
             <a href="/about">About</a>
             <a href="/careers">Careers</a>
+            <a href="/faq">FAQ</a>
             <a href="/privacy">Privacy</a>
             <a href="mailto:contact@firstcrackiscoming.com">Contact</a>
           </nav>
@@ -604,6 +589,12 @@ const hardware = [
     font-size: 15px;
     line-height: 1.75;
     color: var(--ox-muted);
+  }
+
+  .ox-about-story-copy a,
+  .ox-about-hw-head a {
+    color: var(--ox-fg);
+    text-underline-offset: 2px;
   }
 
   .ox-about-story-copy p:last-child {

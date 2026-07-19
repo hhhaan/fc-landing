@@ -37,7 +37,8 @@ apps/landing/
     │   ├── auth.ts          # requireLogin()
     │   ├── supabase.ts      # SSR + browser client factories
     │   └── market.ts        # geo market resolution (home)
-    ├── content/markets.ts   # per-market copy + pricing
+    ├── content/markets.ts   # per-market pricing
+    ├── content/product.ts   # Free/Trial/plan copy, machines, FAQ
     ├── pages/               # file-based routes (see table below)
     └── styles/global.css    # legacy design tokens — do not extend for new UI
 ```
@@ -55,6 +56,7 @@ apps/landing/
 | `/signup` | `signup.astro` | Auth | Trial signup + terms checkbox |
 | `/download` | `download.astro` | Utility | Platform cards, OS detect script |
 | `/about` | `about.astro` | Company | Story, values, hardware list; dark product CTA |
+| `/faq` | `faq.astro` | Support | Free vs trial, machines, plans (`src/content/product.ts`) |
 | `/careers` | `careers.astro` | Careers | Job table + client-side filters |
 | `/careers/*` | `careers/*.astro` | Job detail | Content slots → `OxJobShell` |
 | `/privacy` | `privacy.astro` | Legal | Prose slot → `OxLegalShell` |

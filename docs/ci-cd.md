@@ -57,7 +57,7 @@ Admin **runtime** secrets (`SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_PASSWORD`, …) s
 | App | URL |
 |-----|-----|
 | Landing | https://fc-landing.pages.dev · https://firstcrackiscoming.com |
-| Cupping | https://fc-cupping.pages.dev |
+| Cupping | https://cup.firstcrackiscoming.com (Pages: fc-cupping.pages.dev) |
 | Docs | https://fc-docs-386.pages.dev (custom: `docs.firstcrackiscoming.com` if linked) |
 | Admin | https://fc-admin-sigma.vercel.app |
 
