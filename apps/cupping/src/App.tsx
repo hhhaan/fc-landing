@@ -752,10 +752,62 @@ export function App() {
                 </a>
             </footer>
 
-            <div className="sticky-bar">
+            <div className={`sticky-bar${multi ? ' sticky-bar--multi' : ''}`}>
+                {multi ? (
+                    <div className="sticky-bar__samples" role="tablist" aria-label="Samples">
+                        <button
+                            type="button"
+                            className="sticky-bar__step"
+                            aria-label="Previous sample"
+                            disabled={syncing}
+                            onClick={() => {
+                                const prev = samples[(selectedIdx - 1 + samples.length) % samples.length];
+                                openSample(prev.id);
+                            }}
+                        >
+                            ‹
+                        </button>
+                        <div className="sticky-bar__strip">
+                            {samples.map((s, i) => {
+                                const st = draftStatus(drafts[s.id]);
+                                const active = s.id === selectedSample.id;
+                                return (
+                                    <button
+                                        key={s.id}
+                                        type="button"
+                                        role="tab"
+                                        aria-selected={active}
+                                        aria-label={`Sample ${i + 1}`}
+                                        className={`sticky-bar__dot${active ? ' sticky-bar__dot--on' : ''} sticky-bar__dot--${st}`}
+                                        disabled={syncing}
+                                        onClick={() => {
+                                            if (s.id !== selectedSample.id) openSample(s.id);
+                                        }}
+                                    >
+                                        {i + 1}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                        <button
+                            type="button"
+                            className="sticky-bar__step"
+                            aria-label="Next sample"
+                            disabled={syncing}
+                            onClick={() => {
+                                const next = samples[(selectedIdx + 1) % samples.length];
+                                openSample(next.id);
+                            }}
+                        >
+                            ›
+                        </button>
+                    </div>
+                ) : null}
                 <div className="sticky-bar__inner">
                     <div>
-                        <div className="sticky-bar__total-label">Total</div>
+                        <div className="sticky-bar__total-label">
+                            {multi ? `${selectedIdx + 1}/${samples.length} · Total` : 'Total'}
+                        </div>
                         <div className="sticky-bar__total-value">{liveTotal.toFixed(2)}</div>
                     </div>
                     <button
