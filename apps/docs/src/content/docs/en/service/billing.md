@@ -9,11 +9,11 @@ Paid plans (Pro / Pro+) bill through **Polar**. Accounts use Supabase auth; subs
 
 1. Sign in at [firstcrackiscoming.com](https://firstcrackiscoming.com).
 2. Choose Pro or Pro+ on [Plans](/en/service/plans/).
-3. **Start trial** or upgrade → `/start-pro?plan=monthly` or `yearly`.
-4. Complete **Polar checkout** with your card.
+3. **Start trial** or upgrade → `/start-pro?plan=pro-monthly` / `pro-yearly` (or `pro-plus-monthly` / `pro-plus-yearly`).
+4. Complete **Polar checkout**. A 14-day trial may be included.
 5. Confirm Pro status and next bill date on the [account page](https://firstcrackiscoming.com/account).
 
-Adding a card during trial starts paid billing when the trial ends.
+When the trial ends, paid billing for the selected plan starts automatically. Cancel before the trial ends to avoid the first paid charge.
 
 ## Billing period
 
@@ -31,8 +31,8 @@ Enterprise is monthly/yearly contract — [sales](mailto:contact@firstcrackiscom
 
 **On cancel:** Pro features remain until the current period ends, then free tier (20 batches/month).
 
-:::caution[No prorated refund]
-Ending mid-period does **not** refund unused days (terms). See [Refund policy](/en/service/refund/).
+:::caution[No refunds by default]
+Ending mid-period does **not** refund unused days. Fees are non-refundable except as in the [Refund policy](/en/service/refund/).
 :::
 
 ## Change payment method

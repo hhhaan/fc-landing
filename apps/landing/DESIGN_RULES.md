@@ -382,7 +382,7 @@ Use **one** inverted band per page flow for contrast; do not stack multiple dark
 - **Language:** English for marketing and product UI (legacy Korean strings should be migrated when touching a page).
 - **Voice:** Direct, technical, floor-oriented. Avoid buzzwords.
 - **CTAs:** “Start trial”, “Download”, “Sign in” — verb-first, no exclamation marks.
-- **Trial facts:** 14 days, 20 batches, no credit card — repeat where relevant.
+- **Trial facts:** 14 days, 20 batches — repeat where relevant. Do not claim “no credit card.”
 
 ---
 

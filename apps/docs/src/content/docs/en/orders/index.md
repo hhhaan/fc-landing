@@ -7,7 +7,7 @@ Pull shop orders to calculate roast demand and manage finished-goods stock.
 API keys stay **on the server only** — the desktop app never re-downloads them.
 
 :::note[Plans]
-Order channels are available on **Enterprise**. If you see a lock screen, check Settings → Billing.
+Order channels are available on **Pro+** and **Enterprise**. If you see a lock screen, check Settings → Billing.
 :::
 
 ## Supported channels

@@ -18,9 +18,9 @@ First Crack provides coffee roasting **profile management**, **live roast monito
 ## Billing summary
 
 - **Free:** 20 batches/month
-- **Paid:** monthly or yearly (USD base, Polar)
+- **Paid:** monthly or yearly (market currency USD / KRW / JPY, Polar)
 - **Cancel:** anytime; access through **current period end**
-- **Refunds:** [Refund policy](/en/service/refund/) — no mid-period proration
+- **Refunds:** generally none — [Refund policy](/en/service/refund/) (duplicates / legal requirements only)
 
 ## Data
 

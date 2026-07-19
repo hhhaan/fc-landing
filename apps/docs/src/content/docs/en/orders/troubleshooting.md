@@ -5,7 +5,7 @@ description: Checklist for connect failures, missing orders, and unmapped SKUs
 
 ## Connect fails
 
-1. **Plan** — if Orders is locked, confirm Enterprise (order sync) plan
+1. **Plan** — if Orders is locked, confirm **Pro+** or **Enterprise** (order sync)
 2. **Copy/paste** — trim spaces/newlines on Client ID / Secret / token
 3. **Platform permissions**
    - Naver: SELF app, valid secret

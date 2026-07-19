@@ -3,54 +3,57 @@ title: Refund policy
 description: First Crack subscription refund and cancellation policy
 ---
 
-Refunds follow the [Terms of Service](https://firstcrackiscoming.com/terms) and the rules below.
+Refunds follow the [Terms of Service](https://firstcrackiscoming.com/terms) and the rules below. If this page conflicts with the Terms, **the Terms control**.
 
 ## Core rules
 
-### No mid-period prorated refunds
+### Default: no refunds
 
-**We do not prorate already-started billing periods.**
+**Subscription fees are non-refundable by default.**
+
+We do **not** prorate or partially refund billing periods already started — including yearly prepaid plans.
 
 If you cancel mid-cycle you keep Pro until the **period end date**; unused days are not refunded.
 
-Example: cancel monthly Pro on day 15 → use until month end, no partial refund.
+Example: cancel monthly Pro on day 15 → use until period end, no partial refund.
 
 ### Trial
 
-The **14-day / 20-batch** trial needs no card. Without a card on file, nothing charges when the trial ends.
+Paid plans may include a **14-day trial** at checkout. Cancel before the trial ends to avoid the first paid charge. Amounts billed after a completed trial are not refundable.
 
-## Full refund requests (exceptions)
+## Exceptions (discretionary, narrow)
 
-Email [support@firstcrackiscoming.com](mailto:support@firstcrackiscoming.com) with **payment date, account email, and reason**. Cases are reviewed individually.
+You may email [support@firstcrackiscoming.com](mailto:support@firstcrackiscoming.com) **only** for the cases below. Change of mind, feature dissatisfaction, or non-use alone are **not** refunded.
 
-| Situation | Suggested window |
-|-----------|------------------|
-| **First paid charge** not as expected, or duplicate charge | Monthly: **7 days** from charge / Yearly: **14 days** |
-| **Unused** first yearly payment (no batch/Pro use) | 14 days from charge |
-| **Double charge** or system error | As soon as discovered |
+| Situation | Handling |
+|-----------|----------|
+| **Double charge** or clear payment-system duplicate | After verification, refund of the **excess** only may be considered |
+| Applicable law **requires** withdrawal/refund rights | Only within the scope required by law |
 
-Windows are guidelines; terms and Polar policies take priority.
+Include **account email, payment date, plan, reason, and proof**. Approval and amount are at our discretion; Terms, Polar policy, and law take priority.
 
-## Not refunded
+## Not refunded (examples)
 
-- Mid-period “change of mind” after **any** Pro use for remaining days
-- Renewals after trial that auto-charged — cancel is fine; no retroactive refund of past periods
-- Enterprise **contracts** with separate terms — contract wins
+- Change of mind after **any** use in the paid period
+- Normal auto-renewal after trial
+- Mid-year cancel or unused time on annual plans
+- “Not what I expected,” device/network issues, misconfigured integrations
+- Enterprise **contracts** with separate terms — **contract wins**
 
-## Process
+## Process (exceptions only)
 
 1. Email: [support@firstcrackiscoming.com](mailto:support@firstcrackiscoming.com)
-2. Include: account email, payment date, plan (monthly/yearly), reason
-3. After review, refund via Polar to the card or as instructed
-4. Access may end immediately or per refund decision
+2. Include: account email, payment date, plan (monthly/yearly), reason, receipt/screenshot
+3. After review, instructions via Polar if approved
+4. Access may end immediately or as stated when a refund is issued
 
 ## Cancel vs refund
 
 | | Cancel | Refund |
 |---|--------|--------|
-| **Meaning** | Stop next renewal; keep current period | Return some/all money already paid |
-| **How** | Polar portal or email | Email refund request |
-| **Remaining period** | Still usable (no refund) | Access may end when refunded |
+| **Meaning** | Stop next renewal; keep current period | Return money already paid (generally no) |
+| **How** | Polar portal or email | Email only for exceptions above |
+| **Remaining period** | Still usable (no refund) | Access may end if refunded |
 
 ## Contact
 

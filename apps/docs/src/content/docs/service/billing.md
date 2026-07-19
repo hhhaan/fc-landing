@@ -9,11 +9,11 @@ description: Pro 구독, Polar 결제, 취소 및 결제 실패
 
 1. [firstcrackiscoming.com](https://firstcrackiscoming.com) 에 로그인합니다.
 2. [요금제](/service/plans/)에서 Pro 또는 Pro+를 선택합니다.
-3. **Start trial** 또는 업그레이드 버튼 → `/start-pro?plan=monthly` 또는 `yearly` 로 이동합니다.
-4. **Polar 체크아웃** 페이지에서 카드 정보를 입력하고 결제를 완료합니다.
+3. **Start trial** 또는 업그레이드 버튼 → `/start-pro?plan=pro-monthly` / `pro-yearly` (Pro+) 또는 `pro-plus-monthly` / `pro-plus-yearly` 로 이동합니다.
+4. **Polar 체크아웃**에서 결제를 완료합니다. 14일 체험이 포함될 수 있습니다.
 5. 결제 성공 후 [계정 페이지](https://firstcrackiscoming.com/account)에서 Pro 상태와 다음 결제일을 확인합니다.
 
-체험 중 카드를 등록하면 체험 종료 후 자동으로 유료 구독이 시작됩니다.
+체험이 끝나면 선택한 플랜으로 유료 구독이 자동 시작됩니다. 체험 종료 전에 취소하면 첫 유료 청구를 막을 수 있습니다.
 
 ## 결제 주기
 
@@ -31,8 +31,8 @@ Enterprise는 월간·연간 계약 — [영업 문의](mailto:contact@firstcrac
 
 **취소 시:** 현재 결제 기간이 끝날 때까지 Pro 기능을 사용할 수 있습니다. 기간 종료 후 무료 티어(월 20배치)로 전환됩니다.
 
-:::caution[부분 기간 환불]
-결제 기간 중간 해지 시 **남은 기간에 대한 일할 환불은 없습니다** (이용약관). 자세한 내용은 [환불 규칙](/service/refund/)을 참고하세요.
+:::caution[환불 원칙]
+결제 기간 중간 해지 시 **일할·부분 환불은 없습니다**. 구독료는 원칙적으로 환불되지 않습니다. 자세한 내용은 [환불 규칙](/service/refund/)을 참고하세요.
 :::
 
 ## 결제 수단 변경

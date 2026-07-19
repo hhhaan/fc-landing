@@ -9,11 +9,11 @@ description: Pro サブスク、Polar 決済、解約と支払い失敗
 
 1. [firstcrackiscoming.com](https://firstcrackiscoming.com) にログイン
 2. [料金プラン](/ja/service/plans/) で Pro または Pro+ を選択
-3. **Start trial** またはアップグレード → `/start-pro?plan=monthly` または `yearly`
-4. **Polar チェックアウト** でカードを入力して完了
+3. **Start trial** またはアップグレード → `/start-pro?plan=pro-monthly` / `pro-yearly`（または `pro-plus-monthly` / `pro-plus-yearly`）
+4. **Polar チェックアウト** を完了（14 日トライアルが付く場合があります）
 5. 成功後 [アカウントページ](https://firstcrackiscoming.com/account) で Pro 状態と次回請求日を確認
 
-トライアル中にカードを登録すると、終了後に自動で有料サブスクが始まります。
+トライアル終了後、選択したプランの有料課金が自動で始まります。終了前に解約すれば初回の有料請求を止められます。
 
 ## 請求周期
 
@@ -31,8 +31,8 @@ Enterprise は月間・年間契約 — [営業](mailto:contact@firstcrackiscomi
 
 **解約時:** 現在の請求期間終了まで Pro 機能を利用できます。終了後は無料ティア（月 20 バッチ）になります。
 
-:::caution[期間途中の日割り返金なし]
-期間の途中で解約しても **残り日数の日割り返金はありません**（利用規約）。詳細は [返金ポリシー](/ja/service/refund/) を参照してください。
+:::caution[原則返金なし]
+期間の途中で解約しても **日割り・部分返金はありません**。料金は原則返金不可です。詳細は [返金ポリシー](/ja/service/refund/) を参照してください。
 :::
 
 ## 支払い方法の変更

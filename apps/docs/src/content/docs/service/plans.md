@@ -17,7 +17,7 @@ description: First Crack Free, Pro, Pro+, Enterprise 플랜 비교
 | **시트** | 1 | 1 | 1 | 팀 단위 |
 
 :::note[체험]
-신규 가입 시 **14일·20배치** Pro 체험이 시작됩니다. 신용카드 없이 [가입](https://firstcrackiscoming.com/signup)할 수 있습니다.
+유료 플랜 체크아웃 시 **14일·20배치** 체험이 포함될 수 있습니다. [가입](https://firstcrackiscoming.com/signup) 후 Pro / Pro+ 를 선택하세요.
 :::
 
 ## Pro
@@ -26,7 +26,7 @@ description: First Crack Free, Pro, Pro+, Enterprise 플랜 비교
 
 ## Pro+
 
-Pro 전체 + **무제한 배치**, Shopify 등 커머스 연동(로드맵 항목 포함). 배치량이 많거나 스토어 연동이 필요한 로스터리용.
+Pro 전체 + **무제한 배치**, Shopify·네이버·Cafe24 등 **주문·커머스 연동**. 배치량이 많거나 스토어 연동이 필요한 로스터리용.
 
 ## Enterprise
 

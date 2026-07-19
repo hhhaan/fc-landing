@@ -17,7 +17,7 @@ Plans are based on the **desktop app + cloud sync**. Prices on the [landing page
 | **Seats** | 1 | 1 | 1 | Team |
 
 :::note[Trial]
-New accounts get a **14-day / 20-batch** Pro trial. [Sign up](https://firstcrackiscoming.com/signup) without a card.
+Checkout for paid plans may include a **14-day / 20-batch** trial. [Sign up](https://firstcrackiscoming.com/signup), then choose Pro or Pro+.
 :::
 
 ## Pro
@@ -26,7 +26,7 @@ Core roast-floor tools — live roast, batch history, profiles, greens/blends, d
 
 ## Pro+
 
-Everything in Pro plus **unlimited batches** and commerce integrations (including roadmap items). For high volume or store sync needs.
+Everything in Pro plus **unlimited batches** and **order/commerce connectors** (Shopify, Naver, Cafe24, etc.). For high volume or store sync needs.
 
 ## Enterprise
 
