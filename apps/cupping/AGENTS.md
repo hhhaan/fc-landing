@@ -48,5 +48,8 @@ VITE_SUPABASE_ANON_KEY=
 ## Conventions
 
 - 모바일 우선 (폰으로 쓰는 폼). `index.html`은 `noindex,nofollow`.
-- 커퍼 이름은 `localStorage`(`fc_cupping_cupped_by`)에 기억.
+- 커퍼 이름 + **세션 드래프트**는 `localStorage` (`fc_cupping_cupped_by`, `fc_cupping_session_{token}`).
 - 디스크립터는 최대 20개, lowercase 정규화 (`normalizeDescriptors`).
+- **세션 시트 UX:** 샘플 간 자유 이동, 로컬 드래프트 유지, 네트워크는 **Sync**(upsert). 성공 전체 화면 없음.
+- **Share QR:** 셸 상단 `QR` 버튼 → 현재 invite URL QR + copy/share (옆 커퍼 공유).
+- Edge `submit-cupping` (fc-desktop): 같은 invite+sample+cupped_by는 update; `used_count`는 **커퍼 좌석** (첫 제출만 +1).
