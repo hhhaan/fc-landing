@@ -1,0 +1,106 @@
+name: CI
+
+# apps/docs/**의 .md는 빌드에 영향 있으므로 루트 문서만 제외
+on:
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - '*.md'
+      - 'docs/**'
+      - '.claude/**'
+      - '.grok/**'
+  push:
+    branches: [main]
+    paths-ignore:
+      - '*.md'
+      - 'docs/**'
+      - '.claude/**'
+      - '.grok/**'
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Biome + builds
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Biome (changed files)
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE="${{ github.event.pull_request.base.sha }}"
+          else
+            BASE="${{ github.event.before }}"
+            if [ -z "$BASE" ] || [ "$BASE" = "0000000000000000000000000000000000000000" ]; then
+              BASE="HEAD~1"
+            fi
+          fi
+          # Fail only on real issues in the diff; full-repo format debt is not a gate.
+          pnpm exec biome check --changed --since="$BASE" --no-errors-on-unmatched
+
+      - name: Detect changed paths
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            landing:
+              - 'apps/landing/**'
+              - 'pnpm-lock.yaml'
+              - 'pnpm-workspace.yaml'
+            docs:
+              - 'apps/docs/**'
+              - 'pnpm-lock.yaml'
+            cupping:
+              - 'apps/cupping/**'
+              - 'pnpm-lock.yaml'
+            admin:
+              - 'apps/admin/**'
+              - 'pnpm-lock.yaml'
+              - 'vercel.admin.json'
+
+      # push(main)에서는 deploy 워크플로우가 어차피 빌드하므로 PR에서만 빌드 검증
+      - name: Build landing
+        if: github.event_name == 'pull_request' && steps.filter.outputs.landing == 'true'
+        run: pnpm build:landing
+        env:
+          PUBLIC_SUPABASE_URL: ${{ vars.PUBLIC_SUPABASE_URL || 'https://vjdgdolfxvnxushxrmff.supabase.co' }}
+          # Prefer secret; fallback is public anon JWT (same as client-side).
+          PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqZGdkb2xmeHZueHVzaHhybWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5MzMyNjMsImV4cCI6MjA5MjUwOTI2M30.4NR4k6sz72AEa_-oFc8vGk_gfZlztNoBtUlDbz4SjA8' }}
+          PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL || 'https://firstcrackiscoming.com' }}
+
+      - name: Build docs
+        if: github.event_name == 'pull_request' && steps.filter.outputs.docs == 'true'
+        run: pnpm build:docs
+
+      - name: Build cupping
+        if: github.event_name == 'pull_request' && steps.filter.outputs.cupping == 'true'
+        run: pnpm build:cupping
+        env:
+          VITE_SUPABASE_URL: ${{ vars.PUBLIC_SUPABASE_URL || 'https://vjdgdolfxvnxushxrmff.supabase.co' }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY || secrets.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqZGdkb2xmeHZueHVzaHhybWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5MzMyNjMsImV4cCI6MjA5MjUwOTI2M30.4NR4k6sz72AEa_-oFc8vGk_gfZlztNoBtUlDbz4SjA8' }}
+
+      - name: Build admin
+        if: github.event_name == 'pull_request' && steps.filter.outputs.admin == 'true'
+        run: pnpm build:admin
