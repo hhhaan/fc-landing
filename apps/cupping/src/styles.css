@@ -1155,6 +1155,25 @@ button {
     padding: 10px max(var(--pad-x), env(safe-area-inset-left)) calc(10px + var(--safe-b))
         max(var(--pad-x), env(safe-area-inset-right));
     box-shadow: 0 -4px 20px rgba(8, 5, 3, 0.04);
+    transform: translateY(100%);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+        transform 0.22s ease,
+        opacity 0.18s ease;
+    will-change: transform, opacity;
+}
+
+.sticky-bar--visible {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sticky-bar {
+        transition: none;
+    }
 }
 
 .sticky-bar--multi {

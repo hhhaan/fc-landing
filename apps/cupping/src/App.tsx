@@ -94,8 +94,10 @@ export function App() {
     const [submitError, setSubmitError] = useState<string | null>(null);
     const [toast, setToast] = useState<Toast | null>(null);
     const [qrOpen, setQrOpen] = useState(false);
+    const [barVisible, setBarVisible] = useState(false);
     const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const formTopRef = useRef<HTMLElement | null>(null);
+    const lastScrollY = useRef(0);
     const draftsRef = useRef(drafts);
     const cuppedByRef = useRef(cuppedBy);
 
@@ -194,6 +196,34 @@ export function App() {
             if (toastTimer.current) clearTimeout(toastTimer.current);
         };
     }, []);
+
+    // Sticky bar: show on scroll down, hide on scroll up / page top
+    useEffect(() => {
+        if (!selectedSampleId) {
+            setBarVisible(false);
+            return;
+        }
+        lastScrollY.current = window.scrollY;
+        const canScroll = () => document.documentElement.scrollHeight > window.innerHeight + 24;
+        const onScroll = () => {
+            if (!canScroll()) {
+                setBarVisible(true);
+                return;
+            }
+            const y = window.scrollY;
+            const delta = y - lastScrollY.current;
+            lastScrollY.current = y;
+            if (y < 32) {
+                setBarVisible(false);
+                return;
+            }
+            if (delta > 6) setBarVisible(true);
+            else if (delta < -6) setBarVisible(false);
+        };
+        if (!canScroll()) setBarVisible(true);
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, [selectedSampleId]);
 
     const openSample = (id: string) => {
         setSubmitError(null);
@@ -752,7 +782,10 @@ export function App() {
                 </a>
             </footer>
 
-            <div className={`sticky-bar${multi ? ' sticky-bar--multi' : ''}`}>
+            <div
+                className={`sticky-bar${multi ? ' sticky-bar--multi' : ''}${barVisible ? ' sticky-bar--visible' : ''}`}
+                aria-hidden={!barVisible}
+            >
                 {multi ? (
                     <div className="sticky-bar__samples" role="tablist" aria-label="Samples">
                         <button
