@@ -34,9 +34,34 @@ const capabilities = [
   },
   {
     n: "04",
-    title: "Pricing that scales",
-    body: `Pro at ${pricing.heroProMonthly}/mo (200 batches). Pro+ for unlimited + commerce. Enterprise for teams and FDE.`,
+    title: "Hand off the shift",
+    body: "Promote winning profiles, leave notes, and give the next roaster a clear reference — not a verbal handoff.",
   },
+];
+
+const pains = [
+  {
+    n: "01",
+    title: "The cup drifts between shifts",
+    body: "Profiles live in someone’s head, a USB stick, or a spreadsheet nobody updates.",
+  },
+  {
+    n: "02",
+    title: "The floor and the office don’t talk",
+    body: "Live curves on one machine. Inventory and orders somewhere else.",
+  },
+  {
+    n: "03",
+    title: "Browser tools freeze when it matters",
+    body: "You need low-latency hardware links and an app that still works offline.",
+  },
+];
+
+const proofs = [
+  { label: "Desktop-native", detail: "macOS & Windows" },
+  { label: "Floor-ready", detail: "Modbus · Phidget · Artisan" },
+  { label: "Live curves", detail: "BT · ET · RoR" },
+  { label: "Risk-free try", detail: "14 days · 20 batches" },
 ];
 
 const steps = [
@@ -85,7 +110,7 @@ const marqueeItems = [
     <meta charset="UTF-8" />
     <Favicon />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="First Crack — desktop roasting software for specialty coffee. Live BT/ET/RoR, profiles, inventory. Pro from $49/mo." />
+    <meta name="description" content="Desktop roasting software for specialty coffee. Live BT/ET/RoR, searchable batches, machine connect. 14-day trial · Pro from $49/mo." />
     <title>First Crack — Desktop roasting software</title>
     <link rel="alternate" hreflang="x-default" href="/" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -165,13 +190,14 @@ const marqueeItems = [
             </h1>
 
             <p class="ox-hero-lead reveal reveal-d2">
-              Live curves, machine connect, and production tools — built for the roast floor, not another browser tab.
+              When profiles live in heads and spreadsheets, the cup drifts.
+              First Crack logs every batch, connects your machine, and keeps
+              the next shift on the same curve — on the floor, not in a browser tab.
             </p>
 
             <div class="ox-hero-trust reveal reveal-d2">
-              <span><strong>{pricing.heroProMonthly}</strong>/mo Pro</span>
-              <span>14-day trial</span>
-              <span>20 batches</span>
+              <span>14-day trial · 20 free batches</span>
+              <span>then Pro from <strong>{pricing.heroProMonthly}</strong>/mo</span>
             </div>
 
             <div class="ox-hero-actions reveal reveal-d3">
@@ -184,7 +210,7 @@ const marqueeItems = [
             </div>
 
             <p class="ox-hero-fine reveal reveal-d3">
-              macOS &amp; Windows · 20 batches included
+              Try free → connect your machine → keep what works · macOS &amp; Windows
             </p>
           </div>
 
@@ -209,13 +235,61 @@ const marqueeItems = [
         </div>
       </section>
 
+      <!-- ── Proof strip ──────────────────────────────────── -->
+      <section class="ox-proof" aria-label="Product facts">
+        <div class="ox-shell">
+          <ul class="ox-proof-list">
+            {
+              proofs.map((p) => (
+                <li class="ox-proof-item">
+                  <span class="ox-proof-label">{p.label}</span>
+                  <span class="ox-proof-detail">{p.detail}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </section>
+
+      <!-- ── Pain ─────────────────────────────────────────── -->
+      <section class="ox-section ox-pain" id="why">
+        <div class="ox-shell">
+          <div class="ox-section-head">
+            <div class="ox-eyebrow reveal">
+              <span class="ox-line"></span>
+              Why First Crack
+            </div>
+            <h2 class="ox-h2 reveal">
+              Built for roasteries that
+              <br />
+              <span class="ox-muted">can’t afford a drifting cup.</span>
+            </h2>
+            <p class="ox-lead reveal">
+              Consistency dies in the gaps — between shifts, between tools, between the floor and the office.
+            </p>
+          </div>
+
+          <div class="ox-pain-grid">
+            {
+              pains.map((p, i) => (
+                <article class="ox-pain-card reveal" style={`--d: ${i * 60}ms`}>
+                  <span class="ox-pain-n">{p.n}</span>
+                  <h3 class="ox-pain-title">{p.title}</h3>
+                  <p class="ox-pain-body">{p.body}</p>
+                </article>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
       <!-- ── Capabilities ─────────────────────────────────── -->
       <section class="ox-section ox-pane" id="features">
         <div class="ox-shell">
           <div class="ox-section-head">
             <div class="ox-eyebrow reveal">
               <span class="ox-line"></span>
-                            Product
+              Product
             </div>
             <h2 class="ox-h2 reveal">
               Everything on the floor.
@@ -358,14 +432,15 @@ const marqueeItems = [
               for serious roasters
             </h2>
             <p class="ox-lead ox-lead-center reveal">
-              14-day free trial (20 batches). Then Pro, Pro+, or Enterprise.
+              Start with a 14-day trial (20 batches). Cancel anytime before renewal.
+              Need more seats? Enterprise covers teams.
             </p>
           </div>
 
           <div class="ox-bill reveal">
             <div class="ox-bill-toggle" role="group" aria-label="Billing period">
               <button type="button" class="is-active" id="btn-monthly" aria-pressed="true">
-                                Monthly
+                Monthly
               </button>
               <button type="button" id="btn-yearly" aria-pressed="false">
                 Annual <em>Save ~20%</em>
@@ -410,7 +485,7 @@ const marqueeItems = [
             </article>
 
             <article class="ox-price-card is-featured">
-              <div class="ox-price-badge">Most popular</div>
+              <div class="ox-price-badge">Unlimited + stores</div>
               <div class="ox-price-top">
                 <span class="ox-price-n">02</span>
                 <h3>Pro+</h3>
@@ -441,7 +516,7 @@ const marqueeItems = [
                 <li>1 seat</li>
               </ul>
               <a id="proplus-start-btn" href="/start-pro?plan=pro-plus-monthly" class="ox-btn ox-btn-solid ox-btn-block" data-href-monthly="/start-pro?plan=pro-plus-monthly" data-href-yearly="/start-pro?plan=pro-plus-yearly">
-                Start trial
+                Start 14-day trial
               </a>
             </article>
 
@@ -449,7 +524,7 @@ const marqueeItems = [
               <div class="ox-price-top">
                 <span class="ox-price-n">03</span>
                 <h3>Enterprise</h3>
-                <p>Teams, custom work, dedicated engineer</p>
+                <p>Multi-seat teams, custom work, dedicated engineer</p>
               </div>
               <div class="ox-price-amt">
                 <span class="ox-price-num">Contact</span>
@@ -474,22 +549,25 @@ const marqueeItems = [
         <div class="ox-shell ox-final-inner">
           <div>
             <h2 class="ox-h2 ox-final-title reveal">
-              Ready when the
+              Install before
               <br />
-              green coffee is
+              the next charge
             </h2>
             <p class="ox-lead reveal">
-              Install the app, connect your machine, and load a profile before the next charge.
+              Download the desktop app, connect your machine, and run your first
+              trial batch — before the next green coffee hits the hopper.
             </p>
             <div class="ox-hero-actions reveal">
               <a href={trialCta.href} class="ox-btn ox-btn-solid ox-btn-lg">
                 {trialCta.label}
               </a>
               <a href="/download" class="ox-btn ox-btn-outline ox-btn-lg">
-                Download
+                Download app
               </a>
             </div>
-            <p class="ox-hero-fine reveal">14-day trial · Cancel anytime before renewal</p>
+            <p class="ox-hero-fine reveal">
+              14-day trial · 20 free batches · Cancel anytime before renewal
+            </p>
           </div>
         </div>
       </section>
@@ -1522,6 +1600,110 @@ const marqueeItems = [
     height: 4px;
     border-radius: 50%;
     background: rgba(8, 5, 3, 0.2);
+  }
+
+  /* Proof strip */
+  .ox-proof {
+    position: relative;
+    z-index: 2;
+    border-bottom: 1px solid var(--ox-border);
+    background: #fff;
+  }
+  .ox-proof-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 900px) {
+    .ox-proof-list {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .ox-proof-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 24px 20px;
+    border-right: 1px solid var(--ox-border);
+    border-bottom: 1px solid var(--ox-border);
+  }
+  @media (min-width: 900px) {
+    .ox-proof-item {
+      border-bottom: none;
+      padding: 28px 24px;
+    }
+    .ox-proof-item:last-child {
+      border-right: none;
+    }
+  }
+  @media (max-width: 899px) {
+    .ox-proof-item:nth-child(2n) {
+      border-right: none;
+    }
+    .ox-proof-item:nth-last-child(-n + 2) {
+      border-bottom: none;
+    }
+  }
+  .ox-proof-label {
+    font-family: var(--ox-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ox-muted);
+  }
+  .ox-proof-detail {
+    font-family: var(--ox-sans);
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--ox-fg);
+  }
+
+  /* Pain */
+  .ox-pain {
+    border-bottom: 1px solid var(--ox-border);
+  }
+  .ox-pain .ox-lead {
+    max-width: 36rem;
+  }
+  .ox-pain-grid {
+    display: grid;
+    gap: 1px;
+    background: var(--ox-border);
+    border: 1px solid var(--ox-border);
+  }
+  @media (min-width: 768px) {
+    .ox-pain-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .ox-pain-card {
+    background: #fff;
+    padding: 28px 24px;
+  }
+  .ox-pain-n {
+    display: block;
+    font-family: var(--ox-mono);
+    font-size: 12px;
+    color: var(--ox-muted);
+    margin-bottom: 16px;
+  }
+  .ox-pain-title {
+    font-family: var(--ox-sans);
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.3;
+    margin: 0 0 10px;
+  }
+  .ox-pain-body {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ox-muted);
   }
 
   /* Sections */
