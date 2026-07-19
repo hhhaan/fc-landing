@@ -39,11 +39,14 @@ pnpm build:cupping   # tsc --noEmit + vite build
 ```
 VITE_SUPABASE_URL=
 VITE_SUPABASE_ANON_KEY=
+# optional; default https://cup.firstcrackiscoming.com
+VITE_CUPPING_PUBLIC_BASE_URL=
 ```
 
 ## Deploy
 
-`main` push 시 `apps/cupping/**` 변경이면 `.github/workflows/deploy-cupping.yml` → Cloudflare Pages 프로젝트 `fc-cupping`. env는 워크플로우의 GitHub vars/secrets에서 주입.
+`main` push 시 `apps/cupping/**` 변경이면 `.github/workflows/deploy-cupping.yml` → Cloudflare Pages 프로젝트 `fc-cupping`.  
+Public URL: **https://cup.firstcrackiscoming.com** (share/QR 기본 origin; `VITE_CUPPING_PUBLIC_BASE_URL`로 오버라이드). env는 워크플로우의 GitHub vars/secrets에서 주입.
 
 ## Conventions
 

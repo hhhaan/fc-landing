@@ -10,6 +10,7 @@ import {
     persistSessionDraft,
     type SampleDraft,
 } from './draft';
+import { cuppingSessionUrl } from './publicBase';
 import { ShareQr } from './ShareQr';
 import {
     clampScore,
@@ -80,7 +81,7 @@ function draftStatus(d: SampleDraft | undefined): 'empty' | 'draft' | 'synced' |
 
 export function App() {
     const token = useMemo(() => tokenFromPath(), []);
-    const pageUrl = useMemo(() => window.location.href.split('?')[0], []);
+    const pageUrl = useMemo(() => (token ? cuppingSessionUrl(token) : window.location.href.split('?')[0]), [token]);
 
     const [meta, setMeta] = useState<SessionMeta | null>(null);
     const [loadError, setLoadError] = useState<string | null>(null);
@@ -447,6 +448,19 @@ export function App() {
                 <p className="session-note">
                     Shared session QR — use Share so the next cupper can join from their phone.
                 </p>
+
+                <footer className="page-end">
+                    <p className="page-end__mark">First Crack</p>
+                    <p className="page-end__line">One table · one sheet · sync when ready</p>
+                    <a
+                        className="page-end__link"
+                        href="https://firstcrackiscoming.com"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        firstcrackiscoming.com
+                    </a>
+                </footer>
             </Shell>
         );
     }
@@ -729,6 +743,14 @@ export function App() {
                     </div>
                 ) : null}
             </div>
+
+            <footer className="page-end">
+                <p className="page-end__mark">First Crack</p>
+                <p className="page-end__line">Table cupping sheet · scores stay on this phone until Sync</p>
+                <a className="page-end__link" href="https://firstcrackiscoming.com" target="_blank" rel="noreferrer">
+                    firstcrackiscoming.com
+                </a>
+            </footer>
 
             <div className="sticky-bar">
                 <div className="sticky-bar__inner">
