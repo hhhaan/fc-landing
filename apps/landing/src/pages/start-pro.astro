@@ -46,6 +46,10 @@ const res = await fetch(`${polarApiBase()}/v1/checkouts/`, {
     customer_email: user.email,
     metadata: { user_id: user.id, plan, market },
     success_url: POLAR_SUCCESS_URL,
+    // Checkout-level trial overrides product settings — one place for all markets
+    trial_interval: "day",
+    trial_interval_count: 14,
+    allow_trial: true,
     ...(ip ? { customer_ip_address: ip } : {}),
   }),
 });
