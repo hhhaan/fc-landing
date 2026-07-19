@@ -3,6 +3,45 @@ import "../styles/global.css";
 import Favicon from "../components/ui/Favicon.astro";
 
 const year = new Date().getFullYear();
+
+const jobs = [
+  {
+    href: "/careers/full-stack-engineer",
+    title: "Full-Stack Engineer",
+    dept: "Engineering",
+    deptKey: "engineering",
+    loc: "Seoul (Hybrid) · Remote Asia",
+    locKey: "seoul hybrid remote asia",
+    type: "Full-time",
+  },
+  {
+    href: "/careers/forward-deployed-engineer",
+    title: "Forward Deployed Engineer",
+    dept: "Engineering · FDE",
+    deptKey: "engineering fde",
+    loc: "Seoul + APAC travel",
+    locKey: "seoul travel apac",
+    type: "Full-time",
+  },
+  {
+    href: "/careers/product-designer",
+    title: "Product Designer",
+    dept: "Design",
+    deptKey: "design",
+    loc: "Seoul (Hybrid)",
+    locKey: "seoul hybrid",
+    type: "Full-time",
+  },
+  {
+    href: "/careers/sales-lead",
+    title: "Sales Lead, Korea & Japan",
+    dept: "Go-to-Market",
+    deptKey: "gtm sales",
+    loc: "Seoul / Remote (KR·JP)",
+    locKey: "seoul remote korea japan",
+    type: "Full-time",
+  },
+] as const;
 ---
 
 <html lang="en">
@@ -47,8 +86,26 @@ const year = new Date().getFullYear();
           </div>
           <h1 class="ox-careers-title">Build the future of coffee roasting</h1>
           <p class="ox-careers-lead">
-            We're a small team shipping desktop software that specialty roasters rely on every day. Remote-first, craft-obsessed, and moving fast.
+            We're a small team based in Seoul, shipping desktop software that specialty roasters rely on every production day. Hybrid in-office weeks, remote-friendly across Asia, and weekly releases to the roast floor.
           </p>
+          <dl class="ox-careers-facts">
+            <div>
+              <dt>HQ</dt>
+              <dd>Seoul, Korea</dd>
+            </div>
+            <div>
+              <dt>Work model</dt>
+              <dd>Hybrid · Remote Asia</dd>
+            </div>
+            <div>
+              <dt>Team size</dt>
+              <dd>~8 people</dd>
+            </div>
+            <div>
+              <dt>Open roles</dt>
+              <dd>{jobs.length}</dd>
+            </div>
+          </dl>
         </div>
       </section>
 
@@ -56,22 +113,23 @@ const year = new Date().getFullYear();
         <div class="ox-shell">
           <div class="ox-careers-filters">
             <div class="ox-field ox-field-inline">
-              <label for="filter-dept">Department</label>
+              <label for="filter-dept">Team</label>
               <select id="filter-dept" class="ox-select">
-                <option value="">All</option>
+                <option value="">All teams</option>
                 <option value="engineering">Engineering</option>
+                <option value="fde">FDE</option>
                 <option value="design">Design</option>
-                <option value="sales">Sales</option>
-                <option value="product">Product</option>
+                <option value="gtm">Go-to-Market</option>
               </select>
             </div>
             <div class="ox-field ox-field-inline">
               <label for="filter-loc">Location</label>
               <select id="filter-loc" class="ox-select">
-                <option value="">All</option>
-                <option value="apac">APAC</option>
-                <option value="emea">EMEA</option>
-                <option value="americas">Americas</option>
+                <option value="">All locations</option>
+                <option value="seoul">Seoul</option>
+                <option value="hybrid">Hybrid</option>
+                <option value="remote">Remote</option>
+                <option value="travel">Travel</option>
               </select>
             </div>
             <div class="ox-field ox-field-inline ox-field-grow">
@@ -82,61 +140,97 @@ const year = new Date().getFullYear();
 
           <div class="ox-jobs-head" aria-hidden="true">
             <div class="ox-jobs-col ox-jobs-col-title">Position</div>
-            <div class="ox-jobs-col ox-jobs-col-dept">Department</div>
+            <div class="ox-jobs-col ox-jobs-col-dept">Team</div>
             <div class="ox-jobs-col ox-jobs-col-loc">Location</div>
+            <div class="ox-jobs-col ox-jobs-col-type">Type</div>
           </div>
 
           <div class="ox-jobs-list" id="job-list">
-            <a href="/careers/desktop-engineer" class="ox-jobs-row" data-dept="engineering" data-loc="apac americas">
-              <div class="ox-jobs-col ox-jobs-col-title">Desktop Engineer</div>
-              <div class="ox-jobs-col ox-jobs-col-dept">Engineering</div>
-              <div class="ox-jobs-col ox-jobs-col-loc">Remote — APAC / Americas</div>
-            </a>
-            <a href="/careers/backend-engineer" class="ox-jobs-row" data-dept="engineering" data-loc="apac emea">
-              <div class="ox-jobs-col ox-jobs-col-title">Backend Engineer</div>
-              <div class="ox-jobs-col ox-jobs-col-dept">Engineering</div>
-              <div class="ox-jobs-col ox-jobs-col-loc">Remote — APAC / EMEA</div>
-            </a>
-            <a href="/careers/product-designer" class="ox-jobs-row" data-dept="design" data-loc="apac emea">
-              <div class="ox-jobs-col ox-jobs-col-title">Product Designer</div>
-              <div class="ox-jobs-col ox-jobs-col-dept">Design</div>
-              <div class="ox-jobs-col ox-jobs-col-loc">Remote — APAC / EMEA</div>
-            </a>
-            <a href="/careers/forward-deployed-engineer" class="ox-jobs-row" data-dept="engineering sales" data-loc="apac emea">
-              <div class="ox-jobs-col ox-jobs-col-title">Forward Deployed Engineer</div>
-              <div class="ox-jobs-col ox-jobs-col-dept">Engineering · Sales</div>
-              <div class="ox-jobs-col ox-jobs-col-loc">Remote — APAC / EMEA</div>
-            </a>
-            <a href="/careers/sales-lead" class="ox-jobs-row" data-dept="sales" data-loc="apac">
-              <div class="ox-jobs-col ox-jobs-col-title">Sales Lead</div>
-              <div class="ox-jobs-col ox-jobs-col-dept">Sales</div>
-              <div class="ox-jobs-col ox-jobs-col-loc">Remote — APAC</div>
-            </a>
+            {
+              jobs.map((job) => (
+                <a
+                  href={job.href}
+                  class="ox-jobs-row"
+                  data-dept={job.deptKey}
+                  data-loc={job.locKey}
+                >
+                  <div class="ox-jobs-col ox-jobs-col-title">{job.title}</div>
+                  <div class="ox-jobs-col ox-jobs-col-dept">{job.dept}</div>
+                  <div class="ox-jobs-col ox-jobs-col-loc">{job.loc}</div>
+                  <div class="ox-jobs-col ox-jobs-col-type">{job.type}</div>
+                </a>
+              ))
+            }
           </div>
 
-          <p class="ox-jobs-count" id="jobs-count">Showing 5 of 5 roles</p>
+          <p class="ox-jobs-count" id="jobs-count">Showing {jobs.length} of {jobs.length} roles</p>
+        </div>
+      </section>
+
+      <section class="ox-careers-benefits">
+        <div class="ox-shell">
+          <div class="ox-careers-benefits-head">
+            <h2 class="ox-h2">Benefits &amp; perks</h2>
+            <p class="ox-careers-benefits-lead">
+              Standard package for full-time roles in Korea, plus remote-friendly equivalents for Asia-based teammates.
+            </p>
+          </div>
+          <div class="ox-benefits-grid">
+            <article class="ox-benefit-card">
+              <h3>Compensation</h3>
+              <ul>
+                <li>Market-rate salary by level and location (reviewed annually)</li>
+                <li>Meaningful equity (stock options) for every full-time hire</li>
+                <li>13th-month bonus eligibility after first year</li>
+              </ul>
+            </article>
+            <article class="ox-benefit-card">
+              <h3>Health &amp; time off</h3>
+              <ul>
+                <li>Four major social insurances (Korea-based employees)</li>
+                <li>Private health insurance for employee + spouse/partner</li>
+                <li>15+ days paid leave + public holidays; flexible sick days</li>
+              </ul>
+            </article>
+            <article class="ox-benefit-card">
+              <h3>Work setup</h3>
+              <ul>
+                <li>MacBook Pro + monitor of choice on day one</li>
+                <li>₩500,000 home-office stipend (desk, chair, peripherals)</li>
+                <li>Hybrid: 2–3 days/week in Seoul HQ when local</li>
+              </ul>
+            </article>
+            <article class="ox-benefit-card">
+              <h3>Growth &amp; craft</h3>
+              <ul>
+                <li>₩2,000,000 / year learning budget (courses, confs, books)</li>
+                <li>AI tooling credits (Cursor, Claude, etc.) covered</li>
+                <li>Onboarding roast workshop + ongoing green-coffee allowance</li>
+              </ul>
+            </article>
+          </div>
         </div>
       </section>
 
       <section class="ox-careers-why">
         <div class="ox-shell ox-careers-why-inner">
-          <h2 class="ox-h2">Why First Crack</h2>
+          <h2 class="ox-h2">How we work</h2>
           <div class="ox-why-grid">
             <article class="ox-why-card">
-              <h3>Remote-first</h3>
-              <p>Work from wherever your coffee tastes best. We overlap a few core hours but trust you to manage your time.</p>
+              <h3>Core overlap, not core hours</h3>
+              <p>Async by default. We protect a daily KST overlap for design/eng syncs; the rest of the day is yours to deep-work.</p>
             </article>
             <article class="ox-why-card">
               <h3>Ship every week</h3>
-              <p>No six-month roadmaps. Your work goes from commit to roast floor in days.</p>
+              <p>No six-month roadmaps locked in stone. Features go from PR to production floor in days — with real roaster feedback.</p>
             </article>
             <article class="ox-why-card">
-              <h3>Craft matters</h3>
-              <p>Every hire learns to roast. You build tools for a craft you've practiced yourself.</p>
+              <h3>Craft is the product</h3>
+              <p>Every hire spends time on a roaster. You build tools for a craft you've stood next to, not only read about.</p>
             </article>
             <article class="ox-why-card">
-              <h3>Competitive pay &amp; equity</h3>
-              <p>Salary that reflects your experience, meaningful equity, and a coffee budget — obviously.</p>
+              <h3>Small team, high ownership</h3>
+              <p>~8 people. You own surfaces end-to-end — no ticket factory, no four-layer approval chains.</p>
             </article>
           </div>
         </div>
@@ -146,10 +240,10 @@ const year = new Date().getFullYear();
         <div class="ox-shell ox-careers-cta-inner">
           <h2 class="ox-h2 ox-h2-on-dark">Don't see your role?</h2>
           <p class="ox-careers-cta-lead">
-            We create roles for the right people. Tell us why you'd make First Crack better.
+            We hire for people, not only open reqs. Send a short note and resume — if there's a fit, we'll open a conversation.
           </p>
           <a href="mailto:careers@firstcrackiscoming.com" class="ox-btn ox-btn-solid ox-btn-lg ox-btn-inverted">
-            Apply now
+            Email careers@
           </a>
         </div>
       </section>
@@ -184,10 +278,11 @@ const year = new Date().getFullYear();
           const rl = row.dataset.loc || "";
           const title = row.querySelector(".ox-jobs-col-title")?.textContent?.toLowerCase() || "";
           const deptText = row.querySelector(".ox-jobs-col-dept")?.textContent?.toLowerCase() || "";
+          const locText = row.querySelector(".ox-jobs-col-loc")?.textContent?.toLowerCase() || "";
           const show =
             (!d || rd.includes(d)) &&
             (!l || rl.includes(l)) &&
-            (!q || title.includes(q) || deptText.includes(q));
+            (!q || title.includes(q) || deptText.includes(q) || locText.includes(q));
           row.style.display = show ? "" : "none";
           if (show) visible++;
         });
@@ -398,7 +493,7 @@ const year = new Date().getFullYear();
   }
 
   .ox-careers-hero-inner {
-    max-width: 40rem;
+    max-width: 42rem;
   }
 
   .ox-careers-title {
@@ -410,10 +505,35 @@ const year = new Date().getFullYear();
   }
 
   .ox-careers-lead {
-    margin: 0;
+    margin: 0 0 28px;
     font-size: 17px;
     line-height: 1.65;
     color: var(--ox-muted);
+  }
+
+  .ox-careers-facts {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--ox-border);
+  }
+
+  .ox-careers-facts dt {
+    font-family: var(--ox-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ox-muted);
+    margin-bottom: 6px;
+  }
+
+  .ox-careers-facts dd {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
   }
 
   .ox-careers-jobs {
@@ -488,7 +608,7 @@ const year = new Date().getFullYear();
 
   .ox-jobs-head {
     display: grid;
-    grid-template-columns: 2fr 1.2fr 1.5fr;
+    grid-template-columns: 2fr 1fr 1.4fr 0.7fr;
     gap: 16px;
     padding: 14px 0;
     border-bottom: 1px solid var(--ox-border);
@@ -504,7 +624,7 @@ const year = new Date().getFullYear();
 
   .ox-jobs-row {
     display: grid;
-    grid-template-columns: 2fr 1.2fr 1.5fr;
+    grid-template-columns: 2fr 1fr 1.4fr 0.7fr;
     gap: 16px;
     padding: 18px 0;
     border-bottom: 1px solid var(--ox-border);
@@ -527,7 +647,12 @@ const year = new Date().getFullYear();
 
   .ox-jobs-col-loc {
     font-size: 14px;
-    color: rgba(94, 83, 74, 0.75);
+    color: rgba(94, 83, 74, 0.85);
+  }
+
+  .ox-jobs-col-type {
+    font-size: 13px;
+    color: var(--ox-muted);
   }
 
   .ox-jobs-count {
@@ -537,12 +662,83 @@ const year = new Date().getFullYear();
     color: var(--ox-muted);
   }
 
-  .ox-careers-why {
+  .ox-careers-benefits {
     position: relative;
     z-index: 2;
     padding: 80px 0;
     border-top: 1px solid var(--ox-border);
     background: #fff;
+  }
+
+  .ox-careers-benefits-head {
+    max-width: 36rem;
+    margin-bottom: 8px;
+  }
+
+  .ox-careers-benefits-head .ox-h2 {
+    margin-bottom: 12px;
+  }
+
+  .ox-careers-benefits-lead {
+    margin: 0 0 40px;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ox-muted);
+  }
+
+  .ox-benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .ox-benefit-card {
+    padding: 28px;
+    border: 1px solid var(--ox-border);
+    background: var(--ox-bg);
+  }
+
+  .ox-benefit-card h3 {
+    margin: 0 0 16px;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .ox-benefit-card ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .ox-benefit-card li {
+    position: relative;
+    padding-left: 16px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ox-muted);
+  }
+
+  .ox-benefit-card li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.45;
+  }
+
+  .ox-careers-why {
+    position: relative;
+    z-index: 2;
+    padding: 80px 0;
+    border-top: 1px solid var(--ox-border);
   }
 
   .ox-why-grid {
@@ -554,7 +750,7 @@ const year = new Date().getFullYear();
   .ox-why-card {
     padding: 28px;
     border: 1px solid var(--ox-border);
-    background: var(--ox-bg);
+    background: #fff;
   }
 
   .ox-why-card h3 {
@@ -618,6 +814,10 @@ const year = new Date().getFullYear();
   }
 
   @media (max-width: 767px) {
+    .ox-careers-facts {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
     .ox-jobs-head {
       display: none;
     }
@@ -628,14 +828,24 @@ const year = new Date().getFullYear();
       padding: 16px 0;
     }
 
+    .ox-jobs-col-type {
+      font-family: var(--ox-mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
     .ox-careers-filters {
       flex-direction: column;
     }
 
+    .ox-benefits-grid,
     .ox-why-grid {
       grid-template-columns: 1fr;
     }
 
+    .ox-careers-benefits,
+    .ox-careers-why,
     .ox-careers-cta {
       padding: 64px 0;
     }
