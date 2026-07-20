@@ -100,7 +100,7 @@ echo "polar_whs_PRODUCTION_SECRET" | wrangler pages secret put POLAR_WEBHOOK_SEC
 | 첫 배포 | ✅ | https://fc-landing.pages.dev |
 | 환경 변수 (non-secret) | ✅ | `wrangler.toml` |
 | Secrets | ✅ | SUPABASE_SERVICE_ROLE_KEY, POLAR_ACCESS_TOKEN, POLAR_WEBHOOK_SECRET, LOGSNAG_TOKEN |
-| GitHub Actions CI/CD | ⚠️ | 워크플로우 작성 완료, `CLOUDFLARE_API_TOKEN` 등록 필요 |
+| GitHub Actions CI/CD | ⚠️ | `docs/ci-cd.md` 참고 — CI + app별 deploy; secrets 등록 필요 |
 | Supabase Auth URL | ❌ | Pages 도메인 추가 필요 |
 | Polar 웹훅 | ❌ | 프로덕션 전환 시 등록 필요 |
 | 커스텀 도메인 | ❌ | 선택 사항 |
