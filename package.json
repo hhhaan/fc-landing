@@ -31,7 +31,7 @@
         "lint-staged": "^17.0.5"
     },
     "lint-staged": {
-        "apps/**/*.{ts,tsx,js,jsx,mjs,cjs}": "biome check --write --no-errors-on-unmatched",
+        "apps/**/*.{ts,tsx,js,jsx,mjs,cjs,astro}": "biome check --write --no-errors-on-unmatched",
         "scripts/**/*.{js,mjs,cjs,ts}": "biome check --write --no-errors-on-unmatched",
         "apps/**/*.{json,css,md}": "biome check --write --no-errors-on-unmatched",
         "*.{js,mjs,cjs,json,css,md}": "biome check --write --no-errors-on-unmatched"
