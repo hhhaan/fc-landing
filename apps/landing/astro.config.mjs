@@ -3,6 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 import { defineConfig, envField } from 'astro/config';
 
 export default defineConfig({
+    site: 'https://firstcrackiscoming.com',
     output: 'server',
     adapter: cloudflare({
         imageService: 'passthrough',

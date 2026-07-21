@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import Favicon from "../components/ui/Favicon.astro";
+import Seo from "../components/ui/Seo.astro";
 import { createClient } from "../lib/supabase";
 import { safeRedirectPath } from "../lib/safeRedirect";
 
@@ -32,6 +33,7 @@ const signupHref =
       content="Sign in to First Crack — roast profiling and production software for specialty coffee roasteries."
     />
     <title>Sign in — First Crack</title>
+    <Seo title="Sign in — First Crack" description="Sign in to First Crack — roast profiling and production software for specialty coffee roasteries." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

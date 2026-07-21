@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import Favicon from "../components/ui/Favicon.astro";
+import Seo from "../components/ui/Seo.astro";
 import OxNavAuth from "../components/ui/OxNavAuth.astro";
 import { DOCS, PLAN_COPY } from "../content/product";
 import { getViewer } from "../lib/authState";
@@ -36,6 +37,7 @@ const nextSteps = [
       content="Download First Crack for macOS and Windows — desktop roasting software for specialty coffee roasteries."
     />
     <title>Download — First Crack</title>
+    <Seo title="Download — First Crack" description="Download First Crack for macOS and Windows — desktop roasting software for specialty coffee roasteries." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /account
+Disallow: /auth/
+Disallow: /api/
+Disallow: /start-pro
+Disallow: /manage-billing
+
+Sitemap: https://firstcrackiscoming.com/sitemap.xml

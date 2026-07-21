@@ -1,0 +1,25 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+}
+
+const { title, description, noindex = false } = Astro.props;
+
+const SITE_URL =
+  import.meta.env.PUBLIC_SITE_URL ?? "https://firstcrackiscoming.com";
+
+const canonical = new URL(Astro.url.pathname, SITE_URL).href;
+---
+
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+<link rel="canonical" href={canonical} />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="First Crack" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />

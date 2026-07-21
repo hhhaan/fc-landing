@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import Favicon from "../components/ui/Favicon.astro";
+import Seo from "../components/ui/Seo.astro";
 import { requireLogin } from "../lib/auth";
 import { createClient } from "../lib/supabase";
 
@@ -62,6 +63,7 @@ const signInMethod = rawProvider === "google" ? "Google" : "Email & password";
       content="Manage your First Crack account — plan, billing, and desktop app access."
     />
     <title>Account — First Crack</title>
+    <Seo title="Account — First Crack" description="Manage your First Crack account — plan, billing, and desktop app access." noindex />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

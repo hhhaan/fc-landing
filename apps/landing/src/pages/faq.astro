@@ -1,8 +1,19 @@
 ---
 import Favicon from "../components/ui/Favicon.astro";
+import Seo from "../components/ui/Seo.astro";
 import { DOCS, FAQ_ITEMS, PLAN_COPY } from "../content/product";
 
 const year = new Date().getFullYear();
+
+const faqLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ_ITEMS.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
 ---
 
 <html lang="en">
@@ -15,6 +26,8 @@ const year = new Date().getFullYear();
       content="First Crack FAQ — Free vs trial, machine compatibility, plans, offline use, and billing."
     />
     <title>FAQ — First Crack</title>
+    <Seo title="FAQ — First Crack" description="First Crack FAQ — Free vs trial, machine compatibility, plans, offline use, and billing." />
+    <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

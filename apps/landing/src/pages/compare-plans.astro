@@ -1,5 +1,6 @@
 ---
 import Favicon from "../components/ui/Favicon.astro";
+import Seo from "../components/ui/Seo.astro";
 import { requireLogin } from "../lib/auth";
 import { getMarketPricing, resolveBillingMarket } from "../lib/market";
 import { isCheckoutPlanReady } from "../lib/polarPlans";
@@ -32,6 +33,7 @@ const defaultTier = proPlusCheckoutReady ? "pro_plus" : "pro";
       content="Compare First Crack Pro and Pro+ plans and start your 14-day trial."
     />
     <title>Compare plans — First Crack</title>
+    <Seo title="Compare plans — First Crack" description="Compare First Crack Pro and Pro+ plans and start your 14-day trial." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
