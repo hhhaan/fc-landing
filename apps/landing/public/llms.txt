@@ -1,0 +1,20 @@
+# First Crack
+
+> Desktop coffee roasting software for specialty roasteries: roast profiling (live BT/ET/RoR curves), green coffee inventory, and production ERP in one offline-capable app for macOS and Windows. Connects to roasting machines via Modbus RTU/TCP, Phidget, and Artisan-ready paths (Probat, Giesen, Diedrich, and more).
+
+First Crack replaces the spreadsheet-plus-USB-stick workflow: every batch is logged and searchable, winning profiles are promoted as references for the next shift, and the roast floor stays connected to inventory and production reports. Free tier: 20 batches/month. Pro and Pro+ plans with a 14-day trial.
+
+## Pages
+
+- [Home](https://firstcrackiscoming.com/): product overview, features, pricing
+- [Download](https://firstcrackiscoming.com/download): macOS and Windows installers
+- [Compare plans](https://firstcrackiscoming.com/compare-plans): Free vs Pro vs Pro+
+- [FAQ](https://firstcrackiscoming.com/faq): machine compatibility, trial, billing, offline use
+- [About](https://firstcrackiscoming.com/about): Seoul-based team
+- [Docs](https://docs.firstcrackiscoming.com): setup guides and machine connection docs
+
+## Optional
+
+- [Careers](https://firstcrackiscoming.com/careers): open roles
+- [Privacy](https://firstcrackiscoming.com/privacy)
+- [Terms](https://firstcrackiscoming.com/terms)
