@@ -1,0 +1,11 @@
+{
+  "total_unique": 2834,
+  "market_counts": {
+    "HK": 472,
+    "TW": 2362
+  },
+  "api_calls_this_run_est": 726,
+  "combined_csv": "data/hk-tw-google-roastery.csv",
+  "hk_csv": "data/hk-google-roastery.csv",
+  "tw_csv": "data/tw-google-roastery.csv"
+}

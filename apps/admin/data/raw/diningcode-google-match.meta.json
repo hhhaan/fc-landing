@@ -1,0 +1,17 @@
+{
+  "total": 3398,
+  "counts": {
+    "not_found": 291,
+    "maybe": 385,
+    "matched": 2720,
+    "error": 2
+  },
+  "files": {
+    "all": "data/diningcode-google-match.csv",
+    "matched": "data/diningcode-google-match-matched.csv",
+    "maybe": "data/diningcode-google-match-maybe.csv",
+    "not_found": "data/diningcode-google-match-not_found.csv",
+    "error": "data/diningcode-google-match-error.csv",
+    "unregistered_combined": "data/diningcode-google-match-unregistered.csv"
+  }
+}

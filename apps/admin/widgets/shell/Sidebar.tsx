@@ -4,6 +4,7 @@ import {
     Activity,
     Building2,
     ClipboardList,
+    Coffee,
     DollarSign,
     Globe2,
     LayoutDashboard,
@@ -27,6 +28,7 @@ const NAV = [
     { href: '/retention', label: 'Retention', icon: RefreshCw },
     { href: '/users', label: 'Users', icon: Users },
     { href: '/organizations', label: 'Organizations', icon: Building2 },
+    { href: '/market-roasteries', label: 'Market Roasteries', icon: Coffee },
     { href: '/compliance', label: 'Compliance', icon: ClipboardList },
     { href: '/coupons', label: 'Coupons', icon: Ticket },
     { href: '/activity', label: 'Activity', icon: Activity },
@@ -84,7 +86,7 @@ export function Sidebar() {
                 )}
                 {NAV.map(({ href, label, icon: Icon }) => {
                     const active =
-                        href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(href + '/');
+                        href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
                     return (
                         <Link
                             key={href}
