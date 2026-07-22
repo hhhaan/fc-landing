@@ -51,6 +51,18 @@ export default defineConfig({
                 context: 'server',
                 access: 'secret',
             }),
+            /** Same webhook as Edge notify-signup when set — payment + webhook errors. */
+            SLACK_WEBHOOK_URL: envField.string({
+                context: 'server',
+                access: 'secret',
+                optional: true,
+            }),
+            /** Optional Sentry DSN for server-side webhook failures. */
+            SENTRY_DSN: envField.string({
+                context: 'server',
+                access: 'secret',
+                optional: true,
+            }),
         },
     },
     vite: {

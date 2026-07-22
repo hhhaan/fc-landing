@@ -1,5 +1,5 @@
 import { PUBLIC_SUPABASE_URL } from 'astro:env/client';
-import { POLAR_WEBHOOK_SECRET, SUPABASE_SERVICE_ROLE_KEY } from 'astro:env/server';
+import { POLAR_WEBHOOK_SECRET, SENTRY_DSN, SLACK_WEBHOOK_URL, SUPABASE_SERVICE_ROLE_KEY } from 'astro:env/server';
 import { createClient } from '@supabase/supabase-js';
 import type { APIRoute } from 'astro';
 import type { BillingMarket } from '../../../lib/market';
@@ -9,6 +9,8 @@ import {
     type PolarPlan,
     resolvePolarProduct,
 } from '../../../lib/polarProductCatalog';
+import { captureServerException } from '../../../lib/sentryServer';
+import { postSlack, sanitizeSlackField } from '../../../lib/slack';
 
 const TIMESTAMP_TOLERANCE_SECONDS = 5 * 60;
 
@@ -21,7 +23,7 @@ async function verifySignature(rawBody: string, headers: Headers, secret: string
 
     const now = Math.floor(Date.now() / 1000);
     const ts = parseInt(msgTimestamp, 10);
-    if (isNaN(ts) || Math.abs(now - ts) > TIMESTAMP_TOLERANCE_SECONDS) return false;
+    if (Number.isNaN(ts) || Math.abs(now - ts) > TIMESTAMP_TOLERANCE_SECONDS) return false;
 
     const b64 = secret
         .replace(/^polar_whs_/, '')
@@ -62,6 +64,40 @@ function resolveProfileFromSubscription(
     return { plan, countryCode };
 }
 
+function formatMoney(amount: number | null | undefined, currency: string | null | undefined): string {
+    if (amount === null || amount === undefined) return '—';
+    const cur = (currency ?? 'usd').toUpperCase();
+    // Polar amounts are typically minor units (cents)
+    const major = amount / 100;
+    return `${cur} ${major.toFixed(2)}`;
+}
+
+async function notifyPaymentSlack(opts: {
+    title: string;
+    userId: string | undefined;
+    plan?: string;
+    status?: string;
+    amount?: number | null;
+    currency?: string | null;
+    interval?: string | null;
+    market?: string | null;
+    eventType: string;
+    extraLines?: string[];
+}): Promise<void> {
+    const lines = [
+        `*${opts.title}*`,
+        `• event: \`${sanitizeSlackField(opts.eventType)}\``,
+        `• user: \`${sanitizeSlackField(opts.userId ?? 'unknown')}\``,
+        ...(opts.plan ? [`• plan: \`${sanitizeSlackField(opts.plan)}\``] : []),
+        ...(opts.status ? [`• status: \`${sanitizeSlackField(opts.status)}\``] : []),
+        `• amount: \`${sanitizeSlackField(formatMoney(opts.amount, opts.currency))}\``,
+        ...(opts.interval ? [`• interval: \`${sanitizeSlackField(opts.interval)}\``] : []),
+        ...(opts.market ? [`• market: \`${sanitizeSlackField(opts.market)}\``] : []),
+        ...(opts.extraLines ?? []),
+    ];
+    await postSlack(SLACK_WEBHOOK_URL, { text: lines.join('\n') });
+}
+
 export const POST: APIRoute = async ({ request }) => {
     const rawBody = await request.text();
 
@@ -91,6 +127,9 @@ export const POST: APIRoute = async ({ request }) => {
             case 'subscription.active': {
                 if (!userId) {
                     console.error(`[Polar webhook] ${type}: user_id missing in metadata`);
+                    await postSlack(SLACK_WEBHOOK_URL, {
+                        text: `*Polar webhook warning*\n• event: \`${sanitizeSlackField(type)}\`\n• missing \`user_id\` in metadata`,
+                    });
                     break;
                 }
 
@@ -130,6 +169,44 @@ export const POST: APIRoute = async ({ request }) => {
 
                 if (subResult.error) throw new Error(`subscriptions upsert failed: ${subResult.error.message}`);
                 if (profileResult.error) throw new Error(`profiles update failed: ${profileResult.error.message}`);
+
+                // Canonical new-sub notify: subscription.created only (avoid double with active).
+                // Recurring charges: order.paid below.
+                if (type === 'subscription.created') {
+                    const status = (data.status as string) ?? '';
+                    const isTrial = status === 'trialing' || Boolean(data.trial_end_at);
+                    await notifyPaymentSlack({
+                        title: isTrial ? 'Subscription trial started' : 'Payment / subscription',
+                        userId,
+                        plan,
+                        status,
+                        amount: data.amount as number | null,
+                        currency: data.currency as string | null,
+                        interval: data.recurring_interval as string | null,
+                        market: countryCode,
+                        eventType: type,
+                    });
+                }
+                break;
+            }
+
+            case 'order.paid': {
+                // Recurring charges / one-off paid orders
+                const orderMeta = data.metadata as Record<string, string> | undefined;
+                const orderUserId = orderMeta?.user_id ?? userId;
+                const amount = (data.amount as number | undefined) ?? (data.total_amount as number | undefined) ?? null;
+                const currency = (data.currency as string | undefined) ?? null;
+                await notifyPaymentSlack({
+                    title: 'Payment received (order.paid)',
+                    userId: orderUserId,
+                    amount,
+                    currency,
+                    status: (data.status as string) ?? 'paid',
+                    eventType: type,
+                    extraLines: data.product_id
+                        ? [`• product: \`${sanitizeSlackField(String(data.product_id))}\``]
+                        : undefined,
+                });
                 break;
             }
 
@@ -216,6 +293,20 @@ export const POST: APIRoute = async ({ request }) => {
         }
     } catch (err) {
         console.error(`[Polar webhook] error handling ${type}:`, err);
+        await Promise.all([
+            captureServerException(err, SENTRY_DSN, {
+                tags: { component: 'polar-webhook', event_type: type },
+                extra: { userId: userId ?? null },
+            }),
+            postSlack(SLACK_WEBHOOK_URL, {
+                text: [
+                    '*Polar webhook error*',
+                    `• event: \`${sanitizeSlackField(type)}\``,
+                    `• user: \`${sanitizeSlackField(userId ?? 'unknown')}\``,
+                    `• error: \`${sanitizeSlackField(err instanceof Error ? err.message : String(err))}\``,
+                ].join('\n'),
+            }),
+        ]);
         return new Response('Internal error', { status: 500 });
     }
 
