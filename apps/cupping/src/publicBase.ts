@@ -15,3 +15,12 @@ export function cuppingSessionUrl(token: string): string {
     }
     return `${cuppingPublicBaseUrl()}${path}`;
 }
+
+/** Post-session results page. */
+export function cuppingResultsUrl(token: string): string {
+    const path = `/r/${encodeURIComponent(token)}`;
+    if (import.meta.env.DEV) {
+        return `${window.location.origin}${path}`;
+    }
+    return `${cuppingPublicBaseUrl()}${path}`;
+}

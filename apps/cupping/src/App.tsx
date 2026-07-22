@@ -10,7 +10,8 @@ import {
     persistSessionDraft,
     type SampleDraft,
 } from './draft';
-import { cuppingSessionUrl } from './publicBase';
+import { cuppingResultsUrl, cuppingSessionUrl } from './publicBase';
+import { ResultsPage } from './Results';
 import { ShareQr } from './ShareQr';
 import {
     clampScore,
@@ -56,9 +57,15 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
 const supabaseAnon = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
 const supabase = createClient(supabaseUrl ?? '', supabaseAnon ?? '');
 
-function tokenFromPath(): string | null {
-    const m = window.location.pathname.match(/^\/c\/([^/]+)\/?$/);
-    return m?.[1] ? decodeURIComponent(m[1]) : null;
+type PathRoute = { kind: 'session'; token: string } | { kind: 'results'; token: string } | { kind: 'none' };
+
+function routeFromPath(): PathRoute {
+    const path = window.location.pathname;
+    const results = path.match(/^\/r\/([^/]+)\/?$/);
+    if (results?.[1]) return { kind: 'results', token: decodeURIComponent(results[1]) };
+    const session = path.match(/^\/c\/([^/]+)\/?$/);
+    if (session?.[1]) return { kind: 'session', token: decodeURIComponent(session[1]) };
+    return { kind: 'none' };
 }
 
 function sampleBeanLine(s: SampleMeta): string | null {
@@ -80,11 +87,20 @@ function draftStatus(d: SampleDraft | undefined): 'empty' | 'draft' | 'synced' |
 }
 
 export function App() {
-    const token = useMemo(() => tokenFromPath(), []);
+    const route = useMemo(() => routeFromPath(), []);
+    if (route.kind === 'results') {
+        return <ResultsPage token={route.token} />;
+    }
+
+    return <SessionApp token={route.kind === 'session' ? route.token : null} />;
+}
+
+function SessionApp({ token }: { token: string | null }) {
     const pageUrl = useMemo(() => (token ? cuppingSessionUrl(token) : window.location.href.split('?')[0]), [token]);
 
     const [meta, setMeta] = useState<SessionMeta | null>(null);
     const [loadError, setLoadError] = useState<string | null>(null);
+    const [endedInfo, setEndedInfo] = useState<{ resultsToken: string | null; eventTitle: string | null } | null>(null);
     const [loading, setLoading] = useState(true);
     const [selectedSampleId, setSelectedSampleId] = useState<string | null>(null);
     const [cuppedBy, setCuppedBy] = useState(loadCuppedBy);
@@ -163,9 +179,44 @@ export function App() {
         }
         setLoading(true);
         setLoadError(null);
-        const { data, error } = await supabase.functions.invoke<SessionMeta>('get-cupping-session', {
+        setEndedInfo(null);
+        const { data, error } = await supabase.functions.invoke<
+            SessionMeta & {
+                error?: string;
+                ended?: boolean;
+                resultsToken?: string | null;
+                eventTitle?: string | null;
+            }
+        >('get-cupping-session', {
             body: { token },
         });
+
+        // 410 ended: body may still be present depending on client version
+        let endedBody: {
+            ended?: boolean;
+            resultsToken?: string | null;
+            eventTitle?: string | null;
+            error?: string;
+        } | null = data && (data.ended || data.error === 'ended') ? data : null;
+        if (!endedBody && error && 'context' in error && error.context instanceof Response) {
+            try {
+                endedBody = (await error.context.clone().json()) as typeof endedBody;
+            } catch {
+                endedBody = null;
+            }
+        }
+
+        if (endedBody?.ended || endedBody?.error === 'ended') {
+            setEndedInfo({
+                resultsToken: endedBody.resultsToken ?? null,
+                eventTitle: endedBody.eventTitle ?? null,
+            });
+            setMeta(null);
+            setLoadError(null);
+            setLoading(false);
+            return;
+        }
+
         if (error || !data) {
             const msg = error?.message ?? 'load_failed';
             setLoadError(msg.includes('410') ? 'expired_or_full' : msg);
@@ -357,6 +408,26 @@ export function App() {
                     <div className="loading__spinner" aria-hidden />
                     Loading session…
                 </div>
+            </Shell>
+        );
+    }
+
+    if (endedInfo) {
+        const resultsHref = endedInfo.resultsToken
+            ? cuppingResultsUrl(endedInfo.resultsToken)
+            : token
+              ? cuppingResultsUrl(token)
+              : null;
+        return (
+            <Shell title={endedInfo.eventTitle || 'Session ended'} pageUrl={pageUrl} share={false}>
+                <p className="lead">
+                    This session has ended. Scoring is closed — open the results summary to see rankings and averages.
+                </p>
+                {resultsHref ? (
+                    <a className="btn btn--solid" href={resultsHref}>
+                        View results
+                    </a>
+                ) : null}
             </Shell>
         );
     }
