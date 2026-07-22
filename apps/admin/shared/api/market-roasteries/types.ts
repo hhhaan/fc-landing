@@ -16,6 +16,20 @@ export type MarketRoastery = {
     source: 'diningcode' | 'google';
     g_status: string | null;
     g_name: string | null;
+    /** Outreach flag from Supabase `market_roastery_contacts` */
+    contacted: boolean;
+    contacted_at: string | null;
+};
+
+export type SetMarketRoasteryContactedInput = {
+    roasteryId: string;
+    contacted: boolean;
+};
+
+export type SetMarketRoasteryContactedResult = {
+    roasteryId: string;
+    contacted: boolean;
+    contacted_at: string | null;
 };
 
 /** Slim point for map clustering (no addr/phone/g_*) */

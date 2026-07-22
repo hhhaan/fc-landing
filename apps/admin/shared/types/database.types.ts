@@ -381,6 +381,27 @@ export type Database = {
                 };
                 Relationships: [];
             };
+            market_roastery_contacts: {
+                Row: {
+                    contacted: boolean;
+                    contacted_at: string;
+                    roastery_id: string;
+                    updated_at: string;
+                };
+                Insert: {
+                    contacted?: boolean;
+                    contacted_at?: string;
+                    roastery_id: string;
+                    updated_at?: string;
+                };
+                Update: {
+                    contacted?: boolean;
+                    contacted_at?: string;
+                    roastery_id?: string;
+                    updated_at?: string;
+                };
+                Relationships: [];
+            };
             polar_coupons: {
                 Row: {
                     amount_cents: number | null;

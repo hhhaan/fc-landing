@@ -2,7 +2,11 @@
 
 import { ExternalLink, List, Map as MapIcon, MapPin } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { useMarketRoasteries, useMarketRoasteriesMap } from '@/shared/api/market-roasteries/queries';
+import {
+    useMarketRoasteries,
+    useMarketRoasteriesMap,
+    useSetMarketRoasteryContacted,
+} from '@/shared/api/market-roasteries/queries';
 import type { MarketCode } from '@/shared/api/market-roasteries/types';
 import { fmtNum } from '@/shared/lib/format';
 import { Badge, KpiCard, Panel } from '@/shared/ui/Panel';
@@ -36,6 +40,7 @@ export default function MarketRoasteriesPage() {
 
     const listQuery = useMarketRoasteries(listParams);
     const mapQuery = useMarketRoasteriesMap(mapParams, view === 'map');
+    const contactMutation = useSetMarketRoasteryContacted();
 
     const byMarket = (view === 'map' ? mapQuery.data?.byMarket : listQuery.data?.byMarket) ?? {};
     const generatedAt = view === 'map' ? mapQuery.data?.generatedAt : listQuery.data?.generatedAt;
@@ -193,9 +198,12 @@ export default function MarketRoasteriesPage() {
                                 </div>
                             }
                         >
-                            <table className="w-full min-w-[980px] text-left text-[12px]">
+                            <table className="w-full min-w-[1040px] text-left text-[12px]">
                                 <thead className="sticky top-0 bg-[var(--panel)]">
                                     <tr className="border-b border-[var(--border)] font-mono text-[10px] uppercase tracking-wider text-[var(--faint)]">
+                                        <th className="w-12 px-3 py-2 font-medium" title="Contacted">
+                                            Sent
+                                        </th>
                                         <th className="px-3 py-2 font-medium">Market</th>
                                         <th className="px-3 py-2 font-medium">Name</th>
                                         <th className="px-3 py-2 font-medium">Address</th>
@@ -208,85 +216,109 @@ export default function MarketRoasteriesPage() {
                                 <tbody>
                                     {data.items.length === 0 && (
                                         <tr>
-                                            <td colSpan={7} className="px-3 py-10 text-center text-[var(--muted)]">
+                                            <td colSpan={8} className="px-3 py-10 text-center text-[var(--muted)]">
                                                 No roasteries match
                                             </td>
                                         </tr>
                                     )}
-                                    {data.items.map((r) => (
-                                        <tr
-                                            key={r.id}
-                                            className="border-b border-[var(--border)]/50 hover:bg-[var(--surface)]/40"
-                                        >
-                                            <td className="px-3 py-2">
-                                                <Badge>{r.market}</Badge>
-                                                {r.country && r.country !== r.market && (
-                                                    <div className="mt-0.5 font-mono text-[10px] text-[var(--faint)]">
-                                                        {r.country}
-                                                    </div>
-                                                )}
-                                            </td>
-                                            <td className="px-3 py-2">
-                                                <div className="font-medium text-[var(--fg)]">{r.name}</div>
-                                                {r.g_status && r.g_status !== 'matched' && (
-                                                    <div className="mt-0.5 font-mono text-[10px] text-[var(--warn)]">
-                                                        g:{r.g_status}
-                                                        {r.g_name ? ` · ${r.g_name}` : ''}
-                                                    </div>
-                                                )}
-                                            </td>
-                                            <td className="max-w-[320px] truncate px-3 py-2 text-[var(--muted)]">
-                                                {r.addr || '—'}
-                                            </td>
-                                            <td className="px-3 py-2 font-mono text-[10px] tabular-nums text-[var(--faint)]">
-                                                <span className="inline-flex items-center gap-1">
-                                                    <MapPin size={10} />
-                                                    {Number(r.lat).toFixed(4)}, {Number(r.lng).toFixed(4)}
-                                                </span>
-                                            </td>
-                                            <td className="px-3 py-2 tabular-nums">
-                                                {r.rating != null ? (
-                                                    <>
-                                                        {r.rating}
-                                                        {r.rating_count != null && (
-                                                            <span className="text-[var(--faint)]">
-                                                                {' '}
-                                                                ({r.rating_count})
-                                                            </span>
-                                                        )}
-                                                    </>
-                                                ) : r.score != null ? (
-                                                    <span title="DiningCode score">{r.score}pt</span>
-                                                ) : (
-                                                    '—'
-                                                )}
-                                            </td>
-                                            <td className="px-3 py-2 font-mono text-[10px] text-[var(--muted)]">
-                                                {r.source}
-                                            </td>
-                                            <td className="px-3 py-2">
-                                                {r.maps_url ? (
-                                                    <a
-                                                        href={r.maps_url}
-                                                        target="_blank"
-                                                        rel="noreferrer"
-                                                        className="inline-flex items-center gap-1 text-[var(--accent)] hover:underline"
-                                                    >
-                                                        Open <ExternalLink size={11} />
-                                                    </a>
-                                                ) : (
-                                                    <a
-                                                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${r.lat},${r.lng}`)}`}
-                                                        target="_blank"
-                                                        rel="noreferrer"
-                                                        className="inline-flex items-center gap-1 text-[var(--muted)] hover:text-[var(--accent)]"
-                                                    >
-                                                        Pin <ExternalLink size={11} />
-                                                    </a>
-                                                )}
-                                            </td>
-                                        </tr>
-                                    ))}
+                                    {data.items.map((r) => {
+                                        const pending =
+                                            contactMutation.isPending && contactMutation.variables?.roasteryId === r.id;
+                                        return (
+                                            <tr
+                                                key={r.id}
+                                                className="border-b border-[var(--border)]/50 hover:bg-[var(--surface)]/40"
+                                            >
+                                                <td className="px-3 py-2">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={r.contacted}
+                                                        disabled={pending}
+                                                        title={
+                                                            r.contacted_at
+                                                                ? `Contacted ${r.contacted_at}`
+                                                                : 'Mark as contacted'
+                                                        }
+                                                        aria-label={`Contacted ${r.name}`}
+                                                        onChange={(e) => {
+                                                            contactMutation.mutate({
+                                                                roasteryId: r.id,
+                                                                contacted: e.target.checked,
+                                                            });
+                                                        }}
+                                                        className="h-3.5 w-3.5 cursor-pointer accent-[var(--accent)] disabled:opacity-40"
+                                                    />
+                                                </td>
+                                                <td className="px-3 py-2">
+                                                    <Badge>{r.market}</Badge>
+                                                    {r.country && r.country !== r.market && (
+                                                        <div className="mt-0.5 font-mono text-[10px] text-[var(--faint)]">
+                                                            {r.country}
+                                                        </div>
+                                                    )}
+                                                </td>
+                                                <td className="px-3 py-2">
+                                                    <div className="font-medium text-[var(--fg)]">{r.name}</div>
+                                                    {r.g_status && r.g_status !== 'matched' && (
+                                                        <div className="mt-0.5 font-mono text-[10px] text-[var(--warn)]">
+                                                            g:{r.g_status}
+                                                            {r.g_name ? ` · ${r.g_name}` : ''}
+                                                        </div>
+                                                    )}
+                                                </td>
+                                                <td className="max-w-[320px] truncate px-3 py-2 text-[var(--muted)]">
+                                                    {r.addr || '—'}
+                                                </td>
+                                                <td className="px-3 py-2 font-mono text-[10px] tabular-nums text-[var(--faint)]">
+                                                    <span className="inline-flex items-center gap-1">
+                                                        <MapPin size={10} />
+                                                        {Number(r.lat).toFixed(4)}, {Number(r.lng).toFixed(4)}
+                                                    </span>
+                                                </td>
+                                                <td className="px-3 py-2 tabular-nums">
+                                                    {r.rating != null ? (
+                                                        <>
+                                                            {r.rating}
+                                                            {r.rating_count != null && (
+                                                                <span className="text-[var(--faint)]">
+                                                                    {' '}
+                                                                    ({r.rating_count})
+                                                                </span>
+                                                            )}
+                                                        </>
+                                                    ) : r.score != null ? (
+                                                        <span title="DiningCode score">{r.score}pt</span>
+                                                    ) : (
+                                                        '—'
+                                                    )}
+                                                </td>
+                                                <td className="px-3 py-2 font-mono text-[10px] text-[var(--muted)]">
+                                                    {r.source}
+                                                </td>
+                                                <td className="px-3 py-2">
+                                                    {r.maps_url ? (
+                                                        <a
+                                                            href={r.maps_url}
+                                                            target="_blank"
+                                                            rel="noreferrer"
+                                                            className="inline-flex items-center gap-1 text-[var(--accent)] hover:underline"
+                                                        >
+                                                            Open <ExternalLink size={11} />
+                                                        </a>
+                                                    ) : (
+                                                        <a
+                                                            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${r.lat},${r.lng}`)}`}
+                                                            target="_blank"
+                                                            rel="noreferrer"
+                                                            className="inline-flex items-center gap-1 text-[var(--muted)] hover:text-[var(--accent)]"
+                                                        >
+                                                            Pin <ExternalLink size={11} />
+                                                        </a>
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
                                 </tbody>
                             </table>
                         </Panel>

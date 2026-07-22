@@ -1,5 +1,10 @@
-import { getMarketRoasteries, getMarketRoasteriesMap } from '@/shared/api/market-roasteries/server';
-import type { MarketCode } from '@/shared/api/market-roasteries/types';
+import { NextResponse } from 'next/server';
+import {
+    getMarketRoasteries,
+    getMarketRoasteriesMap,
+    setMarketRoasteryContacted,
+} from '@/shared/api/market-roasteries/server';
+import type { MarketCode, SetMarketRoasteryContactedInput } from '@/shared/api/market-roasteries/types';
 import { jsonOk } from '@/shared/lib/api-handler';
 
 const MARKETS = new Set(['KR', 'JP', 'US', 'HK', 'TW', 'EU', 'ALL']);
@@ -25,4 +30,19 @@ export async function GET(req: Request) {
             offset: Number.isFinite(offset) ? offset : 0,
         });
     });
+}
+
+export async function PATCH(req: Request) {
+    try {
+        const body = (await req.json()) as SetMarketRoasteryContactedInput;
+        if (!body?.roasteryId || typeof body.contacted !== 'boolean') {
+            return NextResponse.json({ error: 'roasteryId and contacted are required' }, { status: 400 });
+        }
+        const result = await setMarketRoasteryContacted(body.roasteryId, body.contacted);
+        return NextResponse.json(result);
+    } catch (err) {
+        const message = err instanceof Error ? err.message : 'Internal error';
+        console.error('[api/market-roasteries PATCH]', message, err);
+        return NextResponse.json({ error: message }, { status: 500 });
+    }
 }

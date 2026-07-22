@@ -1,8 +1,16 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
-import { fetchMarketRoasteries, fetchMarketRoasteriesMap } from '@/shared/api/market-roasteries/api';
-import type { MarketRoasteriesQuery } from '@/shared/api/market-roasteries/types';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+    fetchMarketRoasteries,
+    fetchMarketRoasteriesMap,
+    setMarketRoasteryContacted,
+} from '@/shared/api/market-roasteries/api';
+import type {
+    MarketRoasteriesQuery,
+    MarketRoasteriesResponse,
+    SetMarketRoasteryContactedInput,
+} from '@/shared/api/market-roasteries/types';
 
 export const marketRoasteriesKeys = {
     all: ['market-roasteries'] as const,
@@ -25,5 +33,43 @@ export function useMarketRoasteriesMap(params: Pick<MarketRoasteriesQuery, 'mark
         enabled,
         placeholderData: (prev) => prev,
         staleTime: 5 * 60_000,
+    });
+}
+
+export function useSetMarketRoasteryContacted() {
+    const qc = useQueryClient();
+    return useMutation({
+        mutationFn: (body: SetMarketRoasteryContactedInput) => setMarketRoasteryContacted(body),
+        onMutate: async ({ roasteryId, contacted }) => {
+            await qc.cancelQueries({ queryKey: marketRoasteriesKeys.all });
+            const snapshots = qc.getQueriesData<MarketRoasteriesResponse>({
+                queryKey: [...marketRoasteriesKeys.all, 'list'],
+            });
+            for (const [key, data] of snapshots) {
+                if (!data) continue;
+                qc.setQueryData<MarketRoasteriesResponse>(key, {
+                    ...data,
+                    items: data.items.map((item) =>
+                        item.id === roasteryId
+                            ? {
+                                  ...item,
+                                  contacted,
+                                  contacted_at: contacted ? (item.contacted_at ?? new Date().toISOString()) : null,
+                              }
+                            : item,
+                    ),
+                });
+            }
+            return { snapshots };
+        },
+        onError: (_err, _vars, ctx) => {
+            if (!ctx?.snapshots) return;
+            for (const [key, data] of ctx.snapshots) {
+                qc.setQueryData(key, data);
+            }
+        },
+        onSettled: () => {
+            void qc.invalidateQueries({ queryKey: marketRoasteriesKeys.all });
+        },
     });
 }
