@@ -1,4 +1,4 @@
-import { getMarketRoasteries } from '@/shared/api/market-roasteries/server';
+import { getMarketRoasteries, getMarketRoasteriesMap } from '@/shared/api/market-roasteries/server';
 import type { MarketCode } from '@/shared/api/market-roasteries/types';
 import { jsonOk } from '@/shared/lib/api-handler';
 
@@ -10,6 +10,12 @@ export async function GET(req: Request) {
         const marketRaw = (url.searchParams.get('market') ?? 'ALL').toUpperCase();
         const market = MARKETS.has(marketRaw) ? (marketRaw as MarketCode | 'ALL') : 'ALL';
         const q = url.searchParams.get('q') ?? undefined;
+        const view = url.searchParams.get('view') === 'map' ? 'map' : 'list';
+
+        if (view === 'map') {
+            return getMarketRoasteriesMap({ market, q, view: 'map' });
+        }
+
         const limit = Number(url.searchParams.get('limit') ?? '100');
         const offset = Number(url.searchParams.get('offset') ?? '0');
         return getMarketRoasteries({

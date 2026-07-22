@@ -3,7 +3,13 @@ import 'server-only';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import type { MarketCode, MarketRoasteriesQuery, MarketRoasteriesResponse, MarketRoastery } from './types';
+import type {
+    MarketCode,
+    MarketRoasteriesMapResponse,
+    MarketRoasteriesQuery,
+    MarketRoasteriesResponse,
+    MarketRoastery,
+} from './types';
 
 let cache: MarketRoastery[] | null = null;
 let byMarketCache: Record<string, number> | null = null;
@@ -21,12 +27,10 @@ function loadAll(): MarketRoastery[] {
     return cache;
 }
 
-export function getMarketRoasteries(query: MarketRoasteriesQuery = {}): MarketRoasteriesResponse {
+function filterRoasteries(query: MarketRoasteriesQuery): MarketRoastery[] {
     const all = loadAll();
     const market = (query.market ?? 'ALL') as MarketCode | 'ALL';
     const q = (query.q ?? '').trim().toLowerCase();
-    const limit = Math.min(Math.max(query.limit ?? 100, 1), 500);
-    const offset = Math.max(query.offset ?? 0, 0);
 
     let filtered = all;
     if (market !== 'ALL') {
@@ -41,14 +45,38 @@ export function getMarketRoasteries(query: MarketRoasteriesQuery = {}): MarketRo
                 (r.phone ?? '').toLowerCase().includes(q),
         );
     }
+    return filtered;
+}
 
-    const items = filtered.slice(offset, offset + limit);
+export function getMarketRoasteries(query: MarketRoasteriesQuery = {}): MarketRoasteriesResponse {
+    const filtered = filterRoasteries(query);
+    const limit = Math.min(Math.max(query.limit ?? 100, 1), 500);
+    const offset = Math.max(query.offset ?? 0, 0);
+
     return {
         total: filtered.length,
         limit,
         offset,
         byMarket: byMarketCache ?? {},
-        items,
+        items: filtered.slice(offset, offset + limit),
+        generatedAt: new Date().toISOString(),
+    };
+}
+
+export function getMarketRoasteriesMap(query: MarketRoasteriesQuery = {}): MarketRoasteriesMapResponse {
+    const filtered = filterRoasteries(query);
+    return {
+        total: filtered.length,
+        byMarket: byMarketCache ?? {},
+        points: filtered.map((r) => ({
+            id: r.id,
+            market: r.market,
+            name: r.name,
+            lat: r.lat,
+            lng: r.lng,
+            rating: r.rating,
+            maps_url: r.maps_url,
+        })),
         generatedAt: new Date().toISOString(),
     };
 }
