@@ -85,7 +85,22 @@
             "!**/.wrangler",
             "!**/coverage",
             "!**/pnpm-lock.yaml",
-            "!**/package-lock.json"
+            "!**/package-lock.json",
+            "!**/apps/admin/data",
+            "!**/__pycache__"
         ]
-    }
+    },
+    "overrides": [
+        {
+            "includes": ["**/*.astro"],
+            "linter": {
+                "rules": {
+                    "correctness": {
+                        "noUnusedVariables": "off",
+                        "noUnusedImports": "off"
+                    }
+                }
+            }
+        }
+    ]
 }

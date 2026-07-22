@@ -41,3 +41,12 @@ DESIGN.md
 docs/superpowers/*
 apps/admin/.env.local
 .vercel
+
+# python
+__pycache__/
+*.pyc
+
+# local agent dirs
+.claude/
+.grok/
+/env

@@ -1,22 +1,14 @@
 ---
-import "../styles/global.css";
-import Favicon from "../components/ui/Favicon.astro";
-import Seo from "../components/ui/Seo.astro";
-import OxNavAuth from "../components/ui/OxNavAuth.astro";
-import OxNavAuthMobile from "../components/ui/OxNavAuthMobile.astro";
+import '../styles/global.css';
+import Favicon from '../components/ui/Favicon.astro';
+import OxNavAuth from '../components/ui/OxNavAuth.astro';
+import OxNavAuthMobile from '../components/ui/OxNavAuthMobile.astro';
+import Seo from '../components/ui/Seo.astro';
 // import OxWorkflowPanel from "../components/ui/OxWorkflowPanel.astro";
-import {
-  DOCS,
-  DOCS_BASE,
-  FAQ_ITEMS,
-  HARDWARE,
-  MACHINE_BRANDS,
-  PLAN_COPY,
-  PROOFS,
-} from "../content/product";
-import { getViewer } from "../lib/authState";
-import { getMarketPricing, resolveBillingMarket } from "../lib/market";
-import { resolveTrialCta } from "../lib/trialCta";
+import { DOCS, DOCS_BASE, FAQ_ITEMS, HARDWARE, MACHINE_BRANDS, PLAN_COPY, PROOFS } from '../content/product';
+import { getViewer } from '../lib/authState';
+import { getMarketPricing, resolveBillingMarket } from '../lib/market';
+import { resolveTrialCta } from '../lib/trialCta';
 
 const billingMarket = resolveBillingMarket(Astro.request);
 const pricing = getMarketPricing(billingMarket);
@@ -27,107 +19,106 @@ const trialCta = await resolveTrialCta(Astro);
 const year = new Date().getFullYear();
 
 const capabilities = [
-  {
-    n: "01",
-    title: "Every batch, documented",
-    body: "Log BT/ET/RoR and keep every roast searchable — so the next shift can hit the same cup.",
-  },
-  {
-    n: "02",
-    title: "Built for the roast floor",
-    body: "Modbus, Phidget, and Artisan-ready paths. Keep roasting when the network drops.",
-  },
-  {
-    n: "03",
-    title: "From charge to bag",
-    body: "Day plan, green inventory, and production reports in one place — not five spreadsheets.",
-  },
-  {
-    n: "04",
-    title: "Hand off the shift",
-    body: "Promote winning profiles, leave notes, and give the next roaster a clear reference — not a verbal handoff.",
-  },
+    {
+        n: '01',
+        title: 'Every batch, documented',
+        body: 'Log BT/ET/RoR and keep every roast searchable — so the next shift can hit the same cup.',
+    },
+    {
+        n: '02',
+        title: 'Built for the roast floor',
+        body: 'Modbus, Phidget, and Artisan-ready paths. Keep roasting when the network drops.',
+    },
+    {
+        n: '03',
+        title: 'From charge to bag',
+        body: 'Day plan, green inventory, and production reports in one place — not five spreadsheets.',
+    },
+    {
+        n: '04',
+        title: 'Hand off the shift',
+        body: 'Promote winning profiles, leave notes, and give the next roaster a clear reference — not a verbal handoff.',
+    },
 ];
 
 const pains = [
-  {
-    n: "01",
-    title: "The cup drifts between shifts",
-    body: "Profiles live in someone’s head, a USB stick, or a spreadsheet nobody updates.",
-  },
-  {
-    n: "02",
-    title: "The floor and the office don’t talk",
-    body: "Live curves on one machine. Inventory and orders somewhere else.",
-  },
-  {
-    n: "03",
-    title: "Browser tools freeze when it matters",
-    body: "You need low-latency hardware links and an app that still works offline.",
-  },
+    {
+        n: '01',
+        title: 'The cup drifts between shifts',
+        body: 'Profiles live in someone’s head, a USB stick, or a spreadsheet nobody updates.',
+    },
+    {
+        n: '02',
+        title: 'The floor and the office don’t talk',
+        body: 'Live curves on one machine. Inventory and orders somewhere else.',
+    },
+    {
+        n: '03',
+        title: 'Browser tools freeze when it matters',
+        body: 'You need low-latency hardware links and an app that still works offline.',
+    },
 ];
 
 const proofs = PROOFS;
 
 const steps = [
-  {
-    n: "I",
-    title: "Connect your machine",
-    body: "Pair sensors and controllers. Modbus, Phidget, and Artisan-ready setups work out of the box.",
-  },
-  {
-    n: "II",
-    title: "Roast with a reference",
-    body: "Load a profile, mark events, and follow the curve with live readings on the floor.",
-  },
-  {
-    n: "III",
-    title: "Save and improve",
-    body: "Weights, phases, and notes save automatically. Promote winners for the next shift.",
-  },
+    {
+        n: 'I',
+        title: 'Connect your machine',
+        body: 'Pair sensors and controllers. Modbus, Phidget, and Artisan-ready setups work out of the box.',
+    },
+    {
+        n: 'II',
+        title: 'Roast with a reference',
+        body: 'Load a profile, mark events, and follow the curve with live readings on the floor.',
+    },
+    {
+        n: 'III',
+        title: 'Save and improve',
+        body: 'Weights, phases, and notes save automatically. Promote winners for the next shift.',
+    },
 ];
 
 const hardware = HARDWARE;
 
 const marqueeItems = [
-  "Live BT / ET / RoR",
-  "Profile library",
-  "Batch history",
-  "Modbus",
-  "Phidget",
-  "Artisan-ready",
-  "Probat · Giesen · Diedrich",
-  "Roast planner",
-  "Inventory",
-  "Production reports",
-  "Team sync",
-  "macOS",
-  "Windows",
+    'Live BT / ET / RoR',
+    'Profile library',
+    'Batch history',
+    'Modbus',
+    'Phidget',
+    'Artisan-ready',
+    'Probat · Giesen · Diedrich',
+    'Roast planner',
+    'Inventory',
+    'Production reports',
+    'Team sync',
+    'macOS',
+    'Windows',
 ];
 
-const metaTitle =
-  "First Crack — Coffee Roasting Software: Roast Profiles, Inventory & Roastery ERP";
+const metaTitle = 'First Crack — Coffee Roasting Software: Roast Profiles, Inventory & Roastery ERP';
 const metaDescription = `Roast profiling, green coffee inventory, and production ERP for specialty roasteries. Live BT/ET/RoR curves, Modbus/Phidget/Artisan machine connect, offline desktop app for macOS & Windows. ${PLAN_COPY.trialBadge} · Pro from ${pricing.heroProMonthly}/mo.`;
 
 const structuredData = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "SoftwareApplication",
-      name: "First Crack",
-      applicationCategory: "BusinessApplication",
-      operatingSystem: "macOS, Windows",
-      description: metaDescription,
-      url: "https://firstcrackiscoming.com/",
-      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    },
-    {
-      "@type": "Organization",
-      name: "First Crack",
-      url: "https://firstcrackiscoming.com/",
-      logo: "https://firstcrackiscoming.com/favicon.ico",
-    },
-  ],
+    '@context': 'https://schema.org',
+    '@graph': [
+        {
+            '@type': 'SoftwareApplication',
+            name: 'First Crack',
+            applicationCategory: 'BusinessApplication',
+            operatingSystem: 'macOS, Windows',
+            description: metaDescription,
+            url: 'https://firstcrackiscoming.com/',
+            offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+        },
+        {
+            '@type': 'Organization',
+            name: 'First Crack',
+            url: 'https://firstcrackiscoming.com/',
+            logo: 'https://firstcrackiscoming.com/favicon.ico',
+        },
+    ],
 };
 ---
 
@@ -723,6 +714,10 @@ const structuredData = {
 
       let lastScrollY = window.scrollY;
       const hideThreshold = 40;
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      let navScrollRaf = 0;
 
       const setActiveSection = (id: string | null) => {
         navLinks.forEach((link) => {
@@ -730,24 +725,76 @@ const structuredData = {
         });
       };
 
+      /** Ease-out quart — close to ox reveal cubic-bezier(0.22, 1, 0.36, 1) */
+      const easeOx = (t: number) => 1 - (1 - t) ** 4;
+
       const scrollToSection = (id: string) => {
         const section = document.getElementById(id);
         if (!section) return;
 
         closeMobile();
-        document.body.classList.add("is-pane-nav");
+        document.body.classList.add("is-pane-nav", "is-nav-scrolling");
         header?.classList.add("is-hidden");
         setActiveSection(id);
 
-        const top = section.offsetTop;
-        lastScrollY = window.scrollY;
-        window.scrollTo({ top, behavior: "smooth" });
+        const target = section.offsetTop;
+        const start = window.scrollY;
+        const delta = target - start;
+
+        if (navScrollRaf) {
+          cancelAnimationFrame(navScrollRaf);
+          navScrollRaf = 0;
+        }
+
+        const finish = () => {
+          document.body.classList.remove("is-nav-scrolling");
+          lastScrollY = window.scrollY;
+          history.replaceState(null, "", `#${id}`);
+          // Replay entrance on target reveals still waiting
+          section.querySelectorAll(".reveal:not(.is-in)").forEach((el) => {
+            el.classList.add("is-in");
+          });
+        };
+
+        if (Math.abs(delta) < 2 || prefersReducedMotion) {
+          window.scrollTo(0, target);
+          finish();
+          return;
+        }
+
+        const duration = Math.min(1100, Math.max(480, Math.abs(delta) * 0.55));
+        const t0 = performance.now();
+
+        const step = (now: number) => {
+          const t = Math.min(1, (now - t0) / duration);
+          const y = start + delta * easeOx(t);
+          window.scrollTo(0, y);
+          lastScrollY = y;
+          if (t < 1) {
+            navScrollRaf = requestAnimationFrame(step);
+          } else {
+            navScrollRaf = 0;
+            finish();
+          }
+        };
+        navScrollRaf = requestAnimationFrame(step);
       };
 
       navLinks.forEach((link) => {
         link.addEventListener("click", (e) => {
           const id = link.dataset.section;
           if (!id) return;
+          e.preventDefault();
+          scrollToSection(id);
+        });
+      });
+
+      // Footer / in-page anchors share the same scroll animation
+      document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
+        if (a.dataset.section) return;
+        const id = a.getAttribute("href")?.slice(1);
+        if (!id || !document.getElementById(id)) return;
+        a.addEventListener("click", (e) => {
           e.preventDefault();
           scrollToSection(id);
         });
@@ -767,10 +814,15 @@ const structuredData = {
         if (y <= hideThreshold) {
           document.body.classList.remove("is-pane-nav");
           header?.classList.remove("is-hidden");
-        } else if (document.body.classList.contains("is-pane-nav")) {
+        } else if (document.body.classList.contains("is-nav-scrolling")) {
+          // Programmatic nav jump: keep header hidden until animation ends
           header?.classList.add("is-hidden");
-        } else {
-          header?.classList.toggle("is-hidden", y > lastScrollY);
+        } else if (y < lastScrollY) {
+          // Scroll up → show nav (also clears post-jump lock)
+          document.body.classList.remove("is-pane-nav");
+          header?.classList.remove("is-hidden");
+        } else if (y > lastScrollY) {
+          header?.classList.add("is-hidden");
         }
 
         lastScrollY = y;
@@ -1050,13 +1102,31 @@ const structuredData = {
      ═══════════════════════════════════════════════════════════ */
 
   html {
-    scroll-behavior: smooth;
+    /* Smooth nav handled in JS (custom ease); keep auto to avoid double-smoothing */
+    scroll-behavior: auto;
     --ox-scroll-pad: 80px;
     scroll-padding-top: var(--ox-scroll-pad);
   }
 
   body.ox.is-pane-nav {
     --ox-scroll-pad: 0px;
+  }
+
+  /* While nav is animating: disable snap fight + soft content settle */
+  body.ox.is-nav-scrolling {
+    scroll-snap-type: none;
+    pointer-events: none;
+  }
+  body.ox.is-nav-scrolling .ox-main {
+    animation: ox-nav-settle 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  @keyframes ox-nav-settle {
+    0% {
+      opacity: 0.92;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 
   body.ox {
@@ -2489,6 +2559,9 @@ const structuredData = {
       transition: none;
     }
     .ox-marquee-track {
+      animation: none;
+    }
+    body.ox.is-nav-scrolling .ox-main {
       animation: none;
     }
   }
