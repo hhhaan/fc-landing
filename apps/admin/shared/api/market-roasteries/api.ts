@@ -1,4 +1,5 @@
 import type {
+    HideMarketRoasteryResult,
     MarketRoasteriesMapResponse,
     MarketRoasteriesQuery,
     MarketRoasteriesResponse,
@@ -36,5 +37,12 @@ export async function setMarketRoasteryContacted(
     body: SetMarketRoasteryContactedInput,
 ): Promise<SetMarketRoasteryContactedResult> {
     const { data } = await api.patch<SetMarketRoasteryContactedResult>('/market-roasteries', body);
+    return data;
+}
+
+export async function hideMarketRoastery(roasteryId: string): Promise<HideMarketRoasteryResult> {
+    const { data } = await api.delete<HideMarketRoasteryResult>('/market-roasteries', {
+        data: { roasteryId },
+    });
     return data;
 }

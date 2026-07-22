@@ -402,6 +402,21 @@ export type Database = {
                 };
                 Relationships: [];
             };
+            market_roastery_hidden: {
+                Row: {
+                    hidden_at: string;
+                    roastery_id: string;
+                };
+                Insert: {
+                    hidden_at?: string;
+                    roastery_id: string;
+                };
+                Update: {
+                    hidden_at?: string;
+                    roastery_id?: string;
+                };
+                Relationships: [];
+            };
             polar_coupons: {
                 Row: {
                     amount_cents: number | null;

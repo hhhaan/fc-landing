@@ -90,6 +90,8 @@ const counts = {
     hk: await loadGoogle('hk-google-roastery.jsonl', 'HK', () => 'HK'),
     tw: await loadGoogle('tw-google-roastery.jsonl', 'TW', () => 'TW'),
     eu: await loadGoogle('europe-google-roastery.jsonl', 'EU', (r) => r.country || 'EU'),
+    au: await loadGoogle('australia-google-roastery.jsonl', 'AU', (r) => r.country || 'AU'),
+    sea: await loadGoogle('seasia-google-roastery.jsonl', 'SEA', (r) => r.country || 'SEA'),
 };
 
 const filtered = items.filter((x) => typeof x.lat === 'number' && typeof x.lng === 'number');

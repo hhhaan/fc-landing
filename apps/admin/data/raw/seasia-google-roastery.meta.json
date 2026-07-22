@@ -1,0 +1,18 @@
+{
+  "total_unique": 2983,
+  "api_calls_this_run_est": 75,
+  "country_counts": {
+    "ID": 733,
+    "VN": 604,
+    "TH": 562,
+    "MY": 427,
+    "PH": 298,
+    "KH": 92,
+    "SG": 91,
+    "LA": 87,
+    "BN": 45,
+    "MM": 44
+  },
+  "csv": "/Users/hanseungheon/han/first-crack-proj/fc-landing/apps/admin/data/raw/seasia-google-roastery.csv",
+  "jsonl": "/Users/hanseungheon/han/first-crack-proj/fc-landing/apps/admin/data/raw/seasia-google-roastery.jsonl"
+}

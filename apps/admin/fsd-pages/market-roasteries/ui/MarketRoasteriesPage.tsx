@@ -1,8 +1,9 @@
 'use client';
 
-import { ExternalLink, List, Map as MapIcon, MapPin } from 'lucide-react';
+import { ExternalLink, List, Map as MapIcon, Trash2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import {
+    useHideMarketRoastery,
     useMarketRoasteries,
     useMarketRoasteriesMap,
     useSetMarketRoasteryContacted,
@@ -22,6 +23,8 @@ const MARKETS: { code: MarketCode | 'ALL'; label: string }[] = [
     { code: 'HK', label: 'Hong Kong' },
     { code: 'TW', label: 'Taiwan' },
     { code: 'EU', label: 'Europe' },
+    { code: 'AU', label: 'Australia/NZ' },
+    { code: 'SEA', label: 'SE Asia' },
 ];
 
 const PAGE_SIZE = 100;
@@ -41,10 +44,14 @@ export default function MarketRoasteriesPage() {
     const listQuery = useMarketRoasteries(listParams);
     const mapQuery = useMarketRoasteriesMap(mapParams, view === 'map');
     const contactMutation = useSetMarketRoasteryContacted();
+    const hideMutation = useHideMarketRoastery();
 
     const byMarket = (view === 'map' ? mapQuery.data?.byMarket : listQuery.data?.byMarket) ?? {};
+    const contactedByMarket =
+        (view === 'map' ? mapQuery.data?.contactedByMarket : listQuery.data?.contactedByMarket) ?? {};
     const generatedAt = view === 'map' ? mapQuery.data?.generatedAt : listQuery.data?.generatedAt;
     const marketTotal = Object.values(byMarket).reduce((a, b) => a + b, 0);
+    const contactedTotal = Object.values(contactedByMarket).reduce((a, b) => a + b, 0);
 
     if (view === 'list' && listQuery.isPending && !listQuery.data) {
         return <QueryLoading label="Loading market roasteries" />;
@@ -65,8 +72,8 @@ export default function MarketRoasteriesPage() {
                 refreshedAt={generatedAt}
             />
             <main className="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden p-4">
-                <div className="grid shrink-0 grid-cols-2 gap-2 md:grid-cols-4 xl:grid-cols-7">
-                    <KpiCard label="Total DB" value={fmtNum(marketTotal)} />
+                <div className="grid shrink-0 grid-cols-2 gap-2 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-10">
+                    <KpiCard label="Total" value={fmtNum(marketTotal)} />
                     {MARKETS.filter((m) => m.code !== 'ALL').map((m) => (
                         <KpiCard
                             key={m.code}
@@ -75,6 +82,7 @@ export default function MarketRoasteriesPage() {
                             tone={market === m.code ? 'accent' : 'default'}
                         />
                     ))}
+                    <KpiCard label="Sent" value={fmtNum(contactedTotal)} tone="accent" />
                 </div>
 
                 <div className="flex shrink-0 flex-wrap items-center gap-2">
@@ -198,7 +206,7 @@ export default function MarketRoasteriesPage() {
                                 </div>
                             }
                         >
-                            <table className="w-full min-w-[1040px] text-left text-[12px]">
+                            <table className="w-full min-w-[760px] text-left text-[12px]">
                                 <thead className="sticky top-0 bg-[var(--panel)]">
                                     <tr className="border-b border-[var(--border)] font-mono text-[10px] uppercase tracking-wider text-[var(--faint)]">
                                         <th className="w-12 px-3 py-2 font-medium" title="Contacted">
@@ -207,23 +215,23 @@ export default function MarketRoasteriesPage() {
                                         <th className="px-3 py-2 font-medium">Market</th>
                                         <th className="px-3 py-2 font-medium">Name</th>
                                         <th className="px-3 py-2 font-medium">Address</th>
-                                        <th className="px-3 py-2 font-medium">Coords</th>
-                                        <th className="px-3 py-2 font-medium">Rating</th>
                                         <th className="px-3 py-2 font-medium">Source</th>
                                         <th className="px-3 py-2 font-medium">Map</th>
+                                        <th className="w-12 px-3 py-2 font-medium">Del</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {data.items.length === 0 && (
                                         <tr>
-                                            <td colSpan={8} className="px-3 py-10 text-center text-[var(--muted)]">
+                                            <td colSpan={7} className="px-3 py-10 text-center text-[var(--muted)]">
                                                 No roasteries match
                                             </td>
                                         </tr>
                                     )}
                                     {data.items.map((r) => {
-                                        const pending =
+                                        const pendingContact =
                                             contactMutation.isPending && contactMutation.variables?.roasteryId === r.id;
+                                        const pendingHide = hideMutation.isPending && hideMutation.variables === r.id;
                                         return (
                                             <tr
                                                 key={r.id}
@@ -233,7 +241,7 @@ export default function MarketRoasteriesPage() {
                                                     <input
                                                         type="checkbox"
                                                         checked={r.contacted}
-                                                        disabled={pending}
+                                                        disabled={pendingContact || pendingHide}
                                                         title={
                                                             r.contacted_at
                                                                 ? `Contacted ${r.contacted_at}`
@@ -266,31 +274,8 @@ export default function MarketRoasteriesPage() {
                                                         </div>
                                                     )}
                                                 </td>
-                                                <td className="max-w-[320px] truncate px-3 py-2 text-[var(--muted)]">
+                                                <td className="max-w-[420px] truncate px-3 py-2 text-[var(--muted)]">
                                                     {r.addr || '—'}
-                                                </td>
-                                                <td className="px-3 py-2 font-mono text-[10px] tabular-nums text-[var(--faint)]">
-                                                    <span className="inline-flex items-center gap-1">
-                                                        <MapPin size={10} />
-                                                        {Number(r.lat).toFixed(4)}, {Number(r.lng).toFixed(4)}
-                                                    </span>
-                                                </td>
-                                                <td className="px-3 py-2 tabular-nums">
-                                                    {r.rating != null ? (
-                                                        <>
-                                                            {r.rating}
-                                                            {r.rating_count != null && (
-                                                                <span className="text-[var(--faint)]">
-                                                                    {' '}
-                                                                    ({r.rating_count})
-                                                                </span>
-                                                            )}
-                                                        </>
-                                                    ) : r.score != null ? (
-                                                        <span title="DiningCode score">{r.score}pt</span>
-                                                    ) : (
-                                                        '—'
-                                                    )}
                                                 </td>
                                                 <td className="px-3 py-2 font-mono text-[10px] text-[var(--muted)]">
                                                     {r.source}
@@ -315,6 +300,23 @@ export default function MarketRoasteriesPage() {
                                                             Pin <ExternalLink size={11} />
                                                         </a>
                                                     )}
+                                                </td>
+                                                <td className="px-3 py-2">
+                                                    <button
+                                                        type="button"
+                                                        disabled={pendingHide}
+                                                        title="Remove from directory"
+                                                        aria-label={`Delete ${r.name}`}
+                                                        onClick={() => {
+                                                            if (!window.confirm(`Remove "${r.name}" from directory?`)) {
+                                                                return;
+                                                            }
+                                                            hideMutation.mutate(r.id);
+                                                        }}
+                                                        className="inline-flex items-center justify-center border border-[var(--border)] p-1 text-[var(--muted)] hover:border-[var(--bad)]/50 hover:text-[var(--bad)] disabled:opacity-40"
+                                                    >
+                                                        <Trash2 size={12} />
+                                                    </button>
                                                 </td>
                                             </tr>
                                         );

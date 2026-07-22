@@ -1,0 +1,15 @@
+{
+  "total_unique": 1009,
+  "api_calls_this_run_est": 155,
+  "queries": [
+    "coffee roaster",
+    "coffee roastery",
+    "specialty coffee roaster"
+  ],
+  "country_counts": {
+    "AU": 789,
+    "NZ": 220
+  },
+  "csv": "/Users/hanseungheon/han/first-crack-proj/fc-landing/apps/admin/data/raw/australia-google-roastery.csv",
+  "jsonl": "/Users/hanseungheon/han/first-crack-proj/fc-landing/apps/admin/data/raw/australia-google-roastery.jsonl"
+}

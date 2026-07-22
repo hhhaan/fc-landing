@@ -2,12 +2,13 @@ import { NextResponse } from 'next/server';
 import {
     getMarketRoasteries,
     getMarketRoasteriesMap,
+    hideMarketRoastery,
     setMarketRoasteryContacted,
 } from '@/shared/api/market-roasteries/server';
 import type { MarketCode, SetMarketRoasteryContactedInput } from '@/shared/api/market-roasteries/types';
 import { jsonOk } from '@/shared/lib/api-handler';
 
-const MARKETS = new Set(['KR', 'JP', 'US', 'HK', 'TW', 'EU', 'ALL']);
+const MARKETS = new Set(['KR', 'JP', 'US', 'HK', 'TW', 'EU', 'AU', 'SEA', 'ALL']);
 
 export async function GET(req: Request) {
     return jsonOk(async () => {
@@ -43,6 +44,21 @@ export async function PATCH(req: Request) {
     } catch (err) {
         const message = err instanceof Error ? err.message : 'Internal error';
         console.error('[api/market-roasteries PATCH]', message, err);
+        return NextResponse.json({ error: message }, { status: 500 });
+    }
+}
+
+export async function DELETE(req: Request) {
+    try {
+        const body = (await req.json()) as { roasteryId?: string };
+        if (!body?.roasteryId?.trim()) {
+            return NextResponse.json({ error: 'roasteryId is required' }, { status: 400 });
+        }
+        const result = await hideMarketRoastery(body.roasteryId);
+        return NextResponse.json(result);
+    } catch (err) {
+        const message = err instanceof Error ? err.message : 'Internal error';
+        console.error('[api/market-roasteries DELETE]', message, err);
         return NextResponse.json({ error: message }, { status: 500 });
     }
 }

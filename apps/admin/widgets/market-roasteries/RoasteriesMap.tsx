@@ -12,6 +12,8 @@ const MARKET_COLORS: Record<MarketCode, string> = {
     HK: '#E879F9',
     TW: '#FBBF24',
     EU: '#A78BFA',
+    AU: '#34D399',
+    SEA: '#F472B6',
 };
 
 const MARKET_CENTERS: Record<MarketCode | 'ALL', { center: [number, number]; zoom: number }> = {
@@ -22,6 +24,8 @@ const MARKET_CENTERS: Record<MarketCode | 'ALL', { center: [number, number]; zoo
     HK: { center: [114.17, 22.32], zoom: 10.5 },
     TW: { center: [121.0, 23.7], zoom: 7.2 },
     EU: { center: [10, 50], zoom: 3.6 },
+    AU: { center: [134, -25], zoom: 3.8 },
+    SEA: { center: [110, 5], zoom: 3.6 },
 };
 
 type Props = {
@@ -178,6 +182,10 @@ export function RoasteriesMap({ points, market, label = 'Market roasteries', cla
                             MARKET_COLORS.TW,
                             'EU',
                             MARKET_COLORS.EU,
+                            'AU',
+                            MARKET_COLORS.AU,
+                            'SEA',
+                            MARKET_COLORS.SEA,
                             '#81FBA5',
                         ],
                         'circle-opacity': 0.92,

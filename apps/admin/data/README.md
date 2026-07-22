@@ -23,6 +23,8 @@ python3 scripts/scrape-google-japan-roastery.py
 python3 scripts/scrape-google-us-roastery.py
 python3 scripts/scrape-google-hk-tw-roastery.py
 python3 scripts/scrape-google-europe-roastery.py
+python3 scripts/scrape-google-australia-roastery.py
+python3 scripts/scrape-google-seasia-roastery.py --with-local
 node scripts/build-market-roasteries.mjs
 ```
 
