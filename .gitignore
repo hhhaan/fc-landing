@@ -10,18 +10,32 @@ dist/
 .netlify/
 .next/
 out/
+*.tsbuildinfo
 
-# env files
+# env / secrets
 .env
 .env.local
 .env.*.local
+/env
+env
 
-# astro
+# frameworks
 .astro/
 .wrangler/
 
-# agent tooling
+# python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# agent / local tooling
 .commandcode/
+.claude/
+.grok/
+.omo/
+.codegraph
 
 # OS
 .DS_Store
@@ -35,18 +49,7 @@ pnpm-debug.log*
 # Polar product id dumps
 scripts/polar-products.out.env
 
-
-.omo
+# local notes / experimental
 DESIGN.md
 docs/superpowers/*
 apps/admin/.env.local
-.vercel
-
-# python
-__pycache__/
-*.pyc
-
-# local agent dirs
-.claude/
-.grok/
-/env
