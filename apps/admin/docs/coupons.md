@@ -99,7 +99,7 @@ v1에 **user_id 할당 없음**. idle 풀에 쌓아 두고 순차 배포.
 | 경로 | 역할 |
 |------|------|
 | `apps/admin/app/(dashboard)/coupons/` | 라우트 |
-| `apps/admin/fsd-pages/coupons/ui/CouponsPage.tsx` | UI |
+| `apps/admin/app/(dashboard)/coupons/page.tsx` | UI |
 | `apps/admin/app/api/coupons/` | BFF list/create |
 | `apps/admin/app/api/coupons/issue/` | Issue |
 | `apps/admin/app/api/coupons/[id]/` | Disable |

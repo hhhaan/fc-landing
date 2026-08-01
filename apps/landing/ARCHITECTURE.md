@@ -12,7 +12,7 @@ For design tokens and UI patterns, see [`DESIGN_RULES.md`](DESIGN_RULES.md). For
 |-------|--------|
 | Framework | Astro 6 (`.astro` pages, server output) |
 | Adapter | `@astrojs/cloudflare` |
-| Styling | Scoped `ox` CSS per page (`<style is:global>`) + legacy `global.css` on unmigrated routes |
+| Styling | Scoped `ox` CSS per page (`<style is:global>`) + legacy `ox.css` on unmigrated routes |
 | Layout utilities | Tailwind v4 (available; most `ox` pages use plain CSS) |
 | Auth | Supabase SSR (`@supabase/ssr` pattern in `src/lib/supabase.ts`) |
 | Payments | Polar checkout redirect (`start-pro.astro`) + webhook (`pages/api/webhooks/polar.ts`) |
@@ -40,7 +40,7 @@ apps/landing/
     ├── content/markets.ts   # per-market pricing
     ├── content/product.ts   # Free/Trial/plan copy, machines, FAQ
     ├── pages/               # file-based routes (see table below)
-    └── styles/global.css    # legacy design tokens — do not extend for new UI
+    └── styles/ox.css    # legacy design tokens — do not extend for new UI
 ```
 
 ---
@@ -72,7 +72,7 @@ apps/landing/
 | `/api/webhooks/polar` | `api/webhooks/polar.ts` | Subscription webhook |
 | `/{kr,us,jp,global}` | `{kr,us,jp,global}.astro` | Market cookie + redirect to `/` |
 
-### Legacy (`global.css` — migrate when touched)
+### Legacy (`ox.css` — migrate when touched)
 
 | Route | File |
 |-------|------|
@@ -123,12 +123,12 @@ Always pass **both** `request` and `cookies` to the SSR client.
 | System | Scope | Status |
 |--------|-------|--------|
 | **`ox`** | `body.ox` + `--ox-*` tokens | Active — all public marketing/auth/utility pages |
-| **Legacy** | `global.css` (mint buttons, pill radii, Pretendard) | Frozen — `account.astro` only |
+| **Shared base** | `src/styles/ox.css` | Tokens + resets; page-local CSS in each route |
 
 Rules:
 
 - New pages: `body.ox`, copy tokens from `DESIGN_RULES.md` or a reference page.
-- Do not add `ox` tokens into `global.css` without namespacing.
+- Do not add `ox` tokens into `ox.css` without namespacing.
 - Prefer reusing class names (`.ox-btn`, `.ox-shell`, `.ox-auth-header`) before inventing page-specific ones.
 
 ---

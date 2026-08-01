@@ -1,7 +1,8 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { fetchRetention } from '@/shared/api/retention/api';
+import type { RetentionData } from '@/shared/api/retention/types';
+import { apiGet } from '@/shared/lib/http';
 
 export const retentionKeys = {
     all: ['retention'] as const,
@@ -11,6 +12,6 @@ export const retentionKeys = {
 export function useRetention() {
     return useQuery({
         queryKey: retentionKeys.detail(),
-        queryFn: fetchRetention,
+        queryFn: () => apiGet<RetentionData>('/retention'),
     });
 }

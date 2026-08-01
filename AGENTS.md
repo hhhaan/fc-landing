@@ -39,7 +39,7 @@ Husky pre-commit runs Biome via lint-staged. CI/CD: see [`docs/ci-cd.md`](docs/c
 - **Interactivity:** inline `<script>` in `.astro` files by default — no React in the current landing codebase
 - **New UI without state →** `src/components/ui/*.astro` (e.g. `OxLegalShell`, `OxJobShell`)
 - **New UI with state →** `src/components/react/*.jsx` + `client:visible`
-- **Legacy UI:** `account.astro` still uses `global.css` — migrate to `ox` when touched
+- **Legacy UI:** `account.astro` still uses `ox.css` — migrate to `ox` when touched
 
 ## Design system
 
@@ -57,7 +57,7 @@ Husky pre-commit runs Biome via lint-staged. CI/CD: see [`docs/ci-cd.md`](docs/c
    - Marketing: `apps/landing/src/pages/index.astro`
    - Auth: `login.astro`, `signup.astro`
    - Utility: `download.astro`
-3. Use `body.ox`, `--ox-*` tokens, Instrument Sans + JetBrains Mono — not legacy `global.css` mint buttons or pill radii
+3. Use `body.ox`, `--ox-*` tokens, Instrument Sans + JetBrains Mono — not legacy `ox.css` mint buttons or pill radii
 
 ### Quick reminders
 
@@ -76,5 +76,5 @@ apps/landing/
 ├── src/components/ui/       ← Favicon, OxLegalShell, OxJobShell
 ├── src/lib/supabase.ts      ← SSR auth client
 ├── src/lib/auth.ts          ← requireLogin()
-└── src/styles/global.css    ← legacy tokens (account.astro only)
+└── src/styles/ox.css    ← legacy tokens (account.astro only)
 ```

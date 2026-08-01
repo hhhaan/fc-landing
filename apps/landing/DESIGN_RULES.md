@@ -2,7 +2,7 @@
 
 Authoritative guide for the landing-site visual system in use on the home page, auth pages, and download page. All new UI in `@fc/landing` should follow these rules unless there is a deliberate product reason to diverge.
 
-> **Note:** `DESIGN.md` documents an older ElevenLabs-inspired spec (Pretendard, pill buttons, warm shadows). The live site uses **`ox`** — warm stone palette, sharp corners, Instrument Sans. Treat this file as the source of truth for current work.
+> **Note:** Live site uses **`ox`** — warm stone palette, sharp corners, Instrument Sans (`src/styles/ox.css`). Treat this file as the source of truth for current work.
 
 ---
 
@@ -78,10 +78,10 @@ body.ox {
 
 ### Do not use on `ox` pages
 
-- `global.css` mint buttons (`.btn-primary`)
-- Rounded auth cards from legacy pages
-- Pretendard / Waldenburg (unless migrating old pages)
-- Heavy box-shadow stacks from `DESIGN.md`
+- Mint buttons / pill radii from old design notes
+- Rounded auth cards
+- Pretendard / Waldenburg
+- Heavy box-shadow stacks
 
 ---
 
@@ -431,4 +431,4 @@ src/styles/ox/
 └── auth.css        /* auth + download-specific */
 ```
 
-Import once in a shared layout or per-page `<style is:global>` until a layout wrapper exists. **Do not** mix `ox` tokens into `global.css` without namespacing — legacy pages still depend on the old system.
+Import once in a shared layout or per-page `<style is:global>` until a layout wrapper exists. **Do not** mix `ox` tokens into `ox.css` without namespacing — legacy pages still depend on the old system.

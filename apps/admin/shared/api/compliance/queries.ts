@@ -1,7 +1,8 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { fetchComplianceBundle } from '@/shared/api/compliance/api';
+import type { ComplianceBundle } from '@/shared/api/compliance/types';
+import { apiGet } from '@/shared/lib/http';
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -14,7 +15,7 @@ export function useComplianceBundle(userId: string | null, from: string, to: str
     const validRange = DATE_RE.test(from) && DATE_RE.test(to) && from <= to;
     return useQuery({
         queryKey: complianceKeys.bundle(userId ?? '', from, to),
-        queryFn: () => fetchComplianceBundle(userId!, from, to),
+        queryFn: () => apiGet<ComplianceBundle>('/compliance', { userId: userId!, from, to }),
         enabled: Boolean(userId) && validRange,
     });
 }

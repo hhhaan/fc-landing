@@ -12,6 +12,7 @@ import {
     PanelLeftClose,
     PanelLeftOpen,
     RefreshCw,
+    Search,
     Server,
     Ticket,
     Users,
@@ -33,6 +34,7 @@ const NAV = [
     { href: '/coupons', label: 'Coupons', icon: Ticket },
     { href: '/activity', label: 'Activity', icon: Activity },
     { href: '/map', label: 'Map', icon: Globe2 },
+    { href: '/seo', label: 'SEO', icon: Search },
     { href: '/system', label: 'Service Ops', icon: Server },
 ] as const;
 

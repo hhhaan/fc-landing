@@ -46,7 +46,9 @@ export const PLAN_COPY = {
     signupLead: '14-day Pro trial, 20 batches. Desktop app for macOS & Windows.',
     downloadTrialNote: '14-day Pro trial · 20 batches · then Free (20/mo) or paid',
     proFeatureBatches: '200 batches / billing month',
+    proFeatureMachines: '1 machine connection',
     proPlusFeatureBatches: 'Unlimited batches',
+    proPlusFeatureMachines: '3+ machines (unlimited)',
     freeFeatureBatches: '20 batches / month',
 } as const;
 
@@ -98,7 +100,7 @@ export const FAQ_ITEMS = [
     },
     {
         q: 'What’s the difference between Pro and Pro+?',
-        a: 'Pro covers live roast, history, profiles, greens/blends, and schedule — 200 batches per billing month, 1 seat. Pro+ adds unlimited batches and commerce connectors (Shopify, Naver, Cafe24, and similar).',
+        a: 'Pro covers live roast, history, profiles, greens/blends, and schedule — 200 batches per billing month, 1 machine connection, 1 seat. Pro+ is for multi-machine floors (3+ machines, unlimited connections), unlimited batches, roasted inventory, and commerce connectors (Shopify, Naver, Cafe24, and similar).',
     },
     {
         q: 'macOS or Windows?',
@@ -106,7 +108,7 @@ export const FAQ_ITEMS = [
     },
     {
         q: 'How do seats and Enterprise work?',
-        a: 'Pro and Pro+ include 1 seat. Enterprise adds multi-seat teams, custom work, FDE support, and contract billing — contact sales for pricing (from about $300/mo + per-seat).',
+        a: 'Pro and Pro+ include 1 seat. Enterprise adds multi-seat teams, custom work, FDE support, and contract billing (from about $300/mo + per-seat). White-label branding is included on Enterprise when you sign a 1-year contract — we handle the setup. Contact sales for details.',
     },
     {
         q: 'Can I cancel or get a refund?',

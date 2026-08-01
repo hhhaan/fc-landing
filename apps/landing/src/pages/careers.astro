@@ -1,47 +1,47 @@
 ---
-import "../styles/global.css";
-import Favicon from "../components/ui/Favicon.astro";
-import Seo from "../components/ui/Seo.astro";
+import '../styles/ox.css';
+import Favicon from '../components/ui/Favicon.astro';
+import Seo from '../components/ui/Seo.astro';
 
 const year = new Date().getFullYear();
 
 const jobs = [
-  {
-    href: "/careers/full-stack-engineer",
-    title: "Full-Stack Engineer",
-    dept: "Engineering",
-    deptKey: "engineering",
-    loc: "Seoul (Hybrid) · Remote Asia",
-    locKey: "seoul hybrid remote asia",
-    type: "Full-time",
-  },
-  {
-    href: "/careers/forward-deployed-engineer",
-    title: "Forward Deployed Engineer",
-    dept: "Engineering · FDE",
-    deptKey: "engineering fde",
-    loc: "Seoul + APAC travel",
-    locKey: "seoul travel apac",
-    type: "Full-time",
-  },
-  {
-    href: "/careers/product-designer",
-    title: "Product Designer",
-    dept: "Design",
-    deptKey: "design",
-    loc: "Seoul (Hybrid)",
-    locKey: "seoul hybrid",
-    type: "Full-time",
-  },
-  {
-    href: "/careers/sales-lead",
-    title: "Sales Lead, Korea & Japan",
-    dept: "Go-to-Market",
-    deptKey: "gtm sales",
-    loc: "Seoul / Remote (KR·JP)",
-    locKey: "seoul remote korea japan",
-    type: "Full-time",
-  },
+    {
+        href: '/careers/full-stack-engineer',
+        title: 'Full-Stack Engineer',
+        dept: 'Engineering',
+        deptKey: 'engineering',
+        loc: 'Seoul (Hybrid) · Remote Asia',
+        locKey: 'seoul hybrid remote asia',
+        type: 'Full-time',
+    },
+    {
+        href: '/careers/forward-deployed-engineer',
+        title: 'Forward Deployed Engineer',
+        dept: 'Engineering · FDE',
+        deptKey: 'engineering fde',
+        loc: 'Seoul + APAC travel',
+        locKey: 'seoul travel apac',
+        type: 'Full-time',
+    },
+    {
+        href: '/careers/product-designer',
+        title: 'Product Designer',
+        dept: 'Design',
+        deptKey: 'design',
+        loc: 'Seoul (Hybrid)',
+        locKey: 'seoul hybrid',
+        type: 'Full-time',
+    },
+    {
+        href: '/careers/sales-lead',
+        title: 'Sales Lead, Korea & Japan',
+        dept: 'Go-to-Market',
+        deptKey: 'gtm sales',
+        loc: 'Seoul / Remote (KR·JP)',
+        locKey: 'seoul remote korea japan',
+        type: 'Full-time',
+    },
 ] as const;
 ---
 

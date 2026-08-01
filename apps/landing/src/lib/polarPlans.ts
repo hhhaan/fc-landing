@@ -73,8 +73,3 @@ export function polarServer(): 'sandbox' | 'production' {
 export function polarApiBase(): string {
     return polarServer() === 'sandbox' ? 'https://sandbox-api.polar.sh' : 'https://api.polar.sh';
 }
-
-/** @deprecated Use polarProductId — kept for callers migrating from price_id. */
-export function polarPriceId(plan: CheckoutPlan, env: PolarEnv = {}): string | undefined {
-    return polarProductId(plan, 'US', env);
-}

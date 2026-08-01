@@ -46,7 +46,7 @@ apps/
 │   │   ├── lib/supabase.ts        # SSR Supabase client factory
 │   │   ├── lib/auth.ts            # requireLogin() guard helper
 │   │   ├── pages/                 # File-based routing (ox pages are self-contained)
-│   │   └── styles/global.css      # Legacy tokens — account.astro only; do not extend
+│   │   └── styles/ox.css      # Legacy tokens — account.astro only; do not extend
 │   └── astro.config.mjs           # output: 'server', Cloudflare adapter, Tailwind v4
 └── docs/      # Starlight documentation site (@fc/docs, mostly scaffold)
 ```
@@ -79,11 +79,11 @@ Switch between sandbox and production by toggling the `POLAR_SERVER` env var and
 
 - **Tokens:** `--ox-bg`, `--ox-fg`, `--ox-muted`, etc. on `body.ox`
 - **Fonts:** Instrument Sans (UI/display), JetBrains Mono (labels) — see `DESIGN_RULES.md` for Google Fonts snippet
-- **Style:** warm stone palette, sharp corners, border-defined cards — not legacy pill buttons from `global.css`
+- **Style:** warm stone palette, sharp corners, border-defined cards — not legacy pill buttons from `ox.css`
 - **Reference pages:** see `DESIGN_RULES.md` §15 and `ARCHITECTURE.md` page inventory
 - **Shared shells:** `OxLegalShell.astro` (privacy/terms), `OxJobShell.astro` (careers/*)
 
-`apps/landing/DESIGN.md` and `src/styles/global.css` describe an older ElevenLabs/Pretendard spec; do not use for new work. Tailwind v4 is available for layout utilities only. **`account.astro` is the only remaining legacy UI page.**
+`legacy DESIGN.md was removed; use DESIGN_RULES.md. `src/styles/ox.css` is the ElevenLabs/Pretendard spec; do not use for new work. Tailwind v4 is available for layout utilities only. **`account.astro` is the only remaining legacy UI page.**
 
 ## Cloudflare Deployment
 
@@ -97,17 +97,9 @@ Access all env vars via `import.meta.env.VAR_NAME`. The `cf-connecting-ip` heade
 
 ## Geo market (CF-IPCountry)
 
-Landing home content is **market-aware**:
-
-1. `?market=kr|us|jp|global` (sets cookie `fc_market`)
-2. Cookie `fc_market`
-3. Request header **`CF-IPCountry`** (`KR`→kr, `JP`→jp, `US`→us, else global)
-4. Fallback `global` (USD)
+Billing/marketing market is **CF-IPCountry only** (`KR`/`KP`→KR, `JP`→JP, else US/USD). No cookie or `?market=` override.
 
 | File | Role |
 |------|------|
 | `src/lib/market.ts` | Resolve market |
 | `src/content/markets.ts` | Sales points + prices per market (align with fc-desktop `docs/pricing`) |
-| `src/pages/{kr,us,jp,global}.astro` | Cookie + redirect to `/` |
-
-Local dev: use `/?market=kr` or `/kr`. See `docs/geo-market-routing.md`.

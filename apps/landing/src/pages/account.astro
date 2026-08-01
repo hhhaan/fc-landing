@@ -1,56 +1,51 @@
 ---
-import "../styles/global.css";
-import Favicon from "../components/ui/Favicon.astro";
-import Seo from "../components/ui/Seo.astro";
-import { requireLogin } from "../lib/auth";
-import { createClient } from "../lib/supabase";
+import '../styles/ox.css';
+import Favicon from '../components/ui/Favicon.astro';
+import Seo from '../components/ui/Seo.astro';
+import { requireLogin } from '../lib/auth';
+import { createClient } from '../lib/supabase';
 
-const userOrRedirect = await requireLogin(
-  Astro,
-  `${Astro.url.pathname}${Astro.url.search}`,
-);
+const userOrRedirect = await requireLogin(Astro, `${Astro.url.pathname}${Astro.url.search}`);
 if (userOrRedirect instanceof Response) return userOrRedirect;
 const user = userOrRedirect;
 
 const supabase = createClient({
-  request: Astro.request,
-  cookies: Astro.cookies,
+    request: Astro.request,
+    cookies: Astro.cookies,
 });
 
 const { data: subscription, error: subError } = await supabase
-  .from("subscriptions")
-  .select("status, recurring_interval, current_period_end, trial_end, cancel_at_period_end")
-  .eq("user_id", user.id)
-  .in("status", ["active", "trialing", "past_due"])
-  .order("created_at", { ascending: false })
-  .limit(1)
-  .maybeSingle();
-if (subError) console.error("[account] subscription fetch error", subError.message);
+    .from('subscriptions')
+    .select('status, recurring_interval, current_period_end, trial_end, cancel_at_period_end')
+    .eq('user_id', user.id)
+    .in('status', ['active', 'trialing', 'past_due'])
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+if (subError) console.error('[account] subscription fetch error', subError.message);
 
 const isPro = !!subscription;
-const showWelcome = Astro.url.searchParams.get("welcome") === "1";
-const billingStatus = Astro.url.searchParams.get("billing");
+const showWelcome = Astro.url.searchParams.get('welcome') === '1';
+const billingStatus = Astro.url.searchParams.get('billing');
 const year = new Date().getFullYear();
 
 function formatDate(iso: string | null | undefined): string {
-  if (!iso) return "—";
-  return new Date(iso).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+    if (!iso) return '—';
+    return new Date(iso).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
 }
 
 const now = new Date();
 const trialEnd = subscription?.trial_end ? new Date(subscription.trial_end) : null;
 const isTrialActive = !!(trialEnd && trialEnd > now);
-const isPastDue = subscription?.status === "past_due";
-const billingInterval =
-  subscription?.recurring_interval === "year" ? "Yearly" : "Monthly";
+const isPastDue = subscription?.status === 'past_due';
+const billingInterval = subscription?.recurring_interval === 'year' ? 'Yearly' : 'Monthly';
 
-const rawProvider =
-  user.app_metadata?.provider ?? user.identities?.[0]?.provider ?? "email";
-const signInMethod = rawProvider === "google" ? "Google" : "Email & password";
+const rawProvider = user.app_metadata?.provider ?? user.identities?.[0]?.provider ?? 'email';
+const signInMethod = rawProvider === 'google' ? 'Google' : 'Email & password';
 ---
 
 <html lang="en">

@@ -15,6 +15,10 @@ Connection steps depend on **model and protocol**. First Crack supports three pa
 If a model works with Artisan or Cropster, First Crack usually works with the same communication settings.
 :::
 
+:::note[Plan machine limits]
+**Pro** includes **1 real machine**. **Pro+** supports **3+ machines (unlimited)**. Virtual machines do not count toward the limit. → [Plans](/en/service/plans/)
+:::
+
 ## Common flow
 
 1. Sign in to the desktop app.

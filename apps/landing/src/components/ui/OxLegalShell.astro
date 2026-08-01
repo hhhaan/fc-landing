@@ -1,13 +1,13 @@
 ---
-import "../../styles/global.css";
-import Favicon from "./Favicon.astro";
-import Seo from "./Seo.astro";
+import '../../styles/ox.css';
+import Favicon from './Favicon.astro';
+import Seo from './Seo.astro';
 
 interface Props {
-  title: string;
-  description: string;
-  heading: string;
-  updated: string;
+    title: string;
+    description: string;
+    heading: string;
+    updated: string;
 }
 
 const { title, description, heading, updated } = Astro.props;

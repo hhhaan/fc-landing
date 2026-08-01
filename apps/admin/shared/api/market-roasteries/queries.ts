@@ -1,17 +1,44 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import {
-    fetchMarketRoasteries,
-    fetchMarketRoasteriesMap,
-    hideMarketRoastery,
-    setMarketRoasteryContacted,
-} from '@/shared/api/market-roasteries/api';
 import type {
+    HideMarketRoasteryResult,
+    MarketRoasteriesMapResponse,
     MarketRoasteriesQuery,
     MarketRoasteriesResponse,
     SetMarketRoasteryContactedInput,
+    SetMarketRoasteryContactedResult,
 } from '@/shared/api/market-roasteries/types';
+import { apiDelete, apiGet, apiPatch } from '@/shared/lib/http';
+
+async function fetchMarketRoasteries(params: MarketRoasteriesQuery = {}): Promise<MarketRoasteriesResponse> {
+    return apiGet<MarketRoasteriesResponse>('/market-roasteries', {
+        market: params.market && params.market !== 'ALL' ? params.market : undefined,
+        q: params.q || undefined,
+        limit: params.limit ?? 100,
+        offset: params.offset ?? 0,
+    });
+}
+
+async function fetchMarketRoasteriesMap(
+    params: Pick<MarketRoasteriesQuery, 'market' | 'q'> = {},
+): Promise<MarketRoasteriesMapResponse> {
+    return apiGet<MarketRoasteriesMapResponse>('/market-roasteries', {
+        view: 'map',
+        market: params.market && params.market !== 'ALL' ? params.market : undefined,
+        q: params.q || undefined,
+    });
+}
+
+async function setMarketRoasteryContacted(
+    body: SetMarketRoasteryContactedInput,
+): Promise<SetMarketRoasteryContactedResult> {
+    return apiPatch<SetMarketRoasteryContactedResult>('/market-roasteries', body);
+}
+
+async function hideMarketRoastery(roasteryId: string): Promise<HideMarketRoasteryResult> {
+    return apiDelete<HideMarketRoasteryResult>('/market-roasteries', { roasteryId });
+}
 
 export const marketRoasteriesKeys = {
     all: ['market-roasteries'] as const,

@@ -1,28 +1,28 @@
 ---
-import "../../styles/global.css";
-import Favicon from "./Favicon.astro";
-import Seo from "./Seo.astro";
+import '../../styles/ox.css';
+import Favicon from './Favicon.astro';
+import Seo from './Seo.astro';
 
 interface Props {
-  title: string;
-  description: string;
-  department: string;
-  roleTitle: string;
-  location: string;
-  employmentType?: string;
-  applySubject: string;
-  applyNote: string;
+    title: string;
+    description: string;
+    department: string;
+    roleTitle: string;
+    location: string;
+    employmentType?: string;
+    applySubject: string;
+    applyNote: string;
 }
 
 const {
-  title,
-  description,
-  department,
-  roleTitle,
-  location,
-  employmentType = "Full-time",
-  applySubject,
-  applyNote,
+    title,
+    description,
+    department,
+    roleTitle,
+    location,
+    employmentType = 'Full-time',
+    applySubject,
+    applyNote,
 } = Astro.props;
 
 const year = new Date().getFullYear();

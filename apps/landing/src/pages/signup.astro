@@ -1,26 +1,25 @@
 ---
-import "../styles/global.css";
-import Favicon from "../components/ui/Favicon.astro";
-import Seo from "../components/ui/Seo.astro";
-import { createClient } from "../lib/supabase";
-import { safeRedirectPath } from "../lib/safeRedirect";
+import '../styles/ox.css';
+import Favicon from '../components/ui/Favicon.astro';
+import Seo from '../components/ui/Seo.astro';
+import { safeRedirectPath } from '../lib/safeRedirect';
+import { createClient } from '../lib/supabase';
 
 const supabaseServer = createClient({
-  request: Astro.request,
-  cookies: Astro.cookies,
+    request: Astro.request,
+    cookies: Astro.cookies,
 });
 
-const next = safeRedirectPath(Astro.url.searchParams.get("next"));
+const next = safeRedirectPath(Astro.url.searchParams.get('next'));
 
-const { data: { user } } = await supabaseServer.auth.getUser();
+const {
+    data: { user },
+} = await supabaseServer.auth.getUser();
 
 if (user) {
-  return Astro.redirect(next);
+    return Astro.redirect(next);
 }
-const loginHref =
-  next !== "/"
-    ? `/login?next=${encodeURIComponent(next)}`
-    : "/login";
+const loginHref = next !== '/' ? `/login?next=${encodeURIComponent(next)}` : '/login';
 ---
 
 <html lang="en">

@@ -34,7 +34,7 @@ pnpm --filter @fc/admin dev
 | `/map` | Global activity map from auth session IPs |
 | `/users` | Full user roster |
 | `/coupons` | Polar single-use coupon pool (create / issue / track) — see [docs/coupons.md](./docs/coupons.md) |
-| `/billing` | Plans / Polar / subscriptions (legacy redirect → revenue) |
+| `/billing` | permanent redirect → `/revenue` |
 | `/system` | Table counts, cron runs, machine logs |
 
 ## Supabase

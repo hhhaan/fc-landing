@@ -1,29 +1,28 @@
 ---
-import "../styles/global.css";
-import Favicon from "../components/ui/Favicon.astro";
-import Seo from "../components/ui/Seo.astro";
-import OxNavAuth from "../components/ui/OxNavAuth.astro";
-import { DOCS, PLAN_COPY } from "../content/product";
-import { getViewer } from "../lib/authState";
-import { resolveTrialCta } from "../lib/trialCta";
+import '../styles/ox.css';
+import Favicon from '../components/ui/Favicon.astro';
+import OxNavAuth from '../components/ui/OxNavAuth.astro';
+import Seo from '../components/ui/Seo.astro';
+import { DOCS, PLAN_COPY } from '../content/product';
+import { getViewer } from '../lib/authState';
+import { resolveTrialCta } from '../lib/trialCta';
 
 const user = await getViewer(Astro);
 const trialCta = await resolveTrialCta(Astro);
 const year = new Date().getFullYear();
 
 const DOWNLOAD_LINKS = {
-  macos: {
-    arm: "https://pub-32f64eaa15504eeba9203bcbbced439d.r2.dev/releases/latest/First-Crack-arm64.dmg",
-    intel: "https://pub-32f64eaa15504eeba9203bcbbced439d.r2.dev/releases/latest/First-Crack-x64.dmg",
-  },
-  windows:
-    "https://pub-32f64eaa15504eeba9203bcbbced439d.r2.dev/releases/latest/First-Crack-Windows.msi",
+    macos: {
+        arm: 'https://pub-32f64eaa15504eeba9203bcbbced439d.r2.dev/releases/latest/First-Crack-arm64.dmg',
+        intel: 'https://pub-32f64eaa15504eeba9203bcbbced439d.r2.dev/releases/latest/First-Crack-x64.dmg',
+    },
+    windows: 'https://pub-32f64eaa15504eeba9203bcbbced439d.r2.dev/releases/latest/First-Crack-Windows.msi',
 };
 
 const nextSteps = [
-  { n: "01", title: "Install", body: "Run the macOS .dmg or Windows .msi for your machine." },
-  { n: "02", title: "Sign in", body: "Use the same account you created on the web." },
-  { n: "03", title: "Connect", body: "Add your roaster (Modbus / Phidget / Artisan-ready) and run a trial batch." },
+    { n: '01', title: 'Install', body: 'Run the macOS .dmg or Windows .msi for your machine.' },
+    { n: '02', title: 'Sign in', body: 'Use the same account you created on the web.' },
+    { n: '03', title: 'Connect', body: 'Add your roaster (Modbus / Phidget / Artisan-ready) and run a trial batch.' },
 ];
 ---
 
