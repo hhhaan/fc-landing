@@ -52,8 +52,10 @@ apps/landing/
 | Route | File | Template | Notes |
 |-------|------|----------|-------|
 | `/` | `index.astro` | Marketing | Fixed header, full-viewport panes, scroll spy, pricing toggle |
-| `/login` | `login.astro` | Auth | Email/password + Google OAuth |
+| `/login` | `login.astro` | Auth | Email/password + Google OAuth; forgot link; `?reset=1` banner |
 | `/signup` | `signup.astro` | Auth | Trial signup + terms checkbox |
+| `/forgot-password` | `forgot-password.astro` | Auth | `resetPasswordForEmail` (no email enumeration) |
+| `/reset-password` | `reset-password.astro` | Auth | Recovery session → `updateUser({ password })` |
 | `/download` | `download.astro` | Utility | Platform cards, OS detect script |
 | `/about` | `about.astro` | Company | Story, values, hardware list; dark product CTA |
 | `/faq` | `faq.astro` | Support | Free vs trial, machines, plans (`src/content/product.ts`) |
@@ -66,7 +68,7 @@ apps/landing/
 
 | Route | File | Role |
 |-------|------|------|
-| `/auth/callback` | `auth/callback.astro` | OAuth code exchange |
+| `/auth/callback` | `auth/callback.astro` | OAuth + recovery code exchange |
 | `/auth/signout` | `auth/signout.astro` | Session teardown |
 | `/start-pro` | `start-pro.astro` | Polar checkout redirect (guarded) |
 | `/api/webhooks/polar` | `api/webhooks/polar.ts` | Subscription webhook |
