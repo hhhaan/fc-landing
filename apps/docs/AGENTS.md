@@ -10,7 +10,7 @@ src/
 │   ├── en/                 # English → /en/...
 │   ├── ja/                 # 日本語 → /ja/...
 │   ├── start/              # 설치 (mac/windows), 시스템 사양
-│   ├── machines/           # 로스팅 머신 연동
+│   ├── machines/           # 로스팅 머신 연동 (+ control Pro+)
 │   ├── orders/             # 쇼핑몰 주문 연동
 │   ├── guides/             # 사용 가이드
 │   ├── service/            # 요금제/환불

@@ -19,6 +19,10 @@ If a model works with Artisan or Cropster, First Crack usually works with the sa
 **Pro** includes **1 real machine**. **Pro+** supports **3+ machines (unlimited)**. Virtual machines do not count toward the limit. → [Plans](/en/service/plans/)
 :::
 
+:::tip[Machine control · Pro+]
+Beyond temperature **read**, supported models can drive **heater · fan · drum** and **Auto Heat (PID)** on Active Roast. **Pro+ only.** → [Machine control](/en/machines/control/)
+:::
+
 ## Common flow
 
 1. Sign in to the desktop app.

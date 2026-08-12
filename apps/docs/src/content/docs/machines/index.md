@@ -19,6 +19,10 @@ Artisan 또는 Cropster와 연동 가능한 모델이면 First Crack도 대부�
 **Pro**는 실물 머신 **1대**까지, **Pro+**는 **3대 이상(무제한)** 연동할 수 있습니다. Virtual 머신은 한도에서 제외됩니다. → [요금제](/service/plans/)
 :::
 
+:::tip[머신 제어 · Pro+]
+온도 **읽기**와 별도로, 지원 모델에서는 Active Roast에서 **화력·팬·드럼** 과 **Auto Heat(PID)** 를 쓸 수 있습니다. **Pro+ 전용.** → [머신 제어](/machines/control/)
+:::
+
 ## 공통 연결 절차
 
 1. 데스크톱 앱에 로그인합니다.

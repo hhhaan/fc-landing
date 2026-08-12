@@ -19,6 +19,10 @@ Artisan または Cropster と連携できるモデルなら、First Crack も�
 **Pro** は実機 **1 台**まで、**Pro+** は **3 台以上（無制限）** 連携できます。Virtual は上限に含みません。→ [料金プラン](/ja/service/plans/)
 :::
 
+:::tip[マシン制御 · Pro+]
+温度の **読み取り** に加え、対応機では Active Roast から **火力・ファン・ドラム** と **Auto Heat（PID）** を操作できます。**Pro+ 専用。** → [マシン制御](/ja/machines/control/)
+:::
+
 ## 共通手順
 
 1. デスクトップアプリにログインします。

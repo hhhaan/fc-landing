@@ -79,6 +79,14 @@ export default defineConfig({
                             slug: 'machines',
                         },
                         {
+                            label: '머신 제어 (Pro+)',
+                            translations: {
+                                en: 'Machine control (Pro+)',
+                                ja: 'マシン制御（Pro+）',
+                            },
+                            slug: 'machines/control',
+                        },
+                        {
                             label: 'Modbus (PLC / 컨트롤러)',
                             translations: { en: 'Modbus (PLC / controller)', ja: 'Modbus（PLC / コントローラー）' },
                             slug: 'machines/modbus',

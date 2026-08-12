@@ -14,6 +14,8 @@ Plans are based on the **desktop app + cloud sync**. Prices on the [landing page
 | **Desktop app** | ✓ | ✓ | ✓ | ✓ |
 | **Live roast & records** | ✓ | ✓ | ✓ | ✓ |
 | **Profiles, greens, schedule** | Basic | ✓ | ✓ | ✓ |
+| **Machine control** (heat · fan · drum, PID) | — | — | ✓ | ✓ |
+| **Roasted & finished-goods inventory** | — | — | ✓ | ✓ |
 | **Shopify & commerce** | — | — | ✓ | ✓ |
 | **Seats** | 1 | 1 | 1 | Team |
 | **White-label branding** | — | — | — | ✓ (we set it up · **1-year contract**) |
@@ -28,7 +30,8 @@ Core roast-floor tools — live roast, batch history, profiles, greens/blends, d
 
 ## Pro+
 
-Everything in Pro plus **3+ machines (unlimited connections)**, **unlimited batches**, and **order/commerce connectors** (Shopify, Naver, Cafe24, etc.). For multi-machine floors, high volume, or store sync.
+Everything in Pro plus **3+ machines (unlimited connections)**, **unlimited batches**, Active Roast **machine control** (heater · fan · drum setpoints + Auto Heat PID when supported), **roasted & finished-goods inventory**, and **order/commerce connectors** (Shopify, Naver, Cafe24, etc.). For multi-machine floors, high volume, or store sync.  
+How to use control → [Machine control](/en/machines/control/)
 
 ## Enterprise
 
