@@ -9,6 +9,7 @@ export const DOCS_BASE = 'https://docs.firstcrackiscoming.com';
 export const DOCS = {
     plans: `${DOCS_BASE}/service/plans/`,
     machines: `${DOCS_BASE}/machines/`,
+    machineControl: `${DOCS_BASE}/machines/control/`,
     installMac: `${DOCS_BASE}/start/install-mac/`,
     installWindows: `${DOCS_BASE}/start/install-windows/`,
     systemRequirements: `${DOCS_BASE}/start/system-requirements/`,
@@ -49,6 +50,9 @@ export const PLAN_COPY = {
     proFeatureMachines: '1 machine connection',
     proPlusFeatureBatches: 'Unlimited batches',
     proPlusFeatureMachines: '3+ machines (unlimited)',
+    /** Heater · fan · drum setpoints + Auto Heat PID on Active Roast */
+    proPlusFeatureMachineControl: 'Machine control (heat · fan · drum, PID)',
+    proPlusFeatureInventory: 'Roasted & finished-goods inventory',
     freeFeatureBatches: '20 batches / month',
 } as const;
 
@@ -100,7 +104,7 @@ export const FAQ_ITEMS = [
     },
     {
         q: 'What’s the difference between Pro and Pro+?',
-        a: 'Pro covers live roast, history, profiles, greens/blends, and schedule — 200 batches per billing month, 1 machine connection, 1 seat. Pro+ is for multi-machine floors (3+ machines, unlimited connections), unlimited batches, roasted inventory, and commerce connectors (Shopify, Naver, Cafe24, and similar).',
+        a: 'Pro covers live roast, history, profiles, greens/blends, and schedule — 200 batches per billing month, 1 machine connection, 1 seat. Pro+ adds multi-machine floors (3+ machines, unlimited connections), unlimited batches, machine control (heater · fan · drum setpoints and Auto Heat PID when supported), and roasted & finished-goods inventory.',
     },
     {
         q: 'macOS or Windows?',
@@ -108,7 +112,7 @@ export const FAQ_ITEMS = [
     },
     {
         q: 'How do seats and Enterprise work?',
-        a: 'Pro and Pro+ include 1 seat. Enterprise adds multi-seat teams, custom work, FDE support, and contract billing (from about $300/mo + per-seat). White-label branding is included on Enterprise when you sign a 1-year contract — we handle the setup. Contact sales for details.',
+        a: 'Pro and Pro+ include 1 seat. Enterprise adds multi-seat teams, commerce connectors (Shopify, Naver, Cafe24), custom work, FDE support, and contract billing (from about $300/mo + per-seat). White-label branding is included on Enterprise when you sign a 1-year contract — we handle the setup. Contact sales for details.',
     },
     {
         q: 'Can I cancel or get a refund?',

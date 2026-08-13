@@ -16,7 +16,7 @@ description: First Crack Free, Pro, Pro+, Enterprise 플랜 비교
 | **프로파일·생두·일정** | 기본 | ✓ | ✓ | ✓ |
 | **머신 제어** (화력·팬·드럼, PID) | — | — | ✓ | ✓ |
 | **로스팅 재고·완제품 재고** | — | — | ✓ | ✓ |
-| **Shopify 등 커머스** | — | — | ✓ | ✓ |
+| **Shopify 등 커머스** | — | — | — | ✓ |
 | **시트** | 1 | 1 | 1 | 팀 단위 |
 | **화이트라벨** | — | — | — | ✓ (당사 세팅 · **1년 계약** 시) |
 
@@ -30,12 +30,12 @@ description: First Crack Free, Pro, Pro+, Enterprise 플랜 비교
 
 ## Pro+
 
-Pro 전체 + **머신 3대 이상 연동(무제한)**, **무제한 배치**, Active Roast **머신 제어**(화력·팬·드럼 수동 setpoint + 지원 시 Auto Heat PID), **로스팅·완제품 재고**, Shopify·네이버·Cafe24 등 **주문·커머스 연동**. 멀티 머신 플로어·고배치·스토어 연동이 필요한 로스터리용.  
+Pro 전체 + **머신 3대 이상 연동(무제한)**, **무제한 배치**, Active Roast **머신 제어**(화력·팬·드럼 수동 setpoint + 지원 시 Auto Heat PID), **로스팅·완제품 재고**. 멀티 머신 플로어·고배치 로스터리용.  
 머신 제어 사용법 → [머신 제어](/machines/control/)
 
 ## Enterprise
 
-다수 시트, 맞춤 기능, FDE(현장 기술 지원), 계약·인보이스 결제. **화이트라벨링**은 **1년 계약** 시 포함되며, 브랜딩 적용은 First Crack이 진행합니다. 문의 — [contact@firstcrackiscoming.com](mailto:contact@firstcrackiscoming.com)
+다수 시트, Shopify·네이버·Cafe24 **주문·커머스 연동**, 맞춤 기능, FDE(현장 기술 지원), 계약·인보이스 결제. **화이트라벨링**은 **1년 계약** 시 포함되며, 브랜딩 적용은 First Crack이 진행합니다. 문의 — [contact@firstcrackiscoming.com](mailto:contact@firstcrackiscoming.com)
 
 ## 무료 티어
 

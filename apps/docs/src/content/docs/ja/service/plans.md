@@ -16,7 +16,7 @@ First Crack の料金は **デスクトップアプリ + クラウド同期** �
 | **プロファイル・生豆・スケジュール** | 基本 | ✓ | ✓ | ✓ |
 | **マシン制御**（火力・ファン・ドラム、PID） | — | — | ✓ | ✓ |
 | **焙煎在庫・製品在庫** | — | — | ✓ | ✓ |
-| **Shopify 等コマース** | — | — | ✓ | ✓ |
+| **Shopify 等コマース** | — | — | — | ✓ |
 | **シート** | 1 | 1 | 1 | チーム |
 | **ホワイトラベル** | — | — | — | ✓（弊社対応 · **年契約**時） |
 
@@ -30,12 +30,12 @@ First Crack の料金は **デスクトップアプリ + クラウド同期** �
 
 ## Pro+
 
-Pro 全体 + **マシン 3 台以上（無制限連携）**、**無制限バッチ**、Active Roast の **マシン制御**（火力・ファン・ドラムの手動 setpoint、対応機では Auto Heat PID）、**焙煎・製品在庫**、Shopify・Naver・Cafe24 などの **注文・コマース連携**。複数マシンフロア・高バッチ・ストア連携向け。  
+Pro 全体 + **マシン 3 台以上（無制限連携）**、**無制限バッチ**、Active Roast の **マシン制御**（火力・ファン・ドラムの手動 setpoint、対応機では Auto Heat PID）、**焙煎・製品在庫**。複数マシンフロア・高バッチ向け。  
 制御の使い方 → [マシン制御](/ja/machines/control/)
 
 ## Enterprise
 
-複数シート、カスタム機能、FDE（現場技術支援）、契約・請求書払い。**ホワイトラベル**は **年契約** 時に含まれ、ブランディング適用は First Crack が対応します。お問い合わせ — [contact@firstcrackiscoming.com](mailto:contact@firstcrackiscoming.com)
+複数シート、Shopify・Naver・Cafe24 の **注文・コマース連携**、カスタム機能、FDE（現場技術支援）、契約・請求書払い。**ホワイトラベル**は **年契約** 時に含まれ、ブランディング適用は First Crack が対応します。お問い合わせ — [contact@firstcrackiscoming.com](mailto:contact@firstcrackiscoming.com)
 
 ## 無料ティア
 

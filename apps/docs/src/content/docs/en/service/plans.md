@@ -16,7 +16,7 @@ Plans are based on the **desktop app + cloud sync**. Prices on the [landing page
 | **Profiles, greens, schedule** | Basic | ✓ | ✓ | ✓ |
 | **Machine control** (heat · fan · drum, PID) | — | — | ✓ | ✓ |
 | **Roasted & finished-goods inventory** | — | — | ✓ | ✓ |
-| **Shopify & commerce** | — | — | ✓ | ✓ |
+| **Shopify & commerce** | — | — | — | ✓ |
 | **Seats** | 1 | 1 | 1 | Team |
 | **White-label branding** | — | — | — | ✓ (we set it up · **1-year contract**) |
 
@@ -30,12 +30,12 @@ Core roast-floor tools — live roast, batch history, profiles, greens/blends, d
 
 ## Pro+
 
-Everything in Pro plus **3+ machines (unlimited connections)**, **unlimited batches**, Active Roast **machine control** (heater · fan · drum setpoints + Auto Heat PID when supported), **roasted & finished-goods inventory**, and **order/commerce connectors** (Shopify, Naver, Cafe24, etc.). For multi-machine floors, high volume, or store sync.  
+Everything in Pro plus **3+ machines (unlimited connections)**, **unlimited batches**, Active Roast **machine control** (heater · fan · drum setpoints + Auto Heat PID when supported), and **roasted & finished-goods inventory**. For multi-machine floors and high volume.  
 How to use control → [Machine control](/en/machines/control/)
 
 ## Enterprise
 
-Multi-seat, custom features, on-site support (FDE), contract/invoice billing. **White-label branding** is included with a **1-year contract** — First Crack handles the setup. Contact — [contact@firstcrackiscoming.com](mailto:contact@firstcrackiscoming.com)
+Multi-seat, **order/commerce connectors** (Shopify, Naver, Cafe24), custom features, on-site support (FDE), contract/invoice billing. **White-label branding** is included with a **1-year contract** — First Crack handles the setup. Contact — [contact@firstcrackiscoming.com](mailto:contact@firstcrackiscoming.com)
 
 ## Free tier
 
