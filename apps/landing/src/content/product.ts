@@ -49,10 +49,13 @@ export const PLAN_COPY = {
     proFeatureBatches: '200 batches / billing month',
     proFeatureMachines: '1 machine connection',
     proPlusFeatureBatches: 'Unlimited batches',
-    proPlusFeatureMachines: '3+ machines (unlimited)',
-    /** Heater · fan · drum setpoints + Auto Heat PID on Active Roast */
-    proPlusFeatureMachineControl: 'Machine control (heat · fan · drum, PID)',
     proPlusFeatureInventory: 'Roasted & finished-goods inventory',
+    proPlusLead: 'Unlimited batches · roasted inventory',
+    proPlusBadge: 'Unlimited batches + inventory',
+    enterpriseLead: '3+ machines · teams · FDE',
+    enterpriseFeatureMachines: '3+ machines (unlimited)',
+    /** Heater · fan · drum setpoints + Auto Heat PID on Active Roast */
+    enterpriseFeatureMachineControl: 'Machine control (heat · fan · drum, PID)',
     freeFeatureBatches: '20 batches / month',
 } as const;
 
@@ -104,7 +107,7 @@ export const FAQ_ITEMS = [
     },
     {
         q: 'What’s the difference between Pro and Pro+?',
-        a: 'Pro covers live roast, history, profiles, greens/blends, and schedule — 200 batches per billing month, 1 machine connection, 1 seat. Pro+ adds multi-machine floors (3+ machines, unlimited connections), unlimited batches, machine control (heater · fan · drum setpoints and Auto Heat PID when supported), and roasted & finished-goods inventory.',
+        a: 'Pro covers live roast, history, profiles, greens/blends, and schedule — 200 batches per billing month, 1 machine connection, 1 seat. Pro+ keeps 1 machine and 1 seat, and adds unlimited batches plus roasted & finished-goods inventory. Machine control and 3+ machine floors are on Enterprise.',
     },
     {
         q: 'macOS or Windows?',
@@ -112,7 +115,7 @@ export const FAQ_ITEMS = [
     },
     {
         q: 'How do seats and Enterprise work?',
-        a: 'Pro and Pro+ include 1 seat. Enterprise adds multi-seat teams, commerce connectors (Shopify, Naver, Cafe24), custom work, FDE support, and contract billing (from about $300/mo + per-seat). White-label branding is included on Enterprise when you sign a 1-year contract — we handle the setup. Contact sales for details.',
+        a: 'Pro and Pro+ include 1 seat and 1 machine. Enterprise adds 3+ machine connections, machine control (heater · fan · drum setpoints and Auto Heat PID when supported), multi-seat teams, commerce connectors (Shopify, Naver, Cafe24), custom work, FDE support, and contract billing (from about $300/mo + per-seat). White-label branding is included on Enterprise when you sign a 1-year contract — we handle the setup. Contact sales for details.',
     },
     {
         q: 'Can I cancel or get a refund?',

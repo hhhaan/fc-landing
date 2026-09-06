@@ -516,11 +516,11 @@ const structuredData = {
             </article>
 
             <article class="ox-price-card is-featured">
-              <div class="ox-price-badge">3+ machines + inventory</div>
+              <div class="ox-price-badge">{PLAN_COPY.proPlusBadge}</div>
               <div class="ox-price-top">
                 <span class="ox-price-n">02</span>
                 <h3>Pro+</h3>
-                <p>3+ machines · unlimited batches · inventory</p>
+                <p>{PLAN_COPY.proPlusLead}</p>
               </div>
               <div class="ox-price-amt">
                 {
@@ -541,11 +541,9 @@ const structuredData = {
               <p class="ox-price-note" id="proplus-yearly-note" hidden>{pricing.proPlus.yearlyTotal}</p>
               <ul>
                 <li>{PLAN_COPY.proPlusFeatureBatches}</li>
-                <li>{PLAN_COPY.proPlusFeatureMachines}</li>
                 <li>Everything in Pro</li>
-                <li>{PLAN_COPY.proPlusFeatureMachineControl}</li>
                 <li>{PLAN_COPY.proPlusFeatureInventory}</li>
-                <li>1 seat</li>
+                <li>1 seat · 1 machine</li>
               </ul>
               <a id="proplus-start-btn" href="/start-pro?plan=pro-plus-monthly" class="ox-btn ox-btn-solid ox-btn-block" data-href-monthly="/start-pro?plan=pro-plus-monthly" data-href-yearly="/start-pro?plan=pro-plus-yearly">
                 {PLAN_COPY.trialCtaLabel}
@@ -556,12 +554,14 @@ const structuredData = {
               <div class="ox-price-top">
                 <span class="ox-price-n">03</span>
                 <h3>Enterprise</h3>
-                <p>Multi-seat teams, custom work, dedicated engineer</p>
+                <p>{PLAN_COPY.enterpriseLead}</p>
               </div>
               <div class="ox-price-amt">
                 <span class="ox-price-num">Contact</span>
               </div>
               <ul>
+                <li>{PLAN_COPY.enterpriseFeatureMachines}</li>
+                <li>{PLAN_COPY.enterpriseFeatureMachineControl}</li>
                 <li>Unlimited batches + team seats</li>
                 <li>Order sync (Naver, Cafe24, Shopify)</li>
                 <li>Custom features &amp; FDE support</li>
