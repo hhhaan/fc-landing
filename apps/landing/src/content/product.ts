@@ -42,20 +42,27 @@ export const PLAN_COPY = {
     trialHeroTrust: '14-day Pro trial · 20 batches',
     pricingLead:
         'Start a 14-day Pro trial (20 batches). Cancel before the trial ends. After trial: Free at 20 batches/mo, or keep Pro / Pro+.',
+    enterpriseHint: 'Second machine, write control, extra seats, or mall sync → Enterprise.',
     freeAccountBlurb:
         'Free plan — 20 batches per month on the floor. Start a 14-day Pro trial when you need higher limits and cloud plan features.',
     signupLead: '14-day Pro trial, 20 batches. Desktop app for macOS & Windows.',
     downloadTrialNote: '14-day Pro trial · 20 batches · then Free (20/mo) or paid',
+    proLead: '1 machine · roast log · 200 batches',
     proFeatureBatches: '200 batches / billing month',
     proFeatureMachines: '1 machine connection',
     proPlusFeatureBatches: 'Unlimited batches',
     proPlusFeatureInventory: 'Roasted & finished-goods inventory',
-    proPlusLead: 'Unlimited batches · roasted inventory',
-    proPlusBadge: 'Unlimited batches + inventory',
-    enterpriseLead: '3+ machines · teams · FDE',
-    enterpriseFeatureMachines: '3+ machines (unlimited)',
+    proPlusFeatureLimit: 'Still 1 machine · 1 seat · no write',
+    proPlusLead: 'Same 1 machine · unlimited batches · roasted stock',
+    proPlusBadge: 'Volume on 1 machine',
+    enterpriseLead: '2nd machine · write control · team · mall sync',
+    enterpriseFeatureMachines: '2nd machine and up (unlimited)',
     /** Heater · fan · drum setpoints + Auto Heat PID on Active Roast */
     enterpriseFeatureMachineControl: 'Machine control (heat · fan · drum, PID)',
+    enterpriseFeatureSeats: 'Team seats',
+    enterpriseFeatureCommerce: 'Order sync (Naver, Cafe24, Shopify)',
+    enterpriseFeatureFde: 'Custom work & FDE',
+    enterprisePriceAnchor: 'From $300/mo + $19/seat',
     freeFeatureBatches: '20 batches / month',
 } as const;
 
@@ -107,15 +114,15 @@ export const FAQ_ITEMS = [
     },
     {
         q: 'What’s the difference between Pro and Pro+?',
-        a: 'Pro covers live roast, history, profiles, greens/blends, and schedule — 200 batches per billing month, 1 machine connection, 1 seat. Pro+ keeps 1 machine and 1 seat, and adds unlimited batches plus roasted & finished-goods inventory. Machine control and 3+ machine floors are on Enterprise.',
+        a: 'Same one machine, same one seat, no write control. Pro is live roast, history, greens, and schedule at 200 batches per billing month. Pro+ adds unlimited batches and roasted & finished-goods inventory. A second machine, gas write, extra seats, or mall sync are Enterprise — skip Pro+ for those.',
+    },
+    {
+        q: 'What’s the difference between Pro+ and Enterprise?',
+        a: 'Pro+ is a volume upsell on one machine. Enterprise is a different product: unlimited machines from the second onward, machine control (heater · fan · drum · PID), team seats, order sync (Naver, Cafe24, Shopify), custom work, and an FDE. Quote from about $300/mo + $19/seat. White-label is included on a 1-year contract. Contact sales.',
     },
     {
         q: 'macOS or Windows?',
         a: 'Both. Apple Silicon and Intel Macs (macOS 12+), and Windows 10/11 64-bit. Download installers on the download page; system requirements are in the docs.',
-    },
-    {
-        q: 'How do seats and Enterprise work?',
-        a: 'Pro and Pro+ include 1 seat and 1 machine. Enterprise adds 3+ machine connections, machine control (heater · fan · drum setpoints and Auto Heat PID when supported), multi-seat teams, commerce connectors (Shopify, Naver, Cafe24), custom work, FDE support, and contract billing (from about $300/mo + per-seat). White-label branding is included on Enterprise when you sign a 1-year contract — we handle the setup. Contact sales for details.',
     },
     {
         q: 'Can I cancel or get a refund?',

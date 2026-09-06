@@ -463,7 +463,7 @@ const structuredData = {
               for serious roasters
             </h2>
             <p class="ox-lead ox-lead-center reveal">
-              {PLAN_COPY.pricingLead} Need more seats? Enterprise covers teams.
+              {PLAN_COPY.pricingLead} {PLAN_COPY.enterpriseHint}
             </p>
           </div>
 
@@ -483,7 +483,7 @@ const structuredData = {
               <div class="ox-price-top">
                 <span class="ox-price-n">01</span>
                 <h3>Pro</h3>
-                <p>1 machine · roast, inventory, schedule</p>
+                <p>{PLAN_COPY.proLead}</p>
               </div>
               <div class="ox-price-amt">
                 {
@@ -543,7 +543,7 @@ const structuredData = {
                 <li>{PLAN_COPY.proPlusFeatureBatches}</li>
                 <li>Everything in Pro</li>
                 <li>{PLAN_COPY.proPlusFeatureInventory}</li>
-                <li>1 seat · 1 machine</li>
+                <li>{PLAN_COPY.proPlusFeatureLimit}</li>
               </ul>
               <a id="proplus-start-btn" href="/start-pro?plan=pro-plus-monthly" class="ox-btn ox-btn-solid ox-btn-block" data-href-monthly="/start-pro?plan=pro-plus-monthly" data-href-yearly="/start-pro?plan=pro-plus-yearly">
                 {PLAN_COPY.trialCtaLabel}
@@ -562,12 +562,11 @@ const structuredData = {
               <ul>
                 <li>{PLAN_COPY.enterpriseFeatureMachines}</li>
                 <li>{PLAN_COPY.enterpriseFeatureMachineControl}</li>
-                <li>Unlimited batches + team seats</li>
-                <li>Order sync (Naver, Cafe24, Shopify)</li>
-                <li>Custom features &amp; FDE support</li>
+                <li>{PLAN_COPY.enterpriseFeatureSeats}</li>
+                <li>{PLAN_COPY.enterpriseFeatureCommerce}</li>
+                <li>{PLAN_COPY.enterpriseFeatureFde}</li>
                 <li>White-label branding (we set it up · 1-year contract)</li>
-                <li>From $300/mo + $19/seat</li>
-                <li>Priority setup help</li>
+                <li>{PLAN_COPY.enterprisePriceAnchor}</li>
                 <li>Contract &amp; invoice billing</li>
               </ul>
               <a href="mailto:contact@firstcrackiscoming.com?subject=Enterprise%20inquiry" class="ox-btn ox-btn-outline ox-btn-block">
