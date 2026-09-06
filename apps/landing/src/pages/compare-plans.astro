@@ -205,7 +205,10 @@ const defaultTier = proPlusCheckoutReady ? 'pro_plus' : 'pro';
                 <p>{PLAN_COPY.enterpriseLead}</p>
               </div>
               <div class="ox-price-amt">
-                <span class="ox-price-num">Contact</span>
+                <a
+                  href="mailto:contact@firstcrackiscoming.com?subject=Enterprise%20inquiry"
+                  class="ox-price-num ox-price-contact"
+                >Contact</a>
               </div>
               <ul>
                 <li>{PLAN_COPY.enterpriseFeatureMachines}</li>
@@ -884,6 +887,15 @@ const defaultTier = proPlusCheckoutReady ? 'pro_plus' : 'pro';
     font-weight: 500;
     letter-spacing: -0.04em;
     line-height: 1;
+  }
+  a.ox-price-contact {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  a.ox-price-contact:hover {
+    text-decoration: underline;
+    text-underline-offset: 6px;
   }
 
   .ox-price-per {

@@ -557,7 +557,10 @@ const structuredData = {
                 <p>{PLAN_COPY.enterpriseLead}</p>
               </div>
               <div class="ox-price-amt">
-                <span class="ox-price-num">Contact</span>
+                <a
+                  href="mailto:contact@firstcrackiscoming.com?subject=Enterprise%20inquiry"
+                  class="ox-price-num ox-price-contact"
+                >Contact</a>
               </div>
               <ul>
                 <li>{PLAN_COPY.enterpriseFeatureMachines}</li>
@@ -929,7 +932,8 @@ const structuredData = {
           const per = card.querySelector<HTMLElement>(".ox-price-per");
           const note = card.querySelector<HTMLElement>(".ox-price-note");
           const cta = card.querySelector<HTMLAnchorElement>("a.ox-btn");
-          if (num) {
+          const hasPriceToggle = Boolean(num?.dataset.monthly || num?.dataset.yearly);
+          if (num && hasPriceToggle) {
             num.textContent = isYearly
               ? (num.dataset.yearly ?? num.dataset.monthly ?? "")
               : (num.dataset.monthly ?? "");
@@ -942,7 +946,7 @@ const structuredData = {
           if (note) note.hidden = !isYearly;
           const anchor = card.querySelector<HTMLElement>(".ox-price-anchor");
           if (anchor) anchor.hidden = isYearly;
-          if (cta) {
+          if (cta && (cta.dataset.hrefYearly || cta.dataset.hrefMonthly)) {
             cta.href = isYearly
               ? (cta.dataset.hrefYearly ?? cta.href)
               : (cta.dataset.hrefMonthly ?? cta.href);
@@ -2295,6 +2299,15 @@ const structuredData = {
     font-weight: 500;
     letter-spacing: -0.04em;
     line-height: 1;
+  }
+  a.ox-price-contact {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  a.ox-price-contact:hover {
+    text-decoration: underline;
+    text-underline-offset: 6px;
   }
   @media (min-width: 900px) {
     .ox-price-num {
