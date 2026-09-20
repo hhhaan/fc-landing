@@ -7,7 +7,10 @@ import {
     ensureDrafts,
     loadCuppedBy,
     loadSessionDraft,
+    mergeSubmissions,
     persistSessionDraft,
+    publishableSampleIds,
+    type RemoteSubmission,
     type SampleDraft,
 } from './draft';
 import { cuppingResultsUrl, cuppingSessionUrl } from './publicBase';
@@ -44,12 +47,24 @@ type SessionMeta = {
     samples: SampleMeta[];
     expiresAt: string;
     remainingUses: number;
+    sessionFull?: boolean;
+    participant?: { id: string; publishedAt: string | null } | null;
+    submissions?: SubmissionRow[];
     sampleId?: string | null;
     sampleLabel?: string | null;
     beanName?: string | null;
 };
 
-type SubmitResult = { id: string; totalScore: number; cuppedAt: string };
+type SubmissionRow = RemoteSubmission & { cuppedAt?: string };
+
+type ClaimResult = {
+    participantId: string;
+    publishedAt: string | null;
+    remainingUses?: number;
+    submissions?: SubmissionRow[];
+    error?: string;
+    results?: Array<{ id: string; sampleId: string; totalScore: number }>;
+};
 
 type Toast = { kind: 'sync' | 'info'; text: string };
 
@@ -78,11 +93,11 @@ function sampleTitle(s: SampleMeta): string {
     return s.beanName || s.label;
 }
 
-function draftStatus(d: SampleDraft | undefined): 'empty' | 'draft' | 'synced' | 'dirty' {
+function draftStatus(d: SampleDraft | undefined, published: boolean): 'empty' | 'draft' | 'published' {
+    if (published && d?.remoteId) return 'published';
     if (!d) return 'empty';
-    if (d.remoteId && d.dirty) return 'dirty';
-    if (d.remoteId) return 'synced';
     if (d.dirty) return 'draft';
+    if (d.remoteId) return 'draft';
     return 'empty';
 }
 
@@ -106,7 +121,11 @@ function SessionApp({ token }: { token: string | null }) {
     const [cuppedBy, setCuppedBy] = useState(loadCuppedBy);
     const [drafts, setDrafts] = useState<Record<string, SampleDraft>>({});
     const [customTag, setCustomTag] = useState('');
-    const [syncing, setSyncing] = useState(false);
+    const [participantId, setParticipantId] = useState<string | null>(null);
+    const [publishedAt, setPublishedAt] = useState<string | null>(null);
+    const [sessionFull, setSessionFull] = useState(false);
+    const [publishing, setPublishing] = useState(false);
+    const [confirmPublish, setConfirmPublish] = useState(false);
     const [submitError, setSubmitError] = useState<string | null>(null);
     const [toast, setToast] = useState<Toast | null>(null);
     const [qrOpen, setQrOpen] = useState(false);
@@ -116,9 +135,15 @@ function SessionApp({ token }: { token: string | null }) {
     const lastScrollY = useRef(0);
     const draftsRef = useRef(drafts);
     const cuppedByRef = useRef(cuppedBy);
+    const participantIdRef = useRef(participantId);
+    const publishedAtRef = useRef(publishedAt);
 
     draftsRef.current = drafts;
     cuppedByRef.current = cuppedBy;
+    participantIdRef.current = participantId;
+    publishedAtRef.current = publishedAt;
+    const published = Boolean(publishedAt);
+    const locked = published || publishing;
 
     const samples = useMemo(() => {
         if (!meta) return [] as SampleMeta[];
@@ -139,9 +164,12 @@ function SessionApp({ token }: { token: string | null }) {
     const selectedSample = samples.find((s) => s.id === selectedSampleId) ?? null;
     const draft = selectedSampleId ? (drafts[selectedSampleId] ?? emptyDraft()) : emptyDraft();
     const liveTotal = totalScore(draft.scores, draft.defects);
-    const status = draftStatus(selectedSampleId ? drafts[selectedSampleId] : undefined);
-    const syncedCount = samples.filter((s) => drafts[s.id]?.remoteId && !drafts[s.id]?.dirty).length;
-    const dirtyCount = samples.filter((s) => drafts[s.id]?.dirty).length;
+    const status = draftStatus(selectedSampleId ? drafts[selectedSampleId] : undefined, published);
+    const scoredIds = publishableSampleIds(
+        samples.map((s) => s.id),
+        drafts,
+    );
+    const scoredCount = published ? samples.filter((s) => drafts[s.id]?.remoteId).length : scoredIds.length;
 
     const showToast = useCallback((payload: Toast) => {
         if (toastTimer.current) clearTimeout(toastTimer.current);
@@ -152,13 +180,20 @@ function SessionApp({ token }: { token: string | null }) {
     const persist = useCallback(
         (nextDrafts: Record<string, SampleDraft>, name: string) => {
             if (!token) return;
-            persistSessionDraft(token, { v: 1, cuppedBy: name, drafts: nextDrafts });
+            persistSessionDraft(token, {
+                v: 2,
+                cuppedBy: name,
+                drafts: nextDrafts,
+                participantId: participantIdRef.current ?? undefined,
+                publishedAt: publishedAtRef.current,
+            });
         },
         [token],
     );
 
     const patchDraft = useCallback(
         (sampleId: string, patch: Partial<SampleDraft> | ((d: SampleDraft) => SampleDraft)) => {
+            if (publishedAtRef.current) return;
             setDrafts((prev) => {
                 const cur = prev[sampleId] ?? emptyDraft();
                 const nextDraft =
@@ -188,7 +223,7 @@ function SessionApp({ token }: { token: string | null }) {
                 eventTitle?: string | null;
             }
         >('get-cupping-session', {
-            body: { token },
+            body: { token, cuppedBy: loadCuppedBy() || undefined },
         });
 
         // 410 ended: body may still be present depending on client version
@@ -230,8 +265,24 @@ function SessionApp({ token }: { token: string | null }) {
                   : [];
             const ids = list.map((s) => s.id);
             const restored = draftFromStore(loadSessionDraft(token), ids, loadCuppedBy());
+            const serverPublished = data.participant?.publishedAt ?? null;
+            const publishedAtNext = serverPublished || restored.publishedAt;
+            const participantNext = data.participant?.id || restored.participantId || null;
+            const merged = mergeSubmissions(ensureDrafts(ids, restored.drafts), data.submissions ?? [], {
+                serverWins: Boolean(publishedAtNext),
+            });
             setCuppedBy(restored.cuppedBy);
-            setDrafts(ensureDrafts(ids, restored.drafts));
+            setParticipantId(participantNext);
+            setPublishedAt(publishedAtNext);
+            setSessionFull(Boolean(data.sessionFull));
+            setDrafts(merged);
+            persistSessionDraft(token, {
+                v: 2,
+                cuppedBy: restored.cuppedBy,
+                drafts: merged,
+                participantId: participantNext ?? undefined,
+                publishedAt: publishedAtNext,
+            });
             // Single sample → open immediately; multi stays on board (scoresheet list)
             if (list.length === 1) setSelectedSampleId(list[0].id);
         }
@@ -331,69 +382,181 @@ function SessionApp({ token }: { token: string | null }) {
         setCustomTag('');
     };
 
+    const persistMeta = (name: string, nextParticipantId: string | null, nextPublishedAt: string | null) => {
+        if (!token) return;
+        persistSessionDraft(token, {
+            v: 2,
+            cuppedBy: name,
+            drafts: draftsRef.current,
+            participantId: nextParticipantId ?? undefined,
+            publishedAt: nextPublishedAt,
+        });
+    };
+
     const onNameChange = (name: string) => {
+        if (publishedAtRef.current) return;
         setCuppedBy(name);
-        if (token) {
-            persistSessionDraft(token, { v: 1, cuppedBy: name, drafts: draftsRef.current });
+        persistMeta(name, participantIdRef.current, publishedAtRef.current);
+    };
+
+    const applyClaim = (data: ClaimResult, name: string) => {
+        setParticipantId(data.participantId);
+        participantIdRef.current = data.participantId;
+        if (data.publishedAt) {
+            setPublishedAt(data.publishedAt);
+            publishedAtRef.current = data.publishedAt;
+        }
+        if (data.submissions?.length) {
+            setDrafts((prev) => {
+                const next = mergeSubmissions(prev, data.submissions ?? [], {
+                    serverWins: Boolean(data.publishedAt),
+                });
+                persistSessionDraft(token!, {
+                    v: 2,
+                    cuppedBy: name,
+                    drafts: next,
+                    participantId: data.participantId,
+                    publishedAt: data.publishedAt,
+                });
+                return next;
+            });
+        } else {
+            persistMeta(name, data.participantId, data.publishedAt);
         }
     };
 
-    const syncSample = async (sampleId: string, opts?: { quiet?: boolean }) => {
-        if (!token || syncing) return false;
-        const d = draftsRef.current[sampleId] ?? emptyDraft();
+    const claimSeat = async (opts?: { force?: boolean }) => {
+        if (!token || publishedAtRef.current) return false;
+        const name = cuppedByRef.current.trim();
+        if (!name && !opts?.force) return false;
+        const cuppedByName = name || 'Anonymous';
+        try {
+            const { data, error } = await supabase.functions.invoke<ClaimResult>('submit-cupping', {
+                body: {
+                    token,
+                    action: 'claim',
+                    cuppedBy: cuppedByName,
+                    participantId: participantIdRef.current || undefined,
+                },
+            });
+            if (error && 'context' in error && error.context instanceof Response) {
+                try {
+                    const errBody = (await error.context.clone().json()) as ClaimResult;
+                    if (errBody?.error === 'already_published' && errBody.participantId) {
+                        applyClaim(errBody, cuppedByName);
+                        return true;
+                    }
+                    if (errBody?.error === 'full') {
+                        setSessionFull(true);
+                        setSubmitError('This session is full.');
+                        return false;
+                    }
+                } catch {
+                    /* fall through */
+                }
+            }
+            if (error || !data?.participantId) return false;
+            applyClaim(data, cuppedByName);
+            return true;
+        } catch {
+            return false;
+        }
+    };
+
+    const publishAll = async () => {
+        if (!token || publishing || publishedAtRef.current) return;
+        const ids = publishableSampleIds(
+            samples.map((s) => s.id),
+            draftsRef.current,
+        );
+        if (!ids.length) return;
         const name = cuppedByRef.current.trim() || 'Anonymous';
         if (!cuppedByRef.current.trim()) {
             setCuppedBy(name);
-            onNameChange(name);
+            persistMeta(name, participantIdRef.current, publishedAtRef.current);
         }
-
         setSubmitError(null);
-        setSyncing(true);
+        setPublishing(true);
         try {
-            const { data, error } = await supabase.functions.invoke<SubmitResult>('submit-cupping', {
+            const { data, error } = await supabase.functions.invoke<ClaimResult>('submit-cupping', {
                 body: {
                     token,
-                    sampleId,
+                    action: 'publish',
                     cuppedBy: name,
-                    scores: d.scores,
-                    defects: d.defects,
-                    notes: d.notes.trim() || null,
-                    descriptors: normalizeDescriptors(d.descriptors),
+                    participantId: participantIdRef.current || undefined,
+                    samples: ids.map((sampleId) => {
+                        const d = draftsRef.current[sampleId] ?? emptyDraft();
+                        return {
+                            sampleId,
+                            scores: d.scores,
+                            defects: d.defects,
+                            notes: d.notes.trim() || null,
+                            descriptors: normalizeDescriptors(d.descriptors),
+                        };
+                    }),
                 },
             });
-            if (error || !data) {
-                setSubmitError(error?.message ?? 'sync_failed');
-                return false;
+            let payload = data;
+            if (error && 'context' in error && error.context instanceof Response) {
+                try {
+                    payload = (await error.context.clone().json()) as ClaimResult;
+                } catch {
+                    payload = data;
+                }
             }
+            if (payload?.error === 'already_published' && payload.participantId) {
+                applyClaim(payload, name);
+                setConfirmPublish(false);
+                showToast({ kind: 'sync', text: 'Already submitted' });
+                return;
+            }
+            if (payload?.error === 'full') {
+                setSessionFull(true);
+                setSubmitError('This session is full.');
+                return;
+            }
+            if (error || !payload?.publishedAt) {
+                setSubmitError(payload?.error ?? error?.message ?? 'submit_failed');
+                return;
+            }
+            const byId = new Map((payload.results ?? []).map((r) => [r.sampleId, r]));
+            setParticipantId(payload.participantId);
+            setPublishedAt(payload.publishedAt);
+            participantIdRef.current = payload.participantId;
+            publishedAtRef.current = payload.publishedAt;
             setDrafts((prev) => {
-                const next = {
-                    ...prev,
-                    [sampleId]: {
-                        ...(prev[sampleId] ?? emptyDraft()),
-                        remoteId: data.id,
-                        remoteTotal: Number(data.totalScore),
+                const next = { ...prev };
+                for (const id of ids) {
+                    const r = byId.get(id);
+                    next[id] = {
+                        ...(next[id] ?? emptyDraft()),
+                        remoteId: r?.id ?? next[id]?.remoteId,
+                        remoteTotal: r?.totalScore ?? next[id]?.remoteTotal,
                         dirty: false,
-                    },
-                };
-                persist(next, name);
+                    };
+                }
+                persistSessionDraft(token, {
+                    v: 2,
+                    cuppedBy: name,
+                    drafts: next,
+                    participantId: payload.participantId,
+                    publishedAt: payload.publishedAt,
+                });
                 return next;
             });
-            if (!opts?.quiet) {
-                showToast({ kind: 'sync', text: `${Number(data.totalScore).toFixed(2)} synced` });
-            }
-            return true;
+            setConfirmPublish(false);
+            showToast({ kind: 'sync', text: `${ids.length} submitted` });
         } catch (e) {
-            setSubmitError(e instanceof Error ? e.message : 'sync_failed');
-            return false;
+            setSubmitError(e instanceof Error ? e.message : 'submit_failed');
         } finally {
-            setSyncing(false);
+            setPublishing(false);
         }
     };
 
-    const onSync = async () => {
-        if (!selectedSampleId) return;
-        await syncSample(selectedSampleId);
-    };
+    useEffect(() => {
+        if (!meta || publishedAt || !cuppedBy.trim()) return;
+        void claimSeat();
+    }, [meta]);
 
     if (loading) {
         return (
@@ -477,14 +640,22 @@ function SessionApp({ token }: { token: string | null }) {
 
                 <div className="progress-line">
                     <span>
-                        {syncedCount}/{samples.length} synced
-                        {dirtyCount > 0 ? ` · ${dirtyCount} local` : ''}
+                        {published
+                            ? `${scoredCount}/${samples.length} submitted`
+                            : `${scoredCount}/${samples.length} scored`}
                     </span>
                 </div>
                 <p className="lead">
-                    One table session. Move between samples freely — scores stay on this phone. Sync sends to the
-                    roaster without leaving the sheet.
+                    {published
+                        ? 'Submitted. These scores are locked.'
+                        : 'Scores stay on this phone until you submit once at the end.'}
                 </p>
+
+                {sessionFull && !participantId && !published ? (
+                    <div className="danger" role="status">
+                        This session is full. You can still look, but new scores cannot be submitted.
+                    </div>
+                ) : null}
 
                 <div className="field field--session-name">
                     <label htmlFor="cuppedByBoard">Your name</label>
@@ -493,44 +664,42 @@ function SessionApp({ token }: { token: string | null }) {
                         type="text"
                         value={cuppedBy}
                         onChange={(e) => onNameChange(e.target.value)}
+                        onBlur={() => void claimSeat()}
                         placeholder="So scores can be told apart"
                         autoComplete="name"
+                        disabled={published}
                     />
                 </div>
 
                 <div className="sample-list">
                     {samples.map((s, i) => {
                         const d = drafts[s.id];
-                        const st = draftStatus(d);
+                        const st = draftStatus(d, published);
                         const total =
-                            d?.remoteTotal != null && !d.dirty
+                            published && d?.remoteTotal != null
                                 ? d.remoteTotal
-                                : d
+                                : d && st !== 'empty'
                                   ? totalScore(d.scores, d.defects)
                                   : null;
                         const beanLine = sampleBeanLine(s);
+                        const cardState = st === 'published' ? 'synced' : st;
                         return (
                             <button
                                 key={s.id}
                                 type="button"
-                                className={`sample-card sample-card--${st}`}
+                                className={`sample-card sample-card--${cardState}`}
                                 onClick={() => openSample(s.id)}
                             >
                                 <div>
                                     <div className="sample-card__idx">
                                         #{i + 1}
-                                        {total != null && st !== 'empty' ? (
+                                        {total != null ? (
                                             <span className="sample-card__score"> · {Number(total).toFixed(2)}</span>
                                         ) : null}
-                                        {st === 'synced' ? (
-                                            <span className="sample-card__state"> · synced</span>
-                                        ) : st === 'dirty' ? (
-                                            <span className="sample-card__state sample-card__state--warn">
-                                                {' '}
-                                                · unsynced edits
-                                            </span>
+                                        {st === 'published' ? (
+                                            <span className="sample-card__state"> · submitted</span>
                                         ) : st === 'draft' ? (
-                                            <span className="sample-card__state"> · draft</span>
+                                            <span className="sample-card__state"> · on this phone</span>
                                         ) : null}
                                     </div>
                                     <div className="sample-card__name">{sampleTitle(s)}</div>
@@ -540,19 +709,65 @@ function SessionApp({ token }: { token: string | null }) {
                                     ) : null}
                                 </div>
                                 <span className="sample-card__chev" aria-hidden>
-                                    {st === 'synced' ? '✓' : '›'}
+                                    {st === 'published' ? '✓' : '›'}
                                 </span>
                             </button>
                         );
                     })}
                 </div>
+                {submitError ? (
+                    <div className="danger" role="alert">
+                        {submitError}
+                    </div>
+                ) : null}
+
+                {!published ? (
+                    <div className="board-submit">
+                        {confirmPublish ? (
+                            <>
+                                <p className="board-submit__warn">
+                                    Submit {scoredCount} score{scoredCount === 1 ? '' : 's'}? You cannot edit after
+                                    this.
+                                </p>
+                                <button
+                                    type="button"
+                                    className="btn btn--solid"
+                                    disabled={publishing || scoredCount === 0}
+                                    onClick={() => void publishAll()}
+                                >
+                                    {publishing ? 'Submitting…' : 'Submit scores'}
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btn btn--outline"
+                                    disabled={publishing}
+                                    onClick={() => setConfirmPublish(false)}
+                                >
+                                    Back
+                                </button>
+                            </>
+                        ) : (
+                            <button
+                                type="button"
+                                className="btn btn--solid"
+                                disabled={publishing || scoredCount === 0 || (sessionFull && !participantId)}
+                                onClick={() => setConfirmPublish(true)}
+                            >
+                                {scoredCount === 0 ? 'Score a sample first' : `Submit ${scoredCount} scores`}
+                            </button>
+                        )}
+                    </div>
+                ) : null}
+
                 <p className="session-note">
                     Shared session QR — use Share so the next cupper can join from their phone.
                 </p>
 
                 <footer className="page-end">
                     <p className="page-end__mark">First Crack</p>
-                    <p className="page-end__line">One table · one sheet · sync when ready</p>
+                    <p className="page-end__line">
+                        {published ? 'Submitted · locked' : 'One table · one sheet · submit once'}
+                    </p>
                     <a
                         className="page-end__link"
                         href="https://firstcrackiscoming.com"
@@ -567,13 +782,6 @@ function SessionApp({ token }: { token: string | null }) {
     }
 
     const selectedIdx = samples.findIndex((s) => s.id === selectedSample.id);
-    const syncLabel = syncing
-        ? 'Syncing…'
-        : status === 'synced'
-          ? 'Synced'
-          : status === 'dirty'
-            ? 'Sync changes'
-            : 'Sync';
 
     return (
         <Shell
@@ -613,33 +821,35 @@ function SessionApp({ token }: { token: string | null }) {
                         <span className="form-head__spacer" />
                     )}
                     <span className="form-head__count">
-                        {syncedCount}/{samples.length}
-                        {status === 'dirty' || status === 'draft' ? ' · local' : ''}
+                        {published
+                            ? `${scoredCount}/${samples.length} submitted`
+                            : `${scoredCount}/${samples.length} scored`}
                     </span>
                 </div>
 
                 {multi ? (
                     <div className="sample-strip" role="tablist" aria-label="Samples">
                         {samples.map((s, i) => {
-                            const st = draftStatus(drafts[s.id]);
+                            const st = draftStatus(drafts[s.id], published);
                             const active = s.id === selectedSample.id;
+                            const stripState = st === 'published' ? 'synced' : st;
                             return (
                                 <button
                                     key={s.id}
                                     type="button"
                                     role="tab"
                                     aria-selected={active}
-                                    className={`sample-strip__item${active ? ' sample-strip__item--on' : ''} sample-strip__item--${st}`}
+                                    className={`sample-strip__item${active ? ' sample-strip__item--on' : ''} sample-strip__item--${stripState}`}
                                     onClick={() => {
                                         if (s.id !== selectedSample.id) openSample(s.id);
                                     }}
                                 >
                                     <span className="sample-strip__n">{i + 1}</span>
-                                    {st === 'synced' ? (
+                                    {st === 'published' ? (
                                         <span className="sample-strip__mark" aria-hidden>
                                             ✓
                                         </span>
-                                    ) : st === 'dirty' || st === 'draft' ? (
+                                    ) : st === 'draft' ? (
                                         <span className="sample-strip__dot" aria-hidden />
                                     ) : null}
                                 </button>
@@ -660,15 +870,13 @@ function SessionApp({ token }: { token: string | null }) {
                     <div className="form-head__sub">{selectedSample.label}</div>
                 ) : null}
                 <div
-                    className={`form-head__badge${status === 'synced' ? ' form-head__badge--done' : ''}${status === 'dirty' ? ' form-head__badge--warn' : ''}`}
+                    className={`form-head__badge${published ? ' form-head__badge--done' : ''}${status === 'draft' ? ' form-head__badge--warn' : ''}`}
                 >
-                    {status === 'synced'
-                        ? `Synced ${Number(draft.remoteTotal).toFixed(2)} · edit anytime`
-                        : status === 'dirty'
-                          ? 'Unsynced edits on this phone'
-                          : status === 'draft'
-                            ? 'Local draft · not sent yet'
-                            : 'Session sheet · sync when ready'}
+                    {published
+                        ? `Submitted ${draft.remoteTotal != null ? Number(draft.remoteTotal).toFixed(2) : liveTotal.toFixed(2)} · locked`
+                        : status === 'draft'
+                          ? 'Saved on this phone · submit from session'
+                          : 'Session sheet · submit once at the end'}
                 </div>
             </header>
 
@@ -682,7 +890,7 @@ function SessionApp({ token }: { token: string | null }) {
                                     type="button"
                                     className="step-btn"
                                     aria-label={`Decrease ${LABELS[key]}`}
-                                    disabled={draft.scores[key] <= SCORE_MIN || syncing}
+                                    disabled={draft.scores[key] <= SCORE_MIN || locked}
                                     onClick={() => nudgeScore(key, -SCORE_STEP)}
                                 >
                                     −
@@ -694,7 +902,7 @@ function SessionApp({ token }: { token: string | null }) {
                                     type="button"
                                     className="step-btn"
                                     aria-label={`Increase ${LABELS[key]}`}
-                                    disabled={draft.scores[key] >= SCORE_MAX || syncing}
+                                    disabled={draft.scores[key] >= SCORE_MAX || locked}
                                     onClick={() => nudgeScore(key, SCORE_STEP)}
                                 >
                                     +
@@ -709,7 +917,7 @@ function SessionApp({ token }: { token: string | null }) {
                             step={SCORE_STEP}
                             value={draft.scores[key]}
                             aria-label={LABELS[key]}
-                            disabled={syncing}
+                            disabled={locked}
                             onChange={(e) => setScore(key, Number(e.target.value))}
                         />
                     </div>
@@ -727,7 +935,7 @@ function SessionApp({ token }: { token: string | null }) {
                         min={0}
                         step={1}
                         value={draft.defects}
-                        disabled={syncing}
+                        disabled={locked}
                         onChange={(e) =>
                             selectedSampleId &&
                             patchDraft(selectedSampleId, {
@@ -744,8 +952,9 @@ function SessionApp({ token }: { token: string | null }) {
                         id="cuppedBy"
                         type="text"
                         value={cuppedBy}
-                        disabled={syncing}
+                        disabled={locked}
                         onChange={(e) => onNameChange(e.target.value)}
+                        onBlur={() => void claimSeat()}
                         placeholder="So scores can be told apart"
                         autoComplete="name"
                         enterKeyHint="next"
@@ -768,7 +977,7 @@ function SessionApp({ token }: { token: string | null }) {
                                                 type="button"
                                                 className={`desc-chip${on ? ' desc-chip--on' : ''}`}
                                                 aria-pressed={on}
-                                                disabled={syncing || (!on && draft.descriptors.length >= 20)}
+                                                disabled={locked || (!on && draft.descriptors.length >= 20)}
                                                 onClick={() => toggleDescriptor(tag)}
                                             >
                                                 {tag}
@@ -783,7 +992,7 @@ function SessionApp({ token }: { token: string | null }) {
                         <input
                             type="text"
                             value={customTag}
-                            disabled={syncing}
+                            disabled={locked}
                             onChange={(e) => setCustomTag(e.target.value)}
                             placeholder="Custom tag"
                             maxLength={40}
@@ -798,7 +1007,7 @@ function SessionApp({ token }: { token: string | null }) {
                         <button
                             type="button"
                             className="btn btn--outline"
-                            disabled={syncing || !customTag.trim() || draft.descriptors.length >= 20}
+                            disabled={locked || !customTag.trim() || draft.descriptors.length >= 20}
                             onClick={addCustomTag}
                         >
                             Add
@@ -811,7 +1020,7 @@ function SessionApp({ token }: { token: string | null }) {
                                     key={tag}
                                     type="button"
                                     className="desc-chip desc-chip--on"
-                                    disabled={syncing}
+                                    disabled={locked}
                                     onClick={() => toggleDescriptor(tag)}
                                     aria-label={`Remove ${tag}`}
                                 >
@@ -828,7 +1037,7 @@ function SessionApp({ token }: { token: string | null }) {
                     <textarea
                         id="notes"
                         value={draft.notes}
-                        disabled={syncing}
+                        disabled={locked}
                         onChange={(e) =>
                             selectedSampleId && patchDraft(selectedSampleId, { notes: e.target.value, dirty: true })
                         }
@@ -843,11 +1052,16 @@ function SessionApp({ token }: { token: string | null }) {
                         {submitError}
                     </div>
                 ) : null}
+                {!multi && confirmPublish && !published ? (
+                    <p className="board-submit__warn">Submit this score? You cannot edit after this.</p>
+                ) : null}
             </div>
 
             <footer className="page-end">
                 <p className="page-end__mark">First Crack</p>
-                <p className="page-end__line">Table cupping sheet · scores stay on this phone until Sync</p>
+                <p className="page-end__line">
+                    {published ? 'Submitted · locked' : 'Scores stay on this phone until you submit once'}
+                </p>
                 <a className="page-end__link" href="https://firstcrackiscoming.com" target="_blank" rel="noreferrer">
                     firstcrackiscoming.com
                 </a>
@@ -863,7 +1077,7 @@ function SessionApp({ token }: { token: string | null }) {
                             type="button"
                             className="sticky-bar__step"
                             aria-label="Previous sample"
-                            disabled={syncing}
+                            disabled={publishing}
                             onClick={() => {
                                 const prev = samples[(selectedIdx - 1 + samples.length) % samples.length];
                                 openSample(prev.id);
@@ -873,8 +1087,9 @@ function SessionApp({ token }: { token: string | null }) {
                         </button>
                         <div className="sticky-bar__strip">
                             {samples.map((s, i) => {
-                                const st = draftStatus(drafts[s.id]);
+                                const st = draftStatus(drafts[s.id], published);
                                 const active = s.id === selectedSample.id;
+                                const dotState = st === 'published' ? 'synced' : st;
                                 return (
                                     <button
                                         key={s.id}
@@ -882,8 +1097,8 @@ function SessionApp({ token }: { token: string | null }) {
                                         role="tab"
                                         aria-selected={active}
                                         aria-label={`Sample ${i + 1}`}
-                                        className={`sticky-bar__dot${active ? ' sticky-bar__dot--on' : ''} sticky-bar__dot--${st}`}
-                                        disabled={syncing}
+                                        className={`sticky-bar__dot${active ? ' sticky-bar__dot--on' : ''} sticky-bar__dot--${dotState}`}
+                                        disabled={publishing}
                                         onClick={() => {
                                             if (s.id !== selectedSample.id) openSample(s.id);
                                         }}
@@ -897,7 +1112,7 @@ function SessionApp({ token }: { token: string | null }) {
                             type="button"
                             className="sticky-bar__step"
                             aria-label="Next sample"
-                            disabled={syncing}
+                            disabled={publishing}
                             onClick={() => {
                                 const next = samples[(selectedIdx + 1) % samples.length];
                                 openSample(next.id);
@@ -914,14 +1129,41 @@ function SessionApp({ token }: { token: string | null }) {
                         </div>
                         <div className="sticky-bar__total-value">{liveTotal.toFixed(2)}</div>
                     </div>
-                    <button
-                        type="button"
-                        className={`btn btn--solid${status === 'synced' ? ' btn--synced' : ''}`}
-                        disabled={syncing || status === 'synced'}
-                        onClick={() => void onSync()}
-                    >
-                        {syncLabel}
-                    </button>
+                    {published ? (
+                        <button type="button" className="btn btn--solid btn--synced" disabled>
+                            Submitted
+                        </button>
+                    ) : multi ? (
+                        <button
+                            type="button"
+                            className="btn btn--solid"
+                            disabled={publishing}
+                            onClick={() => {
+                                setSelectedSampleId(null);
+                                setSubmitError(null);
+                            }}
+                        >
+                            Session
+                        </button>
+                    ) : confirmPublish ? (
+                        <button
+                            type="button"
+                            className="btn btn--solid"
+                            disabled={publishing || scoredCount === 0}
+                            onClick={() => void publishAll()}
+                        >
+                            {publishing ? 'Submitting…' : 'Confirm submit'}
+                        </button>
+                    ) : (
+                        <button
+                            type="button"
+                            className="btn btn--solid"
+                            disabled={publishing || scoredCount === 0 || (sessionFull && !participantId)}
+                            onClick={() => setConfirmPublish(true)}
+                        >
+                            {scoredCount === 0 ? 'Score first' : 'Submit'}
+                        </button>
+                    )}
                 </div>
             </div>
         </Shell>
