@@ -6,8 +6,8 @@ QR 커핑 폼. 테이블 커핑 참가자가 폰으로 QR을 스캔해 `/c/:toke
 
 - Vite 6 + React 19 + TypeScript. 라우터 없음 — `window.location.pathname`에서 토큰 파싱 (`App.tsx`의 `tokenFromPath`).
 - Supabase JS client는 **Edge Functions 호출 전용** (DB 직접 접근 없음):
-  - `get-cupping-session` — 토큰으로 세션/샘플 메타 로드 (410 = 만료/정원 초과)
-  - `submit-cupping` — 점수 제출 (optimistic UI 후 실패 시 롤백)
+  - `get-cupping-session` — 토큰으로 세션/샘플 메타 로드 (410 = 만료/취소/종료. 만석은 `sessionFull`)
+  - `submit-cupping` — `action: 'claim'` 좌석, `action: 'publish'` 배치 제출 후 lock
 - Edge Function 소스는 이 레포에 없음 (Supabase 프로젝트 측).
 
 ## Files
@@ -53,6 +53,6 @@ Public URL: **https://cup.firstcrackiscoming.com** (share/QR 기본 origin; `VIT
 - 모바일 우선 (폰으로 쓰는 폼). `index.html`은 `noindex,nofollow`.
 - 커퍼 이름 + **세션 드래프트**는 `localStorage` (`fc_cupping_cupped_by`, `fc_cupping_session_{token}`).
 - 디스크립터는 최대 20개, lowercase 정규화 (`normalizeDescriptors`).
-- **세션 시트 UX:** 샘플 간 자유 이동, 로컬 드래프트 유지, 네트워크는 **Sync**(upsert). 성공 전체 화면 없음.
+- **세션 시트 UX:** 샘플 간 자유 이동, 로컬 autosave. 네트워크는 이름 claim + **한 번만 publish**. 제출 후 읽기 전용.
 - **Share QR:** 셸 상단 `QR` 버튼 → 현재 invite URL QR + copy/share (옆 커퍼 공유).
-- Edge `submit-cupping` (fc-desktop): 같은 invite+sample+cupped_by는 update; `used_count`는 **커퍼 좌석** (첫 제출만 +1).
+- Edge `submit-cupping` (fc-desktop): `cupping_participants`가 좌석. publish가 `cuppings`에 배치 upsert 후 `published_at` lock. 레거시 단건 body는 lock 없이 upsert.

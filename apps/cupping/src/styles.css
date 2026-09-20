@@ -356,6 +356,24 @@ button {
     line-height: 1.45;
 }
 
+.board-submit {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 20px 0 8px;
+}
+
+.board-submit__warn {
+    margin: 0 0 8px;
+    font-size: 14px;
+    color: var(--ox-fg);
+    line-height: 1.4;
+}
+
+.board-submit .btn--outline {
+    width: 100%;
+}
+
 .sample-card--synced {
     border-color: rgba(2, 122, 72, 0.28);
     background: #f3faf6;

@@ -5,16 +5,18 @@ export type SampleDraft = {
     defects: number;
     notes: string;
     descriptors: string[];
-    /** Remote cuppings.id after sync */
+    /** Remote cuppings.id after publish (or legacy sync) */
     remoteId?: string;
     remoteTotal?: number;
-    /** Differs from last successful sync / never synced after edit */
+    /** Local edits not yet published */
     dirty: boolean;
 };
 
 export type SessionDraftStore = {
-    v: 1;
+    v: 1 | 2;
     cuppedBy: string;
+    participantId?: string;
+    publishedAt?: string | null;
     drafts: Record<string, SampleDraft>;
 };
 
@@ -55,7 +57,9 @@ export function loadSessionDraft(token: string): SessionDraftStore | null {
         const raw = localStorage.getItem(draftStorageKey(token));
         if (!raw) return null;
         const parsed = JSON.parse(raw) as SessionDraftStore;
-        if (parsed?.v !== 1 || !parsed.drafts || typeof parsed.drafts !== 'object') return null;
+        if ((parsed?.v !== 1 && parsed?.v !== 2) || !parsed.drafts || typeof parsed.drafts !== 'object') {
+            return null;
+        }
         return parsed;
     } catch {
         return null;
@@ -64,11 +68,48 @@ export function loadSessionDraft(token: string): SessionDraftStore | null {
 
 export function persistSessionDraft(token: string, store: SessionDraftStore) {
     try {
-        localStorage.setItem(draftStorageKey(token), JSON.stringify(store));
+        localStorage.setItem(draftStorageKey(token), JSON.stringify({ ...store, v: 2 }));
         if (store.cuppedBy.trim()) saveCuppedBy(store.cuppedBy);
     } catch {
         /* ignore */
     }
+}
+
+export function publishableSampleIds(sampleIds: string[], drafts: Record<string, SampleDraft>): string[] {
+    return sampleIds.filter((id) => Boolean(drafts[id]?.dirty || drafts[id]?.remoteId));
+}
+
+export type RemoteSubmission = {
+    id: string;
+    sampleId: string;
+    scores: ScaV1Scores | Record<string, unknown>;
+    defects: number;
+    notes: string | null;
+    descriptors: string[];
+    totalScore: number;
+};
+
+export function mergeSubmissions(
+    drafts: Record<string, SampleDraft>,
+    submissions: RemoteSubmission[],
+    opts: { serverWins: boolean },
+): Record<string, SampleDraft> {
+    const next = { ...drafts };
+    for (const sub of submissions) {
+        if (!sub.sampleId) continue;
+        const local = next[sub.sampleId];
+        if (!opts.serverWins && local?.dirty) continue;
+        next[sub.sampleId] = {
+            scores: { ...defaultScores(6), ...(sub.scores as ScaV1Scores) },
+            defects: typeof sub.defects === 'number' ? Math.max(0, sub.defects) : 0,
+            notes: typeof sub.notes === 'string' ? sub.notes : '',
+            descriptors: normalizeDescriptors(sub.descriptors),
+            remoteId: sub.id,
+            remoteTotal: sub.totalScore,
+            dirty: false,
+        };
+    }
+    return next;
 }
 
 export function ensureDrafts(sampleIds: string[], prev: Record<string, SampleDraft>): Record<string, SampleDraft> {
@@ -83,9 +124,13 @@ export function draftFromStore(
     store: SessionDraftStore | null,
     sampleIds: string[],
     fallbackName: string,
-): { cuppedBy: string; drafts: Record<string, SampleDraft> } {
+): {
+    cuppedBy: string;
+    drafts: Record<string, SampleDraft>;
+    participantId?: string;
+    publishedAt: string | null;
+} {
     const drafts = ensureDrafts(sampleIds, store?.drafts ?? {});
-    // Normalize descriptors in restored drafts
     for (const id of Object.keys(drafts)) {
         const d = drafts[id];
         drafts[id] = {
@@ -100,5 +145,7 @@ export function draftFromStore(
     return {
         cuppedBy: store?.cuppedBy?.trim() || fallbackName,
         drafts,
+        participantId: store?.participantId,
+        publishedAt: store?.publishedAt ?? null,
     };
 }
