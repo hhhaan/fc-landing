@@ -7,7 +7,15 @@ type CupperRow = {
     cuppedBy: string;
     totalScore: number;
     descriptors: string[];
+    choices?: { label: string; value: string }[];
     cuppedAt: string;
+};
+
+type ChoiceTally = {
+    key: string;
+    label: string;
+    type: 'pass_fail' | 'select';
+    counts: { value: string; count: number }[];
 };
 
 type SampleResult = {
@@ -17,6 +25,7 @@ type SampleResult = {
     beanMeta: string | null;
     scoreCount: number;
     avgTotal: number | null;
+    choiceTallies?: ChoiceTally[];
     topDescriptors: { tag: string; count: number }[];
     cuppers: CupperRow[];
 };
@@ -162,6 +171,17 @@ export function ResultsPage({ token }: { token: string }) {
                                     </span>
                                 </button>
 
+                                {(s.choiceTallies?.length ?? 0) > 0 ? (
+                                    <div className="results-tags">
+                                        {s.choiceTallies?.map((tally) => (
+                                            <span key={tally.key} className="chip">
+                                                {tally.label}
+                                                {tally.counts.map((c) => ` · ${c.value} ${c.count}`).join('')}
+                                            </span>
+                                        ))}
+                                    </div>
+                                ) : null}
+
                                 {s.topDescriptors.length > 0 ? (
                                     <div className="results-tags">
                                         {s.topDescriptors.map((d) => (
@@ -189,6 +209,18 @@ export function ResultsPage({ token }: { token: string }) {
                                                             {Number(c.totalScore).toFixed(2)}
                                                         </span>
                                                     </div>
+                                                    {(c.choices?.length ?? 0) > 0 ? (
+                                                        <div className="results-tags results-tags--dense">
+                                                            {c.choices?.map((ch) => (
+                                                                <span
+                                                                    key={`${ch.label}-${ch.value}`}
+                                                                    className="chip chip--muted"
+                                                                >
+                                                                    {ch.label} · {ch.value}
+                                                                </span>
+                                                            ))}
+                                                        </div>
+                                                    ) : null}
                                                     {c.descriptors.length > 0 ? (
                                                         <div className="results-tags results-tags--dense">
                                                             {c.descriptors.map((tag) => (

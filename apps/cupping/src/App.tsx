@@ -10,20 +10,18 @@ import {
     persistSessionDraft,
     type SampleDraft,
 } from './draft';
+import {
+    type CuppingFormSchema,
+    clampFieldScore,
+    formSchemaOrSca,
+    isSliderField,
+    type ScoreValue,
+    totalScoreForForm,
+} from './form';
 import { cuppingResultsUrl, cuppingSessionUrl } from './publicBase';
 import { ResultsPage } from './Results';
 import { ShareQr } from './ShareQr';
-import {
-    clampScore,
-    LABELS,
-    normalizeDescriptors,
-    SCA_V1_KEYS,
-    SCORE_MAX,
-    SCORE_MIN,
-    SCORE_STEP,
-    type ScaV1Key,
-    totalScore,
-} from './score';
+import { normalizeDescriptors } from './score';
 
 type SampleMeta = {
     id: string;
@@ -47,9 +45,14 @@ type SessionMeta = {
     sampleId?: string | null;
     sampleLabel?: string | null;
     beanName?: string | null;
+    form?: CuppingFormSchema;
 };
 
 type SubmitResult = { id: string; totalScore: number; cuppedAt: string };
+
+function dScoreNumber(v: unknown, fallback: number): number {
+    return typeof v === 'number' && Number.isFinite(v) ? v : fallback;
+}
 
 type Toast = { kind: 'sync' | 'info'; text: string };
 
@@ -137,8 +140,11 @@ function SessionApp({ token }: { token: string | null }) {
 
     const multi = samples.length > 1;
     const selectedSample = samples.find((s) => s.id === selectedSampleId) ?? null;
-    const draft = selectedSampleId ? (drafts[selectedSampleId] ?? emptyDraft()) : emptyDraft();
-    const liveTotal = totalScore(draft.scores, draft.defects);
+    const form = formSchemaOrSca(meta?.form);
+    const formRef = useRef(form);
+    formRef.current = form;
+    const draft = selectedSampleId ? (drafts[selectedSampleId] ?? emptyDraft(form)) : emptyDraft(form);
+    const liveTotal = totalScoreForForm(form, draft.scores, draft.defects);
     const status = draftStatus(selectedSampleId ? drafts[selectedSampleId] : undefined);
     const syncedCount = samples.filter((s) => drafts[s.id]?.remoteId && !drafts[s.id]?.dirty).length;
     const dirtyCount = samples.filter((s) => drafts[s.id]?.dirty).length;
@@ -160,7 +166,7 @@ function SessionApp({ token }: { token: string | null }) {
     const patchDraft = useCallback(
         (sampleId: string, patch: Partial<SampleDraft> | ((d: SampleDraft) => SampleDraft)) => {
             setDrafts((prev) => {
-                const cur = prev[sampleId] ?? emptyDraft();
+                const cur = prev[sampleId] ?? emptyDraft(formRef.current);
                 const nextDraft =
                     typeof patch === 'function' ? patch(cur) : { ...cur, ...patch, dirty: patch.dirty ?? true };
                 const next = { ...prev, [sampleId]: nextDraft };
@@ -229,9 +235,10 @@ function SessionApp({ token }: { token: string | null }) {
                   ? [{ id: data.sampleId, label: data.sampleLabel || 'Sample', beanName: data.beanName ?? null }]
                   : [];
             const ids = list.map((s) => s.id);
-            const restored = draftFromStore(loadSessionDraft(token), ids, loadCuppedBy());
+            const schema = formSchemaOrSca(data.form);
+            const restored = draftFromStore(loadSessionDraft(token), ids, loadCuppedBy(), schema);
             setCuppedBy(restored.cuppedBy);
-            setDrafts(ensureDrafts(ids, restored.drafts));
+            setDrafts(ensureDrafts(ids, restored.drafts, schema));
             // Single sample → open immediately; multi stays on board (scoresheet list)
             if (list.length === 1) setSelectedSampleId(list[0].id);
         }
@@ -286,20 +293,34 @@ function SessionApp({ token }: { token: string | null }) {
         });
     };
 
-    const setScore = (key: ScaV1Key, value: number) => {
+    const setScore = (key: string, value: number) => {
         if (!selectedSampleId) return;
+        const field = formRef.current.fields.find((f) => f.key === key);
+        if (!field || !isSliderField(field)) return;
         patchDraft(selectedSampleId, (d) => ({
             ...d,
-            scores: { ...d.scores, [key]: clampScore(value) },
+            scores: { ...d.scores, [key]: clampFieldScore(value, field) },
             dirty: true,
         }));
     };
 
-    const nudgeScore = (key: ScaV1Key, delta: number) => {
+    const nudgeScore = (key: string, delta: number) => {
+        if (!selectedSampleId) return;
+        const field = formRef.current.fields.find((f) => f.key === key);
+        if (!field || !isSliderField(field)) return;
+        const current = dScoreNumber(draftsRef.current[selectedSampleId]?.scores[key], field.min);
+        patchDraft(selectedSampleId, (d) => ({
+            ...d,
+            scores: { ...d.scores, [key]: clampFieldScore(current + delta, field) },
+            dirty: true,
+        }));
+    };
+
+    const setChoice = (key: string, value: ScoreValue) => {
         if (!selectedSampleId) return;
         patchDraft(selectedSampleId, (d) => ({
             ...d,
-            scores: { ...d.scores, [key]: clampScore(d.scores[key] + delta) },
+            scores: { ...d.scores, [key]: value },
             dirty: true,
         }));
     };
@@ -340,7 +361,7 @@ function SessionApp({ token }: { token: string | null }) {
 
     const syncSample = async (sampleId: string, opts?: { quiet?: boolean }) => {
         if (!token || syncing) return false;
-        const d = draftsRef.current[sampleId] ?? emptyDraft();
+        const d = draftsRef.current[sampleId] ?? emptyDraft(formRef.current);
         const name = cuppedByRef.current.trim() || 'Anonymous';
         if (!cuppedByRef.current.trim()) {
             setCuppedBy(name);
@@ -369,7 +390,7 @@ function SessionApp({ token }: { token: string | null }) {
                 const next = {
                     ...prev,
                     [sampleId]: {
-                        ...(prev[sampleId] ?? emptyDraft()),
+                        ...(prev[sampleId] ?? emptyDraft(formRef.current)),
                         remoteId: data.id,
                         remoteTotal: Number(data.totalScore),
                         dirty: false,
@@ -506,7 +527,7 @@ function SessionApp({ token }: { token: string | null }) {
                             d?.remoteTotal != null && !d.dirty
                                 ? d.remoteTotal
                                 : d
-                                  ? totalScore(d.scores, d.defects)
+                                  ? totalScoreForForm(form, d.scores, d.defects)
                                   : null;
                         const beanLine = sampleBeanLine(s);
                         return (
@@ -673,53 +694,104 @@ function SessionApp({ token }: { token: string | null }) {
             </header>
 
             <div className="scores">
-                {SCA_V1_KEYS.map((key) => (
-                    <div key={key} className="score-row">
-                        <div className="score-row__top">
-                            <span className="score-row__label">{LABELS[key]}</span>
-                            <div className="score-row__controls">
-                                <button
-                                    type="button"
-                                    className="step-btn"
-                                    aria-label={`Decrease ${LABELS[key]}`}
-                                    disabled={draft.scores[key] <= SCORE_MIN || syncing}
-                                    onClick={() => nudgeScore(key, -SCORE_STEP)}
-                                >
-                                    −
-                                </button>
-                                <span className="score-row__value" aria-live="polite">
-                                    {draft.scores[key].toFixed(2)}
-                                </span>
-                                <button
-                                    type="button"
-                                    className="step-btn"
-                                    aria-label={`Increase ${LABELS[key]}`}
-                                    disabled={draft.scores[key] >= SCORE_MAX || syncing}
-                                    onClick={() => nudgeScore(key, SCORE_STEP)}
-                                >
-                                    +
-                                </button>
+                {form.fields.map((field) => {
+                    if (isSliderField(field)) {
+                        const value = dScoreNumber(draft.scores[field.key], field.min);
+                        return (
+                            <div key={field.key} className="score-row">
+                                <div className="score-row__top">
+                                    <span className="score-row__label">{field.label}</span>
+                                    <div className="score-row__controls">
+                                        <button
+                                            type="button"
+                                            className="step-btn"
+                                            aria-label={`Decrease ${field.label}`}
+                                            disabled={value <= field.min || syncing}
+                                            onClick={() => nudgeScore(field.key, -field.step)}
+                                        >
+                                            −
+                                        </button>
+                                        <span className="score-row__value" aria-live="polite">
+                                            {value.toFixed(field.step < 1 ? 2 : 0)}
+                                        </span>
+                                        <button
+                                            type="button"
+                                            className="step-btn"
+                                            aria-label={`Increase ${field.label}`}
+                                            disabled={value >= field.max || syncing}
+                                            onClick={() => nudgeScore(field.key, field.step)}
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </div>
+                                <input
+                                    className="score-row__range"
+                                    type="range"
+                                    min={field.min}
+                                    max={field.max}
+                                    step={field.step}
+                                    value={value}
+                                    aria-label={field.label}
+                                    disabled={syncing}
+                                    onChange={(e) => setScore(field.key, Number(e.target.value))}
+                                />
+                            </div>
+                        );
+                    }
+                    if (field.type === 'pass_fail') {
+                        const on = draft.scores[field.key] === 1;
+                        return (
+                            <div key={field.key} className="score-row">
+                                <span className="score-row__label">{field.label}</span>
+                                <div className="choice-btns">
+                                    <button
+                                        type="button"
+                                        className={`choice-btn${on ? ' choice-btn--on' : ''}`}
+                                        disabled={syncing}
+                                        onClick={() => setChoice(field.key, 1)}
+                                    >
+                                        Pass
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={`choice-btn${!on ? ' choice-btn--on' : ''}`}
+                                        disabled={syncing}
+                                        onClick={() => setChoice(field.key, 0)}
+                                    >
+                                        Fail
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    }
+                    const current =
+                        typeof draft.scores[field.key] === 'string' ? draft.scores[field.key] : field.options[0];
+                    return (
+                        <div key={field.key} className="score-row">
+                            <span className="score-row__label">{field.label}</span>
+                            <div className="choice-btns">
+                                {field.options.map((opt) => (
+                                    <button
+                                        key={opt}
+                                        type="button"
+                                        className={`choice-btn${current === opt ? ' choice-btn--on' : ''}`}
+                                        disabled={syncing}
+                                        onClick={() => setChoice(field.key, opt)}
+                                    >
+                                        {opt}
+                                    </button>
+                                ))}
                             </div>
                         </div>
-                        <input
-                            className="score-row__range"
-                            type="range"
-                            min={SCORE_MIN}
-                            max={SCORE_MAX}
-                            step={SCORE_STEP}
-                            value={draft.scores[key]}
-                            aria-label={LABELS[key]}
-                            disabled={syncing}
-                            onChange={(e) => setScore(key, Number(e.target.value))}
-                        />
-                    </div>
-                ))}
+                    );
+                })}
             </div>
 
             <div className="fields">
                 <div className="field">
                     <label htmlFor="defects">Defects</label>
-                    <p className="field-hint">Each defect subtracts 2 from total</p>
+                    <p className="field-hint">Each defect subtracts {form.scoring.defectWeight} from total</p>
                     <input
                         id="defects"
                         type="number"
