@@ -88,7 +88,9 @@ export function WorldMap({
             basemap: {
               type: "raster",
               tiles: [
-                "https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png",
+                process.env.NEXT_PUBLIC_CARTO_API_KEY
+                  ? `https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png?key=${process.env.NEXT_PUBLIC_CARTO_API_KEY}`
+                  : "https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png",
               ],
               tileSize: 256,
               attribution: "© CARTO · © OpenStreetMap",
