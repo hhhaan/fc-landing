@@ -29,7 +29,8 @@ export const MARKETS: Record<BillingMarket, MarketContent> = {
     market: "US",
     currency: "USD",
     pro: { monthly: 49, yearlyTotal: 490, yearlyEffective: 40.83 },
-    proPlus: { monthly: 79, yearlyTotal: 790, yearlyEffective: 65.83 },
+    // Yearly stays $790 until a separate decision. ×10 would be $990 (D-012).
+    proPlus: { monthly: 99, yearlyTotal: 790, yearlyEffective: 65.83 },
   },
   KR: {
     market: "KR",

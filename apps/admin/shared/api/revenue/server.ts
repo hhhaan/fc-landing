@@ -21,7 +21,7 @@ function norm(s: string | null | undefined) {
 }
 
 const PRO_MONTHLY_USD = PRICE_CATALOG.find((c) => c.key === 'pro-monthly')?.monthlyUsd ?? 49;
-const PRO_PLUS_MONTHLY_USD = PRICE_CATALOG.find((c) => c.key === 'pro-plus-monthly')?.monthlyUsd ?? 79;
+const PRO_PLUS_MONTHLY_USD = PRICE_CATALOG.find((c) => c.key === 'pro-plus-monthly')?.monthlyUsd ?? 99;
 const ENTERPRISE_MONTHLY_USD = PRICE_CATALOG.find((c) => c.key === 'enterprise-monthly')?.monthlyUsd ?? 300;
 const CANCELED_STATUSES = new Set(['canceled', 'cancelled', 'revoked']);
 

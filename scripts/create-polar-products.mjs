@@ -49,7 +49,8 @@ const SKUS = /** @type {Sku[]} */ ([
     description: 'Pro+ · unlimited batches + commerce · United States',
     market: 'US',
     plan: 'pro_plus',
-    prices: [{ currency: 'usd', amount: 7900 }],
+    // Production product is updated in place. Do not re-run this script to change the price.
+    prices: [{ currency: 'usd', amount: 9900 }],
   },
   {
     envKey: 'POLAR_PRO_PRODUCT_ID_KR',
