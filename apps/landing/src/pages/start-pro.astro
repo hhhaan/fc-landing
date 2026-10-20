@@ -10,9 +10,7 @@ const user = userOrRedirect;
 const requestedPlan = Astro.url.searchParams.get('plan');
 if (
     requestedPlan &&
-    !['monthly', 'yearly', 'pro-monthly', 'pro-yearly', 'pro-plus-monthly', 'pro-plus-yearly'].includes(
-        requestedPlan,
-    )
+    !['monthly', 'yearly', 'pro-monthly', 'pro-yearly', 'pro-plus-monthly', 'pro-plus-yearly'].includes(requestedPlan)
 ) {
     return Astro.redirect('/compare-plans?error=checkout_failed');
 }
