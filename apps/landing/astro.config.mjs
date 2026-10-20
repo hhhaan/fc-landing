@@ -43,6 +43,8 @@ export default defineConfig({
                 context: 'server',
                 access: 'secret',
             }),
+            POLAR_LEGACY_ACCESS_TOKEN: envField.string({ context: 'server', access: 'secret', optional: true }),
+            POLAR_WEBHOOK_SECRET_NEW: envField.string({ context: 'server', access: 'secret', optional: true }),
             POLAR_WEBHOOK_SECRET: envField.string({
                 context: 'server',
                 access: 'secret',

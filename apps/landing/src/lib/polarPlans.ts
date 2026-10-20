@@ -34,7 +34,7 @@ type PolarEnv = Record<string, string | undefined>;
 
 function envProduct(env: PolarEnv, key: PolarProductEnvKey): string | undefined {
     const fromEnv = env[key];
-    if (fromEnv && fromEnv.length > 0) return fromEnv;
+    if (fromEnv !== undefined) return fromEnv;
     return POLAR_PRODUCT_IDS[key];
 }
 
@@ -44,17 +44,7 @@ export function polarProductId(plan: CheckoutPlan, market: BillingMarket, env: P
     const proPlus = plan.includes('pro-plus');
     const enterprise = plan.startsWith('enterprise');
 
-    if (enterprise) {
-        if (yearly)
-            return (
-                envProduct(env, 'POLAR_PRICE_ENTERPRISE_YEARLY_SBX') ??
-                envProduct(env, 'POLAR_PRICE_ENTERPRISE_YEARLY_PROD')
-            );
-        return (
-            envProduct(env, 'POLAR_PRICE_ENTERPRISE_MONTHLY_SBX') ??
-            envProduct(env, 'POLAR_PRICE_ENTERPRISE_MONTHLY_PROD')
-        );
-    }
+    if (enterprise) return undefined;
 
     const planKey = proPlus ? 'PRO_PLUS' : 'PRO';
     const intervalKey = yearly ? '_YEARLY' : '';

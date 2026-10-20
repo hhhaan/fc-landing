@@ -1,70 +1,64 @@
 ---
-import {
-  POLAR_ACCESS_TOKEN,
-  POLAR_SUCCESS_URL,
-} from "astro:env/server";
-import { requireLogin } from "../lib/auth";
-import {
-  normalizeCheckoutPlan,
-  polarApiBase,
-  polarProductId,
-  resolveBillingMarket,
-} from "../lib/polarPlans";
+import { POLAR_ACCESS_TOKEN, POLAR_SUCCESS_URL } from 'astro:env/server';
+import { requireLogin } from '../lib/auth';
+import { normalizeCheckoutPlan, polarApiBase, polarProductId, resolveBillingMarket } from '../lib/polarPlans';
 
-const userOrRedirect = await requireLogin(
-  Astro,
-  `${Astro.url.pathname}${Astro.url.search}`,
-);
+const userOrRedirect = await requireLogin(Astro, `${Astro.url.pathname}${Astro.url.search}`);
 if (userOrRedirect instanceof Response) return userOrRedirect;
 const user = userOrRedirect;
 
-const plan = normalizeCheckoutPlan(Astro.url.searchParams.get("plan"));
+const requestedPlan = Astro.url.searchParams.get('plan');
+if (
+    requestedPlan &&
+    !['monthly', 'yearly', 'pro-monthly', 'pro-yearly', 'pro-plus-monthly', 'pro-plus-yearly'].includes(requestedPlan)
+) {
+    return Astro.redirect('/compare-plans?error=checkout_failed');
+}
+const plan = normalizeCheckoutPlan(requestedPlan);
 const market = resolveBillingMarket(Astro.request);
 // Product UUIDs: SSOT in polarProducts.ts (optional CF overrides unused here)
-const productId = polarProductId(plan, market);
+const productId = polarProductId(plan, market, Astro.locals.runtime?.env ?? {});
 
 if (!productId) {
-  console.error(
-    `[Polar] product ID not configured — plan: ${plan}, market: ${market}`,
-  );
-  return Astro.redirect("/compare-plans?error=checkout_failed");
+    console.error(`[Polar] product ID not configured — plan: ${plan}, market: ${market}`);
+    return Astro.redirect('/compare-plans?error=checkout_failed');
 }
 
 const ip =
-  Astro.request.headers.get("cf-connecting-ip") ||
-  Astro.request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+    Astro.request.headers.get('cf-connecting-ip') ||
+    Astro.request.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
 
 const res = await fetch(`${polarApiBase()}/v1/checkouts/`, {
-  method: "POST",
-  headers: {
-    Authorization: `Bearer ${POLAR_ACCESS_TOKEN}`,
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    products: [productId],
-    external_customer_id: user.id,
-    customer_email: user.email,
-    metadata: { user_id: user.id, plan, market },
-    success_url: POLAR_SUCCESS_URL,
-    // Checkout-level trial overrides product settings — one place for all markets
-    trial_interval: "day",
-    trial_interval_count: 14,
-    allow_trial: true,
-    ...(ip ? { customer_ip_address: ip } : {}),
-  }),
+    method: 'POST',
+    headers: {
+        Authorization: `Bearer ${POLAR_ACCESS_TOKEN}`,
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        products: [productId],
+        external_customer_id: user.id,
+        customer_email: user.email,
+        metadata: { user_id: user.id, plan, market },
+        success_url: POLAR_SUCCESS_URL,
+        // Checkout-level trial overrides product settings — one place for all markets
+        trial_interval: 'day',
+        trial_interval_count: 14,
+        allow_trial: true,
+        ...(ip ? { customer_ip_address: ip } : {}),
+    }),
 });
 
 if (!res.ok) {
-  console.error(`[Polar] checkout creation failed (${res.status}):`, await res.text());
-  return Astro.redirect("/compare-plans?error=checkout_failed");
+    console.error(`[Polar] checkout creation failed (${res.status})`);
+    return Astro.redirect('/compare-plans?error=checkout_failed');
 }
 
 let checkout: { url: string };
 try {
-  checkout = await res.json();
+    checkout = await res.json();
 } catch {
-  console.error("[Polar] invalid JSON in checkout response");
-  return Astro.redirect("/compare-plans?error=checkout_failed");
+    console.error('[Polar] invalid JSON in checkout response');
+    return Astro.redirect('/compare-plans?error=checkout_failed');
 }
 
 console.log(`[Polar] ${plan} (${market}) checkout created for ${user.email}`);

@@ -47,6 +47,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Billing compatibility regression tests
+        run: pnpm --filter @fc/landing test:billing
+
       - name: Biome (changed files)
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then

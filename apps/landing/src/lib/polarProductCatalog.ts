@@ -1,14 +1,19 @@
 import type { BillingMarket } from './market';
-import { POLAR_PRODUCT_IDS, type PolarProductEnvKey } from './polarProducts';
+import {
+    LEGACY_COMMON_POLAR_PRODUCT_IDS,
+    LEGACY_POLAR_PRODUCT_IDS,
+    POLAR_PRODUCT_IDS,
+    type PolarProductEnvKey,
+} from './polarProducts';
 
-export type PolarPlan = 'pro' | 'pro_plus';
+export type PolarPlan = 'pro' | 'pro_plus' | 'enterprise';
 
 export type PolarProductMeta = {
     plan: PolarPlan;
-    market: BillingMarket;
+    market?: BillingMarket;
 };
 
-type PolarEnv = ImportMetaEnv & Record<string, string | undefined>;
+type PolarEnv = Partial<ImportMetaEnv> & Record<string, string | undefined>;
 
 function parseEnvKey(key: string): PolarProductMeta | null {
     const match = key.match(/^POLAR_(PRO|PRO_PLUS)_PRODUCT_ID_(US|KR|JP)(?:_YEARLY)?$/);
@@ -25,16 +30,38 @@ export function buildPolarProductCatalog(env: PolarEnv = {}): Record<string, Pol
 
     for (const key of Object.keys(POLAR_PRODUCT_IDS) as PolarProductEnvKey[]) {
         const meta = parseEnvKey(key);
-        const id = env[key] || POLAR_PRODUCT_IDS[key];
+        const id = env[key] ?? POLAR_PRODUCT_IDS[key];
+        const legacyId = LEGACY_POLAR_PRODUCT_IDS[key];
+        if (meta && legacyId) catalog[legacyId] = meta;
+        const currentId = POLAR_PRODUCT_IDS[key];
+        if (meta && currentId) catalog[currentId] = meta;
         if (meta && id) catalog[id] = meta;
     }
 
+    for (const [plan, id] of Object.entries(LEGACY_COMMON_POLAR_PRODUCT_IDS)) {
+        catalog[id] = { plan: plan as PolarPlan };
+    }
     return catalog;
 }
 
 export function resolvePolarProduct(productId: string | null | undefined, env: PolarEnv = {}): PolarProductMeta | null {
     if (!productId) return null;
     return buildPolarProductCatalog(env)[productId] ?? null;
+}
+
+/** Scope accepted webhook products to the organization selected by verified secret. */
+export function resolvePolarWebhookProduct(
+    productId: string | null | undefined,
+    legacyOrganization: boolean,
+): PolarProductMeta | null {
+    if (!productId) return null;
+    if (!legacyOrganization && Object.values(LEGACY_COMMON_POLAR_PRODUCT_IDS).some((id) => id === productId)) {
+        throw new Error('Legacy common product organization mismatch');
+    }
+    const allowed = legacyOrganization
+        ? [...Object.values(LEGACY_POLAR_PRODUCT_IDS), ...Object.values(LEGACY_COMMON_POLAR_PRODUCT_IDS)]
+        : Object.values(POLAR_PRODUCT_IDS);
+    return allowed.some((id) => id && id === productId) ? resolvePolarProduct(productId) : null;
 }
 
 /** Checkout metadata plan slug → canonical plan id. */
