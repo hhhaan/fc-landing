@@ -17,8 +17,10 @@ async function load(name) {
     return import('data:text/javascript;base64,' + Buffer.from(output).toString('base64'));
 }
 const { polarProductId } = await load('polarPlans.ts');
-const { resolvePolarProduct } = await load('polarProductCatalog.ts');
-const { POLAR_PRODUCT_IDS, LEGACY_POLAR_PRODUCT_IDS } = await import('../src/lib/polarProducts.ts');
+const { resolvePolarProduct, resolvePolarWebhookProduct } = await load('polarProductCatalog.ts');
+const { POLAR_PRODUCT_IDS, LEGACY_POLAR_PRODUCT_IDS, LEGACY_COMMON_POLAR_PRODUCT_IDS } = await import(
+    '../src/lib/polarProducts.ts'
+);
 let checks = 0;
 for (const [key, id] of Object.entries(POLAR_PRODUCT_IDS)) {
     const market = key.match(/_(US|KR|JP)/)[1];
@@ -42,5 +44,48 @@ for (const suffix of ['', '_SBX', '_PROD']) {
     checks++;
 }
 assert.equal(resolvePolarProduct('unknown'), null);
+checks++;
+
+const { preparePolarSubscription } = await import('../src/lib/polarWebhook.ts');
+for (const [plan, id] of Object.entries(LEGACY_COMMON_POLAR_PRODUCT_IDS)) {
+    const legacyProduct = resolvePolarWebhookProduct(id, true);
+    assert.deepEqual(legacyProduct, { plan });
+    checks++;
+    assert.equal(legacyProduct.market, undefined);
+    checks++;
+    assert.equal(resolvePolarProduct(id).plan, plan);
+    checks++;
+    assert.throws(() => resolvePolarWebhookProduct(id, false));
+    checks++;
+    assert.ok(!Object.values(POLAR_PRODUCT_IDS).includes(id));
+    checks++;
+    const event = { id: 'legacy-sub', customer_id: 'mapped-polar-customer', product_id: id, status: 'active' };
+    assert.equal(
+        preparePolarSubscription('subscription.active', event, 'old-org', Boolean(legacyProduct)).subscription.status,
+        'active',
+    );
+    checks++;
+    assert.throws(() =>
+        preparePolarSubscription(
+            'subscription.active',
+            event,
+            'new-org',
+            Boolean(resolvePolarWebhookProduct(id, false)),
+        ),
+    );
+    checks++;
+}
+for (const id of Object.values(LEGACY_COMMON_POLAR_PRODUCT_IDS)) {
+    assert.throws(() =>
+        preparePolarSubscription(
+            'subscription.revoked',
+            { id: 'legacy-sub', customer_id: 'mapped', product_id: id, status: 'revoked' },
+            'new-org',
+            Boolean(resolvePolarWebhookProduct(id, false)),
+        ),
+    );
+    checks++;
+}
+assert.equal(polarProductId('enterprise-yearly', 'US'), undefined);
 checks++;
 console.log(`${checks} catalog assertions passed`);

@@ -31,3 +31,9 @@ export const POLAR_PRODUCT_IDS = {
     POLAR_PRO_PRODUCT_ID_JP_YEARLY: '',
     POLAR_PRO_PLUS_PRODUCT_ID_JP_YEARLY: '',
 } as const;
+
+/** Archived common products: webhook compatibility only, never checkout defaults. */
+export const LEGACY_COMMON_POLAR_PRODUCT_IDS = {
+    pro: 'c56a7d34-ddc9-42a4-82e7-9903fa991425',
+    enterprise: '4dcea637-ef45-4ec6-9f81-9753746f9056',
+} as const;

@@ -9,8 +9,7 @@ import {
 import { createClient } from '@supabase/supabase-js';
 import type { APIRoute } from 'astro';
 import { deliverPolarNotification, polarPaymentMessage } from '../../../lib/polarNotification';
-import { resolvePolarProduct } from '../../../lib/polarProductCatalog';
-import { LEGACY_POLAR_PRODUCT_IDS, POLAR_PRODUCT_IDS } from '../../../lib/polarProducts';
+import { resolvePolarWebhookProduct } from '../../../lib/polarProductCatalog';
 import { polarUserId, preparePolarSubscription, verifyPolarSignature } from '../../../lib/polarWebhook';
 import { captureServerException } from '../../../lib/sentryServer';
 import { postSlack } from '../../../lib/slack';
@@ -71,11 +70,10 @@ export const POST: APIRoute = async ({ request }) => {
         return new Response(null, { status: 200 });
     }
     const data = event.data;
-    const products = newValid ? POLAR_PRODUCT_IDS : LEGACY_POLAR_PRODUCT_IDS;
-    const knownProduct = Object.values(products).some((id) => id && id === data.product_id);
-    const product = knownProduct ? resolvePolarProduct(data.product_id) : null;
+    let product: ReturnType<typeof resolvePolarWebhookProduct>;
     let prepared: ReturnType<typeof preparePolarSubscription>;
     try {
+        product = resolvePolarWebhookProduct(data.product_id, oldValid);
         prepared = preparePolarSubscription(event.type, data, organizationId, Boolean(product));
     } catch {
         return new Response('Invalid subscription identity or product', { status: 400 });
