@@ -1,5 +1,5 @@
 import type { BillingMarket } from './market';
-import { POLAR_PRODUCT_IDS, type PolarProductEnvKey } from './polarProducts';
+import { LEGACY_POLAR_PRODUCT_IDS, POLAR_PRODUCT_IDS, type PolarProductEnvKey } from './polarProducts';
 
 export type PolarPlan = 'pro' | 'pro_plus';
 
@@ -25,7 +25,11 @@ export function buildPolarProductCatalog(env: PolarEnv = {}): Record<string, Pol
 
     for (const key of Object.keys(POLAR_PRODUCT_IDS) as PolarProductEnvKey[]) {
         const meta = parseEnvKey(key);
-        const id = env[key] || POLAR_PRODUCT_IDS[key];
+        const id = env[key] ?? POLAR_PRODUCT_IDS[key];
+        const legacyId = LEGACY_POLAR_PRODUCT_IDS[key];
+        if (meta && legacyId) catalog[legacyId] = meta;
+        const currentId = POLAR_PRODUCT_IDS[key];
+        if (meta && currentId) catalog[currentId] = meta;
         if (meta && id) catalog[id] = meta;
     }
 

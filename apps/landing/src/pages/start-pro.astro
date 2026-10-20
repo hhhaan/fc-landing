@@ -18,10 +18,14 @@ const userOrRedirect = await requireLogin(
 if (userOrRedirect instanceof Response) return userOrRedirect;
 const user = userOrRedirect;
 
-const plan = normalizeCheckoutPlan(Astro.url.searchParams.get("plan"));
+const requestedPlan = Astro.url.searchParams.get("plan");
+if (requestedPlan && !["monthly", "yearly", "pro-monthly", "pro-yearly", "pro-plus-monthly", "pro-plus-yearly"].includes(requestedPlan)) {
+  return Astro.redirect("/compare-plans?error=checkout_failed");
+}
+const plan = normalizeCheckoutPlan(requestedPlan);
 const market = resolveBillingMarket(Astro.request);
 // Product UUIDs: SSOT in polarProducts.ts (optional CF overrides unused here)
-const productId = polarProductId(plan, market);
+const productId = polarProductId(plan, market, Astro.locals.runtime?.env ?? {});
 
 if (!productId) {
   console.error(
@@ -55,7 +59,7 @@ const res = await fetch(`${polarApiBase()}/v1/checkouts/`, {
 });
 
 if (!res.ok) {
-  console.error(`[Polar] checkout creation failed (${res.status}):`, await res.text());
+  console.error(`[Polar] checkout creation failed (${res.status})`);
   return Astro.redirect("/compare-plans?error=checkout_failed");
 }
 

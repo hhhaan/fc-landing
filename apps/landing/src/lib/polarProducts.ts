@@ -1,5 +1,5 @@
 /** Public Polar product UUIDs — SSOT: scripts/polar-products.out.env */
-export const POLAR_PRODUCT_IDS = {
+export const LEGACY_POLAR_PRODUCT_IDS = {
   POLAR_PRO_PRODUCT_ID_US: "b817c76f-5b9d-4085-88eb-dd993e886a9c",
   POLAR_PRO_PLUS_PRODUCT_ID_US: "f88d8ab8-ebb6-4c97-8f02-ea92571d721b",
   POLAR_PRO_PRODUCT_ID_KR: "c9e97af0-2e98-4e30-a28b-ec1c75e63529",
@@ -15,3 +15,16 @@ export const POLAR_PRODUCT_IDS = {
 } as const;
 
 export type PolarProductEnvKey = keyof typeof POLAR_PRODUCT_IDS;
+/** Current organization checkout catalog. Legacy IDs remain webhook-only. */
+export const POLAR_PRODUCT_IDS = {
+ ...LEGACY_POLAR_PRODUCT_IDS,
+ POLAR_PRO_PRODUCT_ID_US: '8ac716ee-6d05-42cc-83df-05ecafb3b903',
+ POLAR_PRO_PLUS_PRODUCT_ID_US: '0691aa76-5c8f-4010-93ea-b5378c1d873f',
+ POLAR_PRO_PRODUCT_ID_KR: '687e287c-16b6-411c-ab32-1d49a7685c9d',
+ POLAR_PRO_PLUS_PRODUCT_ID_KR: '9e72b4bb-1fac-466a-8a6e-dc022d394102',
+ POLAR_PRO_PRODUCT_ID_JP: '9fa57893-6bb9-44ef-99dc-e4955cba8763',
+ POLAR_PRO_PLUS_PRODUCT_ID_JP: 'ca6df77f-cac0-4648-8dfe-92fe4a840aa3',
+ POLAR_PRO_PRODUCT_ID_US_YEARLY: '', POLAR_PRO_PLUS_PRODUCT_ID_US_YEARLY: '',
+ POLAR_PRO_PRODUCT_ID_KR_YEARLY: '', POLAR_PRO_PLUS_PRODUCT_ID_KR_YEARLY: '',
+ POLAR_PRO_PRODUCT_ID_JP_YEARLY: '', POLAR_PRO_PLUS_PRODUCT_ID_JP_YEARLY: '',
+} as const;
