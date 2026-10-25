@@ -4,7 +4,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "test:mcp": "node --experimental-strip-types --test tests/mcpConsent.test.mjs",
+        "test:mcp": "node --experimental-strip-types --test tests/mcp*.test.mjs",
         "dev": "astro dev",
         "build": "astro build",
         "preview": "astro preview",

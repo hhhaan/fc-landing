@@ -16,6 +16,8 @@ export type ConsentPolicy = {
     readOnlyReady: boolean;
     clientIds: string[];
     redirectUris: string[];
+    issuer: string;
+    resource: string;
 };
 type Details = {
     authorization_id: string;
@@ -23,6 +25,10 @@ type Details = {
     client: { id: string; name: string };
     user: { id: string };
     scope: string;
+    issuer: string;
+    resource: string;
+    credential_kind: string;
+    workspaces: { owner_id: string; name: string }[];
 };
 type ConsentAuth = {
     getUser(): Promise<{
@@ -30,7 +36,7 @@ type ConsentAuth = {
         error: unknown;
     }>;
     getDetails(id: string): Promise<{ data: unknown; error: unknown }>;
-    decide(id: string, decision: 'approve' | 'deny'): Promise<{ data: unknown; error: unknown }>;
+    decide(id: string, decision: 'approve' | 'deny', owner?: string): Promise<{ data: unknown; error: unknown }>;
 };
 export type ConsentState =
     | { kind: 'unavailable'; status: number; message: string }
@@ -43,6 +49,7 @@ export type ConsentState =
           workspaceOwnerId: string;
           accountLabel: string;
           redirectUri: string;
+          workspaces: { owner_id: string; name: string }[];
       };
 
 const unavailable = (status = 503): ConsentState => ({
@@ -126,7 +133,13 @@ export async function handleMcpConsent(
             typeof details.client?.name !== 'string' ||
             !policy.redirectUris.includes(details.redirect_uri) ||
             !allowedRedirect(details.redirect_uri, policy.redirectUris) ||
-            details.scope?.trim() !== 'openid'
+            details.scope !== 'firstcrack:read' ||
+            details.issuer !== policy.issuer ||
+            details.resource !== policy.resource ||
+            details.credential_kind !== 'mcp_opaque_v1' ||
+            !Array.isArray(details.workspaces) ||
+            !details.workspaces.length ||
+            details.workspaces.some((workspace) => !UUID.test(workspace.owner_id) || typeof workspace.name !== 'string')
         )
             return unavailable(403);
         if (request.method === 'GET')
@@ -137,9 +150,16 @@ export async function handleMcpConsent(
                 workspaceOwnerId: user.id,
                 accountLabel: user.email ?? user.id,
                 redirectUri: details.redirect_uri,
+                workspaces: details.workspaces,
             };
         const decision = form?.get('decision') === 'approve' ? 'approve' : 'deny';
-        const result = await auth.decide(id, decision);
+        const owner = form?.get('workspace_owner_id');
+        if (
+            decision === 'approve' &&
+            (typeof owner !== 'string' || !details.workspaces.some((workspace) => workspace.owner_id === owner))
+        )
+            return unavailable(403);
+        const result = await auth.decide(id, decision, typeof owner === 'string' ? owner : undefined);
         const redirect =
             result.data && typeof result.data === 'object' && 'redirect_url' in result.data
                 ? result.data.redirect_url

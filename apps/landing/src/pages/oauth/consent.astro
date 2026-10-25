@@ -1,24 +1,20 @@
 ---
+import { PUBLIC_SUPABASE_URL } from 'astro:env/client';
 import {
     MCP_OAUTH_CLIENT_IDS,
     MCP_OAUTH_ENABLED,
+    MCP_OAUTH_ISSUER_URL,
     MCP_OAUTH_READONLY_READY,
     MCP_OAUTH_REDIRECT_URIS,
+    MCP_OAUTH_RESOURCE_URL,
 } from 'astro:env/server';
 import Favicon from '../../components/ui/Favicon.astro';
-import { CONSENT_COOKIE, decideNativeConsent, handleMcpConsent } from '../../lib/mcpConsent';
+import { CONSENT_COOKIE, handleMcpConsent } from '../../lib/mcpConsent';
+import { issuerConsentClient } from '../../lib/mcpIssuer';
 import { createClient } from '../../lib/supabase';
 
 const client = createClient({ request: Astro.request, cookies: Astro.cookies });
-const auth = {
-    getUser: () => client.auth.getUser(),
-    getDetails: (id: string) => client.auth.oauth.getAuthorizationDetails(id),
-    // Never issue a native Supabase credential as an externally delegated read-only token.
-    decide: (id: string, decision: 'approve' | 'deny') =>
-        decideNativeConsent(id, decision, (requestId) =>
-            client.auth.oauth.denyAuthorization(requestId, { skipBrowserRedirect: true }),
-        ),
-};
+const auth = issuerConsentClient(client, PUBLIC_SUPABASE_URL);
 let form: FormData | undefined;
 if (Astro.request.method === 'POST') {
     try {
@@ -33,6 +29,8 @@ const state = await handleMcpConsent(
     {
         enabled: MCP_OAUTH_ENABLED === 'true',
         readOnlyReady: MCP_OAUTH_READONLY_READY === 'true',
+        issuer: MCP_OAUTH_ISSUER_URL ?? '',
+        resource: MCP_OAUTH_RESOURCE_URL ?? '',
         clientIds: (MCP_OAUTH_CLIENT_IDS ?? '')
             .split(',')
             .map((id) => id.trim())
@@ -79,22 +77,26 @@ if (state.kind === 'unavailable') Astro.response.status = state.status;
         <p class="ox-eyebrow">Workspace connection</p>
         <h1 id="consent-title">Connect your workspace</h1>
         {state.kind === 'review' ? <>
-          <p><strong>{state.clientName}</strong> is asking to read your personal roastery workspace.</p>
+          <p><strong>{state.clientName}</strong> is asking to read a roastery workspace you choose.</p>
           <p>Signed in as <strong>{state.accountLabel}</strong>.</p>
           <ul>
             <li>Your profile, green beans and products</li>
             <li>Order quantities and stored production plans</li>
             <li>Saved roast history</li>
           </ul>
-          <p>Access is limited to your own workspace. Shared team workspaces are not included in this connection.</p>
+          <p>Access stays limited to the selected workspace, including when this connection is refreshed.</p>
           <p>This connection cannot register production, change inventory or control equipment.</p>
           <p class="ox-muted">You will return to {new URL(state.redirectUri).origin}.</p>
           <form method="POST">
             <input type="hidden" name="csrf" value={csrf} />
-            <button type="submit" name="decision" value="approve" class="ox-btn ox-btn-solid" disabled>Read access unavailable</button>
+            <label for="workspace">Roastery</label>
+            <select id="workspace" name="workspace_owner_id" required>
+              {state.workspaces.map((workspace) => <option value={workspace.owner_id}>{workspace.name}</option>)}
+            </select>
+            <button type="submit" name="decision" value="approve" class="ox-btn ox-btn-solid">Allow read access</button>
             <button type="submit" name="decision" value="deny" class="ox-btn ox-btn-outline">Deny</button>
           </form>
-          <p class="ox-muted">This connection is not ready to grant access yet.</p>
+          <p class="ox-muted">You can revoke access from <a href="/account/connections">Connected apps</a> or the connected app.</p>
         </> : <p role="status">{state.message}</p>}
       </section>
     </main>

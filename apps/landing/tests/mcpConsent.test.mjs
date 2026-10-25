@@ -9,7 +9,14 @@ const clientId = '33333333-3333-4333-8333-333333333333';
 const callback = 'https://host.example/callback'; // Local fixture, never a real host registration.
 const requestUrl = `https://firstcrack.example/oauth/consent?authorization_id=${id}`;
 const csrf = `${id}.local-test-nonce`;
-const policy = { enabled: true, readOnlyReady: true, clientIds: [clientId], redirectUris: [callback] };
+const policy = {
+    enabled: true,
+    readOnlyReady: true,
+    clientIds: [clientId],
+    redirectUris: [callback],
+    issuer: 'https://firstcrack.example/oauth/mcp',
+    resource: 'https://resource.example/mcp',
+};
 
 function fixture(overrides = {}) {
     const calls = [];
@@ -18,7 +25,11 @@ function fixture(overrides = {}) {
         user: { id: userId },
         client: { id: clientId, name: 'Local test app' },
         redirect_uri: callback,
-        scope: 'openid',
+        scope: 'firstcrack:read',
+        issuer: policy.issuer,
+        resource: policy.resource,
+        credential_kind: 'mcp_opaque_v1',
+        workspaces: [{ owner_id: userId, name: 'My workspace' }],
         ...overrides,
     };
     const auth = {
@@ -30,8 +41,8 @@ function fixture(overrides = {}) {
             calls.push(['details', value]);
             return { data: details, error: null };
         },
-        async decide(value, decision) {
-            calls.push(['decision', value, decision]);
+        async decide(value, decision, owner) {
+            calls.push(['decision', value, decision, owner]);
             return {
                 data: {
                     redirect_url: `${callback}?${decision === 'approve' ? 'code=local-code' : 'error=access_denied'}&state=local-state`,
@@ -46,6 +57,7 @@ function post(origin = 'https://firstcrack.example', token = csrf, decision = 'a
     const form = new FormData();
     form.set('csrf', token);
     form.set('decision', decision);
+    form.set('workspace_owner_id', userId);
     return { request: new Request(requestUrl, { method: 'POST', headers: { Origin: origin } }), form };
 }
 
@@ -92,6 +104,7 @@ test('GET reviews the verified client and own workspace without approval', async
         workspaceOwnerId: userId,
         accountLabel: userId,
         redirectUri: callback,
+        workspaces: [{ owner_id: userId, name: 'My workspace' }],
     });
     assert.ok(!calls.some((call) => call[0] === 'decision'));
 });
@@ -102,6 +115,10 @@ test('rejects a different identity, client, callback or unexpected scope', async
         { redirect_uri: 'https://attacker.example/callback' },
         { scope: 'openid profile' },
         { authorization_id: userId },
+        { issuer: 'https://other.example' },
+        { resource: 'https://other.example' },
+        { credential_kind: 'native_jwt' },
+        { workspaces: [] },
     ]) {
         const { auth, calls } = fixture(change);
         assert.equal((await handleMcpConsent(new Request(requestUrl), auth, policy)).status, 403);
@@ -125,10 +142,10 @@ test('explicit approve and deny decisions use only the verified authorization ID
     for (const decision of ['approve', 'deny']) {
         const { auth, calls } = fixture();
         const input = post(undefined, csrf, decision);
-        input.form.set('workspace_owner_id', 'attacker-controlled');
+        input.form.set('workspace_owner_id', userId);
         const result = await handleMcpConsent(input.request, auth, policy, csrf, input.form);
         assert.equal(result.kind, 'redirect');
-        assert.deepEqual(calls.at(-1), ['decision', id, decision]);
+        assert.deepEqual(calls.at(-1), ['decision', id, decision, userId]);
         assert.equal(new URL(result.location).searchParams.get('state'), 'local-state');
     }
 });
@@ -163,4 +180,12 @@ test('web login next rejects external, backslash and control-character redirects
     ]) {
         assert.equal(safeRedirectPath(next), '/');
     }
+});
+
+test('a submitted workspace must be a verified membership', async () => {
+    const { auth, calls } = fixture();
+    const input = post();
+    input.form.set('workspace_owner_id', id);
+    assert.equal((await handleMcpConsent(input.request, auth, policy, csrf, input.form)).status, 403);
+    assert.ok(!calls.some((call) => call[0] === 'decision'));
 });
