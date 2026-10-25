@@ -71,7 +71,7 @@ No hosted account or host callback was used. Build has existing Cloudflare adapt
 Verified locally: **16 controller tests**, pure controller TypeScript checks and landing
 production build passed. Actual Astro HTTP requests returned consent/connections →
 existing login 303, login HTML 200 and foreign-Origin revocation 403, with unused local
-fixture bindings only. Companion integration passed **119 assertions**, including official
+fixture bindings only. Companion integration passed **120 assertions**, including official
 MCP SDK automatic refresh; all **297 Edge tests** and **19 Edge entrypoint** checks passed.
 
 ## Pending approval and verification
