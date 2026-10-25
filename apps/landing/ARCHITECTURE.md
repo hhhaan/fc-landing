@@ -69,6 +69,7 @@ apps/landing/
 | Route | File | Role |
 |-------|------|------|
 | `/auth/callback` | `auth/callback.astro` | OAuth + recovery code exchange |
+| `/oauth/consent` | `oauth/consent.astro` | Disabled-by-default MCP connection review using existing SSR login; own workspace only |
 | `/auth/signout` | `auth/signout.astro` | Session teardown |
 | `/start-pro` | `start-pro.astro` | Polar checkout redirect (guarded) |
 | `/api/webhooks/polar` | `api/webhooks/polar.ts` | Subscription webhook |

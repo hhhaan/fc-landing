@@ -13,6 +13,12 @@ export default defineConfig({
         // Keep validateSecrets false so CI can build without secret values.
         validateSecrets: false,
         schema: {
+            MCP_OAUTH_ENABLED: envField.string({ context: 'server', access: 'secret', optional: true }),
+            MCP_OAUTH_ISSUER_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
+            MCP_OAUTH_RESOURCE_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
+            MCP_OAUTH_READONLY_READY: envField.string({ context: 'server', access: 'secret', optional: true }),
+            MCP_OAUTH_CLIENT_IDS: envField.string({ context: 'server', access: 'secret', optional: true }),
+            MCP_OAUTH_REDIRECT_URIS: envField.string({ context: 'server', access: 'secret', optional: true }),
             PUBLIC_SUPABASE_URL: envField.string({
                 context: 'client',
                 access: 'public',
