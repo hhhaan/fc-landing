@@ -79,7 +79,7 @@ function allowedRedirect(value: unknown, registered: string[]): value is string 
                 [...target.searchParams.keys()].every(
                     (key) =>
                         expected.searchParams.has(key) ||
-                        ['code', 'state', 'error', 'error_description', 'error_uri'].includes(key),
+                        ['code', 'state', 'error', 'error_description', 'error_uri', 'iss'].includes(key),
                 )
             );
         });

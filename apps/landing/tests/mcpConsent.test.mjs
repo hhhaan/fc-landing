@@ -45,7 +45,7 @@ function fixture(overrides = {}) {
             calls.push(['decision', value, decision, owner]);
             return {
                 data: {
-                    redirect_url: `${callback}?${decision === 'approve' ? 'code=local-code' : 'error=access_denied'}&state=local-state`,
+                    redirect_url: `${callback}?${decision === 'approve' ? 'code=local-code' : 'error=access_denied'}&state=local-state&iss=${encodeURIComponent(policy.issuer)}`,
                 },
                 error: null,
             };
