@@ -8,6 +8,8 @@ export default defineConfig({
     adapter: cloudflare({
         imageService: 'passthrough',
     }),
+    // OAuth token and revoke posts come from ChatGPT's servers with no browser Origin.
+    security: { checkOrigin: false },
     env: {
         // Secrets resolve at runtime via CF env (not Vite-inlined).
         // Keep validateSecrets false so CI can build without secret values.
