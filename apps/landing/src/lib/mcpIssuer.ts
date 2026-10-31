@@ -59,13 +59,15 @@ export function issuerConsentClient(native: NativeClient, project: string, fetch
         if (query) url.search = query.toString();
         const response = await fetcher(url, {
             method: body ? 'POST' : 'GET',
-            redirect: 'error',
+            // Workers throw on redirect:"error" before sending. manual surfaces 3xx so it is not followed.
+            redirect: 'manual',
             headers: {
                 Authorization: `Bearer ${session.data.session.access_token}`,
                 ...(body ? { 'Content-Type': 'application/json' } : {}),
             },
             body: body ? JSON.stringify(body) : undefined,
         });
+        if (response.status >= 300 && response.status < 400) return { data: null, error: true };
         const data = JSON.parse(await limitedText(response));
         return { data: response.ok ? data : null, error: !response.ok };
     };

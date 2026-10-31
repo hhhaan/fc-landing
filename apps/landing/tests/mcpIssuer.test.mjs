@@ -81,12 +81,16 @@ test('internal native identity goes only to the fixed project and is not redirec
     const client = issuerConsentClient(native, project, async (url, init) => {
         calls++;
         assert.equal(url.origin, project);
-        assert.equal(init.redirect, 'error');
+        assert.equal(init.redirect, 'manual');
         assert.equal(new Headers(init.headers).get('Authorization'), 'Bearer native-fixture');
         return Response.json({ grants: [] });
     });
     await client.getGrants();
     assert.equal(calls, 1);
+    const redirected = await issuerConsentClient(native, project, async () =>
+        new Response(null, { status: 302, headers: { Location: 'https://evil.example/steal' } }),
+    ).getGrants();
+    assert.deepEqual(redirected, { data: null, error: true });
     await assert.rejects(() => issuerConsentClient(native, 'https://evil.example@native.example').getGrants());
 });
 test('grant UI requires login and CSRF; unavailable backend never becomes an empty list', async () => {
