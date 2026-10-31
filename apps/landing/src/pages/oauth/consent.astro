@@ -44,7 +44,7 @@ const state = await handleMcpConsent(
     form,
 );
 Astro.response.headers.set('Cache-Control', 'private, no-store');
-Astro.response.headers.set('Referrer-Policy', 'no-referrer');
+Astro.response.headers.set('Referrer-Policy', 'origin');
 Astro.response.headers.set('X-Frame-Options', 'DENY');
 if (Astro.request.method === 'POST') Astro.cookies.delete(CONSENT_COOKIE, { path: '/oauth/consent' });
 const acceptJson = Astro.request.headers.get('accept')?.includes('application/json') ?? false;
@@ -58,7 +58,6 @@ if (acceptJson && Astro.request.method === 'POST') {
         headers: {
             'content-type': 'application/json',
             'cache-control': 'private, no-store',
-            'referrer-policy': 'no-referrer',
         },
     });
 }
@@ -119,11 +118,10 @@ if (state.kind === 'unavailable') Astro.response.status = state.status;
               const body = new FormData(form);
               const submitter = event.submitter;
               if (submitter && submitter.name) body.set(submitter.name, submitter.value);
-              const buttons = form.querySelectorAll('button');
-              buttons.forEach((button) => {
-                button.disabled = true;
-              });
               const status = document.getElementById('consent-status');
+              const previousLabel = submitter ? submitter.textContent : '';
+              if (submitter) submitter.textContent = 'Connecting…';
+              status.textContent = '';
               try {
                 const response = await fetch(location.href, {
                   method: 'POST',
@@ -139,9 +137,7 @@ if (state.kind === 'unavailable') Astro.response.status = state.status;
               } catch {
                 status.textContent = 'This connection could not be completed.';
               }
-              buttons.forEach((button) => {
-                button.disabled = false;
-              });
+              if (submitter) submitter.textContent = previousLabel;
             });
           </script>
           <p class="ox-muted">You can revoke access from <a href="/account/connections">Connected apps</a> or the connected app.</p>
