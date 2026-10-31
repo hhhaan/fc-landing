@@ -47,6 +47,21 @@ Astro.response.headers.set('Cache-Control', 'private, no-store');
 Astro.response.headers.set('Referrer-Policy', 'no-referrer');
 Astro.response.headers.set('X-Frame-Options', 'DENY');
 if (Astro.request.method === 'POST') Astro.cookies.delete(CONSENT_COOKIE, { path: '/oauth/consent' });
+const acceptJson = Astro.request.headers.get('accept')?.includes('application/json') ?? false;
+if (acceptJson && Astro.request.method === 'POST') {
+    const body =
+        state.kind === 'login' || state.kind === 'redirect'
+            ? { location: state.location }
+            : { message: state.kind === 'unavailable' ? state.message : 'This connection could not be completed.' };
+    return new Response(JSON.stringify(body), {
+        status: state.kind === 'unavailable' ? state.status : 200,
+        headers: {
+            'content-type': 'application/json',
+            'cache-control': 'private, no-store',
+            'referrer-policy': 'no-referrer',
+        },
+    });
+}
 if (state.kind === 'login' || state.kind === 'redirect') return Astro.redirect(state.location, 303);
 const csrf = state.kind === 'review' ? `${state.authorizationId}.${crypto.randomUUID()}` : '';
 if (csrf)
@@ -87,7 +102,7 @@ if (state.kind === 'unavailable') Astro.response.status = state.status;
           <p>Access stays limited to the selected workspace, including when this connection is refreshed.</p>
           <p>This connection cannot register production, change inventory or control equipment.</p>
           <p class="ox-muted">You will return to {new URL(state.redirectUri).origin}.</p>
-          <form method="POST">
+          <form method="POST" id="consent-form">
             <input type="hidden" name="csrf" value={csrf} />
             <label for="workspace">Roastery</label>
             <select id="workspace" name="workspace_owner_id" required>
@@ -96,6 +111,39 @@ if (state.kind === 'unavailable') Astro.response.status = state.status;
             <button type="submit" name="decision" value="approve" class="ox-btn ox-btn-solid">Allow read access</button>
             <button type="submit" name="decision" value="deny" class="ox-btn ox-btn-outline">Deny</button>
           </form>
+          <p id="consent-status" role="status" class="ox-muted"></p>
+          <script is:inline>
+            const form = document.getElementById('consent-form');
+            form.addEventListener('submit', async (event) => {
+              event.preventDefault();
+              const body = new FormData(form);
+              const submitter = event.submitter;
+              if (submitter && submitter.name) body.set(submitter.name, submitter.value);
+              const buttons = form.querySelectorAll('button');
+              buttons.forEach((button) => {
+                button.disabled = true;
+              });
+              const status = document.getElementById('consent-status');
+              try {
+                const response = await fetch(location.href, {
+                  method: 'POST',
+                  body,
+                  headers: { Accept: 'application/json' },
+                });
+                const payload = await response.json();
+                if (typeof payload.location === 'string' && payload.location.startsWith('https://')) {
+                  location.assign(payload.location);
+                  return;
+                }
+                status.textContent = typeof payload.message === 'string' ? payload.message : 'This connection could not be completed.';
+              } catch {
+                status.textContent = 'This connection could not be completed.';
+              }
+              buttons.forEach((button) => {
+                button.disabled = false;
+              });
+            });
+          </script>
           <p class="ox-muted">You can revoke access from <a href="/account/connections">Connected apps</a> or the connected app.</p>
         </> : <p role="status">{state.message}</p>}
       </section>
